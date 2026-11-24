@@ -1,0 +1,15 @@
+{
+  "adres": "/kontakt",
+  "seo_tytul": "Opisz projekt: kontakt z Forma Kodu",
+  "seo_opis": "Opisz w kilku zdaniach firmę i to, co chcesz zmienić na stronie albo w procesie. Odpowiemy na podany adres e-mail i rozpiszemy zakres na piśmie.",
+  "intencja": "Jak skontaktować się z Forma Kodu w sprawie strony albo automatyzacji?",
+  "og_obraz": "/og/glowna.png",
+  "og_obraz_alt": "Formularz kontaktowy Forma Kodu",
+  "noindex": false,
+  "canonical": "",
+  "aktualizacja": "[data]",
+  "schema": [
+    "WebPage",
+    "BreadcrumbList"
+  ]
+}

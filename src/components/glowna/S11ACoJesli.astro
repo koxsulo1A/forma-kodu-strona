@@ -1,0 +1,79 @@
+---
+// 27 S11 „A co jeśli…?”: 8 kolorowych pytań w 2 rzędach po 4, akordeon „jedno pytanie naraz”.
+// Pytania i odpowiedzi z kolekcji FAQ (strony: glowna, kolejność 1–8), ceny w odpowiedziach ze znaczników {{cena:…}} (podmiana po budowaniu).
+// Bez JS wszystkie odpowiedzi są widoczne. Telefon: każdy rząd to osobna karuzela swipe ze wskaźnikiem od 01.
+import { getCollection, render } from 'astro:content';
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+const faq = (await getCollection('faq', (f) => f.data.strony.includes('glowna'))).sort((a, b) => a.data.kolejnosc - b.data.kolejnosc);
+const pytania = await Promise.all(faq.map(async (f) => ({ id: f.id, pytanie: f.data.pytanie, Tresc: (await render(f)).Content })));
+const kolory = ['zielen', 'niebieski', 'khaki', 'fiolet', 'satyna', 'bialy', 'fiolet', 'zielen'];
+const rzedy = [pytania.slice(0, 4), pytania.slice(4, 8)].filter((r) => r.length);
+---
+<section class="s11 baza segment" id="pytania" data-segment="S11 A co jeśli" aria-labelledby="s11-h">
+  <div class="kontener s11-wnetrze">
+    <header class="s11-naglowek">
+      {t.etykieta && <p class="t-etykieta akcentowy">{t.etykieta}</p>}
+      <h2 id="s11-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l">{t.lead}</p>}
+    </header>
+    <div class="pytania" data-akordeon>
+      {rzedy.map((rzad, r) => (
+        <div class="rzad-ramka">
+          <ul role="list" class="rzad swipe" data-swipe={`s11-wskaznik-${r}`}>
+            {rzad.map((p, i) => {
+              const n = r * 4 + i;
+              return (
+                <li class:list={['pytanie', kolory[n]]} data-pytanie>
+                  <h3 class="t-h4">
+                    <button type="button" aria-expanded="false" aria-controls={`s11-o-${n}`} id={`s11-p-${n}`}>
+                      <span>{p.pytanie}</span>
+                      <span class="ikona" aria-hidden="true"><Ikona nazwa="plus" /></span>
+                    </button>
+                  </h3>
+                  <div class="odpowiedz t-maly" id={`s11-o-${n}`} role="region" aria-labelledby={`s11-p-${n}`} hidden>
+                    <p.Tresc />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+          <div class="wskaznik-swipe" id={`s11-wskaznik-${r}`} aria-hidden="true">
+            <ol>{rzad.map((_, i) => <li aria-current={String(i === 0)}></li>)}</ol>
+            <span data-licznik>1 z {rzad.length}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .s11 { padding-block: clamp(48px, 3.5vw, 51px) 38px; }
+  .s11-wnetrze { display: grid; gap: 32px; }
+  .s11-naglowek { display: grid; gap: 12px; max-width: 680px; }
+  .pytania { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .rzad { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: start; }
+  .pytanie { border-radius: var(--radius-12); min-height: 124px; display: grid; align-content: start; }
+  .pytanie button { width: 100%; min-height: 124px; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; padding: 20px 16px 20px 20px; text-align: left; font: inherit; color: inherit; background: none; border: 0; cursor: pointer; border-radius: inherit; }
+  .ikona { flex: none; width: 36px; height: 36px; border-radius: 50%; border: 1px solid currentColor; display: grid; place-items: center; transition: transform var(--fk-czas-ikona) var(--fk-krzywa-standard); }
+  .otwarte .ikona, [aria-expanded='true'] .ikona { transform: rotate(45deg); }
+  .odpowiedz { padding: 0 20px 20px; display: grid; gap: 8px; }
+  :global(html:not(.js)) .odpowiedz[hidden] { display: grid; }
+  :global(html:not(.bez-ruchu)) .odpowiedz:not([hidden]) { animation: rozwin var(--fk-czas-rozwiniecie) var(--fk-krzywa-wejscie); }
+  @media (prefers-reduced-motion: reduce) { .odpowiedz:not([hidden]) { animation: none !important; } .ikona { transition: none; } }
+  @keyframes rozwin { from { opacity: 0; transform: translateY(-6px); } }
+  .zielen { background: var(--fk-kafel-1-tlo); color: var(--fk-kafel-1-tekst); border: 1px solid var(--fk-kafel-1-obrys); }
+  .niebieski { background: var(--fk-kafel-2-tlo); color: var(--fk-kafel-2-tekst); border: 1px solid var(--fk-kafel-2-obrys); }
+  .khaki { background: var(--fk-kafel-5-tlo); color: var(--fk-kafel-5-tekst); border: 1px solid var(--fk-kafel-5-obrys); }
+  .fiolet { background: var(--fk-kafel-4-tlo); color: var(--fk-kafel-4-tekst); border: 1px solid var(--fk-kafel-4-obrys); }
+  .satyna { background: var(--fk-kafel-6-tlo); color: var(--fk-kafel-6-tekst); border: 1px solid var(--fk-kafel-6-obrys); }
+  .bialy { background: var(--fk-kafel-3-tlo); color: var(--fk-kafel-3-tekst); border: 1px solid var(--fk-kafel-3-obrys); }
+  .odpowiedz :global(a) { color: inherit; text-decoration: underline; }
+  @media (max-width: 1023.98px) {
+    .pytanie button { flex-direction: column; min-height: 0; }
+    .pytanie { min-height: 0; }
+    .ikona { width: 28px; height: 28px; }
+  }
+</style>

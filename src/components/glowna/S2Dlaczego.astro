@@ -1,0 +1,68 @@
+---
+// 27 S2 Dlaczego my (wariant A: mozaika). Kafel wyróżniony (przełamanie) + 4 kafle: biały, zieleń, khaki, fiolet + pasek „za rok”.
+// Telefon: kafle jako jedna karta swipe ze wskaźnikiem od 01 (zasada mobile 28).
+interface Props { t: any }
+const { t } = Astro.props;
+const kolory = ['bialy', 'zielen', 'khaki', 'fiolet'];
+---
+<section class="s2 baza segment" id="dlaczego" data-segment="S2 Dlaczego my" aria-labelledby="s2-h">
+  <div class="kontener s2-wnetrze">
+    <header class="s2-naglowek">
+      <h2 id="s2-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      <p class="t-tresc-l">{t.lead}</p>
+    </header>
+    <div class="mozaika">
+      <article class="kafel wyrozniony">
+        <h3 class="t-h3">{t.wyrozniony.tytul}</h3>
+        <p class="t-tresc-l">{t.wyrozniony.opis}</p>
+        <p class="pytanie">
+          <span class="t-maly">{t.wyrozniony.pytanie_wstep}</span>
+          <span class="t-h3">{t.wyrozniony.pytanie}</span>
+          <span class="t-maly">{t.wyrozniony.pytanie_podpis}</span>
+        </p>
+      </article>
+      <ul role="list" class="pozostale swipe" data-swipe="s2-wskaznik">
+        {t.kafle.map((k: any, i: number) => (
+          <li class:list={['kafel', kolory[i % 4], i === 0 || i === 3 ? 'szeroki' : 'waski']}>
+            <h3 class="t-h4">{k.tytul}</h3>
+            <p class:list={[i === 0 || i === 3 ? 't-tresc' : 't-maly']}>{k.opis}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="wskaznik-swipe" id="s2-wskaznik" aria-hidden="true">
+        <ol>{t.kafle.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
+        <span data-licznik>1 z {t.kafle.length}</span>
+      </div>
+    </div>
+    <div class="pasek">
+      <h3 class="t-h4 naglowkowy">{t.pasek.tytul}</h3>
+      <p class="t-tresc">{t.pasek.opis}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s2 { padding-block: clamp(48px, 7vw, 102px) 27px; }
+  .s2-wnetrze { display: grid; gap: clamp(32px, 4.5vw, 64px); }
+  .s2-naglowek { display: grid; gap: 20px; max-width: 1180px; }
+  .mozaika { display: grid; grid-template-columns: 520fr 734fr; gap: 24px; }
+  .kafel { border-radius: var(--radius-card); padding: 32px; display: grid; gap: 12px; align-content: start; }
+  .wyrozniony { background: var(--fk-grad-przelamanie); color: var(--fk-tekst-na-akcencie); grid-template-rows: auto auto 1fr auto; min-height: 507px; }
+  .pytanie { grid-row: 4; display: grid; gap: 8px; padding: 20px 24px; border: 1px solid currentColor; border-radius: var(--radius-control); }
+  .pozostale { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); grid-template-areas: 'a a a a a a b b b b' 'c c c c d d d d d d'; gap: 24px; }
+  .pozostale > :nth-child(1) { grid-area: a; } .pozostale > :nth-child(2) { grid-area: b; }
+  .pozostale > :nth-child(3) { grid-area: c; } .pozostale > :nth-child(4) { grid-area: d; }
+  .bialy { background: var(--fk-kafel-3-tlo); color: var(--fk-kafel-3-tekst); border: 1px solid var(--fk-kafel-3-obrys); }
+  .zielen { background: var(--fk-grad-kafel-1); color: var(--fk-kafel-1-tekst); border: 1px solid var(--fk-kafel-1-obrys); }
+  .khaki { background: var(--fk-grad-kafel-5); color: var(--fk-kafel-5-tekst); border: 1.5px solid var(--fk-kafel-5-obrys); }
+  .fiolet { background: var(--fk-grad-kafel-4); color: var(--fk-kafel-4-tekst); border: 1px solid var(--fk-kafel-4-obrys); }
+  .pasek { display: grid; grid-template-columns: auto 1fr; gap: 64px; align-items: baseline; padding-top: 32px; border-top: 1px solid var(--fk-obrys); }
+
+  @media (max-width: 1023.98px) {
+    .mozaika { grid-template-columns: 1fr; gap: 16px; }
+    .wyrozniony { min-height: 0; padding: 28px 24px; }
+    .pytanie { grid-row: auto; margin-top: 12px; }
+    .pozostale .kafel { padding: 28px 24px; }
+    .pasek { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>

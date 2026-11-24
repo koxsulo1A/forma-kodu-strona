@@ -49,6 +49,7 @@ const STRONY = {
   pilotaze: 'Pilotaże',
   'polityka-prywatnosci': 'Polityka prywatności',
   dostepnosc: 'Dostępność',
+  kontakt: 'Kontakt (formularz „Opisz projekt” bez JS)',
 } as const;
 const singletonySeo = Object.fromEntries(
   Object.entries(STRONY).map(([id, nazwa]) => [
@@ -213,7 +214,7 @@ export default config({
         opis: limit('Opis na karcie (≤ 200)', 1, 200, true),
         technologie: fields.array(fields.text({ label: 'Technologia', validation: { length: { min: 1, max: 30 } } }), { label: 'Technologie (tagi)', itemLabel: (p) => p.value }),
         miasto: fields.text({ label: 'Miasto', validation: { length: { max: 40 } } }),
-        data: fields.text({ label: 'Data (RRRR-MM)', validation: { pattern: { regex: /^\d{4}-(0[1-9]|1[0-2])$/, message: 'Format RRRR-MM, np. 2026-11' } } }),
+        data: fields.text({ label: 'Data (RRRR-MM)', validation: { pattern: { regex: /^\d{4}-(0[1-9]|1[0-2])$|^\[RRRR-MM\]$/, message: 'Format RRRR-MM, np. 2026-11 (zaślepka [RRRR-MM] blokuje publikację)' } } }),
         link: fields.url({ label: 'Link po kliknięciu karty (strona realizacji)' }),
         kategoria: fields.select({ label: 'Kategoria', options: ['Strony', 'Automatyzacje', 'Aplikacje'].map((v) => ({ label: v, value: v })), defaultValue: 'Strony' }),
         typ: fields.select({ label: 'Typ (zasada stała 12)', options: ['klient', 'projekt własny', 'przykład układu'].map((v) => ({ label: v, value: v })), defaultValue: 'klient' }),

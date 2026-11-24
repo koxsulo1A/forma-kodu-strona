@@ -1,0 +1,91 @@
+---
+// 27 S4 Oferta (wariant C: siatka bento). Kolejność usług z panelu: 1–2 rząd 1, 3–4 grupa „Opieka”, 5–6 grupa „Sklepy”, 7–8 rząd 3.
+// Pole „status” jest w panelu, ale na komputerze go nie pokazujemy (decyzja schematu); „wkrótce” widać po obrysie i w treści.
+// Telefon: każdy rząd jako karta swipe ze wskaźnikiem od 01 (makieta 375 / S4).
+interface Props { t: any }
+const { t } = Astro.props;
+const u = t.uslugi;
+const kafel = (x: any, styl: string, duzy = false) => ({ ...x, styl, duzy });
+const wszystkie = [
+  kafel(u[0], 'zielen', true), kafel(u[1], 'niebieski'),
+  kafel(u[2], 'bialy'), kafel(u[3], 'bialy'), kafel(u[4], 'bialy'), kafel(u[5], 'bialy'),
+  kafel(u[6], 'fiolet', true), kafel(u[7], 'wkrotce'),
+].filter((x) => x.nazwa);
+---
+<section class="s4 baza segment" id="oferta" data-segment="S4 Oferta" aria-labelledby="s4-h">
+  <div class="kontener s4-wnetrze">
+    <div class="s4-gora">
+      <header class="s4-naglowek">
+        <h2 id="s4-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+        <p class="t-tresc-l">{t.lead}</p>
+      </header>
+      <div class="s4-akcja">
+        <p class="t-tresc-l">{t.akcja_tekst}</p>
+        <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta}</a>
+      </div>
+    </div>
+
+    <ul role="list" class="bento swipe" data-swipe="s4-wskaznik">
+      {wszystkie.map((x, i) => (
+        <li class:list={['usluga', x.styl, { duzy: x.duzy, grupa: x.styl === 'bialy' }]} data-i={i + 1}>
+          {x.styl === 'bialy' && (i === 2 || i === 4) && <p class="t-maly grupa-nazwa">{i === 2 ? t.grupa_opieka : t.grupa_sklepy}</p>}
+          <div class="usluga-gora">
+            <h3 class="t-h4">{x.nazwa}</h3>
+            {x.podpozycje?.length > 0 && (
+              <ul role="list" class="podpozycje">{x.podpozycje.map((p: string) => <li class="t-nawigacja">{p}</li>)}</ul>
+            )}
+          </div>
+          <p class:list={[x.duzy ? 't-h3' : 't-h4', 'pytanie']}>{x.pytanie}</p>
+          <p class="t-tresc">{x.opis}</p>
+        </li>
+      ))}
+    </ul>
+    <div class="wskaznik-swipe" id="s4-wskaznik" aria-hidden="true">
+      <ol>{wszystkie.map((_, i) => <li aria-current={String(i === 0)}></li>)}</ol>
+      <span data-licznik>1 z {wszystkie.length}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s4 { padding-block: clamp(48px, 5vw, 70px) 17px; }
+  .s4-wnetrze { display: grid; gap: 24px; }
+  .s4-gora { display: flex; justify-content: space-between; align-items: end; gap: 32px; padding-bottom: 16px; flex-wrap: wrap; }
+  .s4-naglowek { display: grid; gap: 16px; max-width: 600px; }
+  .s4-akcja { display: grid; gap: 20px; justify-items: start; max-width: 520px; }
+
+  /* Bento: 12 kolumn. Rząd 1: 760/528, rząd 2: jeden biały pas z dwiema grupami, rząd 3: 760/528. */
+  .bento { display: grid; grid-template-columns: repeat(24, minmax(0, 1fr)); gap: 24px; }
+  .usluga { border-radius: var(--radius-card); padding: 28px 32px 32px; display: grid; gap: 16px; align-content: start; }
+  .usluga.duzy { grid-column: span 14; }
+  .usluga:not(.duzy):not(.grupa) { grid-column: span 10; }
+  .usluga-gora { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+  .podpozycje { display: flex; flex-wrap: wrap; gap: 8px; }
+  .podpozycje li { padding: 8px 12px; border: 1px solid currentColor; border-radius: var(--radius-control); }
+  .zielen { background: var(--fk-grad-kafel-1); color: var(--fk-kafel-1-tekst); border: 1px solid var(--fk-kafel-1-obrys); }
+  .niebieski { background: var(--fk-grad-przelamanie); color: var(--fk-tekst-na-akcencie); }
+  .fiolet { background: var(--fk-grad-kafel-4); color: var(--fk-kafel-4-tekst); border: 1px solid var(--fk-kafel-4-obrys); }
+  .wkrotce { border: 1.5px solid var(--fk-obrys-kontrolka); color: var(--fk-kafel-3-tekst); background: var(--fk-tlo); }
+  :global(:root[data-theme='dark']) .wkrotce { color: var(--fk-tekst); }
+
+  /* Rząd 2: cztery usługi w jednym białym pasie, separator między grupami */
+  .grupa { grid-column: span 6; background: var(--fk-kafel-3-tlo); color: var(--fk-kafel-3-tekst); padding: 28px 14px 32px; border-block: 1px solid var(--fk-kafel-3-obrys); border-radius: 0; gap: 12px; position: relative; }
+  .grupa[data-i='3'] { border-left: 1px solid var(--fk-kafel-3-obrys); border-radius: var(--radius-card) 0 0 var(--radius-card); padding-left: 32px; }
+  .grupa[data-i='4'] { padding-right: 30px; }
+  .grupa[data-i='5'] { padding-left: 30px; }
+  .grupa[data-i='5']::before { content: ''; position: absolute; left: -12px; top: 28px; bottom: 32px; width: 1px; background: var(--fk-kafel-3-obrys); }
+  .grupa[data-i='6'] { border-right: 1px solid var(--fk-kafel-3-obrys); border-radius: 0 var(--radius-card) var(--radius-card) 0; padding-right: 32px; }
+  .bento > .grupa { margin-inline: -12px; }
+  .bento > .grupa[data-i='3'] { margin-left: 0; }
+  .bento > .grupa[data-i='6'] { margin-right: 0; }
+  .grupa-nazwa { grid-row: 1; margin-bottom: 4px; }
+  .grupa[data-i='4'] .usluga-gora, .grupa[data-i='6'] .usluga-gora { margin-top: calc(var(--fk-font-maly) * 1.5 + 16px); }
+
+  @media (max-width: 1023.98px) {
+    .s4-gora { padding-bottom: 0; }
+    .usluga, .grupa { padding: 28px 24px; border-radius: var(--radius-card) !important; border: 1px solid var(--fk-obrys) !important; margin: 0 !important; }
+    .zielen { border-color: var(--fk-kafel-1-obrys) !important; }
+    .grupa[data-i='5']::before { display: none; }
+    .grupa[data-i='4'] .usluga-gora, .grupa[data-i='6'] .usluga-gora { margin-top: 0; }
+  }
+</style>

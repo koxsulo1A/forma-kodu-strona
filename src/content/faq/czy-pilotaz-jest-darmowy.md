@@ -1,6 +1,6 @@
 ---
 pytanie: "Czy pilotaż naprawdę jest darmowy?"
-strony: ["pilotaze", "glowna"]
+strony: ["pilotaze"]
 kolejnosc: 1
 aktualizacja: "[data]"
 ---

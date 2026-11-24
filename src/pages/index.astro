@@ -1,0 +1,37 @@
+---
+// Strona główna (makieta 27, komputer 1440 i telefon 375). Treść: panel Keystatic → „Strona główna” (src/content/strony/glowna.json).
+// Kolejność segmentów jak na makiecie: S1–S13, S14 (stopka) w Uklad.astro.
+import Uklad from '../layouts/Uklad.astro';
+import { trescStrony } from '../lib/tresc';
+import S1Hero from '../components/glowna/S1Hero.astro';
+import S2Dlaczego from '../components/glowna/S2Dlaczego.astro';
+import OpinieWidzety from '../components/opinie/OpinieWidzety.astro';
+import S4Oferta from '../components/glowna/S4Oferta.astro';
+import S5Realizacje from '../components/glowna/S5Realizacje.astro';
+import S6Benefity from '../components/glowna/S6Benefity.astro';
+import S7Proces from '../components/glowna/S7Proces.astro';
+import S8Cennik from '../components/glowna/S8Cennik.astro';
+import S9MalaRzecz from '../components/glowna/S9MalaRzecz.astro';
+import S10Technologie from '../components/glowna/S10Technologie.astro';
+import S11ACoJesli from '../components/glowna/S11ACoJesli.astro';
+import S12KimJestesmy from '../components/glowna/S12KimJestesmy.astro';
+import S13SzczegolowaOferta from '../components/glowna/S13SzczegolowaOferta.astro';
+
+const t = await trescStrony('strona-glowna');
+if (!t) throw new Error('Brak treści strony głównej: src/content/strony/glowna.json');
+---
+<Uklad strona="glowna" nazwaStrony="Strona główna">
+  <S1Hero t={t.s1_hero} />
+  <S2Dlaczego t={t.s2_dlaczego} />
+  <OpinieWidzety naglowek={t.s3_opinie.naglowek} id="opinie" />
+  <S4Oferta t={t.s4_oferta} />
+  <S5Realizacje t={t.s5_realizacje} />
+  <S6Benefity t={t.s6_benefity} />
+  <S7Proces t={t.s7_proces} />
+  <S8Cennik t={t.s8_cennik} />
+  <S9MalaRzecz t={t.s9_mala_rzecz} />
+  <S10Technologie t={t.s10_technologie} />
+  <S11ACoJesli t={t.s11_a_co_jesli} />
+  <S12KimJestesmy t={t.s12_kim_jestesmy} />
+  <S13SzczegolowaOferta t={t.s13_szczegolowa_oferta} />
+</Uklad>

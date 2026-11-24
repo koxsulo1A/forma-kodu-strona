@@ -1,0 +1,686 @@
+{
+  "s1_hero": {
+    "h1": "Profesjonalne strony internetowe, które pracują, kiedy Ty pracujesz.",
+    "lead": "Znowu nie odebrałeś telefonu, bo byłeś z klientem? Zrobimy stronę, na której klient sam sprawdzi cenę, wolny termin i dojazd. Powiemy też wprost, czego ta strona nie zrobi.",
+    "cta_1": "Opisz projekt",
+    "cta_2": "Zobacz ofertę",
+    "pas_naglowek": "Co dostajesz ze stroną",
+    "pas_zakresu": [
+      {
+        "tytul": "Strona sprawdzona na telefonie",
+        "opis": "Sprawdzamy, czy klient z telefonu od razu wie, gdzie kliknąć."
+      },
+      {
+        "tytul": "Panel do zmiany treści",
+        "opis": "Ceny i godziny zmieniasz sam, bez dzwonienia do nas."
+      },
+      {
+        "tytul": "Instrukcja",
+        "opis": "Krok po kroku, na piśmie. Wrócisz do niej za rok."
+      },
+      {
+        "tytul": "Wynik pomiaru",
+        "opis": "Na starcie ustalamy, co liczymy. Po starcie pokazujemy liczby."
+      }
+    ]
+  },
+  "s2_dlaczego": {
+    "naglowek": "Stronę zrobi dziś każdy. My powiemy Ci, po co jest na niej każdy przycisk.",
+    "lead": "Generator złoży stronę w kilka minut. Nie powie Ci, czemu klienci z niej wychodzą. My to sprawdzimy.",
+    "wyrozniony": {
+      "tytul": "Rozumiemy to, co budujemy.",
+      "opis": "Wiemy, po co na stronie jest każda sekcja, przycisk i automatyzacja. Zapytasz „po co to jest?”, a my odpowiemy prostym językiem, bez żargonu.",
+      "pytanie_wstep": "Pytasz:",
+      "pytanie": "„Po co to jest?”",
+      "pytanie_podpis": "i dostajesz odpowiedź."
+    },
+    "kafle": [
+      {
+        "tytul": "Dopasowane do Ciebie, nie do szablonu.",
+        "opis": "Najpierw pytamy: kto do Ciebie przychodzi, o co pyta i co ma zrobić na stronie. Dopiero potem projektujemy."
+      },
+      {
+        "tytul": "Mówimy też o ograniczeniach.",
+        "opis": "Każde rozwiązanie ma swoje ograniczenia. Na przykład strona z wieloma animacjami ładuje się wolniej na słabszym telefonie. Mówimy o tym przed startem."
+      },
+      {
+        "tytul": "Obiecujemy tylko to, co da się zmierzyć.",
+        "opis": "Nie obiecamy pierwszego miejsca w Google ani liczby nowych klientów. Razem ustalimy, co liczymy, i pokażemy wynik."
+      },
+      {
+        "tytul": "Razem z Tobą, etap po etapie.",
+        "opis": "Postęp widzisz na bieżąco: najpierw na makiecie, potem na adresie testowym. Uwagę możesz zgłosić w każdym momencie."
+      }
+    ],
+    "pasek": {
+      "tytul": "Myślimy o tym, co dołożysz za rok.",
+      "opis": "Rezerwacje, bot czatowy, sklep: dołożysz je później bez stawiania strony od nowa."
+    }
+  },
+  "s3_opinie": {
+    "naglowek": "Nie wierz nam na słowo. Sprawdź u źródła."
+  },
+  "s4_oferta": {
+    "naglowek": "Co Ci dziś zabiera klientów albo czas?",
+    "lead": "Znajdź swój problem. Pod każdym piszemy, co z nim zrobimy.",
+    "akcja_tekst": "Zakres i wycenę rozpisujemy na piśmie przed startem.",
+    "cta": "Opisz projekt",
+    "grupa_opieka": "Opieka nad stroną",
+    "grupa_sklepy": "Sklepy",
+    "uslugi": [
+      {
+        "nazwa": "Strony internetowe",
+        "pytanie": "Klient wchodzi z telefonu i wychodzi, bo nie znalazł ceny ani terminu?",
+        "opis": "Budujemy stronę, na której cena, termin i dojazd są na pierwszym ekranie telefonu. Dostajesz też panel do zmian, instrukcję i wynik pomiaru.",
+        "podpozycje": [],
+        "status": "dostępne"
+      },
+      {
+        "nazwa": "Strony WordPress",
+        "pytanie": "Chcesz sam dodawać wpisy, a obecna strona Ci na to nie pozwala?",
+        "opis": "Budujemy stronę na WordPressie, gdy wymaga tego Twój sposób pracy. WordPress wymaga regularnych aktualizacji motywu i wtyczek.",
+        "podpozycje": [],
+        "status": "na zapytanie"
+      },
+      {
+        "nazwa": "Naprawa stron",
+        "pytanie": "Strona długo się ładuje albo rozjeżdża się na telefonie?",
+        "opis": "Zaczynamy od diagnozy i listy usterek z priorytetami. Jeśli przebudowa będzie tańsza niż poprawki, powiemy to po diagnozie.",
+        "podpozycje": [],
+        "status": "na zapytanie"
+      },
+      {
+        "nazwa": "Prowadzenie stron",
+        "pytanie": "Na stronie wciąż wiszą zeszłoroczne ceny i stare godziny?",
+        "opis": "Zmieniamy treści, robimy aktualizacje i sprawdzamy, czy wszystko działa. To osobna usługa, poza budową strony.",
+        "podpozycje": [],
+        "status": "na zapytanie"
+      },
+      {
+        "nazwa": "Sklepy internetowe",
+        "pytanie": "Zamówienia spływają w wiadomościach i każde potwierdzasz ręcznie?",
+        "opis": "Sklep na gotowej platformie, z koszykiem, płatnościami i wysyłką. Nie mamy jeszcze ukończonego sklepu do pokazania.",
+        "podpozycje": [],
+        "status": "na zapytanie"
+      },
+      {
+        "nazwa": "Migracje sklepów",
+        "pytanie": "Platforma sklepu już nie wystarcza, ale boisz się stracić produkty i klientów?",
+        "opis": "Zaczynamy od spisu produktów, klientów i adresów, bo od platformy źródłowej zależy ryzyko. Zakres przeniesienia ustalamy po tym spisie.",
+        "podpozycje": [],
+        "status": "na zapytanie"
+      },
+      {
+        "nazwa": "Automatyzacje",
+        "pytanie": "Znowu odpisujesz na to samo pytanie o cennik i godziny?",
+        "opis": "Wdrażamy bota czatowego albo formularz, który odpowiada z ustalonej listy pytań. Na piśmie dostajesz też listę tego, czego bot nie obsłuży.",
+        "podpozycje": [
+          "w tym: boty czatowe",
+          "formularze"
+        ],
+        "status": "dostępne"
+      },
+      {
+        "nazwa": "Analiza SEO/GEO, ruchu i reklam",
+        "pytanie": "Ktoś obiecuje Ci pierwsze miejsce w Google, a Ty nie masz jak tego sprawdzić?",
+        "opis": "Przygotujemy analizę, w której każda liczba ma źródło i datę, a braki w danych są nazwane wprost. Pozycji nie obiecujemy. Usługa jeszcze niedostępna.",
+        "podpozycje": [],
+        "status": "wkrótce"
+      }
+    ]
+  },
+  "s5_realizacje": {
+    "naglowek": "Nad czym teraz pracujemy",
+    "realizacje": [
+      "beddieyes",
+      "aplikacja-fitness",
+      "zdjecia-sprzedazowe",
+      "legit-check",
+      "przenoszenie-playlist"
+    ],
+    "link_wszystkie": "Wszystkie projekty na podstronie realizacji"
+  },
+  "s6_benefity": {
+    "naglowek": "Każdą naszą obietnicę możesz sprawdzić",
+    "lead": "Co zyskujesz, pracując z nami",
+    "etapy": [
+      {
+        "nazwa": "Przed startem",
+        "bloki": [
+          {
+            "tytul": "Mówimy też o ograniczeniach.",
+            "wyroznienie": "",
+            "opis": "Każde rozwiązanie ma ograniczenia. Na przykład strona z wieloma animacjami ładuje się wolniej na słabszym telefonie. Mówimy o nich przed startem, żeby decyzja była Twoja.",
+            "kolor": "bez tła"
+          },
+          {
+            "tytul": "Ustalenia na piśmie.",
+            "wyroznienie": "",
+            "opis": "Zakres, termin, warunki odbioru i zasady dotyczące danych spisujemy przed startem. Każdy wie, na co się umówił.",
+            "kolor": "niebieski"
+          }
+        ]
+      },
+      {
+        "nazwa": "Projekt",
+        "bloki": [
+          {
+            "tytul": "Strona widziana oczami Twojego klienta.",
+            "wyroznienie": "„Czy już wiem, co mam zrobić?”",
+            "opis": "Zamawiasz ją Ty, ale korzysta z niej ktoś, kto szuka ceny, terminu albo adresu. Każdą sekcję sprawdzamy jego pytaniem: „czy już wiem, co mam zrobić?”.",
+            "kolor": "zieleń"
+          }
+        ]
+      },
+      {
+        "nazwa": "Budowa",
+        "bloki": [
+          {
+            "tytul": "Widzisz pracę w trakcie.",
+            "wyroznienie": "",
+            "opis": "Kolejne wersje oglądasz na adresie testowym. Uwagi zgłaszasz przed publikacją, kiedy poprawka kosztuje najmniej.",
+            "kolor": "fiolet"
+          },
+          {
+            "tytul": "Miejsce na kolejny blok",
+            "wyroznienie": "",
+            "opis": "Do uzupełnienia. Treść dodamy później, gdy będzie sprawdzona.",
+            "kolor": "miejsce do uzupełnienia"
+          }
+        ]
+      },
+      {
+        "nazwa": "Odbiór",
+        "bloki": [
+          {
+            "tytul": "Staranny kod, lekka konstrukcja.",
+            "wyroznienie": "",
+            "opis": "Na stronie jest tylko to, czego potrzebujesz. Przed oddaniem dostajesz pomiar szybkości i dostępności z datą i nazwą narzędzia. Nie musisz wierzyć nam na słowo.",
+            "kolor": "khaki"
+          }
+        ]
+      },
+      {
+        "nazwa": "Po starcie",
+        "bloki": [
+          {
+            "tytul": "Treści zmieniasz bez programisty.",
+            "wyroznienie": "",
+            "opis": "Cennik, godziny i opis usług poprawiasz sam w panelu. Pokażemy Ci, jak to zrobić, i zostawimy instrukcję.",
+            "kolor": "satyna"
+          },
+          {
+            "tytul": "Miejsce na kolejny blok",
+            "wyroznienie": "",
+            "opis": "Do uzupełnienia. Treść dodamy później, gdy będzie sprawdzona.",
+            "kolor": "miejsce do uzupełnienia"
+          }
+        ]
+      }
+    ]
+  },
+  "s7_proces": {
+    "naglowek": "Sześć etapów, sześć Twoich decyzji",
+    "lead": "Najpierw rozmawiamy o Twojej firmie. Na końcu masz działającą stronę albo automatyzację. Pierwszy krok to krótki opis na dole strony.",
+    "etapy": [
+      {
+        "tytul": "Poznanie firmy",
+        "my_robimy": "Pytamy, co dziś zabiera Ci czas albo klientów.",
+        "ty_robisz": "Opowiadasz i wybierasz, od którego problemu zaczynamy.",
+        "ty_dostajesz": "Opis problemu Twoimi słowami. Możesz go poprawić."
+      },
+      {
+        "tytul": "Zakres i cena",
+        "my_robimy": "",
+        "ty_robisz": "Wybierasz wariant.",
+        "ty_dostajesz": ""
+      },
+      {
+        "tytul": "Szkic",
+        "my_robimy": "",
+        "ty_robisz": "Akceptujesz kolejność informacji albo ją zmieniasz.",
+        "ty_dostajesz": ""
+      },
+      {
+        "tytul": "Budowa",
+        "my_robimy": "",
+        "ty_robisz": "Zgłaszasz uwagi w trakcie i zatwierdzasz etap.",
+        "ty_dostajesz": ""
+      },
+      {
+        "tytul": "Kontrola i start",
+        "my_robimy": "",
+        "ty_robisz": "Decydujesz o publikacji.",
+        "ty_dostajesz": ""
+      },
+      {
+        "tytul": "Po starcie",
+        "my_robimy": "",
+        "ty_robisz": "Wybierasz, czy i w jakim zakresie z nich korzystasz.",
+        "ty_dostajesz": ""
+      }
+    ],
+    "efekt": {
+      "tytul": "Start",
+      "opis": "Zaczynamy dopiero, gdy zgodzisz się na zakres.",
+      "cta": "Opisz projekt"
+    }
+  },
+  "s8_cennik": {
+    "naglowek": "Wybierz pakiet na start",
+    "pakiety": [
+      {
+        "etykieta": "Strona podstawowa",
+        "nazwa": "Landing Page podstawowy",
+        "opis": "Jedna strona na szablonie, który dobieramy do Twojej firmy.",
+        "cena": "strony-internetowe-landing",
+        "podpis_ceny": "",
+        "polecany": false,
+        "zawiera": [
+          "oferta, kontakt i dojazd na jednej stronie",
+          "wersja na telefon",
+          "SEO techniczne i mapa strony",
+          "testy przed oddaniem"
+        ],
+        "nie_zawiera": [
+          "panelu do samodzielnej zmiany treści",
+          "własnego projektu graficznego",
+          "domeny, hostingu i licencji (niżej)"
+        ],
+        "cta": "Zapytaj o ten pakiet"
+      },
+      {
+        "etykieta": "Strona dedykowana",
+        "nazwa": "Wariant dedykowany",
+        "opis": "Układ i wygląd projektujemy od zera, z gotowych komponentów.",
+        "cena": "strony-internetowe-dedykowana",
+        "podpis_ceny": "",
+        "polecany": true,
+        "zawiera": [
+          "projekt układu pod Twoich klientów",
+          "kilka podstron, np. usługi, cennik, kontakt",
+          "panel do zmiany treści bez programisty",
+          "SEO techniczne i testy"
+        ],
+        "nie_zawiera": [
+          "sklepu i płatności online",
+          "integracji z systemami firmy",
+          "domeny, hostingu i licencji (niżej)"
+        ],
+        "cta": "Zapytaj o ten pakiet"
+      },
+      {
+        "etykieta": "Najwyższy pakiet w ofercie",
+        "nazwa": "Prywatna strona stworzona od A do Z",
+        "opis": "Projekt UI i UX od zera, kod pisany pod szybkość i prywatność.",
+        "cena": null,
+        "podpis_ceny": "po rozmowie o zakresie; zakresy są zbyt różne, by podać jedną kwotę z rynku",
+        "polecany": false,
+        "zawiera": [
+          "wszystko z wariantu dedykowanego",
+          "projekt ekranów przed pierwszą linią kodu",
+          "pomiar wydajności przy każdej zmianie",
+          "zakres spisany na piśmie przed startem"
+        ],
+        "nie_zawiera": [
+          "sklepu, aplikacji i automatyzacji (osobne pozycje)",
+          "obietnicy ruchu ani liczby zapytań",
+          "domeny, hostingu i licencji (niżej)"
+        ],
+        "cta": "Zapytaj o ten pakiet"
+      }
+    ],
+    "koszty_naglowek": "Koszty stałe po Twojej stronie",
+    "koszty_stale": [
+      {
+        "nazwa": "Domena",
+        "zakres": "100-200 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Hosting",
+        "zakres": "300-500 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "SSL",
+        "zakres": "0-150 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Licencje",
+        "zakres": "zmienne",
+        "okres": "rocznie",
+        "zrodlo": "[źródło do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Opieka i prowadzenie (opcjonalnie)",
+        "zakres": "175-1 090 zł",
+        "okres": "miesięcznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      }
+    ],
+    "zrodla": ""
+  },
+  "s9_mala_rzecz": {
+    "naglowek": "Zacznij od jednej małej rzeczy.",
+    "lead": "Jedna rozmowa o sklepie lub aplikacji dzieli Cię od pierwszego kroku.",
+    "cta": "Opisz projekt",
+    "stopnie": [
+      {
+        "etykieta": "Najmniejszy krok",
+        "tytul": "Jedno pytanie.",
+        "opis": "Nie wiesz, od czego zacząć? Napisz, co Ci dziś przeszkadza."
+      },
+      {
+        "etykieta": "",
+        "tytul": "Jeden landing.",
+        "opis": "Jedna oferta, jedna strona, jeden następny krok dla klienta."
+      },
+      {
+        "etykieta": "",
+        "tytul": "Jedna diagnoza.",
+        "opis": "Sprawdzamy Twoją stronę i mówimy, co naprawić najpierw."
+      },
+      {
+        "etykieta": "",
+        "tytul": "Jeden proces.",
+        "opis": "Na przykład wszystkie zapytania z formularza w jednym miejscu, z powiadomieniem na telefon."
+      },
+      {
+        "etykieta": "",
+        "tytul": "Jedna rozmowa o sklepie lub aplikacji.",
+        "opis": "Duży projekt zaczynamy od spisania wymagań. Na tym etapie niczego jeszcze nie budujemy."
+      }
+    ]
+  },
+  "s10_technologie": {
+    "etykieta": "Technologie",
+    "naglowek": "Co pracuje pod spodem każdej strony",
+    "podpis": "Każde z tych twierdzeń możesz sprawdzić: pokażemy testy, ich wyniki i to, czego nie obejmują.",
+    "pakiety": [
+      {
+        "nazwa": "Strona podstawowa",
+        "znacznik": "",
+        "opis": "Na podstawie szablonu, który dobieramy do Twojej firmy.",
+        "warstwy": [
+          {
+            "narzedzie": "Cloudflare Workers",
+            "rola": "back end",
+            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+          },
+          {
+            "narzedzie": "Astro",
+            "rola": "front end",
+            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
+          },
+          {
+            "narzedzie": "[do uzupełnienia]",
+            "rola": "testy",
+            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
+          },
+          {
+            "narzedzie": "@astrojs/sitemap",
+            "rola": "SEO techniczne",
+            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
+          }
+        ]
+      },
+      {
+        "nazwa": "Strona dedykowana",
+        "znacznik": "Polecany pakiet",
+        "opis": "Układ i wygląd projektujemy od zera z komponentów.",
+        "warstwy": [
+          {
+            "narzedzie": "Cloudflare Workers",
+            "rola": "back end",
+            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+          },
+          {
+            "narzedzie": "Astro",
+            "rola": "front end",
+            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
+          },
+          {
+            "narzedzie": "@astrojs/sitemap",
+            "rola": "SEO techniczne",
+            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
+          },
+          {
+            "narzedzie": "[do uzupełnienia]",
+            "rola": "testy",
+            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
+          },
+          {
+            "narzedzie": "Keystatic",
+            "rola": "panel treści",
+            "ograniczenie": "Zmiana treści pojawia się na stronie dopiero po ponownym zbudowaniu."
+          }
+        ]
+      },
+      {
+        "nazwa": "Strona prywatna",
+        "znacznik": "Najwyższy pakiet",
+        "opis": "Projekt UI i UX od zera, kod pisany pod szybkość i prywatność.",
+        "warstwy": [
+          {
+            "narzedzie": "Cloudflare Workers",
+            "rola": "back end",
+            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+          },
+          {
+            "narzedzie": "Astro",
+            "rola": "front end",
+            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
+          },
+          {
+            "narzedzie": "@astrojs/sitemap",
+            "rola": "SEO techniczne",
+            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
+          },
+          {
+            "narzedzie": "[do uzupełnienia]",
+            "rola": "testy",
+            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
+          },
+          {
+            "narzedzie": "Keystatic",
+            "rola": "panel treści",
+            "ograniczenie": "Zmiana treści pojawia się na stronie dopiero po ponownym zbudowaniu."
+          },
+          {
+            "narzedzie": "Lighthouse CI",
+            "rola": "wydajność",
+            "ograniczenie": "Mierzy w warunkach testowych, a nie na wizytach Twoich klientów."
+          }
+        ]
+      }
+    ]
+  },
+  "s11_a_co_jesli": {
+    "etykieta": "",
+    "naglowek": "A co jeśli…?",
+    "lead": "Osiem pytań, które warto zadać przed startem. Kliknij pytanie, żeby zobaczyć odpowiedź."
+  },
+  "s12_kim_jestesmy": {
+    "osoby": [
+      {
+        "imie": "[imię i nazwisko]",
+        "rola": "[rola]",
+        "zdjecie": {
+          "plik": null,
+          "alt": "",
+          "dekoracja": false
+        }
+      }
+    ],
+    "kto_opis": "Jesteśmy małą firmą: dziś jedna osoba rozmawia z Tobą, wykonuje i sprawdza pracę.",
+    "misja": "„Tłumaczymy, co wdrażamy, pokazujemy ograniczenia i nie obiecujemy wyników, których nie da się zmierzyć.”",
+    "naglowek": "Pracujemy dla firm, w których klientów zna się po imieniu",
+    "lead": "Salon, gabinet, studio treningowe. Strona ma Ci pomagać w pracy, a nie dokładać obowiązków.",
+    "cel": "Narzędzia, na które do niedawna stać było tylko duże firmy, w budżecie małej firmy. I zrozumiałe dla osoby, która z nich korzysta.",
+    "zyski_naglowek": "Co zyskujesz, pracując z nami",
+    "wyrozniony": {
+      "tytul": "Strona widziana oczami Twojego klienta.",
+      "opis": "Każdą sekcję oceniamy pytaniem osoby, która chce sprawdzić cenę, termin albo adres.",
+      "cytat": "„Czy już wiem, co mam zrobić?”"
+    },
+    "benefity": [
+      {
+        "tytul": "Staranny kod, lekka konstrukcja.",
+        "opis": "Przed oddaniem dostajesz pomiar szybkości i dostępności z datą i nazwą narzędzia. Nie musisz wierzyć nam na słowo."
+      },
+      {
+        "tytul": "Treści zmieniasz bez programisty.",
+        "opis": "Cennik, godziny i opis usług poprawiasz sam w panelu. Zostawiamy instrukcję."
+      },
+      {
+        "tytul": "Ustalenia na piśmie.",
+        "opis": "Zakres, termin, kryteria odbioru i zasady dotyczące danych spisujemy przed startem."
+      },
+      {
+        "tytul": "Widzisz pracę w trakcie.",
+        "opis": "Kolejne wersje oglądasz na adresie testowym. Uwagi zgłaszasz przed publikacją, kiedy poprawka kosztuje najmniej."
+      }
+    ],
+    "ograniczenia": {
+      "tytul": "Mówimy też o ograniczeniach.",
+      "opis": "Usługi, których jeszcze nie robimy, mają etykietę „wkrótce”."
+    }
+  },
+  "s13_szczegolowa_oferta": {
+    "etykieta": "Pełna oferta",
+    "naglowek": "Co robimy dziś i co dopiero przygotowujemy",
+    "lead": "Przy każdej usłudze: zakres, ograniczenie i cena.",
+    "cta_tekst": "Nie wiesz, która pasuje?",
+    "cta": "Opisz projekt",
+    "zakladki": [
+      {
+        "etykieta": "Budujemy",
+        "podpis": "4 usługi",
+        "uslugi": [
+          {
+            "nazwa": "Strony internetowe",
+            "opis": "Landing jednej oferty, serwis firmowy z podstronami usług albo przebudowa obecnej strony.",
+            "ograniczenie": "strona nie zapewnia ruchu ani zapytań; domena, hosting i opieka to osobne pozycje.",
+            "ceny": [
+              {
+                "cena": "strony-internetowe-landing",
+                "za": "za landing"
+              },
+              {
+                "cena": "strony-internetowe-dedykowana",
+                "za": "za dedykowaną stronę firmową"
+              }
+            ],
+            "status": "wycena po rozmowie"
+          },
+          {
+            "nazwa": "Strony WordPress",
+            "opis": "Gdy chcesz sam dodawać wpisy i podstrony.",
+            "ograniczenie": "WordPress wymaga regularnych aktualizacji motywu i wtyczek.",
+            "ceny": [],
+            "status": "wycena po rozmowie"
+          },
+          {
+            "nazwa": "Sklepy internetowe",
+            "opis": "Gotowa platforma, na przykład WooCommerce: koszyk, płatności, wysyłka.",
+            "ograniczenie": "Nie mamy jeszcze ukończonego sklepu do pokazania; regulamin przygotowuje prawnik.",
+            "ceny": [
+              {
+                "cena": "sklepy-internetowe-prosty-sklep",
+                "za": "za prosty sklep"
+              }
+            ],
+            "status": "wycena po rozmowie"
+          },
+          {
+            "nazwa": "Automatyzacje i boty czatowe",
+            "opis": "Proces albo bot, który odpowiada z zatwierdzonych treści i oddaje rozmowę człowiekowi.",
+            "ograniczenie": "Bot nie rezerwuje terminów bez połączenia z kalendarzem; koszty narzędzi i modeli są osobne.",
+            "ceny": [
+              {
+                "cena": "automatyzacje-jeden-proces",
+                "za": "za jeden proces"
+              },
+              {
+                "cena": "automatyzacje-bot-czatowy",
+                "za": "za bota czatowego"
+              }
+            ],
+            "status": "wycena po rozmowie"
+          }
+        ]
+      },
+      {
+        "etykieta": "Po starcie i przy zmianach",
+        "podpis": "3 usługi",
+        "uslugi": [
+          {
+            "nazwa": "Naprawa stron",
+            "opis": "Zaczynamy od diagnozy i listy usterek z priorytetami.",
+            "ograniczenie": "jeśli przebudowa będzie tańsza niż poprawki, powiemy to po diagnozie.",
+            "ceny": [],
+            "status": "wycena po rozmowie"
+          },
+          {
+            "nazwa": "Prowadzenie stron",
+            "opis": "Wprowadzamy uzgodnione zmiany treści, aktualizacje i sprawdzamy działanie strony.",
+            "ograniczenie": "to osobny zakres, nie część wykonania strony.",
+            "ceny": [],
+            "status": "wycena po rozmowie"
+          },
+          {
+            "nazwa": "Migracje sklepów",
+            "opis": "Zaczynamy od spisu produktów, klientów i adresów, bo od platformy źródłowej zależy ryzyko.",
+            "ograniczenie": "zakres przeniesienia ustalamy po tym spisie.",
+            "ceny": [],
+            "status": "wycena po rozmowie"
+          }
+        ]
+      },
+      {
+        "etykieta": "Wkrótce",
+        "podpis": "SEO, GEO, analiza reklam",
+        "uslugi": [
+          {
+            "nazwa": "Analiza SEO/GEO, ruchu i reklam",
+            "opis": "Przygotowujemy analizę, w której każda liczba będzie miała źródło i datę, a braki w danych będą nazwane wprost.",
+            "ograniczenie": "pozycji w wynikach nie będziemy obiecywać.",
+            "ceny": [],
+            "status": "wkrótce: usługa jeszcze niedostępna"
+          },
+          {
+            "nazwa": "SEO",
+            "opis": "Usługa jeszcze niedostępna.",
+            "ograniczenie": "",
+            "ceny": [],
+            "status": "wkrótce"
+          },
+          {
+            "nazwa": "GEO",
+            "opis": "Usługa jeszcze niedostępna.",
+            "ograniczenie": "",
+            "ceny": [],
+            "status": "wkrótce"
+          },
+          {
+            "nazwa": "Analiza reklam",
+            "opis": "Usługa jeszcze niedostępna.",
+            "ograniczenie": "",
+            "ceny": [],
+            "status": "wkrótce"
+          }
+        ]
+      }
+    ]
+  }
+}

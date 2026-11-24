@@ -1,0 +1,119 @@
+---
+// W5 Nawigacja (makieta 27, ramka „W5 Nawigacja / Landing (z Pilotażami)”) + pasek postępu przewijania + menu mobilne (398:2122).
+// Zachowanie (zasada każdej makiety): pasek chowa się przy przewijaniu w dół i wraca przy przewijaniu w górę (próg 80 px, token prog/nawigacja-przewiniecie).
+// Pod paskiem fioletowy pasek postępu 0–100%. Gdy pasek schowany, po prawej pojawia się boczny wskaźnik segmentów (WskaznikSegmentow.astro).
+// Przyciski: W1 (linki), W2 (Opisz projekt), W3 (menu < 1024 px), W12 (motyw). Bez JS: linki widoczne, menu i motyw ukryte.
+import Logo from './Logo.astro';
+const menu = [
+  { url: '/strony-internetowe', nazwa: 'Strony internetowe' },
+  { url: '/automatyzacje', nazwa: 'Automatyzacje' },
+  { url: '/#realizacje', nazwa: 'Realizacje' },
+  { url: '/pilotaze', nazwa: 'Pilotaże' },
+];
+const sciezka = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+<header class="pasek" data-pasek>
+  <div class="pasek-wnetrze">
+    <a class="pasek-logo" href="/" aria-label="Forma Kodu, strona główna"><Logo /></a>
+    <nav class="pasek-linki" aria-label="Główna">
+      <ul role="list">
+        {menu.map((m) => <li><a class="t-maly" href={m.url} aria-current={sciezka === m.url ? 'page' : undefined}>{m.nazwa}</a></li>)}
+      </ul>
+    </nav>
+    <div class="pasek-akcje">
+      <button type="button" class="motyw tylko-js" role="switch" aria-checked="false" aria-label="Ciemny motyw" data-motyw>
+        <span class="motyw-slonce" aria-hidden="true"></span><span class="motyw-ksiezyc" aria-hidden="true"></span><span class="motyw-kciuk" aria-hidden="true"></span>
+      </button>
+      <a class="przycisk przycisk--glowny pasek-cta" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">Opisz projekt</a>
+      <button type="button" class="menu-przycisk tylko-js" aria-expanded="false" aria-controls="menu-mobilne" aria-label="Otwórz menu" data-otworz-menu>
+        <svg width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+      </button>
+    </div>
+  </div>
+  <div class="postep" aria-hidden="true"><div class="postep-wypelnienie" data-postep></div></div>
+</header>
+
+<dialog id="menu-mobilne" class="menu-mobilne" aria-label="Menu">
+  <div class="menu-gora">
+    <a href="/" aria-label="Forma Kodu, strona główna"><Logo /></a>
+    <button type="button" class="menu-przycisk" aria-label="Zamknij menu" data-zamknij-menu>
+      <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+    </button>
+  </div>
+  <nav aria-label="Główna (telefon)">
+    <ul role="list" class="menu-lista">
+      {menu.map((m) => <li><a class="t-h4" href={m.url} data-link-menu aria-current={sciezka === m.url ? 'page' : undefined}><span>{m.nazwa}</span><span class="t-etykieta pomocniczy" aria-hidden="true">→</span></a></li>)}
+    </ul>
+  </nav>
+  <a class="przycisk przycisk--akcent przycisk--pelny" href="/kontakt" data-otworz-sheet="sheet-projekt" data-link-menu aria-haspopup="dialog">Opisz projekt</a>
+</dialog>
+
+<style>
+  .pasek {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    background: var(--fk-tlo-powierzchnia); border-bottom: 1px solid var(--fk-obrys);
+    transition: transform var(--fk-czas-standard) var(--fk-krzywa-standard);
+  }
+  :global(html.pasek-schowany) .pasek { transform: translateY(calc(-1 * var(--fk-wys-paska))); }
+  .pasek-wnetrze {
+    height: var(--fk-wys-paska); display: flex; align-items: center; gap: 24px;
+    width: min(100% - 2 * var(--fk-margines), 1200px); margin-inline: auto;
+  }
+  .pasek-logo { flex: none; border-radius: 4px; }
+  .pasek-linki { flex: 1; display: flex; justify-content: center; }
+  .pasek-linki ul { display: flex; gap: 32px; }
+  .pasek-linki a { color: var(--fk-tekst); text-decoration: none; padding: 8px 0; }
+  .pasek-linki a:hover, .pasek-linki a[aria-current='page'] { color: var(--fk-tekst-naglowek); text-decoration: underline; }
+  .pasek-akcje { display: flex; align-items: center; gap: 16px; margin-left: auto; }
+
+  .motyw {
+    position: relative; width: 52px; height: 28px; border-radius: 14px; padding: 0;
+    background: var(--fk-tlo-podniesione); border: 1px solid var(--fk-obrys-kontrolka);
+  }
+  .motyw span { position: absolute; border-radius: 50%; }
+  .motyw-slonce { width: 10px; height: 10px; left: 8px; top: 8px; background: var(--fk-kafel-5-tlo); }
+  .motyw-ksiezyc { width: 10px; height: 10px; right: 8px; top: 8px; background: var(--fk-tekst-pomocniczy); opacity: 0.5; }
+  .motyw-kciuk { width: 22px; height: 22px; left: 2px; top: 2px; background: var(--fk-tlo); transition: transform var(--fk-czas-szybki) var(--fk-krzywa-standard); }
+  .motyw[aria-checked='true'] .motyw-kciuk { transform: translateX(24px); }
+
+  .menu-przycisk {
+    display: none; width: 44px; height: 44px; align-items: center; justify-content: center;
+    border: 1px solid var(--fk-obrys-kontrolka); border-radius: var(--radius-control); background: var(--fk-tlo); color: var(--fk-tekst-naglowek);
+  }
+  .postep { height: 4px; background: var(--fk-obrys); }
+  .postep-wypelnienie { height: 100%; background: var(--fk-grad-przelamanie); transform-origin: 0 50%; transform: scaleX(0); }
+
+  @media (max-width: 1023.98px) {
+    .pasek-wnetrze { height: 61px; gap: 12px; }
+    :global(html.js) .pasek-linki { display: none; }
+    :global(html:not(.js)) .pasek-wnetrze { flex-wrap: wrap; height: auto; padding-block: 8px; }
+    :global(html:not(.js)) .pasek-linki { order: 3; flex-basis: 100%; justify-content: flex-start; }
+    :global(html:not(.js)) .pasek-linki ul { flex-wrap: wrap; gap: 4px 20px; }
+    :global(html.js) .menu-przycisk { display: inline-flex; }
+    .motyw { display: none; }
+    .pasek-cta { min-height: 44px; padding: 10px 16px; }
+  }
+  @media (max-width: 380px) { .pasek-cta { display: none; } }
+  :global(html:not(.js)) .tylko-js { display: none !important; }
+
+  .menu-mobilne {
+    width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: 0 16px 24px;
+    border: 0; background: var(--fk-tlo); color: var(--fk-tekst);
+  }
+  .menu-mobilne[open] { display: flex; flex-direction: column; gap: 24px; }
+  .menu-mobilne::backdrop { background: rgb(14 17 23 / var(--fk-krycie-zaslona)); }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html:not(.bez-ruchu)) .menu-mobilne[open] { animation: menu-wjazd var(--fk-czas-szybki) var(--fk-krzywa-wejscie); }
+  }
+  @keyframes menu-wjazd { from { transform: translateY(-16px); opacity: 0; } }
+  .menu-gora {
+    display: flex; align-items: center; justify-content: space-between; padding: 8px 20px; min-height: 61px;
+    background: var(--fk-tlo-powierzchnia); border-bottom: 1px solid var(--fk-obrys); margin-inline: -16px;
+  }
+  .menu-gora .menu-przycisk { display: inline-flex; }
+  .menu-lista { padding-top: 8px; }
+  .menu-lista a {
+    display: flex; justify-content: space-between; align-items: center; padding: 16px 4px;
+    border-bottom: 1px solid var(--fk-obrys); text-decoration: none;
+  }
+</style>

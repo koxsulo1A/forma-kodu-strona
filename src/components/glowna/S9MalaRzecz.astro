@@ -1,0 +1,45 @@
+---
+// 27 S9 „Zacznij od jednej małej rzeczy” (schody: każdy stopień wyższy od poprzedniego). Przycisk tylko na pierwszym, najmniejszym kroku.
+// Telefon: stopnie jeden pod drugim, pełna szerokość, bez różnicy wysokości.
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s9 baza segment" id="maly-krok" data-segment="S9 Zacznij od jednej rzeczy" aria-labelledby="s9-h">
+  <div class="kontener-waski s9-wnetrze wyciecie">
+    <header class="s9-naglowek">
+      <h2 id="s9-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      <p class="t-h3 naglowkowy">{t.lead}</p>
+    </header>
+    <ol class="schody" role="list">
+      {t.stopnie.map((s: any, i: number) => (
+        <li class="stopien" data-st={i + 1}>
+          <div class="gora">
+            {s.etykieta && <p class="t-etykieta">{s.etykieta}</p>}
+            <h3 class="t-h4">{s.tytul}</h3>
+          </div>
+          <div class="dol">
+            <p class="t-maly">{s.opis}</p>
+            {i === 0 && <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta}</a>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .s9 { padding-block: clamp(32px, 4vw, 48px); }
+  .s9-wnetrze { display: grid; gap: 48px; padding: clamp(40px, 5vw, 77px) clamp(20px, 3vw, 48px) 38px; border-radius: var(--radius-24); width: min(100% - 2 * var(--fk-margines), 1392px); }
+  .s9-naglowek { display: grid; gap: 20px; max-width: 1200px; margin-inline: auto; width: 100%; }
+  .schody { display: grid; grid-template-columns: 272fr 212fr 212fr 212fr 228fr; gap: 16px; align-items: end; max-width: 1200px; margin-inline: auto; width: 100%; }
+  .stopien { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; padding: 28px; border-radius: var(--radius-card); background: var(--fk-grad-s9); color: var(--fk-tekst-na-akcencie); }
+  .stopien[data-st='1'] { min-height: 300px; } .stopien[data-st='2'] { min-height: 332px; } .stopien[data-st='3'] { min-height: 364px; }
+  .stopien[data-st='4'] { min-height: 396px; } .stopien[data-st='5'] { min-height: 428px; }
+  .gora { display: grid; gap: 8px; }
+  .dol { display: grid; gap: 20px; justify-items: start; }
+  @media (max-width: 1023.98px) {
+    .schody { grid-template-columns: 1fr; gap: 12px; }
+    .stopien[data-st] { min-height: 0; padding: 24px; }
+    .s9-wnetrze { border: 0; padding-inline: 0; }
+  }
+</style>

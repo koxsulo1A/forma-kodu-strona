@@ -69,42 +69,90 @@ const strona = (id: string, label: string, schema: Record<string, any>) =>
 
 // ---------- strony ----------
 export const strony = {
+  // Strona 27 (główna): pola odwzorowują makietę 27 (Figma tumyVJt49a89k7CUq7xTTx, ramka 100:30), segment po segmencie.
+  // Zmiany względem pola-cms-27-29.md (port makiety 24.11): S2 mozaika 1+4+pasek, S4 osiem usług w układzie bento, S6 oś czasu z makiety
+  // (zamiast benefitów z realizacji: wybrane realizacje nie mają jeszcze benefitów), S7 trzy szczegóły kroku, S8 pakiety z listami, S12 pasek osoby i misji.
   'strona-glowna': strona('glowna', 'Strona 27: główna', {
     s1_hero: seg('S1 Hero', {
-      h1: t('H1 = pytanie klienta', 80, true), lead: a('Lead', 200), cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi', 24),
+      h1: t('H1 = obietnica / pytanie klienta', 80, true), lead: a('Lead', 220), cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi (do oferty)', 24),
+      pas_naglowek: t('Pas zakresu: nagłówek', 40),
       pas_zakresu: lista('Pas zakresu', fields.object({ tytul: t('Tytuł', 40, true), opis: a('Opis', 90) }), 3, 5, 'tytul'),
     }),
-    s2_dlaczego: seg('S2 Dlaczego my', { ...wspolne(), kafle: lista('Kafle', tytulOpis(50, 160), 2, 4, 'tytul') }),
-    s3_opinie: seg('S3 Opinie (widżety z „Ustawienia: opinie”, po zgodzie na treści zewnętrzne; przed zgodą linki do profili)', wspolne()),
-    s4_oferta: seg('S4 Oferta', {
-      ...wspolne(),
-      uslugi: lista('Usługi', fields.object({
-        nazwa: t('Nazwa (H4)', 40, true), opis: a('Opis', 140), cena: cenaRel('Cena z cennika (puste = „wycena po rozmowie”)'),
-        etykieta_ceny: t('Etykieta ceny', 30),
+    s2_dlaczego: seg('S2 Dlaczego my (mozaika)', {
+      naglowek: t('Nagłówek H2', 90, true), lead: a('Lead', 220),
+      wyrozniony: fields.object({ tytul: t('Tytuł', 50, true), opis: a('Opis', 200), pytanie_wstep: t('Nad pytaniem', 20), pytanie: t('Pytanie klienta', 30), pytanie_podpis: t('Pod pytaniem', 40) }, { label: 'Kafel wyróżniony (niebieski, z pytaniem klienta)' }),
+      kafle: lista('Kafle (kolejno: biały, zieleń, khaki, fiolet)', tytulOpis(50, 200), 4, 4, 'tytul'),
+      pasek: fields.object({ tytul: t('Tytuł', 60, true), opis: a('Opis', 160) }, { label: 'Pasek pod mozaiką' }),
+    }),
+    s3_opinie: seg('S3 Opinie (widżety z „Ustawienia: opinie”, po zgodzie na treści zewnętrzne; brak widżetów i profili = segment ukryty)', { naglowek: t('Nagłówek H2', 70, true) }),
+    s4_oferta: seg('S4 Oferta (bento: 2 duże, pas z grupami, 2 duże)', {
+      naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 160), akcja_tekst: a('Tekst przy przycisku', 120), cta: t('Przycisk', 24, true),
+      grupa_opieka: t('Nazwa grupy usług 3–4', 30), grupa_sklepy: t('Nazwa grupy usług 5–6', 30),
+      uslugi: lista('Usługi (kolejność = miejsce w siatce: 1 strony, 2 WordPress, 3–4 opieka, 5–6 sklepy, 7 automatyzacje, 8 analiza)', fields.object({
+        nazwa: t('Nazwa (H4)', 40, true), pytanie: t('Pytanie klienta (nagłówek kafla)', 100, true), opis: a('Opis', 180),
+        podpozycje: lista('Podpozycje (pigułki)', t('Podpozycja', 30), 0, 3),
         status: wybor('Status (pole danych, niewidoczne)', ['dostępne', 'na zapytanie', 'wkrótce']),
+      }), 8, 8, 'nazwa'),
+    }),
+    s5_realizacje: seg('S5 Realizacje', { naglowek: t('Nagłówek H2', 70, true), realizacje: realizacjeWybor(1, 6), link_wszystkie: t('Link do wszystkich realizacji', 60) }),
+    s6_benefity: seg('S6 Benefity (pozioma oś czasu)', {
+      naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 160),
+      etapy: lista('Etapy osi', fields.object({
+        nazwa: t('Etap', 24, true),
+        bloki: lista('Bloki', fields.object({
+          tytul: t('Tytuł (H4)', 60, true), wyroznienie: t('Drugi nagłówek (opcjonalnie)', 60), opis: a('Opis', 220),
+          kolor: wybor('Kolor kafla', ['bez tła', 'niebieski', 'zieleń', 'fiolet', 'khaki', 'satyna', 'miejsce do uzupełnienia']),
+        }), 1, 3, 'tytul'),
       }), 3, 6, 'nazwa'),
     }),
-    s5_realizacje: seg('S5 Realizacje', { ...wspolne(), realizacje: realizacjeWybor(1, 6) }),
-    s6_benefity: seg('S6 Benefity (automatycznie: pole „Benefity” realizacji wybranych w S5; tu tylko nagłówek i limit)', { ...wspolne(), maks: fields.integer({ label: 'Ile benefitów pokazać (4–9)', defaultValue: 6, validation: { min: 4, max: 9 } }) }),
-    s7_proces: proces(),
-    s8_cennik: kalkulator(),
-    s9_mala_rzecz: seg('S9 Mała rzecz', { ...wspolne(), stopnie: lista('Stopnie', tytulOpis(40, 100), 3, 5, 'tytul') }),
-    s10_technologie: seg('S10 Technologie', {
-      ...wspolne(),
+    s7_proces: seg('S7 Proces (pionowa oś, krok 1 rozwinięty)', {
+      naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 200),
+      etapy: lista('Etapy', fields.object({ tytul: t('Tytuł', 40, true), my_robimy: a('My robimy', 120), ty_robisz: a('Ty robisz', 120), ty_dostajesz: a('Ty dostajesz', 120) }), 6, 6, 'tytul'),
+      efekt: fields.object({ tytul: t('Tytuł', 40, true), opis: a('Opis', 160), cta: t('Przycisk', 24) }, { label: 'Krok końcowy (efekt)' }),
+    }),
+    s8_cennik: seg('S8 Cennik: pakiety i koszty stałe', {
+      naglowek: t('Nagłówek H2', 70, true),
       pakiety: lista('Pakiety', fields.object({
-        nazwa: t('Nazwa', 40, true), liczba_warstw: fields.integer({ label: 'Liczba warstw' }), opis: a('Opis', 160),
-        warstwy: lista('Warstwy', fields.object({ narzedzie: t('Narzędzie', 30, true), rola: t('Rola', 20), ograniczenie: a('Czego nie robi (wymagane)', 120, true) }), 1, 8, 'narzedzie'),
+        etykieta: t('Etykieta w pasku', 40, true), nazwa: t('Nazwa (H3)', 50, true), opis: a('Opis', 140),
+        cena: cenaRel(), podpis_ceny: a('Podpis pod ceną (przy pustej cenie)', 120),
+        polecany: fields.checkbox({ label: 'Polecany pakiet', defaultValue: false }),
+        zawiera: lista('Zawiera', t('Pozycja', 60), 1, 6), nie_zawiera: lista('Nie zawiera', t('Pozycja', 60), 0, 6),
+        cta: t('Przycisk', 30),
+      }), 3, 3, 'nazwa'),
+      koszty_naglowek: t('Nagłówek kosztów stałych', 60),
+      koszty_stale: lista('Koszty stałe', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Zakres kwot', 40), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 0, 10, 'nazwa'),
+      zrodla: rt('Źródła (opis)', 400),
+    }),
+    s9_mala_rzecz: seg('S9 Zacznij od jednej małej rzeczy (schody)', {
+      naglowek: t('Nagłówek H2', 70, true), lead: t('Podtytuł (H3)', 100), cta: t('Przycisk na pierwszym stopniu', 24),
+      stopnie: lista('Stopnie (od najmniejszego)', fields.object({ etykieta: t('Etykieta', 24), tytul: t('Tytuł', 50, true), opis: a('Opis', 120) }), 3, 5, 'tytul'),
+    }),
+    s10_technologie: seg('S10 Technologie (stosy kart)', {
+      etykieta: t('Etykieta', 24), naglowek: t('Nagłówek H2', 70, true), podpis: a('Podpis pod siatką', 160),
+      pakiety: lista('Pakiety', fields.object({
+        nazwa: t('Nazwa', 40, true), znacznik: t('Znacznik (np. Polecany pakiet)', 24), opis: a('Opis', 160),
+        warstwy: lista('Warstwy (od spodu stosu; ostatnia = karta z wierzchu)', fields.object({ narzedzie: t('Narzędzie', 30, true), rola: t('Rola', 20), ograniczenie: a('Czego nie robi (wymagane)', 120, true) }), 2, 8, 'narzedzie'),
       }), 3, 3, 'nazwa'),
     }),
     s11_a_co_jesli: faqInfo('S11 A co jeśli…?'),
     s12_kim_jestesmy: seg('S12 Kim jesteśmy (prawdziwe osoby, zasada 12)', {
-      ...wspolne(), opis: rt('Opis', 600, true),
-      osoby: lista('Osoby', fields.object({ imie: t('Imię i nazwisko', 40, true), rola: t('Rola', 40), zdjecie: obraz('Zdjęcie (puste = inicjały)') }), 1, 4, 'imie'),
+      osoby: lista('Osoby', fields.object({ imie: t('Imię i nazwisko', 40, true), rola: t('Rola', 40), zdjecie: obraz('Zdjęcie (portret 4:5; puste = miejsce na zdjęcie)') }), 1, 4, 'imie'),
+      kto_opis: a('Kto wykonuje pracę', 200), misja: a('Misja (cytat)', 200),
+      naglowek: t('Nagłówek H2', 80, true), lead: a('Lead', 200), cel: a('Cel', 200),
+      zyski_naglowek: t('Nagłówek „Co zyskujesz”', 60),
+      wyrozniony: fields.object({ tytul: t('Tytuł', 60, true), opis: a('Opis', 160), cytat: t('Cytat', 60) }, { label: 'Benefit wyróżniony' }),
+      benefity: lista('Benefity 2×2', tytulOpis(50, 160), 4, 4, 'tytul'),
+      ograniczenia: tytulOpis(50, 160),
     }),
     s13_szczegolowa_oferta: seg('S13 Szczegółowa oferta (zakładki)', {
+      etykieta: t('Etykieta', 24), naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 160), cta_tekst: t('Tekst przy przycisku', 40), cta: t('Przycisk', 24),
       zakladki: lista('Zakładki', fields.object({
-        etykieta: t('Etykieta (telefon pokazuje tylko ją)', 14, true), podpis: t('Podpis', 30),
-        uslugi: lista('Usługi', fields.object({ nazwa: t('Nazwa', 40, true), opis: a('Opis', 160), ograniczenie: a('Ograniczenie', 120), ceny: fields.multiRelationship({ label: 'Ceny z cennika (tekst składa się sam)', collection: 'ceny' }) }), 1, 8, 'nazwa'),
+        etykieta: t('Etykieta (telefon pokazuje tylko ją)', 30, true), podpis: t('Podpis', 30),
+        uslugi: lista('Usługi (pierwsza = karta główna)', fields.object({
+          nazwa: t('Nazwa', 40, true), opis: a('Opis', 160), ograniczenie: a('Ograniczenie', 140),
+          ceny: lista('Ceny z cennika', fields.object({ cena: fields.relationship({ label: 'Cena', collection: 'ceny' }), za: t('Za co (np. za landing)', 40) }), 0, 3),
+          status: t('Tekst, gdy brak ceny (np. wycena po rozmowie, wkrótce)', 40),
+        }), 1, 6, 'nazwa'),
       }), 3, 3, 'etykieta'),
     }),
     // S14 Stopka: dane z „Dane firmy” (jedno źródło), bez pól tutaj.

@@ -3,7 +3,7 @@
 // Jeden graf (@graph) na stronę, stabilne @id, żeby wyszukiwarki i AI łączyły wszystko w jeden podmiot (zasada stała 11).
 import { getEntry, getCollection } from 'astro:content';
 
-type Strona = 'glowna' | 'strony-internetowe' | 'automatyzacje' | 'analiza-seo-geo' | 'realizacje' | 'pilotaze' | 'polityka-prywatnosci' | 'dostepnosc';
+type Strona = 'glowna' | 'strony-internetowe' | 'automatyzacje' | 'analiza-seo-geo' | 'realizacje' | 'pilotaze' | 'polityka-prywatnosci' | 'dostepnosc' | 'kontakt';
 
 export type Podstrona = {
   // Strona generowana z wpisu kolekcji (np. realizacja 31b): nadpisuje tytuł, opis, obraz i datę z src/content/seo/<strona>.json.

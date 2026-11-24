@@ -105,7 +105,7 @@ const realizacje = defineCollection({
       opis: z.string().max(200),
       technologie: z.array(z.string().max(30)).default([]),
       miasto: z.string().max(40).optional(),
-      data: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$/, 'Data RRRR-MM'),
+      data: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$|^\[RRRR-MM\]$/, 'Data RRRR-MM (zaślepka [RRRR-MM] blokuje publikację)'),
       link: z.string().url().optional(),
       kategoria: z.enum(['Strony', 'Automatyzacje', 'Aplikacje']),
       typ: z.enum(['klient', 'projekt własny', 'przykład układu']), // zasada stała 12

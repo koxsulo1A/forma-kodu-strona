@@ -1,0 +1,59 @@
+---
+// 27 S6 Benefity (wariant B: pozioma oś czasu). Etapy i bloki z panelu; kolor bloku wybierany w panelu.
+// „Miejsce do uzupełnienia” = pusty blok z obrysem (zaślepka widoczna na stronie, blokuje publikację jak inne […]).
+// Telefon: oś czasu staje się pionowa (etap pod etapem), bloki pełnej szerokości.
+interface Props { t: any }
+const { t } = Astro.props;
+const klasa: Record<string, string> = {
+  'bez tła': 'bez-tla', niebieski: 'niebieski', 'zieleń': 'zielen', fiolet: 'fiolet', khaki: 'khaki', satyna: 'satyna', 'miejsce do uzupełnienia': 'miejsce',
+};
+---
+<section class="s6 baza segment" id="benefity" data-segment="S6 Benefity" aria-labelledby="s6-h">
+  <div class="kontener-waski s6-wnetrze">
+    <header class="s6-naglowek">
+      <h2 id="s6-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l">{t.lead}</p>}
+    </header>
+    <ol class="os" role="list">
+      {t.etapy.map((e: any, i: number) => (
+        <li class="etap">
+          <p class:list={['znacznik-etapu', { ostatni: i === t.etapy.length - 1 }]}><i aria-hidden="true"></i><span class="t-etykieta naglowkowy">{e.nazwa}</span></p>
+          {e.bloki.map((b: any) => (
+            <div class:list={['blok', klasa[b.kolor] ?? 'bez-tla']}>
+              <h3 class="t-h4">{b.tytul}</h3>
+              {b.wyroznienie && <p class="t-h4">{b.wyroznienie}</p>}
+              <p class="t-maly">{b.opis}</p>
+            </div>
+          ))}
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .s6 { padding-block: clamp(48px, 7vw, 102px) clamp(48px, 6vw, 86px); }
+  .s6-wnetrze { display: grid; gap: clamp(32px, 4.5vw, 64px); width: min(100% - 2 * var(--fk-margines), 1280px); }
+  .s6-naglowek { display: grid; gap: 16px; max-width: 720px; }
+  .os { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 24px; align-items: start; }
+  .os::before { content: ''; position: absolute; left: 0; right: 0; top: 7px; height: 2px; background: var(--fk-obrys); }
+  .etap { position: relative; display: grid; gap: 24px; }
+  .znacznik-etapu { display: flex; align-items: center; gap: 12px; }
+  .znacznik-etapu i { width: 14px; height: 14px; border-radius: 50%; background: var(--fk-tlo); border: 2px solid var(--fk-akcent); flex: none; }
+  .znacznik-etapu.ostatni i { background: var(--fk-akcent); }
+  .blok { border-radius: var(--radius-card); padding: 20px 20px 24px; display: grid; gap: 12px; }
+  .bez-tla { padding: 4px 0 24px; }
+  .niebieski { background: var(--fk-grad-kafel-2); color: var(--fk-kafel-2-tekst); border: 1px solid var(--fk-kafel-2-obrys); }
+  .zielen { background: var(--fk-grad-kafel-1); color: var(--fk-kafel-1-tekst); border: 1px solid var(--fk-kafel-1-obrys); }
+  .fiolet { background: var(--fk-grad-kafel-4); color: var(--fk-kafel-4-tekst); border: 1px solid var(--fk-kafel-4-obrys); }
+  .khaki { background: var(--fk-grad-kafel-5); color: var(--fk-kafel-5-tekst); border: 1px solid var(--fk-kafel-5-obrys); }
+  .satyna { background: var(--fk-grad-kafel-6); color: var(--fk-kafel-6-tekst); border: 1px solid var(--fk-kafel-6-obrys); }
+  .miejsce { border: 1px solid var(--fk-obrys-kontrolka); padding: 20px; }
+  .miejsce .t-maly { color: var(--fk-tekst-pomocniczy); }
+  @media (max-width: 1023.98px) {
+    .os { grid-auto-flow: row; gap: 32px; padding-left: 28px; }
+    .os::before { left: 6px; right: auto; top: 7px; bottom: 0; width: 2px; height: auto; }
+    .znacznik-etapu { margin-left: -28px; }
+    .etap { gap: 16px; }
+  }
+</style>

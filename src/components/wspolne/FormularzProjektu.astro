@@ -1,0 +1,62 @@
+---
+// Formularz „Opisz projekt” (R19, 398:330): Imię, Adres e-mail, Krótki opis projektu, Wyślij. Stany: domyślny, błąd pola, wysyłanie, błąd wysyłki, sukces.
+// Prawo: pod formularzem klauzula informacyjna BEZ pola zgody (decyzja 1A; makieta ma checkbox RODO z zaślepką, kod idzie za decyzją).
+// Wysyłka: POST /api/kontakt (Worker Cloudflare → Brevo, moduł src/lib/wysylka.ts, następny krok). Bez JS: zwykły POST formularza.
+import KlauzulaInformacyjna from '../prawo/KlauzulaInformacyjna.astro';
+import { getEntry } from 'astro:content';
+interface Props { id: string; poziom?: 'h2' | 'h3' }
+const { id, poziom = 'h3' } = Astro.props;
+const H = poziom;
+const firma = (await getEntry('firma', 'firma'))!.data;
+---
+<form class="formularz" action="/api/kontakt" method="post" novalidate data-formularz aria-describedby={`${id}-klauzula`}>
+  <div class="pole">
+    <label class="t-maly naglowkowy" for={`${id}-imie`}>Imię</label>
+    <input id={`${id}-imie`} name="imie" type="text" autocomplete="given-name" placeholder="np. Anna" required maxlength="80" />
+    <p class="pole-blad t-maly" id={`${id}-imie-blad`} hidden>Wpisz imię, żebyśmy wiedzieli, jak się zwracać.</p>
+  </div>
+  <div class="pole">
+    <label class="t-maly naglowkowy" for={`${id}-email`}>Adres e-mail</label>
+    <input id={`${id}-email`} name="email" type="email" autocomplete="email" placeholder="nazwa@firma.pl" required maxlength="120" aria-describedby={`${id}-email-pomoc`} />
+    <p class="t-maly pomocniczy" id={`${id}-email-pomoc`}>Odpowiemy na ten adres.</p>
+    <p class="pole-blad t-maly" id={`${id}-email-blad`} hidden>Wpisz adres w formacie nazwa@firma.pl.</p>
+  </div>
+  <div class="pole">
+    <label class="t-maly naglowkowy" for={`${id}-opis`}>Krótki opis projektu</label>
+    <textarea id={`${id}-opis`} name="opis" rows="3" placeholder="np. strona z rezerwacją wizyt dla gabinetu" required maxlength="2000"></textarea>
+    <p class="pole-blad t-maly" id={`${id}-opis-blad`} hidden>Napisz choć jedno zdanie o projekcie.</p>
+  </div>
+  <!-- Pułapka na boty: pole niewidoczne dla ludzi -->
+  <div class="sr-only" aria-hidden="true"><label for={`${id}-strona-www`}>Nie wypełniaj</label> <input id={`${id}-strona-www`} name="strona_www" type="text" tabindex="-1" autocomplete="off" /></div>
+  <div class="t-maly klauzula-wrap"><KlauzulaInformacyjna id={`${id}-klauzula`} /></div>
+  <p class="komunikat-blad t-maly" role="alert" data-blad-wysylki hidden>
+    Nie udało się wysłać. Twoje dane zostały w formularzu. Spróbuj ponownie albo napisz na <a href={`mailto:${firma.email}`}>{firma.email}</a>.
+  </p>
+  <div><button type="submit" class="przycisk przycisk--akcent" data-wyslij>Wyślij</button></div>
+</form>
+<div class="sukces" data-sukces hidden>
+  <div class="sukces-ikona" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+  </div>
+  <H class="t-h3" tabindex="-1" data-sukces-naglowek>Wiadomość dotarła</H>
+  <p class="t-tresc">Odpowiemy na adres <strong data-sukces-email></strong>. Jeśli nie widzisz odpowiedzi, sprawdź folder spam.</p>
+</div>
+
+<style>
+  .formularz { display: grid; gap: 24px; }
+  .pole { display: grid; gap: 8px; }
+  .pole input, .pole textarea {
+    width: 100%; padding: 14px 16px; border-radius: var(--radius-control); border: 1px solid var(--fk-obrys-kontrolka);
+    background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); font-size: var(--fk-font-tresc);
+  }
+  .pole textarea { resize: vertical; min-height: 56px; }
+  .pole input::placeholder, .pole textarea::placeholder { color: var(--fk-tekst-pomocniczy); }
+  .pole input:focus-visible, .pole textarea:focus-visible { outline: none; border: 2px solid var(--fk-akcent); padding: 13px 15px; }
+  .pole [aria-invalid='true'] { border: 2px solid var(--fk-blad); padding: 13px 15px; }
+  .pole-blad { color: var(--fk-blad); }
+  .klauzula-wrap { color: var(--fk-tekst); }
+  .komunikat-blad { padding: 10px 12px; border-radius: 6px; border-left: 3px solid var(--fk-blad); background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst); }
+  .formularz[aria-busy='true'] input, .formularz[aria-busy='true'] textarea { background: var(--fk-wylaczone-tlo); color: var(--fk-wylaczone-tekst); border-color: var(--fk-obrys); }
+  .sukces { display: grid; gap: 16px; justify-items: start; }
+  .sukces-ikona { width: 48px; height: 48px; border-radius: 10px; display: grid; place-items: center; background: var(--fk-tlo-podniesione); color: var(--fk-sukces); }
+</style>

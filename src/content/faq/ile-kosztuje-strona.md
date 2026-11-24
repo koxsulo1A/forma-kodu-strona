@@ -1,6 +1,6 @@
 ---
 pytanie: "Ile kosztuje strona internetowa dla firmy?"
-strony: ["glowna", "strony-internetowe"]
+strony: ["strony-internetowe"]
 kolejnosc: 1
 aktualizacja: "[data]"
 ---

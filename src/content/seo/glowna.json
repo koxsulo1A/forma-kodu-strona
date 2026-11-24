@@ -11,6 +11,7 @@
   "schema": [
     "WebSite",
     "Organization",
-    "ProfessionalService"
+    "ProfessionalService",
+    "FAQPage"
   ]
 }

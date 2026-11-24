@@ -18,7 +18,7 @@ interface Props { r: CollectionEntry<'realizacje'>; wszystkie: CollectionEntry<'
 const { r, wszystkie } = Astro.props;
 const d = r.data;
 const { Content } = await render(r);
-const miesiac = new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(new Date(`${d.data}-01`));
+const miesiac = /^\d{4}-\d{2}$/.test(d.data) ? new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(new Date(`${d.data}-01`)) : d.data; // zaślepka [RRRR-MM] zostaje widoczna
 // S6: 3 najnowsze z tej samej kategorii, bez bieżącej i bez „przykładu układu” (karta bez podstrony też może się pokazać).
 const podobne = wszystkie
   .filter((x) => x.id !== r.id && x.data.kategoria === d.kategoria)

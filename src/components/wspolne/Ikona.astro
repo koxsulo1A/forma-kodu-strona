@@ -1,0 +1,12 @@
+---
+// Ikony z makiety (Phosphor Regular, eksport z Figmy 27). Kolor = currentColor, dekoracja (aria-hidden).
+interface Props { nazwa: 'caret' | 'plus' | 'strzalka'; rozmiar?: number; class?: string }
+const { nazwa, rozmiar, class: klasa } = Astro.props;
+const sciezki = {
+  caret: { vb: 16, d: 'M13.354 6.354l-5 5a.5.5 0 0 1-.708 0l-5-5a.5.5 0 1 1 .708-.708L8 10.293l4.646-4.647a.5.5 0 0 1 .708.708Z' },
+  plus: { vb: 18, d: 'M15.75 9a.56.56 0 0 1-.563.563H9.563v5.624a.563.563 0 0 1-1.126 0V9.563H2.813a.563.563 0 0 1 0-1.126h5.624V2.813a.563.563 0 0 1 1.126 0v5.624h5.624A.56.56 0 0 1 15.75 9Z' },
+  strzalka: { vb: 20, d: 'M14.192 10.442l-6.25 6.25a.625.625 0 1 1-.884-.884L12.866 10 7.058 4.192a.625.625 0 1 1 .884-.884l6.25 6.25a.625.625 0 0 1 0 .884Z' },
+}[nazwa];
+const r = rozmiar ?? sciezki.vb;
+---
+<svg class={klasa} width={r} height={r} viewBox={`0 0 ${sciezki.vb} ${sciezki.vb}`} fill="currentColor" aria-hidden="true" focusable="false"><path d={sciezki.d} /></svg>

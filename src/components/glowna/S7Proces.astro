@@ -1,0 +1,74 @@
+---
+// 27 S7 Proces (wariant G: pionowa oś z węzłami). Krok 1 rozwinięty (My robimy / Ty robisz / Ty dostajesz),
+// kroki 2–5 zwinięte do „Ty robisz”, krok 6 w kolorze przełamania, krok 7 „Start” z przyciskiem (otwiera sheet „Opisz projekt”).
+// Puste pola „my_robimy”/„ty_dostajesz” w panelu = kolumna się nie pokazuje (bez wymyślania treści).
+interface Props { t: any }
+const { t } = Astro.props;
+const n = t.etapy.length;
+---
+<section class="s7 baza segment" id="proces" data-segment="S7 Proces" aria-labelledby="s7-h">
+  <div class="kontener s7-wnetrze">
+    <header class="s7-naglowek">
+      <h2 id="s7-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      <p class="t-tresc-l">{t.lead}</p>
+    </header>
+    <ol class="os" role="list">
+      {t.etapy.map((e: any, i: number) => {
+        const szczegoly = [
+          ['My robimy', e.my_robimy],
+          ['Ty robisz', e.ty_robisz],
+          ['Ty dostajesz', e.ty_dostajesz],
+        ].filter(([, v]) => v);
+        const pierwszy = i === 0;
+        const ostatni = i === n - 1;
+        return (
+          <li class:list={['krok', { rozwiniety: pierwszy, przelamanie: ostatni }]}>
+            <span class="wezel t-h4" aria-hidden="true">{i + 1}</span>
+            <div class="tresc">
+              <h3 class="t-h4"><span class="sr-only">Etap {i + 1}: </span>{e.tytul}</h3>
+              <dl class="szczegoly">
+                {szczegoly.map(([k, v]) => <div><dt class="t-maly-mocny">{k}</dt><dd class="t-maly">{v}</dd></div>)}
+              </dl>
+            </div>
+          </li>
+        );
+      })}
+      <li class="krok start">
+        <span class="wezel" aria-hidden="true"></span>
+        <div class="tresc">
+          <h3 class="t-h4 naglowkowy">{t.efekt.tytul}</h3>
+          <p class="t-tresc">{t.efekt.opis}</p>
+          <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.efekt.cta}</a>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .s7 { padding-block: clamp(48px, 6.5vw, 90px) clamp(48px, 5.5vw, 77px); }
+  .s7-wnetrze { display: grid; gap: clamp(32px, 4.5vw, 64px); }
+  .s7-naglowek { display: grid; gap: 16px; max-width: 760px; }
+  .os { position: relative; display: grid; gap: 12px; }
+  .os::before { content: ''; position: absolute; left: 27px; top: 28px; bottom: 120px; width: 2px; background: var(--fk-obrys); }
+  .krok { position: relative; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 24px; align-items: start; }
+  .wezel { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-tlo); border: 2px solid var(--fk-obrys-kontrolka); color: var(--fk-tekst-pomocniczy); }
+  .tresc { display: flex; align-items: center; gap: 32px; padding: 16px 28px; border-radius: var(--radius-card); background: var(--fk-tlo); border: 1px solid var(--fk-obrys); color: var(--fk-tekst); min-height: 80px; }
+  .tresc h3 { color: var(--fk-tekst-naglowek); min-width: 180px; }
+  .szczegoly { display: flex; gap: 32px; flex: 1; }
+  .szczegoly div { display: grid; gap: 4px; flex: 1; }
+  .szczegoly dt { color: var(--fk-tekst-pomocniczy); }
+  .rozwiniety .wezel { background: var(--fk-sukces-jasne-tlo); border: 4px solid var(--fk-kafel-1-tlo); color: var(--fk-sukces-jasne-tekst); }
+  .rozwiniety .tresc { display: grid; gap: 20px; padding: 24px 28px; background: var(--fk-tlo-powierzchnia); border-color: var(--fk-akcent); }
+  .przelamanie .tresc { background: var(--fk-przelamanie); border-color: var(--fk-przelamanie); color: var(--fk-przelamanie-tekst); }
+  .przelamanie .tresc h3, .przelamanie dt { color: var(--fk-przelamanie-tekst); }
+  .start .wezel { background: var(--fk-krok-koncowy); border: 0; }
+  .start .tresc { display: grid; justify-items: start; gap: 16px; padding: 24px 28px; background: var(--fk-tlo-powierzchnia); border-color: var(--fk-krok-koncowy); }
+  @media (max-width: 1023.98px) {
+    .krok { grid-template-columns: 40px minmax(0, 1fr); gap: 12px; }
+    .wezel { width: 40px; height: 40px; }
+    .os::before { left: 19px; top: 20px; }
+    .tresc, .rozwiniety .tresc { display: grid; gap: 12px; padding: 16px 20px; }
+    .szczegoly { display: grid; gap: 12px; }
+  }
+</style>
