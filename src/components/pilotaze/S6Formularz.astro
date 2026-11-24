@@ -29,9 +29,9 @@ const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,
             <p class="t-maly naglowkowy etykieta-pola" id="p-rodzaj-tytul">Czego potrzebujesz? <span class="t-etykieta akcentowy">wymagane</span></p>
             <div role="radiogroup" aria-labelledby="p-rodzaj-tytul" class="grupy">
               <p class="t-etykieta pomocniczy">Strony</p>
-              <div class="chipsy">{t.opcje_strony.map((o: string, i: number) => <label class="chip t-maly"><input type="radio" name="rodzaj" value={o} id={i === 0 ? 'p-rodzaj' : undefined} required={i === 0} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>
+              <div class="chipsy">{t.opcje_strony.map((o: string, i: number) => <label class="chip t-maly" for={i === 0 ? 'p-rodzaj' : `p-rodzaj-s${i}`}><input type="radio" name="rodzaj" value={o} id={i === 0 ? 'p-rodzaj' : `p-rodzaj-s${i}`} required={i === 0} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>
               <p class="t-etykieta pomocniczy">Pozostałe z naszej oferty</p>
-              <div class="chipsy">{t.opcje_pozostale.map((o: string) => <label class="chip t-maly"><input type="radio" name="rodzaj" value={o} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>
+              <div class="chipsy">{t.opcje_pozostale.map((o: string, i: number) => <label class="chip t-maly" for={`p-rodzaj-p${i}`}><input type="radio" name="rodzaj" value={o} id={`p-rodzaj-p${i}`} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>
             </div>
             <p class="pole-blad t-maly" id="p-rodzaj-blad" hidden>Wybierz jedną opcję. Jeśli nie wiesz, zaznacz „Nie wiem”.</p>
           </fieldset>
@@ -45,7 +45,7 @@ const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,
             {[['technologie', 'Technologia', t.podpowiedzi_technologie, 'Dopisz własną technologię'], ['wymagania', 'Wymagania', t.podpowiedzi_wymagania, 'Dopisz własne wymaganie']].map(([nazwa, tytul, opcje, dopisz]: any) => (
               <fieldset class="pole">
                 <legend class="t-maly naglowkowy">{tytul} <span class="t-etykieta pomocniczy">opcjonalnie</span></legend>
-                {opcje.length > 0 && <div class="chipsy">{opcje.map((o: string) => <label class="chip t-maly"><input type="checkbox" name={nazwa} value={o} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>}
+                {opcje.length > 0 && <div class="chipsy">{opcje.map((o: string, i: number) => <label class="chip t-maly" for={`p-${nazwa}-${i}`}><input type="checkbox" name={nazwa} value={o} id={`p-${nazwa}-${i}`} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>}
                 <label class="sr-only" for={`p-${nazwa}-inne`}>{dopisz}</label>
                 <input id={`p-${nazwa}-inne`} name={`${nazwa}_inne`} type="text" maxlength="200" placeholder={`${dopisz} (po przecinku)`} />
               </fieldset>
@@ -73,14 +73,14 @@ const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,
             <fieldset class="pole">
               <legend class="t-maly naglowkowy">Jak wolisz, żebyśmy się odezwali? <span class="t-etykieta akcentowy">wymagane</span></legend>
               <div class="radia">
-                <label class="t-maly"><input type="radio" name="kontakt" value="e-mail" id="p-kontakt" required checked /> E-mailem</label>
-                <label class="t-maly"><input type="radio" name="kontakt" value="telefon" id="p-kontakt-tel" /> Telefonicznie</label>
+                <label class="t-maly" for="p-kontakt"><input type="radio" name="kontakt" value="e-mail" id="p-kontakt" required checked /> E-mailem</label>
+                <label class="t-maly" for="p-kontakt-tel"><input type="radio" name="kontakt" value="telefon" id="p-kontakt-tel" /> Telefonicznie</label>
               </div>
             </fieldset>
             <fieldset class="pole godziny">
               <legend class="t-maly naglowkowy">W jakich godzinach możemy zadzwonić?</legend>
               <p class="t-maly pomocniczy">Możesz zaznaczyć kilka przedziałów.</p>
-              <div class="chipsy">{t.godziny.map((g: string) => <label class="chip t-maly"><input type="checkbox" name="godziny" value={g} /><Ikona nazwa="check" rozmiar={12} class="znak" />{g}</label>)}</div>
+              <div class="chipsy">{t.godziny.map((g: string, i: number) => <label class="chip t-maly" for={`p-godziny-${i}`}><input type="checkbox" name="godziny" value={g} id={`p-godziny-${i}`} /><Ikona nazwa="check" rozmiar={12} class="znak" />{g}</label>)}</div>
             </fieldset>
           </fieldset>
 
