@@ -2,8 +2,8 @@
 // Formularz „Powiadom mnie” (usługi „wkrótce”: 29 S3, 30 S8, 32): e-mail + osobna, niezaznaczona zgoda (ZgodaMarketingowa, decyzja 6B).
 // Wysyłka: POST /api/powiadom (Worker Cloudflare → Brevo, moduł src/lib/wysylka.ts). Te same stany co „Opisz projekt” (data-formularz w strona.ts).
 import ZgodaMarketingowa from '../prawo/ZgodaMarketingowa.astro';
-interface Props { id: string; usluga: string; poziom?: 'h2' | 'h3' }
-const { id, usluga, poziom = 'h3' } = Astro.props;
+interface Props { id: string; usluga: string; poziom?: 'h2' | 'h3'; przycisk?: string }
+const { id, usluga, poziom = 'h3', przycisk = 'Powiadom mnie' } = Astro.props;
 const H = poziom;
 ---
 <form class="formularz" action="/api/powiadom" method="post" novalidate data-formularz>
@@ -16,7 +16,7 @@ const H = poziom;
   <div class="t-maly zgoda-wrap"><ZgodaMarketingowa id={`${id}-zgoda`} usluga={usluga} /></div>
   <div class="sr-only" aria-hidden="true"><label for={`${id}-strona-www`}>Nie wypełniaj</label> <input id={`${id}-strona-www`} name="strona_www" type="text" tabindex="-1" autocomplete="off" /></div>
   <p class="komunikat-blad t-maly" role="alert" data-blad-wysylki hidden>Nie udało się zapisać. Twój adres został w formularzu. Spróbuj ponownie za chwilę.</p>
-  <div><button type="submit" class="przycisk przycisk--akcent" data-wyslij>Powiadom mnie</button></div>
+  <div><button type="submit" class="przycisk przycisk--akcent" data-wyslij>{przycisk}</button></div>
 </form>
 <div class="sukces" data-sukces hidden>
   <H class="t-h3" tabindex="-1" data-sukces-naglowek>Zapisane</H>

@@ -1,0 +1,42 @@
+---
+// 30 S3 Planowany zakres (wariant D): nagłówek przyklejony po lewej, po prawej dwie karty, pod nimi szeroka karta (ostatni punkt). Każda z plakietką „wkrótce”.
+// „Zobacz zakres” prowadzi do S4 (co da się zmierzyć). Telefon: karty jedna pod drugą (sekcja informacyjna).
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s3 baza segment" id="zakres" data-segment="S3 Planowany zakres" aria-labelledby="s3-h">
+  <div class="kontener s3-wnetrze">
+    <header class="naglowek">
+      <h2 id="s3-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
+    <ul role="list" class="karty">
+      {t.punkty.map((p: any, i: number) => (
+        <li class:list={['karta', { szeroka: i === t.punkty.length - 1 }]}>
+          <p class="t-etykieta plak">wkrótce</p>
+          <h3 class="t-h3 naglowkowy">{p.tytul}</h3>
+          <p class="t-tresc">{p.opis}</p>
+          <a class="t-maly akcentowy link" href="#mierzymy">Zobacz zakres <span class="sr-only">: {p.tytul}</span></a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .s3 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s3-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 800fr); gap: 72px; align-items: start; }
+  .naglowek { display: grid; gap: 12px; position: sticky; top: calc(var(--fk-wys-paska) + 24px); }
+  .karty { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .karta { display: grid; gap: 12px; align-content: start; justify-items: start; padding: 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .szeroka { grid-column: 1 / -1; background: var(--fk-grad-przelamanie); color: var(--fk-przelamanie-tekst); border-color: transparent; }
+  .szeroka :is(h3, .link) { color: inherit; }
+  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid currentColor; }
+  .link { text-decoration: underline; }
+  @media (max-width: 1023.98px) {
+    .s3-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .naglowek { position: static; }
+    .karty { grid-template-columns: minmax(0, 1fr); }
+    .karta { padding: 24px 20px; }
+  }
+</style>

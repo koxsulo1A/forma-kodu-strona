@@ -232,20 +232,38 @@ export const strony = {
     s10_zamkniecie: seg('S10 Zamknięcie (pytanie jako dymek rozmowy)', { naglowek: t('Pytanie', 90, true), cta: t('Przycisk', 24, true), atuty: lista('Etykiety atutów', t('Atut', 30), 0, 4) }),
   }),
 
+  // Strona 30: pola odwzorowują makietę 30 (Figma ramka 203:873), segment po segmencie (port 24.11). Usługa „wkrótce”: bez cen i terminów.
   'strona-analiza-seo-geo': strona('analiza-seo-geo', 'Strona 30: Analiza SEO/GEO', {
-    s1_hero: hero(80, 200, false),
-    s2_status: seg('S2 Status (gdy usługa ruszy: odznacz „widoczny”)', { widoczny: fields.checkbox({ label: 'Segment widoczny (usługa jeszcze nie ruszyła)', defaultValue: true }), naglowek: t('Nagłówek', 60, true), opis: a('Opis', 220), cta: t('Przycisk', 24) }),
-    s3_zakres: seg('S3 Planowany zakres', { ...wspolne(), punkty: lista('Punkty', tytulOpis(50, 160), 3, 3, 'tytul') }),
-    s4_mierzymy: seg('S4 Co da się zmierzyć', { ...wspolne(), etapy: lista('Etapy', fields.object({ nazwa: t('Nazwa', 40, true), opis: a('Opis', 140), zrodlo_danych: t('Źródło danych', 60) }), 4, 7, 'nazwa') }),
-    s5_nie_obiecamy: seg('S5 Czego nie obiecamy', { naglowek: t('Nagłówek', 70, true), punkty: lista('Punkty', fields.object({ obietnica_rynkowa: t('Obietnica z rynku', 90, true), dlaczego_nie: a('Dlaczego nie', 200) }), 2, 4, 'obietnica_rynkowa') }),
-    s6_lejek: seg('S6 Przykład (lejek). Prawdziwe liczby = źródło i data', {
-      naglowek: t('Nagłówek', 70, true), etykieta: t('Etykieta', 32),
-      etapy: lista('Etapy', fields.object({ liczba: fields.integer({ label: 'Liczba' }), nazwa: t('Nazwa', 40, true) }), 4, 4, 'nazwa'),
-      wskaznik: fields.integer({ label: 'Wskaźnik (%)' }), obserwacja: a('Obserwacja', 160), zrodlo: fields.text({ label: 'Źródło liczb (gdy prawdziwe)' }), data: fields.text({ label: 'Data liczb (gdy prawdziwe)' }),
+    s1_hero: seg('S1 Hero (po prawej oś stanu: teraz, potem, wynik)', {
+      h1: t('H1 = pytanie klienta', 90, true), cta: t('Przycisk (do zakresu)', 30, true),
+      os: lista('Oś stanu', fields.object({ etykieta: t('Etykieta', 20, true), opis: a('Opis', 100) }), 3, 3, 'etykieta'),
+      notka: a('Pasek pod hero', 220),
     }),
-    s7_raport: seg('S7 Jak będzie wyglądał raport', { ...wspolne(), kroki: lista('Kroki', tytulOpis(40, 160), 4, 7, 'tytul') }),
-    s8_powiadomienie: seg('S8 Powiadom mnie (zgoda: komponent ZgodaMarketingowa, tekst z polityki)', { naglowek: t('Nagłówek', 60, true), lead: a('Lead', 220), etykieta_pola: t('Etykieta pola e-mail', 40, true), cta: t('Przycisk', 32, true) }),
-    s9_faq: faqInfo('S9 FAQ'),
+    s2_status: seg('S2 Status (gdy usługa ruszy: odznacz „widoczny”)', {
+      widoczny: fields.checkbox({ label: 'Segment widoczny (usługa jeszcze nie ruszyła)', defaultValue: true }),
+      naglowek: t('Nagłówek', 60, true), opis: a('Opis', 220), dzis_tytul: t('„Co możesz zrobić dziś”: tytuł', 40), dzis_opis: a('„Co możesz zrobić dziś”: opis', 160), cta: t('Przycisk', 30),
+    }),
+    s3_zakres: seg('S3 Planowany zakres (nagłówek przyklejony, stos kart)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 160), punkty: lista('Punkty (ostatni = szeroka karta)', tytulOpis(60, 160), 3, 3, 'tytul') }),
+    s4_mierzymy: seg('S4 Co da się zmierzyć (droga klienta)', {
+      naglowek: t('Nagłówek H2', 80, true), lead: a('Lead', 200),
+      etapy: lista('Etapy', fields.object({ nazwa: t('Nazwa etapu', 50, true), narzedzie: t('Narzędzie', 40), mierzymy: a('Mierzymy', 140), sluzy: a('Służy Ci', 140) }), 3, 6, 'nazwa'),
+    }),
+    s5_nie_obiecamy: seg('S5 Czego nie obiecamy (zdanie-cytat i pigułki)', { etykieta: t('Etykieta', 30), naglowek: t('Nagłówek (cytat)', 100, true), punkty: lista('Pigułki „nie obiecujemy”', t('Punkt', 60), 2, 6), podpis: a('Zdanie pod pigułkami', 160) }),
+    s6_lejek: seg('S6 Przykład (lejek; liczby przykładowe, prawdziwe liczby = źródło i data)', {
+      naglowek: t('Nagłówek H2', 70, true), etykieta: t('Etykieta', 40),
+      etapy: lista('Etapy', fields.object({ liczba: fields.integer({ label: 'Liczba' }), nazwa: t('Nazwa', 40, true) }), 2, 5, 'nazwa'),
+      wskaznik: t('Wskaźnik (np. 7,5%)', 10), obserwacja: a('Obserwacja', 180), uwaga: t('Uwaga pod słupkami', 80),
+      zrodlo: fields.text({ label: 'Źródło liczb (gdy prawdziwe)' }), data: fields.text({ label: 'Data liczb (gdy prawdziwe)' }),
+    }),
+    s7_raport: seg('S7 Jak będzie wyglądał raport (oś pionowa, nagłówek przyklejony)', {
+      plakietki: lista('Plakietki', t('Plakietka', 30), 0, 3), naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 200),
+      kroki: lista('Kroki', fields.object({ etap: t('Etap (np. POMIAR)', 20, true), tytul: t('Tytuł', 50, true), opis: a('Opis', 160) }), 3, 7, 'tytul'),
+      przyklad: a('Przykładowy wpis (przy kroku 04)', 200),
+    }),
+    s8_powiadomienie: seg('S8 Powiadom mnie (zgoda: komponent ZgodaMarketingowa, tekst z polityki)', {
+      naglowek: t('Nagłówek', 60, true), lead: a('Lead', 220), karta_tytul: t('Tytuł karty', 40, true), karta_opis: a('Opis karty', 120), usluga: t('Nazwa usługi w zgodzie', 40, true),
+    }),
+    s9_faq: seg('S9 FAQ: pytania dodajesz w „Treści wspólne → FAQ” (zaznacz tę stronę)', { naglowek: t('Nagłówek H2', 70, true) }),
   }),
 
   'strona-realizacje': strona('realizacje', 'Strona 31: Realizacje', {

@@ -1,0 +1,39 @@
+---
+// 30 S1 Hero (wariant D): pytanie klienta i przycisk do zakresu; po prawej oś stanu „Teraz → Potem → Wynik” (rysuje się przy wejściu: [data-odslon]).
+// Pod hero pasek z informacją, że usługa jest w przygotowaniu.
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s1 baza segment" id="start" data-segment="S1 Hero" aria-labelledby="s1-h">
+  <div class="kontener s1-wnetrze">
+    <div class="tekst">
+      <h1 id="s1-h" class="t-display naglowkowy pojaw">{t.h1}</h1>
+      <div><a class="przycisk przycisk--glowny" href="#zakres">{t.cta}</a></div>
+    </div>
+    <ol role="list" class="os" data-odslon aria-label="Stan usługi">
+      {t.os.map((k: any, i: number) => <li data-n={i + 1}><span class="znacznik" aria-hidden="true"></span><p class="t-etykieta akcentowy">{k.etykieta}</p><p class="t-tresc">{k.opis}</p></li>)}
+    </ol>
+  </div>
+  {t.notka && <div class="kontener"><p class="notka t-maly">{t.notka}</p></div>}
+</section>
+
+<style>
+  .s1 { padding-block: clamp(24px, 3.5vw, 51px) 38px; }
+  .s1-wnetrze { display: grid; grid-template-columns: minmax(0, 640fr) minmax(0, 576fr); gap: 96px; align-items: center; }
+  .tekst { display: grid; gap: 32px; }
+  .os { display: grid; gap: 0; }
+  .os li { position: relative; display: grid; gap: 4px; padding: 0 0 28px 40px; }
+  .os li:not(:last-child)::before { content: ''; position: absolute; left: 7px; top: 20px; bottom: 0; width: 2px; background: var(--fk-obrys-kontrolka); transform-origin: top; }
+  .znacznik { position: absolute; left: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--fk-akcent); background: var(--fk-tlo); }
+  .os li[data-n='1'] .znacznik { background: var(--fk-akcent); }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js:not(.bez-ruchu)) .os:not(.widoczny) li::before { transform: scaleY(0); }
+    :global(html.js:not(.bez-ruchu)) .os li::before { transition: transform 600ms var(--fk-krzywa-wejscie); }
+    .os li[data-n='2']::before { transition-delay: 400ms; }
+  }
+  .notka { margin-top: 32px; padding: 16px 20px; border-radius: var(--radius-control); background: var(--fk-tlo-powierzchnia); border-left: 3px solid var(--fk-akcent); }
+  @media (max-width: 1023.98px) {
+    .s1-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .tekst .przycisk { width: 100%; justify-content: center; }
+  }
+</style>

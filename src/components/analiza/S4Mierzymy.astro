@@ -1,0 +1,45 @@
+---
+// 30 S4 Co da się zmierzyć (wariant G): nagłówek przyklejony po lewej jedzie wzdłuż treści, po prawej oś etapów drogi klienta (narzędzie, co mierzymy, czemu służy).
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s4 baza segment" id="mierzymy" data-segment="S4 Co da się zmierzyć" aria-labelledby="s4-h">
+  <div class="kontener s4-wnetrze">
+    <header class="naglowek">
+      <h2 id="s4-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+      <p><span class="t-etykieta plak">wkrótce</span></p>
+    </header>
+    <ol role="list" class="os">
+      {t.etapy.map((e: any) => (
+        <li>
+          <span class="znacznik" aria-hidden="true"></span>
+          <div class="tresc">
+            <h3 class="t-h4 naglowkowy">{e.nazwa}</h3>
+            {e.narzedzie && <p class="t-etykieta akcentowy">{e.narzedzie}</p>}
+            <p class="t-tresc"><strong>Mierzymy:</strong> {e.mierzymy}</p>
+            <p class="t-tresc"><strong>Służy Ci:</strong> {e.sluzy}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .s4 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s4-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 776fr); gap: 96px; align-items: start; }
+  .naglowek { display: grid; gap: 12px; position: sticky; top: calc(var(--fk-wys-paska) + 24px); }
+  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); }
+  .os li { position: relative; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 24px; padding-bottom: 32px; }
+  .os li:not(:last-child)::before { content: ''; position: absolute; left: 11px; top: 28px; bottom: 0; width: 2px; background: var(--fk-obrys-kontrolka); }
+  .znacznik { width: 24px; height: 24px; margin-top: 2px; border-radius: 50%; background: var(--fk-tlo); border: 3px solid var(--fk-akcent); }
+  .tresc { display: grid; gap: 8px; padding: 24px 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .tresc strong { color: var(--fk-tekst-naglowek); }
+  @media (max-width: 1023.98px) {
+    .s4-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .naglowek { position: static; }
+    .os li { gap: 12px; padding-bottom: 20px; }
+    .tresc { padding: 20px; }
+  }
+</style>

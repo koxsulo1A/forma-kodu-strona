@@ -1,0 +1,161 @@
+{
+  "s1_hero": {
+    "h1": "Twoja strona nie pojawia się w Google? Najpierw sprawdzimy dlaczego.",
+    "cta": "Zobacz zakres usług",
+    "os": [
+      {
+        "etykieta": "Teraz",
+        "opis": "Sprawdzamy metodę na własnych projektach i pilotażach."
+      },
+      {
+        "etykieta": "Potem",
+        "opis": "Opisujemy, co da się zmierzyć."
+      },
+      {
+        "etykieta": "Wynik",
+        "opis": "Raport: co sprawdziliśmy, jak i czego nie."
+      }
+    ],
+    "notka": "Analiza SEO/GEO, ruchu i reklam jest w przygotowaniu. Najpierw testujemy metodę na własnych projektach i pilotażach. Pozycji w Google nie obiecujemy."
+  },
+  "s2_status": {
+    "widoczny": true,
+    "naglowek": "Ta usługa jest w przygotowaniu",
+    "opis": "Poniżej planowany zakres. Ceny ani terminu jeszcze nie podajemy, bo ich nie znamy.",
+    "dzis_tytul": "Co możesz zrobić dziś",
+    "dzis_opis": "Przeczytać, czego nie obiecujemy, i zobaczyć planowany zakres.",
+    "cta": "Zobacz zakres usług"
+  },
+  "s3_zakres": {
+    "naglowek": "Trzy rzeczy, które sprawdzimy na Twojej stronie",
+    "lead": "Przy każdej napiszemy, co sprawdziliśmy, jak i czego nie.",
+    "punkty": [
+      {
+        "tytul": "Reklamy",
+        "opis": "Co kosztują kliknięcia i co dzieje się po nich."
+      },
+      {
+        "tytul": "Ruch na stronie",
+        "opis": "Skąd wchodzą odwiedzający i co robią na stronie."
+      },
+      {
+        "tytul": "Widoczność w wyszukiwarce i odpowiedziach AI",
+        "opis": "Czy Google widzi stronę i na jakie zapytania się pokazuje."
+      }
+    ]
+  },
+  "s4_mierzymy": {
+    "naglowek": "Klient wpisuje „fizjoterapeuta Kraków”. Co dzieje się dalej?",
+    "lead": "Każdy krok drogi klienta da się zmierzyć innym narzędziem. Datę i nazwę narzędzia zapisujemy w raporcie.",
+    "etapy": [
+      {
+        "nazwa": "Etap 1: klient szuka w Google",
+        "narzedzie": "Search Console",
+        "mierzymy": "Czy Google widzi stronę i na jakie zapytania ją pokazuje.",
+        "sluzy": "Wybierasz tematy i zapytania, które warto rozwinąć na stronie."
+      },
+      {
+        "nazwa": "Etap 2: klient widzi Twoją wizytówkę",
+        "narzedzie": "Profil Firmy w Google",
+        "mierzymy": "Kliknięcia „zadzwoń” i „trasa” w Twojej wizytówce.",
+        "sluzy": "Ustalasz, co dopracować w wizytówce: zdjęcia, godziny, opis."
+      },
+      {
+        "nazwa": "Etap 3: klient otwiera stronę",
+        "narzedzie": "Kontrola techniczna strony",
+        "mierzymy": "Szybkość, dostępność i błędy strony.",
+        "sluzy": "Ustalasz kolejność poprawek technicznych."
+      },
+      {
+        "nazwa": "Etap 4: klient dzwoni lub pisze",
+        "narzedzie": "Rozmowy z Tobą",
+        "mierzymy": "Zapytania od klientów: o co pytali i skąd o Tobie wiedzą.",
+        "sluzy": "Porównujesz liczby z narzędzi z tym, o co pytają klienci."
+      }
+    ]
+  },
+  "s5_nie_obiecamy": {
+    "etykieta": "Mówimy to wprost",
+    "naglowek": "Ktoś obiecał Ci pierwsze miejsce w Google? Nikt nie może tego zagwarantować.",
+    "punkty": [
+      "Pozycji w wynikach wyszukiwania",
+      "Cytowań w odpowiedziach generowanych przez AI",
+      "Wzrostu sprzedaży o określony procent",
+      "Kupowania opinii ani pomocy w ich kupowaniu"
+    ],
+    "podpis": "Nie obiecujemy też wzrostu sprzedaży ani nie pomagamy kupować opinii."
+  },
+  "s6_lejek": {
+    "naglowek": "Tak będziemy opisywać drogę klienta",
+    "etykieta": "Lejek z liczbami przykładowymi",
+    "etapy": [
+      {
+        "liczba": 12000,
+        "nazwa": "Wyświetlenia w wyszukiwarce"
+      },
+      {
+        "liczba": 480,
+        "nazwa": "Kliknięcia w stronę"
+      },
+      {
+        "liczba": 160,
+        "nazwa": "Wejścia na podstronę cennika"
+      },
+      {
+        "liczba": 12,
+        "nazwa": "Wysłane zapytania"
+      }
+    ],
+    "wskaznik": "7,5%",
+    "obserwacja": "Jedna obserwacja: ze 160 wejść na podstronę cennika zostało 12 wysłanych zapytań (7,5%).",
+    "uwaga": "Wysokość słupków jest orientacyjna, nie w skali.",
+    "zrodlo": "",
+    "data": ""
+  },
+  "s7_raport": {
+    "plakietki": [
+      "metoda planowana",
+      "wkrótce"
+    ],
+    "naglowek": "Od pomiaru do kroku",
+    "lead": "Raport ma pięć kroków: co i kiedy zmierzyliśmy, co z tego wynika i co proponujemy zrobić.",
+    "kroki": [
+      {
+        "etap": "RAMY",
+        "tytul": "Zakres i data",
+        "opis": "Okres pomiaru i źródła, na których opieramy raport."
+      },
+      {
+        "etap": "POMIAR",
+        "tytul": "Co sprawdziliśmy",
+        "opis": "Lista elementów, które oceniliśmy: strona, wizytówka w Google, wyniki w wyszukiwarce."
+      },
+      {
+        "etap": "METODA",
+        "tytul": "Jak to sprawdziliśmy",
+        "opis": "Przy każdym wyniku: narzędzie, data i sposób pomiaru."
+      },
+      {
+        "etap": "WNIOSEK",
+        "tytul": "Co z tego wynika dla Ciebie",
+        "opis": "Wnioski prostym językiem i decyzje, które z nich wynikają."
+      },
+      {
+        "etap": "KROK",
+        "tytul": "Co robimy dalej",
+        "opis": "Rekomendowane kolejne czynności; kolejność ustalamy razem z Tobą."
+      }
+    ],
+    "przyklad": "Pomiar: godziny na wizytówce w Google różnią się od godzin na stronie. Krok: ujednolicasz godziny w obu miejscach."
+  },
+  "s8_powiadomienie": {
+    "naglowek": "Chcesz wiedzieć, kiedy ruszymy z analizą?",
+    "lead": "Nabór na pilotaż SEO/GEO jeszcze nie ruszył. Stan miejsc podamy, gdy ruszy.",
+    "karta_tytul": "Pilotaż SEO/GEO",
+    "karta_opis": "Nabór jeszcze nie ruszył. Powiadom mnie, gdy ruszymy.",
+    "usluga": "Pilotaż SEO/GEO"
+  },
+  "s9_faq": {
+    "naglowek": "Pytania, które warto zadać przed rozmową"
+  }
+}
