@@ -1,0 +1,38 @@
+---
+// Okno przykładowej strony gabinetu (28 S1, „Okno przykładu strony”). Dane i firma są przykładowe, podpis nad oknem to mówi.
+// Ilustracja: aria-hidden (dekoracja), podpis „Przykład” jest widoczny dla wszystkich.
+---
+<figure class="okno-przyklad">
+  <figcaption class="podpis"><span class="t-etykieta znacznik">Przykład</span><span class="t-maly pomocniczy">Dane i firma są przykładowe.</span></figcaption>
+  <div class="okno" aria-hidden="true">
+    <div class="okno-pasek"><i class="k1"></i><i class="k2"></i><i class="k3"></i><span class="t-etykieta okno-adres">gabinet.przyklad</span></div>
+    <div class="okno-tresc">
+      <p class="t-maly pomocniczy">Gabinet fizjoterapii (firma przykładowa)</p>
+      <p class="t-h4 naglowkowy">Wolne terminy w tym tygodniu</p>
+      <div class="terminy t-maly"><span>czw 16:00</span><span>pt 9:30</span><span>sob 10:00</span></div>
+      <div class="okno-akcje"><span class="rezerwuj t-maly-mocny">Zarezerwuj termin</span><span class="t-nawigacja">Godziny i dojazd</span></div>
+    </div>
+    <div class="godziny">
+      <p class="t-maly pomocniczy">Godziny otwarcia</p>
+      <p class="t-tresc wiersze"><span>pon.-pt. 8:00-18:00</span><span>sob. 9:00-13:00</span></p>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .okno-przyklad { display: grid; gap: 16px; margin: 0; }
+  .podpis { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .znacznik { padding: 4px 12px; border-radius: var(--radius-pill); background: var(--fk-grad-przelamanie); color: var(--fk-przelamanie-tekst); }
+  .okno { background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); overflow: hidden; }
+  .okno-pasek { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--fk-tlo-podniesione); }
+  .okno-pasek i { width: 10px; height: 10px; border-radius: 50%; }
+  .k1 { background: var(--fk-okno-kropka-1); } .k2 { background: var(--fk-okno-kropka-2); } .k3 { background: var(--fk-okno-kropka-3); }
+  .okno-adres { flex: 1; background: var(--fk-tlo-powierzchnia); border-radius: var(--radius-pill); padding: 4px 12px; color: var(--fk-tekst-pomocniczy); }
+  .okno-tresc { display: grid; gap: 12px; padding: 24px 28px 28px; }
+  .terminy { display: flex; gap: 8px; flex-wrap: wrap; }
+  .terminy span { padding: 8px 16px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: var(--radius-control); background: var(--fk-tlo); }
+  .okno-akcje { display: flex; align-items: center; gap: 16px; padding-top: 8px; flex-wrap: wrap; }
+  .rezerwuj { background: var(--fk-grad-przelamanie); color: var(--fk-przelamanie-tekst); padding: 8px 16px; border-radius: var(--radius-control); }
+  .godziny { display: grid; gap: 8px; padding: 4px 28px 28px; }
+  .wiersze { display: flex; gap: 8px 32px; flex-wrap: wrap; }
+</style>

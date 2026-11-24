@@ -4,14 +4,14 @@
 // „Zapytaj o ten pakiet” otwiera sheet „Opisz projekt” z wpisaną nazwą pakietu (data-opis).
 // Makieta: etykieta „Przykład z rynku, nie nasz cennik”. Kod: „Cena Forma Kodu”, bo cennik ma nasza_cena: true (decyzja Kacpra 24.11).
 import { cena, cenaTekst } from '../../lib/ceny.mjs';
-interface Props { t: any }
-const { t } = Astro.props;
+interface Props { t: any; nr?: string; nazwa?: string }
+const { t, nr = 'S8', nazwa = 'Cennik' } = Astro.props;
 const pakiety = t.pakiety.map((p: any, i: number) => {
   const c = cena(p.cena);
   return { ...p, nr: i + 1, cenaTxt: cenaTekst(c), etykietaCeny: c ? (c.nasza_cena ? 'Cena Forma Kodu' : 'Przykład z rynku, nie nasz cennik') : 'Cena' };
 });
 ---
-<section class="s8 baza segment" id="cennik" data-segment="S8 Cennik" aria-labelledby="s8-h">
+<section class="s8 baza segment" id="cennik" data-segment={`${nr} ${nazwa}`} aria-labelledby="s8-h">
   <div class="kontener s8-wnetrze">
     <h2 id="s8-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
     <div class="pakiety-ramka" data-rozwin-grupa>

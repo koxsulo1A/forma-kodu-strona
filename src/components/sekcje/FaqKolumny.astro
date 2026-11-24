@@ -1,0 +1,69 @@
+---
+// FAQ w dwóch kolumnach (28 S16 wariant B i kolejne strony): akordeon „jedno pytanie naraz”, pierwsze otwarte.
+// Pytania i odpowiedzi z kolekcji FAQ (pole „strony” zawiera tę stronę, kolejność z pola „kolejność”). Ceny w odpowiedziach: znaczniki {{cena:…}}.
+// Bez JS wszystkie odpowiedzi są widoczne. Telefon: jedna kolumna (lista pytań to treść informacyjna, bez swipe).
+import { getCollection, render } from 'astro:content';
+import Ikona from '../wspolne/Ikona.astro';
+type Strona = 'glowna' | 'strony-internetowe' | 'automatyzacje' | 'analiza-seo-geo' | 'realizacje' | 'pilotaze';
+interface Props { strona: Strona; naglowek: string; nr: string; lead?: string }
+const { strona, naglowek, nr, lead } = Astro.props;
+const faq = (await getCollection('faq', (f) => f.data.strony.includes(strona))).sort((a, b) => a.data.kolejnosc - b.data.kolejnosc);
+const pytania = await Promise.all(faq.map(async (f) => ({ id: f.id, pytanie: f.data.pytanie, Tresc: (await render(f)).Content })));
+const pol = Math.ceil(pytania.length / 2);
+const kolumny = [pytania.slice(0, pol), pytania.slice(pol)].filter((k) => k.length);
+const p = nr.toLowerCase();
+---
+{pytania.length > 0 && (
+  <section class="faq baza segment" id="pytania" data-segment={`${nr} FAQ`} aria-labelledby={`${p}-h`}>
+    <div class="kontener faq-wnetrze">
+      <header class="faq-naglowek">
+        <h2 id={`${p}-h`} class="t-h2 naglowkowy">{naglowek}</h2>
+        {lead && <p class="t-tresc-l pomocniczy">{lead}</p>}
+      </header>
+      <div class="kolumny" data-akordeon>
+        {kolumny.map((kol, k) => (
+          <ul role="list" class="kolumna">
+            {kol.map((q, i) => {
+              const n = k * pol + i;
+              const otwarte = n === 0;
+              return (
+                <li class:list={['pytanie', { otwarte }]} data-pytanie>
+                  <h3 class="t-h4 naglowkowy">
+                    <button type="button" aria-expanded={String(otwarte)} aria-controls={`${p}-o-${n}`} id={`${p}-p-${n}`}>
+                      <span>{q.pytanie}</span>
+                      <span class="ikona" aria-hidden="true"><Ikona nazwa="plus" rozmiar={18} /></span>
+                    </button>
+                  </h3>
+                  <div class="odpowiedz t-tresc" id={`${p}-o-${n}`} role="region" aria-labelledby={`${p}-p-${n}`} hidden={!otwarte}>
+                    <q.Tresc />
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        ))}
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .faq { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .faq-wnetrze { display: grid; gap: 24px; }
+  .faq-naglowek { display: grid; gap: 12px; max-width: 860px; }
+  .kolumny { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
+  .kolumna { display: grid; gap: 12px; }
+  .pytanie { border-radius: var(--radius-12); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .pytanie button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; text-align: left; font: inherit; color: inherit; background: none; border: 0; cursor: pointer; border-radius: inherit; }
+  .ikona { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--fk-obrys-kontrolka); transition: transform var(--fk-czas-ikona) var(--fk-krzywa-standard); }
+  [aria-expanded='true'] .ikona { transform: rotate(45deg); }
+  .odpowiedz { padding: 0 24px 20px; display: grid; gap: 8px; }
+  .odpowiedz :global(a) { color: var(--fk-akcent); }
+  :global(html:not(.js)) .odpowiedz[hidden] { display: grid; }
+  @media (prefers-reduced-motion: reduce) { .ikona { transition: none; } }
+  @media (max-width: 1023.98px) {
+    .kolumny { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+    .pytanie button { padding: 16px 20px; }
+    .odpowiedz { padding: 0 20px 16px; }
+  }
+</style>

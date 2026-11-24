@@ -1,0 +1,45 @@
+---
+// 28 S10 Dostępność w małej firmie (wariant B): drzewo decyzji. Pytanie startowe → łącznik → dwie gałęzie (mikroprzedsiębiorca / 10+ osób) → zielony blok „Co robimy my”.
+// Fakty prawne z makiety: ustawa z 26.04.2024 r. (Dz.U. 2024 poz. 731), stosowanie od 28.06.2025 r., GUS 2021 (5,4 mln, 14,3%). [Sprawdź przed wdrożeniem]
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s10 baza segment" id="obowiazek" data-segment="S10 Dostępność w małej firmie" aria-labelledby="s10-h">
+  <div class="kontener s10-wnetrze">
+    <header class="naglowek">
+      <h2 id="s10-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
+    <div class="drzewo">
+      <div class="start karta-p"><h3 class="t-h4 naglowkowy">{t.start.tytul}</h3><p class="t-tresc">{t.start.opis}</p></div>
+      <div class="lacznik" aria-hidden="true"></div>
+      <ul role="list" class="galezie">
+        {t.galezie.map((g: any) => (
+          <li><p class="t-etykieta znacznik">{g.etykieta}</p><div class="karta-p ramka"><h3 class="t-h4 naglowkowy">{g.tytul}</h3><p class="t-tresc">{g.opis}</p></div></li>
+        ))}
+      </ul>
+      <div class="my"><h3 class="t-h4">{t.my.tytul}</h3><p class="t-tresc">{t.my.opis}</p></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s10 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s10-wnetrze { display: grid; gap: 32px; }
+  .naglowek { display: grid; gap: 12px; max-width: 900px; }
+  .drzewo { display: grid; }
+  .karta-p { display: grid; gap: 12px; padding: 28px 32px 32px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); }
+  .start { width: min(100%, 720px); justify-self: center; }
+  .lacznik { height: 26px; margin-inline: 25%; border: 2px solid var(--fk-obrys-kontrolka); border-bottom: 0; position: relative; }
+  .galezie { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .galezie li { display: grid; gap: 0; justify-items: center; }
+  .znacznik { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo); margin-bottom: 12px; }
+  .ramka { background: transparent; border: 1px solid var(--fk-obrys); width: 100%; }
+  .my { display: grid; gap: 12px; margin-top: 24px; padding: 28px 32px 32px; border-radius: var(--radius-card); background: var(--fk-grad-zielen); color: var(--fk-tekst-na-akcencie); }
+  .my h3 { color: inherit; }
+  @media (max-width: 1023.98px) {
+    .karta-p, .my { padding: 24px 20px; }
+    .lacznik { margin-inline: auto; width: 2px; border: 0; background: var(--fk-obrys-kontrolka); }
+    .galezie { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  }
+</style>

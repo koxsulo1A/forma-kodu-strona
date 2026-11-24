@@ -58,12 +58,20 @@ const zamkniecie = () => seg('Zamknięcie', { naglowek: t('Nagłówek', 80, true
 const faqInfo = (label = 'FAQ') => seg(`${label}: pytania dodajesz w „Treści wspólne → FAQ” (zaznacz tę stronę)`, wspolne());
 const realizacjeWybor = (min: number, max: number) =>
   fields.multiRelationship({ label: `Wybrane realizacje (${min}–${max}) z kolekcji „Realizacje”`, collection: 'realizacje', validation: { length: { min, max } } });
-const kalkulator = () => seg('Kalkulator: pakiety i koszty stałe', {
-  ...wspolne(),
-  pakiety: lista('Pakiety', fields.object({ nazwa: t('Nazwa', 40, true), cena: cenaRel() }), 3, 3, 'nazwa'),
-  koszty_stale: lista('Koszty stałe', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Zakres kwot', 40), okres: wybor('Okres', ['miesięcznie', 'rocznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 0, 10, 'nazwa'),
-  zrodla: rt('Źródła (opis)', 400),
-});
+// Cennik pakietów z kosztami stałymi (27 S8, 28 S14: ten sam układ „małe bloki”).
+const cennik = (label: string) => seg(label, {
+    naglowek: t('Nagłówek H2', 70, true),
+    pakiety: lista('Pakiety', fields.object({
+      etykieta: t('Etykieta w pasku', 40, true), nazwa: t('Nazwa (H3)', 50, true), opis: a('Opis', 140),
+      cena: cenaRel(), podpis_ceny: a('Podpis pod ceną (przy pustej cenie)', 120),
+      polecany: fields.checkbox({ label: 'Polecany pakiet', defaultValue: false }),
+      zawiera: lista('Zawiera', t('Pozycja', 60), 1, 6), nie_zawiera: lista('Nie zawiera', t('Pozycja', 60), 0, 6),
+      cta: t('Przycisk', 30),
+    }), 3, 3, 'nazwa'),
+    koszty_naglowek: t('Nagłówek kosztów stałych', 60),
+    koszty_stale: lista('Koszty stałe', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Zakres kwot', 40), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 0, 10, 'nazwa'),
+    zrodla: rt('Źródła (opis)', 400),
+  });
 const strona = (id: string, label: string, schema: Record<string, any>) =>
   singleton({ label, path: `src/content/strony/${id}`, format: { data: 'json' }, schema });
 
@@ -110,19 +118,7 @@ export const strony = {
       etapy: lista('Etapy', fields.object({ tytul: t('Tytuł', 40, true), my_robimy: a('My robimy', 120), ty_robisz: a('Ty robisz', 120), ty_dostajesz: a('Ty dostajesz', 120) }), 6, 6, 'tytul'),
       efekt: fields.object({ tytul: t('Tytuł', 40, true), opis: a('Opis', 160), cta: t('Przycisk', 24) }, { label: 'Krok końcowy (efekt)' }),
     }),
-    s8_cennik: seg('S8 Cennik: pakiety i koszty stałe', {
-      naglowek: t('Nagłówek H2', 70, true),
-      pakiety: lista('Pakiety', fields.object({
-        etykieta: t('Etykieta w pasku', 40, true), nazwa: t('Nazwa (H3)', 50, true), opis: a('Opis', 140),
-        cena: cenaRel(), podpis_ceny: a('Podpis pod ceną (przy pustej cenie)', 120),
-        polecany: fields.checkbox({ label: 'Polecany pakiet', defaultValue: false }),
-        zawiera: lista('Zawiera', t('Pozycja', 60), 1, 6), nie_zawiera: lista('Nie zawiera', t('Pozycja', 60), 0, 6),
-        cta: t('Przycisk', 30),
-      }), 3, 3, 'nazwa'),
-      koszty_naglowek: t('Nagłówek kosztów stałych', 60),
-      koszty_stale: lista('Koszty stałe', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Zakres kwot', 40), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 0, 10, 'nazwa'),
-      zrodla: rt('Źródła (opis)', 400),
-    }),
+    s8_cennik: cennik('S8 Cennik: pakiety i koszty stałe'),
     s9_mala_rzecz: seg('S9 Zacznij od jednej małej rzeczy (schody)', {
       naglowek: t('Nagłówek H2', 70, true), lead: t('Podtytuł (H3)', 100), cta: t('Przycisk na pierwszym stopniu', 24),
       stopnie: lista('Stopnie (od najmniejszego)', fields.object({ etykieta: t('Etykieta', 24), tytul: t('Tytuł', 50, true), opis: a('Opis', 120) }), 3, 5, 'tytul'),
@@ -158,25 +154,50 @@ export const strony = {
     // S14 Stopka: dane z „Dane firmy” (jedno źródło), bez pól tutaj.
   }),
 
+  // Strona 28: pola odwzorowują makietę 28 (Figma ramka 203:50), segment po segmencie (port 24.11).
   'strona-strony-internetowe': strona('strony-internetowe', 'Strona 28: Strony internetowe', {
-    s1_hero: seg('S1 Hero', { h1: t('H1 = pytanie klienta', 90, true), lead: a('Lead', 200), cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi', 24), branze: lista('Branże', t('Branża', 30), 3, 3) }),
-    s2_dla_kogo: seg('S2 Dla kogo', { ...wspolne(), branze: lista('Branże', fields.object({ branza: t('Branża (H3)', 50, true), pytania_klientow: a('Pytania klientów', 200) }), 3, 3, 'branza') }),
-    s3_warianty: seg('S3 Trzy warianty', {
-      ...wspolne(),
-      warianty: lista('Warianty', fields.object({ numer: t('Numer', 4), status: wybor('Status', ['dostępne', 'w przygotowaniu']), nazwa: t('Nazwa (H2 w karcie)', 30, true), opis: a('Opis', 140), zastrzezenie: a('Zastrzeżenie', 140), obraz_schematu: obraz('Schemat') }), 3, 3, 'nazwa'),
+    s1_hero: seg('S1 Hero', {
+      h1: t('H1 = pytanie klienta', 90, true), lead: a('Lead', 220), cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi (do pakietów)', 24),
+      notka: t('Notka pod przyciskami', 120), atuty: lista('Etykiety atutów', t('Atut', 30), 0, 4),
     }),
-    s4_dlaczego: seg('S4 Dlaczego my', { ...wspolne(), punkty: lista('Punkty', fields.object({ liczba: t('Liczba', 4), tytul: t('Tytuł', 50, true), opis: a('Opis', 140) }), 6, 6, 'tytul') }),
-    s5_zapytaj: seg('S5 Zapytaj o stronę (pola formularza nie są edytowalne; pod formularzem klauzula bez pola zgody, decyzja 1A)', { ...wspolne(), kroki: lista('Kroki', t('Krok', 80), 3, 5) }),
-    s6_pakiety: seg('S6 Pakiety: „Ile strony potrzebuje Twoja firma?”', { ...wspolne(), pakiety: lista('Pakiety', fields.object({ nazwa: t('Nazwa', 40, true), opis: a('Opis', 160), zawiera: lista('Zawiera', t('Pozycja', 60), 3, 8) }), 3, 3, 'nazwa') }),
-    s7_koszta: seg('S7 Koszta klienta', { ...wspolne(), pozycje: lista('Pozycje', fields.object({ pozycja: t('Pozycja', 50, true), kwota_od_do: t('Kwota od–do', 30), okres: wybor('Okres', ['miesięcznie', 'rocznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 4, 4, 'pozycja') }),
-    s8_standard: seg('S8 Pasek standardu', { cechy: lista('Cechy', t('Cecha', 30), 4, 6) }),
-    s9_wcag: seg('S9–S10 Dostępność (bez obietnic „zgodność gwarantowana”)', { ...wspolne(), punkty: lista('Punkty', tytulOpis(50, 200), 4, 5, 'tytul') }),
-    s11_ai: seg('S11 Wyszukiwarki AI', { ...wspolne(), punkty: lista('Punkty', fields.object({ tytul: t('Tytuł', 50, true), opis: a('Opis', 200), ograniczenie: a('Ograniczenie', 140) }), 2, 6, 'tytul') }),
-    s12_realizacje: seg('S12 Realizacje (wybór ręczny z kolekcji „Realizacje”, podpowiedź: kategoria Strony; typ „przykład układu” = etykieta „przykład, nie realizacja”)', { ...wspolne(), realizacje: realizacjeWybor(1, 6) }),
-    s13_proces: proces(),
-    s14_kalkulator: kalkulator(),
-    s15_opinie: seg('S15 Opinie (jak 27 S3: widżety po zgodzie, przed zgodą linki do profili; brak profili = segment ukryty)', wspolne()),
-    s16_faq: faqInfo('S16 FAQ'),
+    s2_dla_kogo: seg('S2 Dla kogo (trzy kolumny z linią akcentu)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 160), branze: lista('Branże', fields.object({ branza: t('Branża (H3)', 40, true), opis: a('Opis', 160) }), 3, 3, 'branza') }),
+    s3_warianty: seg('S3 Trzy warianty (bloki ze schematem strony)', {
+      naglowek: t('Nagłówek H2', 70, true),
+      warianty: lista('Warianty', fields.object({
+        nazwa: t('Nazwa (H3)', 40, true), status: wybor('Status', ['dostępne', 'na zapytanie', 'wkrótce']), opis: a('Opis', 140),
+        uwaga: t('Uwaga pod opisem', 80), cta: t('Przycisk', 24, true), schemat: wybor('Schemat okna', ['landing', 'firmowa', 'wordpress']),
+      }), 3, 3, 'nazwa'),
+    }),
+    s4_dlaczego: seg('S4 Dlaczego my (nagłówek przyklejony po lewej, lista 01–06)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 220), punkty: lista('Punkty', tytulOpis(50, 180), 6, 6, 'tytul') }),
+    s5_zapytaj: seg('S5 Zapytaj o stronę (formularz wspólny „Opisz projekt”, pod nim klauzula bez pola zgody, decyzja 1A)', {
+      naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 220), korzysci_naglowek: t('Nagłówek korzyści', 40), korzysci: lista('Korzyści', tytulOpis(40, 120), 2, 6, 'tytul'),
+    }),
+    s6_pakiety: seg('S6 Pakiety: „Ile strony potrzebuje Twoja firma?”', { naglowek: t('Nagłówek H2', 70, true), pakiety: lista('Pakiety', fields.object({ nazwa: t('Nazwa (H3)', 40, true), opis: a('Opis', 160), zawiera: lista('Zawiera', t('Pozycja', 60), 2, 6) }), 3, 3, 'nazwa') }),
+    s7_koszta: seg('S7 Koszta po stronie klienta', {
+      naglowek: t('Nagłówek H2', 60, true), etykieta: t('Etykieta przy nagłówku', 40),
+      pozycje: lista('Pozycje', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Kwota od–do', 30, true), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 2, 6, 'nazwa'),
+    }),
+    s8_standard: seg('S8 Pasek standardu', { naglowek: t('Nagłówek', 30, true), cechy: lista('Cechy', t('Cecha', 40), 3, 6) }),
+    s9_wcag: seg('S9 Jak wdrażamy WCAG (oś pionowa; bez obietnic „zgodność gwarantowana”)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 220), kroki: lista('Kroki', tytulOpis(40, 160), 3, 6, 'tytul') }),
+    s10_obowiazek: seg('S10 Dostępność w małej firmie (drzewo decyzji; fakty prawne tylko ze źródłem)', {
+      naglowek: t('Nagłówek H2', 80, true), lead: a('Lead', 200),
+      start: fields.object({ tytul: t('Tytuł', 40, true), opis: a('Opis', 260) }, { label: 'Pytanie startowe' }),
+      galezie: lista('Gałęzie', fields.object({ etykieta: t('Etykieta', 30, true), tytul: t('Tytuł', 40, true), opis: a('Opis', 300) }), 2, 2, 'tytul'),
+      my: fields.object({ tytul: t('Tytuł', 40, true), opis: a('Opis', 260) }, { label: 'Co robimy my (zielony blok)' }),
+    }),
+    s11_ai: seg('S11 Wyszukiwarki i asystenci AI (bez obietnic cytowań)', {
+      naglowek: t('Nagłówek H2', 90, true), lead: a('Lead', 160), dostawcy: lista('Dostawcy (pigułki)', t('Nazwa', 30), 0, 12), uwaga: a('Akapit pod pigułkami', 220),
+      karty: lista('Karty', tytulOpis(40, 120), 3, 6, 'tytul'),
+      nie_robimy: fields.object({ naglowek: t('Nagłówek', 50, true), pozycje: lista('Pozycje', tytulOpis(60, 80), 2, 4, 'tytul') }, { label: 'Czego nie robimy (ciemny blok)' }),
+    }),
+    s12_realizacje: seg('S12 Realizacje (pierwsza = duża karta; wybór ręczny z kolekcji „Realizacje”)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 240), realizacje: realizacjeWybor(1, 3) }),
+    s13_proces: seg('S13 Proces (oś pozioma, 6 etapów z paginacją)', {
+      naglowek: t('Nagłówek H2', 70, true),
+      etapy: lista('Etapy', fields.object({ tytul: t('Tytuł', 30, true), my_robimy: a('My robimy', 140), ty_robisz: a('Ty robisz', 140), ty_dostajesz: a('Ty dostajesz', 140) }), 6, 6, 'tytul'),
+    }),
+    s14_kalkulator: cennik('S14 Kalkulator zakresu (układ jak 27 S8)'),
+    s15_opinie: seg('S15 Opinie (jak 27 S3: widżety po zgodzie, przed zgodą linki do profili; brak profili = segment ukryty)', { naglowek: t('Nagłówek H2', 70, true) }),
+    s16_faq: seg('S16 FAQ: pytania dodajesz w „Treści wspólne → FAQ” (zaznacz tę stronę)', { naglowek: t('Nagłówek H2', 70, true) }),
     s17_zamkniecie: zamkniecie(),
   }),
 

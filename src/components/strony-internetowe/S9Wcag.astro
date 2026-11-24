@@ -1,0 +1,43 @@
+---
+// 28 S9 Jak wdrażamy WCAG (wariant B): nagłówek po lewej, oś pionowa z numerami po prawej.
+// Animacja „stepper”: pierwszy węzeł zielony, kolejne zielenieją (✓), gdy przewiniesz je za środek ekranu (data-os-pionowa w strona.ts).
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s9 baza segment" id="wcag" data-segment="S9 Jak wdrażamy WCAG" aria-labelledby="s9-h">
+  <div class="kontener s9-wnetrze">
+    <header class="naglowek">
+      <h2 id="s9-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
+    <ol role="list" class="os" data-os-pionowa>
+      {t.kroki.map((k: any, i: number) => (
+        <li class:list={['krok', { aktywny: i === 0 }]} data-krok-osi>
+          <span class="wezel t-etykieta" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <div class="tresc"><h3 class="t-h4 naglowkowy">{k.tytul}</h3><p class="t-tresc">{k.opis}</p></div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .s9 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s9-wnetrze { display: grid; grid-template-columns: minmax(0, 460fr) minmax(0, 772fr); gap: 80px; align-items: start; }
+  .naglowek { display: grid; gap: 12px; }
+  .krok { position: relative; display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 24px; }
+  .krok:not(:last-child)::before { content: ''; position: absolute; left: 23px; top: 48px; bottom: 0; width: 2px; background: var(--fk-obrys-kontrolka); }
+  .wezel { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-tlo); border: 2px solid var(--fk-obrys-kontrolka); color: var(--fk-tekst-pomocniczy); transition: background-color var(--fk-czas-szybki), color var(--fk-czas-szybki); }
+  .aktywny .wezel, .przeszly .wezel { background: var(--fk-kafel-1-tlo); color: var(--fk-kafel-1-tekst); border-color: var(--fk-kafel-1-obrys); }
+  .przeszly .wezel { font-size: 0; }
+  .przeszly .wezel::after { content: '✓'; font-size: 18px; }
+  .tresc { display: grid; gap: 8px; padding: 12px 0 40px; }
+  @media (prefers-reduced-motion: reduce) { .wezel { transition: none; } }
+  @media (max-width: 1023.98px) {
+    .s9-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .krok { grid-template-columns: 40px minmax(0, 1fr); gap: 16px; }
+    .wezel { width: 40px; height: 40px; }
+    .krok:not(:last-child)::before { left: 19px; top: 40px; }
+    .tresc { padding: 8px 0 28px; }
+  }
+</style>

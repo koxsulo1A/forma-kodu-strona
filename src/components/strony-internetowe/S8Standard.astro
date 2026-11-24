@@ -1,0 +1,26 @@
+---
+// 28 S8 Pasek standardu (wariant D): nagłówek i pięć cech z ✓ w jednym rzędzie. Telefon: cechy w dwóch kolumnach.
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s8 baza segment" id="standard" data-segment="S8 Standard strony" aria-labelledby="s8s-h">
+  <div class="kontener s8-wnetrze">
+    <h2 id="s8s-h" class="t-h4 naglowkowy">{t.naglowek}</h2>
+    <ul role="list" class="cechy">
+      {t.cechy.map((c: string) => <li class="t-maly"><span class="znak" aria-hidden="true"><Ikona nazwa="check" rozmiar={18} /></span>{c}</li>)}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .s8 { padding-block: 22px 17px; }
+  .s8-wnetrze { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; }
+  .cechy { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; }
+  .cechy li { display: flex; gap: 8px; align-items: flex-start; }
+  .znak { color: var(--fk-sukces); flex: none; padding-top: 2px; }
+  @media (max-width: 1023.98px) {
+    .s8-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .cechy { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
+  }
+</style>

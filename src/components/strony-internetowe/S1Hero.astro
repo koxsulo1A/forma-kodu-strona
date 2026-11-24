@@ -1,0 +1,38 @@
+---
+// 28 S1 Hero (podział 60/40; okruszki nad hero rysuje Uklad.astro): pytanie klienta w H1, dwa przyciski, notka o sklepie, etykiety atutów; po prawej okno przykładowej strony.
+import OknoGabinetu from '../wspolne/OknoGabinetu.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s1 baza segment" id="start" data-segment="S1 Hero" aria-labelledby="s1-h">
+  <div class="kontener s1-wnetrze">
+    <div class="podzial">
+      <div class="tekst">
+        <h1 id="s1-h" class="t-display naglowkowy pojaw">{t.h1}</h1>
+        <p class="t-tresc-l">{t.lead}</p>
+        <div class="akcje">
+          <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta_1}</a>
+          {t.cta_2 && <a class="przycisk przycisk--drugi" href="#pakiety">{t.cta_2}</a>}
+        </div>
+        {t.notka && <p class="t-maly pomocniczy">{t.notka}</p>}
+        {t.atuty.length > 0 && <ul role="list" class="atuty">{t.atuty.map((a: string) => <li class="t-etykieta">{a}</li>)}</ul>}
+      </div>
+      <OknoGabinetu />
+    </div>
+  </div>
+</section>
+
+<style>
+  .s1 { padding-block: clamp(24px, 3.5vw, 51px) 38px; }
+  .s1-wnetrze { display: grid; gap: 40px; }
+  .podzial { display: grid; grid-template-columns: minmax(0, 720fr) minmax(0, 512fr); gap: 64px; align-items: center; }
+  .tekst { display: grid; gap: 24px; }
+  .akcje { display: flex; flex-wrap: wrap; gap: 16px; }
+  .atuty { display: flex; flex-wrap: wrap; gap: 12px; }
+  .atuty li { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-sukces); color: var(--fk-sukces); }
+  @media (max-width: 1023.98px) {
+    .s1-wnetrze { gap: 20px; }
+    .podzial { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .akcje .przycisk { flex: 1; justify-content: center; }
+  }
+</style>

@@ -48,6 +48,9 @@
   --fk-okno-kropka-2: #e8730c;
   --fk-okno-kropka-3: #93dfb0;
   --fk-akcent-gleboki: #3a2a86;
+  /* Zieleń głęboka: blok „Co robimy my” (28 S10) i główny przycisk formularza (makieta 28 S5) */
+  --fk-zielen-gleboka: #164f30;
+  --fk-zielen-srednia: #2a6e45;
 
   /* Kafle mozaiki: 1 zieleń, 2 niebieski, 3 biały, 4 fiolet, 5 khaki, 6 satyna */
   --fk-kafel-1-tlo: #93dfb0;
@@ -84,6 +87,7 @@
   --fk-grad-czern: linear-gradient(160deg, var(--fk-panel-czern-polysk), var(--fk-panel-czern) 55%, var(--fk-panel-czern));
   --fk-grad-s9: linear-gradient(160deg, var(--fk-panel-czern), var(--fk-przelamanie) 55%, var(--fk-krok-koncowy));
   --fk-grad-zakladka: linear-gradient(135deg, var(--fk-akcent-gleboki), var(--fk-panel-czern));
+  --fk-grad-zielen: linear-gradient(120deg, var(--fk-zielen-gleboka), var(--fk-zielen-srednia), var(--fk-zielen-gleboka));
   --fk-grad-skala: linear-gradient(90deg, var(--fk-okno-kropka-1) 0 33%, var(--fk-okno-kropka-2) 33% 66%, var(--fk-krok-koncowy) 66%);
 
   /* 3. Typografia K11 (komputer → telefon płynnie, 375 → 1440) */

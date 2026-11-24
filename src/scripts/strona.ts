@@ -286,6 +286,45 @@ document.querySelectorAll<HTMLElement>('[role=tablist]').forEach((lista) => {
   lista.hidden = false;
 });
 
+// ---------- 9b. Proces na osi (28 S13): paginacja „← Wstecz · 01 / 06 · Dalej →”, etapy przed wybranym = zielone ✓ ----------
+document.querySelectorAll<HTMLElement>('[data-kroki]').forEach((k) => {
+  const zakladki = [...k.querySelectorAll<HTMLButtonElement>('[role=tab]')];
+  const licznik = k.querySelector<HTMLElement>('[data-kroki-licznik]');
+  const [wstecz, dalej] = [...k.querySelectorAll<HTMLButtonElement>('[data-krok]')];
+  const pag = licznik?.parentElement;
+  if (!zakladki.length) return;
+  const dwa = (i: number) => String(i).padStart(2, '0');
+  const biezacy = () => Math.max(0, zakladki.findIndex((z) => z.getAttribute('aria-selected') === 'true'));
+  const odswiez = () => {
+    const i = biezacy();
+    zakladki.forEach((z, j) => z.classList.toggle('przeszly', j < i));
+    if (licznik) licznik.textContent = `${dwa(i + 1)} / ${dwa(zakladki.length)}`;
+    if (wstecz) wstecz.disabled = i === 0;
+    if (dalej) dalej.disabled = i === zakladki.length - 1;
+  };
+  k.querySelectorAll<HTMLButtonElement>('[data-krok]').forEach((b) => b.addEventListener('click', () => {
+    const n = Math.min(zakladki.length - 1, Math.max(0, biezacy() + Number(b.dataset.krok)));
+    zakladki[n].click();
+  }));
+  zakladki.forEach((z) => { z.addEventListener('click', odswiez); z.addEventListener('keyup', odswiez); });
+  if (pag) pag.hidden = false;
+  odswiez();
+});
+
+// ---------- 9c. Oś pionowa (28 S9): węzły, które minęły środek ekranu, robią się zielone ✓ ----------
+document.querySelectorAll<HTMLElement>('[data-os-pionowa]').forEach((os) => {
+  const kroki = [...os.querySelectorAll<HTMLElement>('[data-krok-osi]')];
+  if (!('IntersectionObserver' in window)) return;
+  const obs = new IntersectionObserver((wpisy) => {
+    wpisy.forEach((w) => {
+      const el = w.target as HTMLElement;
+      // Krok jest „przejściowy”, gdy jego węzeł jest nad środkiem ekranu.
+      el.classList.toggle('przeszly', w.boundingClientRect.top < window.innerHeight / 2);
+    });
+  }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
+  kroki.slice(1).forEach((el) => obs.observe(el));
+});
+
 // ---------- 10a. Rozwijanie grupowe (S8): klik w dowolnym „Co zawiera” rozwija wszystkie trzy pakiety ----------
 document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) => {
   const przyciski = [...grupa.querySelectorAll<HTMLButtonElement>('[data-rozwin]')];
