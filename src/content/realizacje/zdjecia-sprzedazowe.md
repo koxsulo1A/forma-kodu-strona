@@ -7,6 +7,7 @@ technologie: []
 miasto: ''
 data: '[RRRR-MM]'
 kategoria: Automatyzacje
+podkategoria: 'Automatyzacja · AI'
 typ: projekt własny
 status: w toku
 wyrozniona: false

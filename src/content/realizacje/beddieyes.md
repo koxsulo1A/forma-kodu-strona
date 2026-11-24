@@ -7,6 +7,7 @@ technologie: []
 miasto: ''
 data: '[RRRR-MM]'
 kategoria: Strony
+podkategoria: 'Strona · rezerwacje'
 typ: klient
 status: w toku
 wyrozniona: true

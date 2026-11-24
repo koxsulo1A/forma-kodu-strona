@@ -217,6 +217,7 @@ export default config({
         data: fields.text({ label: 'Data (RRRR-MM)', validation: { pattern: { regex: /^\d{4}-(0[1-9]|1[0-2])$|^\[RRRR-MM\]$/, message: 'Format RRRR-MM, np. 2026-11 (zaślepka [RRRR-MM] blokuje publikację)' } } }),
         link: fields.url({ label: 'Link po kliknięciu karty (strona realizacji)' }),
         kategoria: fields.select({ label: 'Kategoria', options: ['Strony', 'Automatyzacje', 'Aplikacje'].map((v) => ({ label: v, value: v })), defaultValue: 'Strony' }),
+        podkategoria: fields.text({ label: 'Etykieta na karcie (≤ 40), np. „Strona · rezerwacje”; puste = kategoria', validation: { length: { max: 40 } } }),
         typ: fields.select({ label: 'Typ (zasada stała 12)', options: ['klient', 'projekt własny', 'przykład układu'].map((v) => ({ label: v, value: v })), defaultValue: 'klient' }),
         status: fields.select({ label: 'Status', options: ['w toku', 'gotowe'].map((v) => ({ label: v, value: v })), defaultValue: 'gotowe' }),
         wyrozniona: fields.checkbox({ label: 'Wyróżniona', defaultValue: false }),

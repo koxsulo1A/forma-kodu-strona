@@ -108,6 +108,7 @@ const realizacje = defineCollection({
       data: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$|^\[RRRR-MM\]$/, 'Data RRRR-MM (zaślepka [RRRR-MM] blokuje publikację)'),
       link: z.string().url().optional(),
       kategoria: z.enum(['Strony', 'Automatyzacje', 'Aplikacje']),
+      podkategoria: z.string().max(40).optional(), // etykieta na karcie, np. „Strona · rezerwacje” (makieta 31); puste = kategoria
       typ: z.enum(['klient', 'projekt własny', 'przykład układu']), // zasada stała 12
       status: z.enum(['w toku', 'gotowe']),
       wyrozniona: z.boolean().default(false),

@@ -1,0 +1,27 @@
+---
+// /realizacje (makieta 31, komputer 1440 i telefon 375). Treść: panel Keystatic → „Strona 31: Realizacje” (src/content/strony/realizacje.json).
+// Karty: wszystkie wpisy kolekcji „Realizacje” (jedno źródło). S4 = FAQ z kolekcji (strony: realizacje), odpowiedzi widoczne.
+import { getCollection } from 'astro:content';
+import Uklad from '../../layouts/Uklad.astro';
+import { trescStrony, realizacjeWybrane } from '../../lib/tresc';
+import S1Hero from '../../components/realizacje/S1Hero.astro';
+import S2Projekty from '../../components/realizacje/S2Projekty.astro';
+import Pilotaze from '../../components/realizacje/Pilotaze.astro';
+import FaqKolumny from '../../components/sekcje/FaqKolumny.astro';
+
+const t = await trescStrony('strona-realizacje');
+if (!t) throw new Error('Brak treści strony: src/content/strony/realizacje.json');
+const wszystkie = await getCollection('realizacje');
+// Kolejność: realizacje klientów → projekty własne → przykłady układu; w grupie najnowsze pierwsze (zaślepka [RRRR-MM] na końcu grupy).
+const waga = { klient: 0, 'projekt własny': 1, 'przykład układu': 2 } as const;
+const lista = wszystkie.sort((a, b) => waga[a.data.typ] - waga[b.data.typ] || b.data.data.replace('[', '0').localeCompare(a.data.data.replace('[', '0')));
+const [wyr] = await realizacjeWybrane([t.s1_hero.wyrozniony_projekt]);
+const sakKlienta = wszystkie.some((r) => r.data.typ === 'klient' && r.data.status === 'gotowe');
+const okruszki = [{ nazwa: 'Strona główna', url: '/' }, { nazwa: 'Realizacje', url: '/realizacje' }];
+---
+<Uklad strona="realizacje" nazwaStrony="Realizacje" okruszki={okruszki}>
+  <S1Hero t={t.s1_hero} wyrozniony={wyr?.entry ?? null} slug={wyr?.slug ?? null} sakKlienta={sakKlienta} />
+  <S2Projekty t={t.s2_projekty} lista={lista} />
+  <Pilotaze t={t.s3_pilotaze} nr="S3" />
+  <FaqKolumny strona="realizacje" naglowek={t.s4_faq.naglowek} nr="S4" uklad="lista" />
+</Uklad>

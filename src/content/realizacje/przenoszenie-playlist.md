@@ -7,6 +7,7 @@ technologie: []
 miasto: ''
 data: '[RRRR-MM]'
 kategoria: Aplikacje
+podkategoria: 'Aplikacja webowa'
 typ: projekt własny
 status: w toku
 wyrozniona: false

@@ -3,6 +3,7 @@
 // Spis: 1 pasek i postęp przewijania, 2 boczny wskaźnik segmentów, 3 motyw, 4 dostępność, 5 sheety i menu, 6 formularz,
 // 7 wskaźniki swipe, 8 akordeon, 9 zakładki, 10 rozwijanie grupowe (S8) i stosy kart (S10).
 
+import { opisListy } from '../lib/odmiana';
 const html = document.documentElement;
 const ograniczRuch = () => html.classList.contains('bez-ruchu') || matchMedia('(prefers-reduced-motion: reduce)').matches;
 const zapisz = (k: string, v: string) => { try { localStorage.setItem(k, v); } catch { /* tryb prywatny */ } };
@@ -199,11 +200,13 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
 // (aria-hidden + inert, bez fokusu), a po zatrzymaniu przewijania przeskakujemy niewidocznie do oryginału.
 const mobile = matchMedia('(max-width: 1023.98px)');
 document.querySelectorAll<HTMLElement>('[data-swipe]').forEach((tor) => {
-  const kropki = [...(document.getElementById(tor.dataset.swipe!)?.querySelectorAll('li') ?? [])];
-  const licznik = document.getElementById(tor.dataset.swipe!)?.querySelector('[data-licznik]');
-  if (!kropki.length) return;
+  // Kropki czytane na bieżąco: filtr (31 S2) może zmienić ich liczbę po ukryciu kart.
+  const wsk = document.getElementById(tor.dataset.swipe!);
+  const kropkiTeraz = () => [...(wsk?.querySelectorAll('li') ?? [])];
+  const licznik = wsk?.querySelector('[data-licznik]');
+  if (!kropkiTeraz().length) return;
   const widoczne = () => ([...tor.children] as HTMLElement[]).filter((c) => c.offsetWidth > 0);
-  const n = kropki.length;
+  const n = kropkiTeraz().length; // pętla: stała liczba oryginałów
   const petla = tor.hasAttribute('data-petla');
   let szerZestawu = 0;
   if (petla) {
@@ -242,11 +245,33 @@ document.querySelectorAll<HTMLElement>('[data-swipe]').forEach((tor) => {
       const lewa = tor.getBoundingClientRect().left;
       let i = 0;
       karty.forEach((c, m) => { if (c.getBoundingClientRect().left - lewa < c.offsetWidth / 2) i = m; });
-      i = ((i % n) + n) % n;
+      const kropki = kropkiTeraz();
+      const ile = petla ? n : kropki.length;
+      i = ((i % ile) + ile) % ile;
       kropki.forEach((d, m) => d.setAttribute('aria-current', String(m === i)));
-      if (licznik) licznik.textContent = `${i + 1} z ${n}`;
+      if (licznik) licznik.textContent = `${i + 1} z ${ile}`;
     });
   }, { passive: true });
+});
+
+// ---------- 7b. Filtr kategorii (31 S2): przyciski aria-pressed, ukrywa karty innych kategorii, przelicza „Pokazano X z Y” i kropki swipe ----------
+document.querySelectorAll<HTMLElement>('[data-filtr]').forEach((box) => {
+  const przyciski = [...box.querySelectorAll<HTMLButtonElement>('button[data-kategoria]')];
+  const karty = [...box.querySelectorAll<HTMLElement>('[data-karta]')];
+  const status = box.querySelector<HTMLElement>('[data-filtr-status]');
+  const tor = box.querySelector<HTMLElement>('[data-swipe]');
+  const wsk = tor ? document.getElementById(tor.dataset.swipe!) : null;
+  przyciski.forEach((b) => b.addEventListener('click', () => {
+    const kat = b.dataset.kategoria!;
+    przyciski.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    const widac = karty.filter((k) => { const ok = kat === 'wszystkie' || k.dataset.kategoria === kat; k.hidden = !ok; return ok; });
+    if (status) status.textContent = opisListy(widac.map((k) => k.dataset.typ ?? ''), karty.length);
+    const ol = wsk?.querySelector('ol');
+    if (ol) ol.innerHTML = widac.map((_, i) => `<li aria-current="${i === 0}"></li>`).join('');
+    const lic = wsk?.querySelector('[data-licznik]');
+    if (lic) lic.textContent = `1 z ${widac.length}`;
+    if (tor) { tor.scrollLeft = 0; tor.dispatchEvent(new Event('scroll')); }
+  }));
 });
 
 // ---------- 8. Akordeon (S11): jedno pytanie naraz ----------

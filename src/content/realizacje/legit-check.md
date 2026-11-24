@@ -7,6 +7,7 @@ technologie: []
 miasto: ''
 data: '[RRRR-MM]'
 kategoria: Strony
+podkategoria: 'Strona · AI'
 typ: projekt własny
 status: w toku
 wyrozniona: false

@@ -1,14 +1,17 @@
 ---
-// Strona 31b: szczegóły realizacji (/realizacje/[slug]), Kacper 24.11. Makieta: Figma strona 31, ramka „31b …”.
-// Wszystkie pola z wpisu kolekcji `realizacje` (bez osobnych pól strony). Przyciski: przyciski-27-29.md, wiersze 31b-1…7.
-// „Przykład układu” nie dostaje podstrony. Przejście z karty: View Transitions między stronami (CSS, bez JS; animacje.css).
-// [Do uzupełnienia przez Opusa według makiety 31b] wygląd sekcji, okruszki 31b-3, W6 sheet galerii (31b-4), swipe na telefonie (S3, S4, S6).
+// Strona 31b: szczegóły realizacji (/realizacje/[slug]), makieta Figma strona 31, ramka „31b …” (komputer 1440 i telefon 375).
+// Wszystkie pola z wpisu kolekcji `realizacje` (bez osobnych pól strony). „Przykład układu” nie dostaje podstrony.
+// Przejście z karty: View Transitions między stronami (CSS, bez JS; /przejscia-realizacji.css).
+// Segmenty: S1 hero (zdjęcie + dane), S2 O projekcie (treść wpisu), S3 Co zrobiliśmy (zakres), S4 Co się zmieniło (benefity),
+// S5 Galeria (0 zdjęć = segment ukryty), S6 Podobne (3 karty, telefon: pętla), S7 Pilotaże (ten sam segment co 31 S3).
+// Telefon (zasada 28): S3, S4, S5 = jedna karta swipe ze wskaźnikiem od 01; S6 = pętla bez końca.
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import Uklad from '../../layouts/Uklad.astro';
 import Aktualizacja from '../../components/seo/Aktualizacja.astro';
 import KartaRealizacji from '../../components/realizacje/KartaRealizacji.astro';
-import { trescStrony, rt } from '../../lib/tresc';
+import Pilotaze from '../../components/realizacje/Pilotaze.astro';
+import { trescStrony } from '../../lib/tresc';
 
 export async function getStaticPaths() {
   const wszystkie = await getCollection('realizacje');
@@ -19,12 +22,12 @@ const { r, wszystkie } = Astro.props;
 const d = r.data;
 const { Content } = await render(r);
 const miesiac = /^\d{4}-\d{2}$/.test(d.data) ? new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(new Date(`${d.data}-01`)) : d.data; // zaślepka [RRRR-MM] zostaje widoczna
-// S6: 3 najnowsze z tej samej kategorii, bez bieżącej i bez „przykładu układu” (karta bez podstrony też może się pokazać).
-const podobne = wszystkie
-  .filter((x) => x.id !== r.id && x.data.kategoria === d.kategoria)
-  .sort((a, b) => b.data.data.localeCompare(a.data.data))
-  .slice(0, 3);
+const status = `${d.typ === 'klient' ? 'Projekt klienta' : 'Projekt własny'} · ${d.status === 'w toku' ? 'w przygotowaniu' : 'zakończony'}`;
+// S6: najpierw ta sama kategoria, potem pozostałe (makieta pokazuje 3 karty, także przykład układu); bez bieżącej.
+const inne = wszystkie.filter((x) => x.id !== r.id);
+const podobne = [...inne.filter((x) => x.data.kategoria === d.kategoria), ...inne.filter((x) => x.data.kategoria !== d.kategoria)].slice(0, 3);
 const og = await getImage({ src: d.zdjecie_glowne, width: 1200, format: 'jpg' });
+const galeria = await Promise.all(d.galeria.map(async (g) => ({ ...g, duze: (await getImage({ src: g.obraz, width: 1600 })).src })));
 const okruszki = [
   { nazwa: 'Strona główna', url: '/' },
   { nazwa: 'Realizacje', url: '/realizacje' },
@@ -32,6 +35,7 @@ const okruszki = [
 ];
 const efekty = d.benefity.slice(0, 6);
 const s7 = (await trescStrony('strona-realizacje'))?.s3_pilotaze; // S7 = ten sam segment co 31 S3 (wspólny)
+const wsk = (id: string, n: number) => ({ id, n });
 ---
 <Uklad
   strona="realizacje"
@@ -46,71 +50,133 @@ const s7 = (await trescStrony('strona-realizacje'))?.s3_pilotaze; // S7 = ten sa
     dzielo: { nazwa: d.naglowek, opis: d.opis, obraz: og.src, data: d.data, miasto: d.miasto, technologie: d.technologie },
   }}
 >
-  <section class="r-hero" aria-labelledby="r-h1">
-    <h1 id="r-h1">{d.naglowek}</h1>
-    <p class="lead">{d.opis}</p>
-    <p class="przyciski">
-      {d.link && <a class="przycisk glowny" href={d.link} target="_blank" rel="noopener">Zobacz stronę ↗<span class="sr-only"> (otwiera nową kartę)</span></a>}
-      <a class="przycisk" href="/realizacje">Wróć do realizacji</a>
-    </p>
-    <Image src={d.zdjecie_glowne} alt={d.zdjecie_alt} widths={[800, 1200, 1600]} sizes="100vw" loading="eager" fetchpriority="high" data-vt={r.id} />
-    <dl class="dane">
-      <div><dt>Kategoria</dt><dd>{d.kategoria}</dd></div>
-      {d.technologie.length > 0 && <div><dt>Technologie</dt><dd>{d.technologie.join(', ')}</dd></div>}
-      {d.miasto && <div><dt>Miasto</dt><dd>{d.miasto}</dd></div>}
-      <div><dt>Data</dt><dd><time datetime={d.data}>{miesiac}</time></dd></div>
-      <div><dt>Typ</dt><dd>{d.typ}{d.status === 'w toku' ? ' (w toku)' : ''}</dd></div>
-    </dl>
-    <Aktualizacja strona="realizacje" data={d.aktualizacja} />
+  <section class="r1 baza segment" id="start" data-segment="S1 Hero realizacji" aria-labelledby="r1-h">
+    <div class="kontener r1-wnetrze">
+      <div class="tekst">
+        <h1 id="r1-h" class="t-display naglowkowy">{d.naglowek}</h1>
+        <p class="t-tresc-l">{d.opis}</p>
+        <p class="przyciski">
+          {d.link && <a class="przycisk przycisk--akcent" href={d.link} target="_blank" rel="noopener">Zobacz stronę ↗<span class="sr-only"> (otwiera nową kartę)</span></a>}
+          <a class="przycisk przycisk--drugi" href="/realizacje">Wróć do realizacji</a>
+        </p>
+        <div class="t-maly pomocniczy"><Aktualizacja strona="realizacje" data={d.aktualizacja} /></div>
+      </div>
+      <div class="prawa">
+        <div class="zdjecie"><Image src={d.zdjecie_glowne} alt={d.zdjecie_alt} widths={[600, 1100]} sizes="(min-width: 1024px) 40vw, 100vw" loading="eager" fetchpriority="high" data-vt={r.id} /></div>
+        <dl class="dane">
+          <div><dt class="t-etykieta pomocniczy">Kategoria</dt><dd class="t-maly">{d.podkategoria || d.kategoria}</dd></div>
+          {d.technologie.length > 0 && <div><dt class="t-etykieta pomocniczy">Technologie</dt><dd><ul role="list" class="tagi">{d.technologie.map((x) => <li class="t-etykieta">{x}</li>)}</ul></dd></div>}
+          {d.miasto && <div><dt class="t-etykieta pomocniczy">Miasto</dt><dd class="t-maly">{d.miasto}</dd></div>}
+          <div><dt class="t-etykieta pomocniczy">Data</dt><dd class="t-maly"><time datetime={/^\d{4}-\d{2}$/.test(d.data) ? d.data : undefined}>{miesiac}</time></dd></div>
+          <div><dt class="t-etykieta pomocniczy">Status</dt><dd class="t-maly">{status}</dd></div>
+        </dl>
+      </div>
+    </div>
   </section>
 
-  <section aria-labelledby="r-o-projekcie">
-    <h2 id="r-o-projekcie">O projekcie</h2>
-    <Content />
+  <section class="r2 baza segment" id="o-projekcie" data-segment="S2 O projekcie" aria-labelledby="r2-h">
+    <div class="kontener r2-wnetrze">
+      <h2 id="r2-h" class="t-h2 naglowkowy">O projekcie</h2>
+      <div class="opis t-tresc-l"><Content /></div>
+    </div>
   </section>
 
   {d.zakres.length > 0 && (
-    <section aria-labelledby="r-zakres">
-      <h2 id="r-zakres">Zakres prac</h2>
-      <ol class="zakres">{d.zakres.map((z, i) => <li><span class="nr" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><h3>{z.tytul}</h3><p>{z.opis}</p></li>)}</ol>
+    <section class="r3 baza segment" id="zakres" data-segment="S3 Co zrobiliśmy" aria-labelledby="r3-h">
+      <div class="kontener r-wnetrze">
+        <h2 id="r3-h" class="t-h2 naglowkowy">Co zrobiliśmy</h2>
+        <ol role="list" class="siatka-2 swipe" data-swipe="r3-wskaznik">
+          {d.zakres.map((z, i) => <li class="karta"><span class="t-etykieta akcentowy" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><h3 class="t-h4 naglowkowy">{z.tytul}</h3><p class="t-tresc">{z.opis}</p></li>)}
+        </ol>
+        <div class="wskaznik-swipe" id="r3-wskaznik" aria-hidden="true"><ol>{d.zakres.map((_, i) => <li aria-current={String(i === 0)}></li>)}</ol><span data-licznik>1 z {d.zakres.length}</span></div>
+      </div>
     </section>
   )}
 
   {efekty.length > 0 && (
-    <section aria-labelledby="r-efekt">
-      <h2 id="r-efekt">Efekt</h2>
-      <ul class="efekty">{efekty.map((b) => <li><h3>{b.tytul}</h3><p>{b.opis}</p><p class="jak">Jak to sprawdzić: {b.jak_sprawdzic}</p></li>)}</ul>
+    <section class="r4 baza segment" id="efekt" data-segment="S4 Co się zmieniło" aria-labelledby="r4-h">
+      <div class="kontener r-wnetrze">
+        <header class="naglowek">
+          <h2 id="r4-h" class="t-h2 naglowkowy">Co się zmieniło</h2>
+          <p class="t-tresc-l pomocniczy">Każdy efekt ma podany sposób sprawdzenia, żeby nie trzeba było wierzyć nam na słowo.</p>
+        </header>
+        <ul role="list" class="siatka-3 swipe" data-swipe="r4-wskaznik">
+          {efekty.map((b) => <li class="karta"><h3 class="t-h4 naglowkowy">{b.tytul}</h3><p class="t-tresc">{b.opis}</p><p class="t-maly jak"><strong>Jak sprawdzić:</strong> {b.jak_sprawdzic}</p></li>)}
+        </ul>
+        <div class="wskaznik-swipe" id="r4-wskaznik" aria-hidden="true"><ol>{efekty.map((_, i) => <li aria-current={String(i === 0)}></li>)}</ol><span data-licznik>1 z {efekty.length}</span></div>
+      </div>
     </section>
   )}
 
-  {d.galeria.length > 0 && (
-    <section aria-labelledby="r-galeria">
-      <h2 id="r-galeria">Galeria</h2>
-      <ul class="galeria">
-        {d.galeria.map((g) => (
-          <li><figure>
-            <button type="button" data-powieksz aria-label={`Powiększ: ${g.alt}`}><Image src={g.obraz} alt={g.alt} widths={[400, 800]} sizes="(min-width: 1024px) 33vw, 100vw" /></button>
-            {g.podpis && <figcaption>{g.podpis}</figcaption>}
-          </figure></li>
-        ))}
-      </ul>
+  {galeria.length > 0 && (
+    <section class="r5 baza segment" id="galeria" data-segment="S5 Galeria" aria-labelledby="r5-h">
+      <div class="kontener r-wnetrze">
+        <h2 id="r5-h" class="t-h2 naglowkowy">Jak to wygląda</h2>
+        <ul role="list" class="galeria swipe" data-swipe="r5-wskaznik">
+          {galeria.map((g) => (
+            <li><figure>
+              <a href={g.duze} target="_blank" rel="noopener"><Image src={g.obraz} alt={g.alt} widths={[400, 800]} sizes="(min-width: 1024px) 33vw, 86vw" /><span class="sr-only"> (powiększenie w nowej karcie)</span></a>
+              {g.podpis && <figcaption class="t-maly pomocniczy">{g.podpis}</figcaption>}
+            </figure></li>
+          ))}
+        </ul>
+        <div class="wskaznik-swipe" id="r5-wskaznik" aria-hidden="true"><ol>{galeria.map((_, i) => <li aria-current={String(i === 0)}></li>)}</ol><span data-licznik>1 z {galeria.length}</span></div>
+      </div>
     </section>
   )}
 
   {podobne.length > 0 && (
-    <section aria-labelledby="r-podobne">
-      <h2 id="r-podobne">Podobne realizacje</h2>
-      <div class="karty">{podobne.map((p) => <KartaRealizacji r={p} />)}</div>
-      <p><a href="/realizacje">Zobacz wszystkie realizacje →</a></p>
+    <section class="r6 baza segment" id="podobne" data-segment="S6 Podobne realizacje" aria-labelledby="r6-h">
+      <div class="kontener r-wnetrze">
+        <h2 id="r6-h" class="t-h2 naglowkowy">Podobne realizacje</h2>
+        <ul role="list" class="siatka-3 swipe" data-swipe="r6-wskaznik" data-petla>
+          {podobne.map((p) => <li><KartaRealizacji r={p} /></li>)}
+        </ul>
+        <div class="wskaznik-swipe" id="r6-wskaznik" aria-hidden="true"><ol>{podobne.map((_, i) => <li aria-current={String(i === 0)}></li>)}</ol><span data-licznik>1 z {podobne.length}</span></div>
+        <a class="t-maly akcentowy wszystkie" href="/realizacje">Zobacz wszystkie realizacje →</a>
+      </div>
     </section>
   )}
 
-  {s7 && (
-    <section aria-labelledby="r-zamkniecie">
-      <!-- S7 = treść 31 S3 z panelu (przycisk 31b-7 → /pilotaze). -->
-      <h2 id="r-zamkniecie">{s7.naglowek}</h2>
-      {s7.lead && <p set:html={rt(s7.lead)} />}
-      <p><a class="przycisk" href="/pilotaze">{s7.cta}</a></p>
-    </section>
-  )}
+  {s7 && <Pilotaze t={s7} nr="S7" />}
 </Uklad>
+
+<style>
+  .r1 { padding-block: clamp(24px, 3.5vw, 51px) clamp(40px, 5vw, 64px); }
+  .r1-wnetrze { display: grid; grid-template-columns: minmax(0, 700fr) minmax(0, 548fr); gap: 64px; align-items: start; }
+  .tekst { display: grid; gap: 20px; }
+  .przyciski { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px; }
+  .prawa { display: grid; gap: 16px; }
+  .zdjecie { border-radius: var(--radius-card); overflow: hidden; border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-podniesione); }
+  .zdjecie img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; }
+  .dane { display: grid; padding: 8px 20px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .dane > div { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; align-items: center; padding: 12px 0; }
+  .dane > div + div { border-top: 1px solid var(--fk-obrys); }
+  .dane dd { color: var(--fk-tekst-naglowek); }
+  .tagi { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tagi li { padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); }
+
+  .r2, .r3, .r4, .r5, .r6 { padding-block: clamp(40px, 4.5vw, 64px); }
+  .r2-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 832fr); gap: 40px; align-items: start; }
+  .opis { display: grid; gap: 16px; }
+  .opis :global(a) { color: var(--fk-akcent); }
+  .r-wnetrze { display: grid; gap: 28px; }
+  .naglowek { display: grid; gap: 12px; max-width: 760px; }
+  .siatka-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .siatka-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .karta { display: grid; gap: 8px; align-content: start; padding: 24px 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .jak { margin-top: 4px; padding-top: 12px; border-top: 1px dashed var(--fk-obrys-kontrolka); }
+  .jak strong { color: var(--fk-tekst-naglowek); }
+  .galeria { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .galeria img { display: block; width: 100%; height: auto; border-radius: var(--radius-control); border: 1px solid var(--fk-obrys-kontrolka); }
+  .galeria figure { display: grid; gap: 8px; }
+  .wszystkie { justify-self: start; }
+  @media (max-width: 1023.98px) {
+    .r1-wnetrze, .r2-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .przyciski { flex-direction: column; }
+    .przyciski .przycisk { width: 100%; justify-content: center; }
+    .dane { padding: 4px 16px; }
+    .dane > div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+    .karta { padding: 20px; }
+  }
+</style>
