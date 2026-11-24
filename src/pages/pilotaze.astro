@@ -1,91 +1,27 @@
 ---
-// WZÓR STRONY pod GEO (technika nr 2 z WERYFIKACJA: dopasowanie do pytań + odpowiedź w pierwszym zdaniu, +17,3% cytowań w badaniu arXiv 2603.29979).
-// Reguły, które pokazuje ten wzór (sprawdza je scripts/sprawdz-seo.mjs):
-// 1. H1 = pytanie/intencja klienta z CMS (seo.intencja), jedno na stronę (zasada stała 8).
-// 2. Zaraz pod H1 akapit z odpowiedzią: kto, co, za ile, w jakim czasie. Bez wstępu typu „Witamy”.
-// 3. Śródtytuły H2 jako pytania, które ludzie wpisują; pierwszy akapit pod nimi odpowiada w 1 zdaniu (≤ 40 słów) (zasada stała 10).
-// 4. Konkrety zamiast ogólników: liczby, terminy, warunki (zasada stała 9). Dane w nawiasach = zaślepki do uzupełnienia.
-// 5. Widoczna data aktualizacji = dateModified w JSON-LD = lastmod w sitemap (technika nr 6, zasada stała 13).
-// 6. FAQ z kolekcji (ta sama treść w HTML i w JSON-LD FAQPage; technika nr 9: tanio, bez obietnic efektu).
-// Prawo: formularz pilotażu BEZ pola zgody (decyzja 1A); „Powiadom mnie” z niezaznaczoną zgodą, aktywny od startu (decyzja 6B).
-// Teksty poniżej to PRZYKŁAD UKŁADU (zmyślone, oznaczone), nie treść do publikacji. Treść docelowa: makieta 32 + CMS.
+// /pilotaze (makieta 32, komputer 1440 i telefon 375). Treść: panel Keystatic → „Strona 32: Darmowe pilotaże” (src/content/strony/pilotaze.json).
+// Prawo: formularz pilotażu BEZ pola zgody (decyzja 1A, klauzula pod formularzem); „Powiadom mnie” / lista oczekujących z niezaznaczoną zgodą (decyzja 6B, wspólny sheet).
+// S5 = FAQ z kolekcji (strony: pilotaze), te same pytania w JSON-LD FAQPage (Uklad).
 import Uklad from '../layouts/Uklad.astro';
-import Aktualizacja from '../components/seo/Aktualizacja.astro';
-import KlauzulaInformacyjna from '../components/prawo/KlauzulaInformacyjna.astro';
-import ZgodaMarketingowa from '../components/prawo/ZgodaMarketingowa.astro';
-import { getEntry, getCollection, render } from 'astro:content';
+import { trescStrony } from '../lib/tresc';
+import S1Hero from '../components/pilotaze/S1Hero.astro';
+import S2Kategorie from '../components/pilotaze/S2Kategorie.astro';
+import S3JakDziala from '../components/pilotaze/S3JakDziala.astro';
+import S4Warunki from '../components/pilotaze/S4Warunki.astro';
+import S5Faq from '../components/pilotaze/S5Faq.astro';
+import S6Formularz from '../components/pilotaze/S6Formularz.astro';
+import S7NieWiesz from '../components/pilotaze/S7NieWiesz.astro';
 
-const seo = (await getEntry('seo', 'pilotaze'))!.data;
-const faq = (await getCollection('faq', (f) => f.data.strony.includes('pilotaze'))).sort((a, b) => a.data.kolejnosc - b.data.kolejnosc);
-const faqTresc = await Promise.all(faq.map(async (f) => ({ ...f, Tresc: (await render(f)).Content })));
+const t = await trescStrony('strona-pilotaze');
+if (!t) throw new Error('Brak treści strony: src/content/strony/pilotaze.json');
 const okruszki = [{ nazwa: 'Strona główna', url: '/' }, { nazwa: 'Pilotaże', url: '/pilotaze' }];
 ---
 <Uklad strona="pilotaze" nazwaStrony="Darmowe pilotaże" okruszki={okruszki}>
-  <article>
-    <h1>{seo.intencja}</h1>
-    <p class="odpowiedz">
-      Pilotaż to darmowa, [liczba]-dniowa próba jednej usługi Forma Kodu: strony internetowej albo analizy SEO/GEO.
-      Dostajesz działający fragment pracy, a po nim decydujesz, czy kupujesz całość. Nie płacisz nic i niczego nie podpisujesz.
-    </p>
-    <Aktualizacja strona="pilotaze" />
-
-    <section class="pojaw">
-      <h2>Co dostanę w darmowym pilotażu strony internetowej?</h2>
-      <p>Dostaniesz projekt i kod jednej podstrony, np. strony głównej, na Twoich tekstach i zdjęciach, opublikowany pod adresem testowym na [liczba] dni.</p>
-      <ul>
-        <li>projekt w Figmie w wersji na telefon i komputer,</li>
-        <li>kod strony z wynikiem Lighthouse co najmniej [liczba] w każdej kategorii,</li>
-        <li>raport: co zadziała w Google i w odpowiedziach AI, a czego sama strona nie załatwi.</li>
-      </ul>
-    </section>
-
-    <section class="pojaw">
-      <h2>Co dostanę w darmowym pilotażu analizy SEO/GEO?</h2>
-      <p>Dostaniesz sprawdzenie [liczba] pytań klientów z Twojej branży: czy Twoja firma pojawia się w Google, ChatGPT, Perplexity i Gemini, z listą 5 najważniejszych poprawek.</p>
-    </section>
-
-    <section class="pojaw">
-      <h2>Jakie są warunki pilotażu?</h2>
-      <p>Jeden pilotaż na firmę, start w ciągu [liczba] dni od zgłoszenia, liczba miejsc w miesiącu: [liczba].</p>
-    </section>
-
-    <section id="zgloszenie">
-      <h2>Jak zgłosić się do pilotażu?</h2>
-      <p>Wypełnij formularz poniżej; odpowiemy w ciągu [liczba] dni roboczych z terminem startu.</p>
-      <form method="post" action="/api/pilotaz">
-        <p><label for="p-imie">Imię</label> <input id="p-imie" name="imie" autocomplete="given-name" required /></p>
-        <p><label for="p-email">E-mail</label> <input id="p-email" name="email" type="email" autocomplete="email" required /></p>
-        <p><label for="p-tel">Telefon (nieobowiązkowo)</label> <input id="p-tel" name="telefon" type="tel" autocomplete="tel" /></p>
-        <p>
-          <label for="p-usluga">Usługa</label>
-          <select id="p-usluga" name="usluga"><option>Strona internetowa</option><option>Analiza SEO/GEO</option></select>
-        </p>
-        <p><label for="p-wiad">Kilka słów o firmie</label> <textarea id="p-wiad" name="wiadomosc" rows="4"></textarea></p>
-        <KlauzulaInformacyjna />
-        <button type="submit">Wyślij zgłoszenie</button>
-      </form>
-    </section>
-
-    <section id="powiadom">
-      <h2>Kiedy ruszy analiza SEO/GEO dla wszystkich?</h2>
-      <p>Planujemy start w [miesiąc i rok]. Zostaw e-mail, a wyślemy jedną wiadomość w dniu startu.</p>
-      <form method="post" action="/api/powiadom">
-        <p><label for="pw-email">E-mail</label> <input id="pw-email" name="email" type="email" autocomplete="email" required /></p>
-        <ZgodaMarketingowa usluga="analizy SEO/GEO" />
-        <button type="submit">Powiadom mnie</button>
-      </form>
-    </section>
-
-    {faqTresc.length > 0 && (
-      <section>
-        <h2>Najczęstsze pytania o pilotaż</h2>
-        {faqTresc.map(({ data, Tresc }) => (
-          <div class="faq">
-            <h3>{data.pytanie}</h3>
-            <Tresc />
-          </div>
-        ))}
-      </section>
-    )}
-  </article>
+  <S1Hero t={t.s1_hero} />
+  <S2Kategorie t={t.s2_kategorie} />
+  <S3JakDziala t={t.s3_jak_dziala} />
+  <S4Warunki t={t.s4_warunki} />
+  <S5Faq t={t.s5_faq} />
+  <S6Formularz t={t.s6_formularz} />
+  <S7NieWiesz t={t.s7_nie_wiesz} />
 </Uklad>

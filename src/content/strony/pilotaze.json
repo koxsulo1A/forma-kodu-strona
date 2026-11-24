@@ -1,0 +1,75 @@
+{
+  "s1_hero": {
+    "etykieta": "Pilotaż bezpłatny, na pisemnych warunkach",
+    "h1": "Zbudujmy razem jedną z naszych pierwszych realizacji",
+    "lead": "Nie mamy jeszcze realizacji, które moglibyśmy Ci pokazać, i nie udajemy, że jest inaczej. Dlatego pierwsze projekty robimy bezpłatnie, jako pilotaże. Ty dostajesz pracę w ustalonym zakresie. My dostajemy prawdziwą realizację, którą za Twoją zgodą pokażemy, i pomiar czasu, z którego policzymy uczciwe ceny.",
+    "lead_2": "Ty znasz swoją firmę i swoich klientów, my znamy narzędzia. Zakres ustalamy razem i spisujemy, zanim zaczniemy.",
+    "cta": "Przejdź do formularza",
+    "fakty": [
+      "4 kategorie z naborem, po 3 miejsca w każdej; 2 kategorie wkrótce.",
+      "Wykonanie bezpłatne.",
+      "Hosting i koszty działania po Twojej stronie, jeśli się zgodzisz.",
+      "Zakres, termin, zgoda na pokazanie realizacji i zasady danych na piśmie przed startem."
+    ]
+  },
+  "s2_kategorie": {
+    "etykieta": "Kategorie pilotaży",
+    "naglowek": "Wybierz kategorię",
+    "lead": "Każda kategoria z naborem ma 3 miejsca. Przy każdej widzisz, ile zostało. Nie wiesz, która pasuje? Opisz potrzebę w formularzu, a dobierzemy ją razem.",
+    "plakietka": "przykładowy stan miejsc",
+    "kategorie": [
+      { "nazwa": "Strony", "opis": "Strona dopasowana do Twojej firmy: wizytówka, landing albo strona firmowa.", "status": "nabór", "wolne": 3, "miejsca": 3, "notka_wkrotce": "" },
+      { "nazwa": "Sklepy", "opis": "Sklep z produktami, koszykiem i płatnością, w zakresie ustalonym przed startem.", "status": "nabór", "wolne": 2, "miejsca": 3, "notka_wkrotce": "" },
+      { "nazwa": "Aplikacje", "opis": "Działający prototyp aplikacji z funkcjami, które razem uznamy za najważniejsze.", "status": "wkrótce", "wolne": 0, "miejsca": 3, "notka_wkrotce": "Dziś poza naszą ofertą." },
+      { "nazwa": "Naprawa i ulepszanie stron", "opis": "Najpierw diagnoza Twojej strony, potem poprawki, które wspólnie wybierzemy.", "status": "komplet", "wolne": 0, "miejsca": 3, "notka_wkrotce": "" },
+      { "nazwa": "Automatyzacje", "opis": "Bot czatowy albo automatyzacja jednej powtarzalnej czynności, z opisem ograniczeń.", "status": "nabór", "wolne": 1, "miejsca": 3, "notka_wkrotce": "" },
+      { "nazwa": "SEO/GEO (analiza)", "opis": "Analiza widoczności strony w wyszukiwarce i w odpowiedziach AI, z pisemnym raportem.", "status": "wkrótce", "wolne": 0, "miejsca": 3, "notka_wkrotce": "Nabór jeszcze nie ruszył." }
+    ]
+  },
+  "s3_jak_dziala": {
+    "etykieta": "",
+    "naglowek": "Jak działa pilotaż",
+    "lead": "Pięć kroków, od formularza do odbioru gotowej pracy.",
+    "kroki": [
+      { "tytul": "Zgłoszenie", "opis": "Wypełniasz formularz na dole strony: czego potrzebujesz i jak się z Tobą skontaktować." },
+      { "tytul": "Rozmowa", "opis": "Pytamy o Twoją firmę i Twoich klientów. Jeśli pilotaż nie jest dla Ciebie, powiemy to wprost. Rozmowa do niczego Cię nie zobowiązuje." },
+      { "tytul": "Warunki na piśmie", "opis": "Spisujemy zakres, termin, zgodę na pokazanie realizacji i zasady dotyczące danych. Praca zaczyna się dopiero po Twojej akceptacji." },
+      { "tytul": "Praca etap po etapie", "opis": "Oglądasz kolejne wersje i zgłaszasz uwagi w trakcie, a nie po fakcie." },
+      { "tytul": "Odbiór", "opis": "Dostajesz gotową pracę z opisem: co zrobiliśmy, jak to sprawdziliśmy i czego rozwiązanie nie potrafi." }
+    ]
+  },
+  "s4_warunki": {
+    "etykieta": "",
+    "naglowek": "Warunki pilotażu",
+    "lead": "Wszystko, co ważne, ustalamy z Tobą na piśmie, zanim zaczniemy.",
+    "warunki": [
+      { "tytul": "Wykonanie jest bezpłatne.", "opis": "Za naszą pracę w pilotażu nie płacisz." },
+      { "tytul": "Hosting i koszty działania pokrywasz Ty, jeśli się na to zgodzisz.", "opis": "Opłaty za serwer, domenę i usługi, z których korzysta rozwiązanie, płacisz bezpośrednio ich dostawcom. Kwoty podamy na piśmie przed startem." },
+      { "tytul": "Wszystko na piśmie przed startem.", "opis": "Spisujemy zakres, termin, zgodę na pokazanie realizacji i zasady dotyczące danych. Praca zaczyna się dopiero po Twojej akceptacji." },
+      { "tytul": "Zgoda na pokazanie realizacji.", "opis": "Realizację pokażemy tylko za Twoją zgodą. Co pokażemy, ustalamy z Tobą i zapisujemy." },
+      { "tytul": "3 miejsca w każdej kategorii z naborem.", "opis": "Przy każdej kategorii widzisz, ile miejsc zostało. Gdy miejsc zabraknie, możesz zapisać się na listę oczekujących." }
+    ]
+  },
+  "s5_faq": {
+    "etykieta": "",
+    "naglowek": "Pytania, które warto zadać przed zgłoszeniem",
+    "lead": ""
+  },
+  "s6_formularz": {
+    "naglowek": "Zgłoś się na pilotaż",
+    "lead": "Zajmie Ci to kilka minut. Wystarczy rodzaj projektu i kontakt, resztę dopytamy w rozmowie. Wysłanie zgłoszenia do niczego Cię nie zobowiązuje.",
+    "etapy": ["Rodzaj projektu", "Opis i wymagania", "Kontakt", "Wysyłka"],
+    "opcje_strony": ["WordPress", "Sklep WooCommerce", "Wizytówka lub landing", "Strona firmowa", "Strona statyczna z panelem treści", "Inna strona"],
+    "opcje_pozostale": ["Sklep na innej platformie", "Aplikacja", "Naprawa lub ulepszenie strony", "Automatyzacja", "Bot czatowy", "SEO/GEO (wkrótce, lista oczekujących)", "Nie wiem"],
+    "podpowiedzi_technologie": ["WordPress", "Gotowy motyw", "Strona statyczna z panelem", "WooCommerce", "Gotowa platforma sklepowa", "Aplikacja webowa", "Aplikacja mobilna", "Nie wiem, doradźcie"],
+    "podpowiedzi_wymagania": ["Łatwe dodawanie zdjęć", "Blog", "Bramka płatności", "Samodzielna edycja treści", "Konta klientów", "Punkty lojalnościowe", "Rezerwacje online", "Formularz kontaktowy", "Wersje językowe"],
+    "godziny": ["8:00-10:00", "10:00-12:00", "12:00-15:00", "15:00-18:00", "18:00-20:00", "Dowolna pora"],
+    "przycisk": "Postaw kolejny krok",
+    "komunikat_sukcesu": "Zgłoszenie dotarło. Odezwiemy się wybranym przez Ciebie sposobem i umówimy rozmowę."
+  },
+  "s7_nie_wiesz": {
+    "naglowek": "Nie wiesz, czy pilotaż jest dla Ciebie?",
+    "opis": "Napisz, co Ci dziś przeszkadza. Odpowiemy wprost: co zrobimy w pilotażu, czego nie i dlaczego.",
+    "cta": "Napisz do nas"
+  }
+}

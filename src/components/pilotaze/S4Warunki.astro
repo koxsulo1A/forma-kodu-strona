@@ -1,0 +1,46 @@
+---
+// 32 S4 Warunki pilotażu (wariant E): nagłówek z boku, rozwijane bloki (jeden otwarty naraz, pierwszy otwarty). Akordeon: data-akordeon (strona.ts 8).
+// Bez JS: wszystkie opisy widoczne.
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s4 baza segment" id="warunki" data-segment="S4 Warunki pilotażu" aria-labelledby="s4-h">
+  <div class="kontener s4-wnetrze">
+    <header class="naglowek">
+      <h2 id="s4-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc pomocniczy">{t.lead}</p>}
+    </header>
+    <ul role="list" class="bloki" data-akordeon>
+      {t.warunki.map((w: any, i: number) => (
+        <li class="blok">
+          <h3 class="t-h4">
+            <button type="button" aria-expanded={String(i === 0)} aria-controls={`s4-o-${i}`} id={`s4-p-${i}`}>
+              <span>{w.tytul}</span><span class="ikona" aria-hidden="true"><Ikona nazwa="plus" /></span>
+            </button>
+          </h3>
+          <div class="odpowiedz t-tresc" id={`s4-o-${i}`} role="region" aria-labelledby={`s4-p-${i}`} hidden={i !== 0}>{w.opis}</div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .s4 { padding-block: clamp(48px, 5vw, 72px); }
+  .s4-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 832fr); gap: 64px; align-items: start; }
+  .naglowek { display: grid; gap: 12px; }
+  .bloki { display: grid; gap: 12px; }
+  .blok { border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .blok button { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 20px 24px; text-align: left; font: inherit; color: var(--fk-tekst-naglowek); background: none; border: 0; cursor: pointer; border-radius: inherit; }
+  .blok button:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
+  .ikona { flex: none; width: 28px; height: 28px; border-radius: 50%; border: 1px solid currentColor; display: grid; place-items: center; transition: transform var(--fk-czas-ikona) var(--fk-krzywa-standard); }
+  [aria-expanded='true'] .ikona { transform: rotate(45deg); }
+  .odpowiedz { padding: 0 24px 20px; }
+  :global(html:not(.js)) .odpowiedz[hidden] { display: block; }
+  @media (prefers-reduced-motion: reduce) { .ikona { transition: none; } }
+  @media (max-width: 1023.98px) {
+    .s4-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .blok button { padding: 16px 18px; } .odpowiedz { padding: 0 18px 16px; }
+  }
+</style>

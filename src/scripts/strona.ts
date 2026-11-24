@@ -157,7 +157,7 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
   const sukces = f.nextElementSibling as HTMLElement;
   const pola = [...f.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[required], textarea[required]')];
   const sprawdz = (p: HTMLInputElement | HTMLTextAreaElement) => {
-    const ok = p.type === 'checkbox' ? (p as HTMLInputElement).checked : p.value.trim() !== '' && (p.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(p.value.trim()));
+    const ok = p.type === 'radio' ? !!f.querySelector(`input[name="${p.name}"]:checked`) : p.type === 'checkbox' ? (p as HTMLInputElement).checked : p.value.trim() !== '' && (p.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(p.value.trim()));
     const blad = document.getElementById(`${p.id}-blad`);
     p.setAttribute('aria-invalid', String(!ok));
     const opisy = (p.getAttribute('aria-describedby') ?? '').split(' ').filter((x) => x && x !== blad?.id);
@@ -167,6 +167,8 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
     return ok;
   };
   pola.forEach((p) => p.addEventListener('blur', () => { if (p.getAttribute('aria-invalid')) sprawdz(p); }));
+  // Grupa radio (32 S6): wybór dowolnej opcji zdejmuje błąd z pierwszej (to ona ma required).
+  pola.filter((p) => p.type === 'radio').forEach((p) => f.querySelectorAll(`input[name="${p.name}"]`).forEach((r) => r.addEventListener('change', () => { if (p.getAttribute('aria-invalid')) sprawdz(p); })));
   f.addEventListener('submit', async (e) => {
     e.preventDefault();
     const zle = pola.filter((p) => !sprawdz(p));
@@ -180,6 +182,7 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
       const odp = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } });
       if (!odp.ok) throw new Error(String(odp.status));
       const email = (f.querySelector('input[type=email]') as HTMLInputElement).value;
+      if (f.dataset.szkic) { try { localStorage.removeItem(f.dataset.szkic); } catch { /* tryb prywatny */ } }
       f.hidden = true;
       sukces.hidden = false;
       sukces.querySelector('[data-sukces-email]')!.textContent = email;
@@ -193,6 +196,35 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
       pola.forEach((p) => (p.readOnly = false));
     }
   });
+});
+
+// ---------- 6b. Szkic formularza w tej przeglądarce (32 S6, data-szkic="klucz"): przycisk zapisuje, przy wejściu wraca. Do nas nic nie idzie. ----------
+document.querySelectorAll<HTMLFormElement>('form[data-szkic]').forEach((f) => {
+  const klucz = f.dataset.szkic!;
+  const przycisk = f.querySelector<HTMLButtonElement>('[data-zapisz-szkic]');
+  const stan = f.querySelector<HTMLElement>('[data-szkic-stan]');
+  f.querySelector<HTMLElement>('[data-szkic-info]')?.removeAttribute('hidden');
+  if (!przycisk) return;
+  przycisk.hidden = false;
+  const pomin = new Set(['strona_www']);
+  przycisk.addEventListener('click', () => {
+    const dane: Record<string, string[]> = {};
+    new FormData(f).forEach((v, k) => { if (!pomin.has(k) && typeof v === 'string') (dane[k] ??= []).push(v); });
+    zapisz(klucz, JSON.stringify(dane));
+    if (stan) stan.textContent = 'Zapisano w tej przeglądarce. Możesz wrócić i dokończyć później.';
+  });
+  const zapisane = czytaj(klucz);
+  if (!zapisane) return;
+  try {
+    const dane = JSON.parse(zapisane) as Record<string, string[]>;
+    f.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[name], textarea[name]').forEach((p) => {
+      const w = dane[p.name];
+      if (!w || pomin.has(p.name)) return;
+      if (p instanceof HTMLInputElement && (p.type === 'checkbox' || p.type === 'radio')) p.checked = w.includes(p.value);
+      else p.value = w[0] ?? '';
+    });
+    if (stan) stan.textContent = 'Wczytaliśmy formularz zapisany wcześniej w tej przeglądarce.';
+  } catch { /* uszkodzony szkic: pomijamy */ }
 });
 
 // ---------- 7. Wskaźnik swipe (telefon): aktywna kropka = karta przy lewej krawędzi ----------

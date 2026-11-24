@@ -1,0 +1,44 @@
+---
+// 32 S3 Jak działa pilotaż (wariant B): nagłówek po lewej, pionowa oś 5 kroków. Kroki minięte przy przewijaniu dostają ✓ (data-os-pionowa, strona.ts 9c),
+// pierwszy niezaliczony jest podświetlony (tak jak stepper na makiecie). Bez JS: zwykła numerowana lista.
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s3 baza segment" id="jak-dziala" data-segment="S3 Jak działa pilotaż" aria-labelledby="s3-h">
+  <div class="kontener s3-wnetrze">
+    <header class="naglowek">
+      <h2 id="s3-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc pomocniczy">{t.lead}</p>}
+    </header>
+    <ol role="list" class="os" data-os-pionowa>
+      {t.kroki.map((k: any, i: number) => (
+        <li data-krok-osi class:list={[{ przeszly: i === 0 }]}>
+          <span class="nr t-etykieta" aria-hidden="true"><span class="cyfra">{i + 1}</span><span class="haczyk"><Ikona nazwa="check" rozmiar={14} /></span></span>
+          <div class="tresc"><h3 class="t-h4 naglowkowy">{k.tytul}</h3><p class="t-tresc">{k.opis}</p></div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .s3 { padding-block: clamp(48px, 5vw, 72px); }
+  .s3-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 832fr); gap: 64px; align-items: start; }
+  .naglowek { display: grid; gap: 12px; position: sticky; top: calc(var(--fk-wys-paska) + 24px); }
+  .os li { position: relative; display: grid; grid-template-columns: 32px minmax(0, 1fr); gap: 20px; padding-bottom: 32px; }
+  .os li:not(:last-child)::before { content: ''; position: absolute; left: 15px; top: 34px; bottom: 2px; width: 2px; background: var(--fk-obrys-kontrolka); }
+  .nr { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo); color: var(--fk-tekst-naglowek); transition: background var(--fk-czas-szybki), border-color var(--fk-czas-szybki); }
+  .haczyk { display: none; }
+  .os li:global(.przeszly) .nr { background: var(--fk-zielen-srednia); border-color: var(--fk-zielen-srednia); color: var(--fk-tlo); }
+  .os li:global(.przeszly) .cyfra { display: none; }
+  .os li:global(.przeszly) .haczyk { display: grid; }
+  .os li:global(.przeszly)::before { background: var(--fk-zielen-srednia); }
+  .os li:global(.przeszly) + li:not(:global(.przeszly)) .nr { background: var(--fk-przelamanie); border-color: var(--fk-przelamanie); color: var(--fk-przelamanie-tekst); box-shadow: 0 0 0 4px var(--fk-tlo-podniesione); }
+  .tresc { display: grid; gap: 6px; padding-top: 4px; }
+  @media (max-width: 1023.98px) {
+    .s3-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .naglowek { position: static; }
+    .os li { gap: 14px; padding-bottom: 24px; }
+  }
+</style>
