@@ -1,0 +1,46 @@
+---
+// 29 S7 Cena (wariant F): cztery kolumny, cena na dole każdej karty. Ceny z jednego cennika (kolekcja „Ceny”, relacja w panelu).
+// Makieta: „przykład z rynku, nie nasza oferta”. Kod: „Cena Forma Kodu”, bo cennik ma nasza_cena: true (decyzja Kacpra 24.11). Puste = „Zakres i cenę ustalamy po rozmowie”.
+// Telefon: jedna karta swipe ze wskaźnikiem od 01.
+import { cena, cenaTekst } from '../../lib/ceny.mjs';
+interface Props { t: any }
+const { t } = Astro.props;
+const karty = t.zakresy.map((z: any, i: number) => {
+  const c = cena(z.cena);
+  return { ...z, nr: String(i + 1).padStart(2, '0'), tekst: c ? cenaTekst(c) : 'Zakres i cenę ustalamy po rozmowie', podpis: c ? (c.nasza_cena ? 'Cena Forma Kodu' : 'Przykład z rynku, nie nasz cennik') : 'wycena po rozmowie' };
+});
+---
+<section class="s7 kratka segment" id="cena" data-segment="S7 Cena" aria-labelledby="s7-h">
+  <div class="kontener s7-wnetrze">
+    <header class="naglowek">
+      <h2 id="s7-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l">{t.lead}</p>}
+    </header>
+    <ul role="list" class="karty swipe" data-swipe="s7-wskaznik">
+      {karty.map((k: any) => (
+        <li>
+          <span class="t-liczba akcentowy" aria-hidden="true">{k.nr}</span>
+          <h3 class="t-h4 naglowkowy">{k.nazwa}</h3>
+          <p class="t-tresc">{k.opis}</p>
+          <p class="cena"><span class="t-h4 naglowkowy">{k.tekst}</span><span class="t-etykieta pomocniczy">{k.podpis}</span></p>
+        </li>
+      ))}
+    </ul>
+    <div class="wskaznik-swipe" id="s7-wskaznik" aria-hidden="true">
+      <ol>{karty.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
+      <span data-licznik>1 z {karty.length}</span>
+    </div>
+    {t.przypisy.length > 0 && <div class="przypisy">{t.przypisy.map((p: string) => <p class="t-maly">{p}</p>)}</div>}
+  </div>
+</section>
+
+<style>
+  .s7 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s7-wnetrze { display: grid; gap: 32px; }
+  .naglowek { display: grid; gap: 12px; max-width: 880px; }
+  .karty { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .karty li { display: flex; flex-direction: column; gap: 12px; min-height: 420px; padding: 28px; border-radius: var(--radius-card); background: var(--fk-tlo); border: 1px solid var(--fk-obrys); }
+  .cena { margin-top: auto; display: grid; gap: 4px; padding: 12px 16px; border-radius: var(--radius-control); background: var(--fk-tlo-powierzchnia); }
+  .przypisy { display: grid; gap: 4px; }
+  @media (max-width: 1023.98px) { .karty li { min-height: 0; padding: 24px 20px; } }
+</style>

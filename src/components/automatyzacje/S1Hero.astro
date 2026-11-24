@@ -1,0 +1,63 @@
+---
+// 29 S1 Hero: etykiety atutów nad H1, pytanie klienta, dwa przyciski; po prawej klikalna przykładowa rozmowa z botem (trening personalny).
+// Rozmowa (makieta, plansze 4 klatek): klient pyta → bot pyta o liczbę dni → klik w liczbę dni → propozycja godziny 11–12 → Tak / Nie.
+// Treść rozmowy jest przykładem (podpis „przykład, kliknij”), zachowanie: data-czat-demo w strona.ts. Bez JS widać pierwszą wymianę.
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s1 baza segment" id="start" data-segment="S1 Hero" aria-labelledby="s1-h">
+  <div class="kontener s1-wnetrze">
+    <div class="tekst">
+      {t.atuty.length > 0 && <ul role="list" class="atuty">{t.atuty.map((a: string) => <li class="t-etykieta">{a}</li>)}</ul>}
+      <h1 id="s1-h" class="t-display naglowkowy pojaw">{t.h1}</h1>
+      <p class="t-tresc-l">{t.lead}</p>
+      <div class="akcje">
+        <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta_1}</a>
+        {t.cta_2 && <a class="przycisk przycisk--drugi" href="#jak-pracujemy">{t.cta_2}</a>}
+      </div>
+    </div>
+    <figure class="czat" data-czat-demo aria-labelledby="s1-czat-h">
+      <figcaption class="czat-gora"><span id="s1-czat-h" class="t-maly-mocny naglowkowy">Przykładowa rozmowa</span><span class="t-etykieta znacznik">przykład, kliknij</span></figcaption>
+      <ol role="list" class="wiadomosci" aria-live="polite" data-czat-wiadomosci>
+        <li class="dymek klient"><small>Klient</small>Witam, czy można umówić się na trening personalny?</li>
+        <li class="dymek asystent"><small>Asystent</small>Tak, ile dni w tygodniu?</li>
+      </ol>
+      <div class="odpowiedzi" data-czat-odpowiedzi>
+        <button type="button" data-czat="dni">1 dzień</button>
+        <button type="button" data-czat="dni">2 dni</button>
+        <button type="button" data-czat="dni">3 dni</button>
+        <button type="button" data-czat="dni">4 dni lub więcej</button>
+      </div>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .s1 { padding-block: clamp(24px, 3.5vw, 51px) 38px; }
+  .s1-wnetrze { display: grid; grid-template-columns: minmax(0, 718fr) minmax(0, 542fr); gap: 52px; align-items: center; }
+  .tekst { display: grid; gap: 24px; }
+  .atuty { display: flex; flex-wrap: wrap; gap: 12px; }
+  .atuty li { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-sukces); color: var(--fk-sukces); }
+  .akcje { display: flex; flex-wrap: wrap; gap: 16px; }
+  .czat { margin: 0; display: grid; gap: 16px; padding: 28px; border-radius: 20px; background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); min-height: 460px; align-content: start; }
+  .czat-gora { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .znacznik { padding: 4px 12px; border-radius: var(--radius-pill); background: var(--fk-grad-przelamanie); color: var(--fk-przelamanie-tekst); }
+  .wiadomosci { display: grid; gap: 12px; }
+  .dymek { display: grid; gap: 4px; max-width: 86%; padding: 12px 16px; border-radius: 16px; font-size: var(--fk-font-tresc); line-height: 1.5; color: var(--fk-tekst-naglowek); }
+  .dymek small { font-family: var(--fk-rodzina-mono); font-size: 12px; color: var(--fk-tekst-pomocniczy); }
+  .klient { justify-self: end; background: var(--fk-tlo-podniesione); border-bottom-right-radius: 4px; }
+  .asystent { justify-self: start; background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-bottom-left-radius: 4px; }
+  :global(html:not(.bez-ruchu)) .dymek.nowy { animation: wejdz var(--fk-czas-rozwiniecie) var(--fk-krzywa-wejscie); }
+  @keyframes wejdz { from { opacity: 0; transform: translateY(8px); } }
+  @media (prefers-reduced-motion: reduce) { .dymek.nowy { animation: none !important; } }
+  .odpowiedzi { display: flex; flex-wrap: wrap; gap: 8px; }
+  :global(html:not(.js)) .odpowiedzi { display: none; }
+  .odpowiedzi button { padding: 8px 16px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); background: var(--fk-tlo); color: var(--fk-akcent); font: inherit; font-size: var(--fk-font-maly); cursor: pointer; }
+  .odpowiedzi button:hover { background: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
+  .odpowiedzi .od-nowa { border-color: var(--fk-obrys-kontrolka); color: var(--fk-tekst); }
+  @media (max-width: 1023.98px) {
+    .s1-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .akcje .przycisk { flex: 1; justify-content: center; }
+    .czat { padding: 20px; min-height: 0; }
+  }
+</style>

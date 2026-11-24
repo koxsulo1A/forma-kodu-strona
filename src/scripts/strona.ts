@@ -131,6 +131,12 @@ document.addEventListener('click', (e) => {
   if (menu) { otwierajacy = null; (menu as HTMLDialogElement).close(); }
   const opis = cel.dataset.opis;
   if (opis) { const pole = d.querySelector<HTMLTextAreaElement>('textarea[name=opis]'); if (pole && !pole.value) pole.value = opis; }
+  // „Powiadom mnie”: nazwa usługi z przycisku trafia do zgody i do ukrytego pola formularza.
+  const usluga = cel.dataset.usluga;
+  if (usluga) {
+    d.querySelectorAll('[data-usluga-nazwa]').forEach((el) => (el.textContent = usluga));
+    const ukryte = d.querySelector<HTMLInputElement>('input[name=usluga]'); if (ukryte) ukryte.value = usluga;
+  }
   otworz(d, zrodlo);
 });
 const menuPrzycisk = document.querySelector<HTMLButtonElement>('[data-otworz-menu]');
@@ -150,7 +156,7 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
   const sukces = f.nextElementSibling as HTMLElement;
   const pola = [...f.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[required], textarea[required]')];
   const sprawdz = (p: HTMLInputElement | HTMLTextAreaElement) => {
-    const ok = p.value.trim() !== '' && (p.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(p.value.trim()));
+    const ok = p.type === 'checkbox' ? (p as HTMLInputElement).checked : p.value.trim() !== '' && (p.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(p.value.trim()));
     const blad = document.getElementById(`${p.id}-blad`);
     p.setAttribute('aria-invalid', String(!ok));
     const opisy = (p.getAttribute('aria-describedby') ?? '').split(' ').filter((x) => x && x !== blad?.id);
@@ -324,6 +330,56 @@ document.querySelectorAll<HTMLElement>('[data-os-pionowa]').forEach((os) => {
   }, { rootMargin: '-50% 0px -50% 0px', threshold: 0 });
   kroki.slice(1).forEach((el) => obs.observe(el));
 });
+
+// ---------- 9d. Klikalna rozmowa z botem (29 S1, przykład): dni → propozycja godziny → Tak / Nie ----------
+document.querySelectorAll<HTMLElement>('[data-czat-demo]').forEach((czat) => {
+  const lista = czat.querySelector<HTMLElement>('[data-czat-wiadomosci]')!;
+  const odp = czat.querySelector<HTMLElement>('[data-czat-odpowiedzi]')!;
+  const start = { html: lista.innerHTML, przyciski: odp.innerHTML };
+  const dodaj = (kto: 'klient' | 'asystent', tekst: string) => {
+    const li = document.createElement('li');
+    li.className = `dymek ${kto} nowy`;
+    const s = document.createElement('small');
+    s.textContent = kto === 'klient' ? 'Klient' : 'Asystent';
+    li.append(s, tekst);
+    // klasy z zakresu stylów komponentu (Astro dopisuje atrybut data-astro-cid-*)
+    const wzor = lista.querySelector('li');
+    if (wzor) [...wzor.attributes].filter((a) => a.name.startsWith('data-astro-cid')).forEach((a) => { li.setAttribute(a.name, a.value); s.setAttribute(a.name, a.value); });
+    lista.append(li);
+  };
+  const przyciski = (opcje: [string, string][]) => {
+    const wzor = odp.querySelector('button');
+    const cid = wzor ? [...wzor.attributes].filter((a) => a.name.startsWith('data-astro-cid')) : [];
+    odp.replaceChildren(...opcje.map(([tekst, akcja]) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = tekst; b.dataset.czat = akcja;
+      if (akcja === 'od-nowa') b.className = 'od-nowa';
+      cid.forEach((a) => b.setAttribute(a.name, a.value));
+      return b;
+    }));
+    (odp.querySelector('button') as HTMLButtonElement | null)?.focus();
+  };
+  odp.addEventListener('click', (e) => {
+    const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-czat]');
+    if (!b) return;
+    const akcja = b.dataset.czat;
+    if (akcja === 'od-nowa') { lista.innerHTML = start.html; odp.innerHTML = start.przyciski; (odp.querySelector('button') as HTMLButtonElement | null)?.focus(); return; }
+    dodaj('klient', b.textContent ?? '');
+    if (akcja === 'dni') { dodaj('asystent', 'Jasne, mam w te dni miejsce o godzinie 11–12. Pasuje?'); przyciski([['Tak', 'tak'], ['Nie', 'nie']]); }
+    else { dodaj('asystent', akcja === 'tak' ? 'Jasne, to widzimy się na treningu!' : 'Szkoda, może spróbujemy inne dni?'); przyciski([['Zacznij od nowa', 'od-nowa']]); }
+  });
+});
+
+// ---------- 9e. Odsłona przy wejściu w ekran (29 S5 stos kart, 29 S6 stepper): klasa .widoczny raz, gdy segment jest w 25% widoczny ----------
+{
+  const odslony = [...document.querySelectorAll<HTMLElement>('[data-odslon]')];
+  if (odslony.length && 'IntersectionObserver' in window) {
+    const obs = new IntersectionObserver((wpisy) => wpisy.forEach((w) => {
+      if (w.isIntersecting) { w.target.classList.add('widoczny'); obs.unobserve(w.target); }
+    }), { threshold: 0.15 });
+    odslony.forEach((el) => obs.observe(el));
+  } else odslony.forEach((el) => el.classList.add('widoczny'));
+}
 
 // ---------- 10a. Rozwijanie grupowe (S8): klik w dowolnym „Co zawiera” rozwija wszystkie trzy pakiety ----------
 document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) => {

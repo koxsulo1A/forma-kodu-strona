@@ -5,8 +5,9 @@
 import { getCollection, render } from 'astro:content';
 import Ikona from '../wspolne/Ikona.astro';
 type Strona = 'glowna' | 'strony-internetowe' | 'automatyzacje' | 'analiza-seo-geo' | 'realizacje' | 'pilotaze';
-interface Props { strona: Strona; naglowek: string; nr: string; lead?: string }
-const { strona, naglowek, nr, lead } = Astro.props;
+// uklad="lista" (29 S9 wariant A): wszystkie odpowiedzi widoczne, bez akordeonu.
+interface Props { strona: Strona; naglowek: string; nr: string; lead?: string; uklad?: 'akordeon' | 'lista' }
+const { strona, naglowek, nr, lead, uklad = 'akordeon' } = Astro.props;
 const faq = (await getCollection('faq', (f) => f.data.strony.includes(strona))).sort((a, b) => a.data.kolejnosc - b.data.kolejnosc);
 const pytania = await Promise.all(faq.map(async (f) => ({ id: f.id, pytanie: f.data.pytanie, Tresc: (await render(f)).Content })));
 const pol = Math.ceil(pytania.length / 2);
@@ -20,12 +21,15 @@ const p = nr.toLowerCase();
         <h2 id={`${p}-h`} class="t-h2 naglowkowy">{naglowek}</h2>
         {lead && <p class="t-tresc-l pomocniczy">{lead}</p>}
       </header>
-      <div class="kolumny" data-akordeon>
+      <div class="kolumny" data-akordeon={uklad === 'akordeon' ? '' : undefined}>
         {kolumny.map((kol, k) => (
           <ul role="list" class="kolumna">
             {kol.map((q, i) => {
               const n = k * pol + i;
               const otwarte = n === 0;
+              if (uklad === 'lista') return (
+                <li class="pytanie lista"><h3 class="t-h4 naglowkowy">{q.pytanie}</h3><div class="odpowiedz t-tresc"><q.Tresc /></div></li>
+              );
               return (
                 <li class:list={['pytanie', { otwarte }]} data-pytanie>
                   <h3 class="t-h4 naglowkowy">
@@ -58,6 +62,8 @@ const p = nr.toLowerCase();
   .ikona { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--fk-obrys-kontrolka); transition: transform var(--fk-czas-ikona) var(--fk-krzywa-standard); }
   [aria-expanded='true'] .ikona { transform: rotate(45deg); }
   .odpowiedz { padding: 0 24px 20px; display: grid; gap: 8px; }
+  .lista { display: grid; gap: 8px; padding: 20px 24px; }
+  .lista .odpowiedz { padding: 0; }
   .odpowiedz :global(a) { color: var(--fk-akcent); }
   :global(html:not(.js)) .odpowiedz[hidden] { display: grid; }
   @media (prefers-reduced-motion: reduce) { .ikona { transition: none; } }

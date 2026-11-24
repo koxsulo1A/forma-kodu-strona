@@ -201,20 +201,35 @@ export const strony = {
     s17_zamkniecie: zamkniecie(),
   }),
 
+  // Strona 29: pola odwzorowują makietę 29 (Figma ramka 203:148), segment po segmencie (port 24.11).
   'strona-automatyzacje': strona('automatyzacje', 'Strona 29: Automatyzacje', {
-    s1_hero: seg('S1 Hero', { h1: t('H1 = pytanie klienta', 80, true), lead: a('Lead', 200), cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi', 24), etykiety: lista('Etykiety', t('Etykieta', 30), 3, 5) }),
-    s2_dla_kogo: seg('S2 Dla kogo', { ...wspolne(), problemy: lista('Problemy', fields.object({ problem: t('Problem (H4)', 60, true), opis: a('Opis', 140) }), 3, 6, 'problem') }),
-    s3_zakres: seg('S3 Zakres', { ...wspolne(), zakresy: lista('Zakresy', fields.object({ nazwa: t('Nazwa', 40, true), opis: a('Opis', 200), status: wybor('Status („wkrótce” = przycisk „Powiadom mnie”)', ['dostępny', 'wkrótce']), cta: t('Przycisk', 24) }), 4, 4, 'nazwa') }),
-    s4_boty: seg('S4 Boty czatowe', {
-      ...wspolne(),
-      bloki: lista('Bloki', fields.object({ nazwa: t('Nazwa', 40, true), podtytul: t('Podtytuł', 80), potrafi: lista('Potrafi', t('Punkt', 90), 2, 4), nie_potrafi: lista('Nie potrafi (min. 2)', t('Punkt', 90), 2, 4) }), 3, 3, 'nazwa'),
+    s1_hero: seg('S1 Hero (po prawej klikalna przykładowa rozmowa, treść rozmowy w kodzie)', {
+      atuty: lista('Etykiety atutów (nad H1)', t('Atut', 30), 0, 4), h1: t('H1 = pytanie klienta', 90, true), lead: a('Lead', 220),
+      cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi (do „Jak pracujemy”)', 30),
     }),
-    s5_jak_pracujemy: seg('S5 Jak pracujemy', { ...wspolne(), kroki: lista('Kroki', fields.object({ krok: t('Krok', 40, true), opis: a('Opis', 200) }), 4, 4, 'krok') }),
-    s6_ograniczenia: seg('S6 Ograniczenia i koszty', { naglowek: t('Nagłówek', 60, true), lead: a('Lead', 120), kroki: lista('Kroki', t('Treść', 110), 4, 4) }),
-    s7_cena: seg('S7 Cena (przykład). Uwaga: nagłówek nie może powtarzać S3', { ...wspolne(), zakresy: lista('Zakresy', fields.object({ zakres: t('Zakres', 40, true), cena: cenaRel(), co_wplywa: a('Co wpływa na cenę', 160) }), 4, 4, 'zakres') }),
-    s8_przyklad: seg('S8 Przykład pracy (slajdy = realizacje wybrane ręcznie, podpowiedź: kategoria Automatyzacje)', { naglowek: t('Nagłówek', 70, true), lead: a('Lead', 220), realizacje: realizacjeWybor(1, 6) }),
-    s9_faq: faqInfo('S9 FAQ'),
-    s10_zamkniecie: zamkniecie(),
+    s2_dla_kogo: seg('S2 Dla kogo (sytuacje w dwóch rzędach po 3)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 200), sytuacje: lista('Sytuacje', tytulOpis(40, 120), 3, 6, 'tytul') }),
+    s3_zakres: seg('S3 Zakres (dwie połowy: jasna i ciemna)', {
+      naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 160),
+      zakresy: lista('Zakresy (kolejność: jasna, ciemna, jasna, ciemna)', fields.object({ nazwa: t('Nazwa (H3)', 40, true), opis: a('Opis', 220), status: wybor('Status („wkrótce” = przycisk „Powiadom mnie”)', ['dostępny', 'wkrótce']), cta: t('Przycisk (przy „dostępny”)', 24) }), 4, 4, 'nazwa'),
+    }),
+    s4_boty: seg('S4 Co potrafią, a czego nie (ciemny panel, 3 bloki)', {
+      naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 200),
+      bloki: lista('Bloki', fields.object({ nazwa: t('Nazwa (zakładka)', 40, true), tytul: t('Tytuł bloku', 60, true), podtytul: t('Podtytuł', 80), potrafi: lista('Co potrafi', t('Punkt', 90), 1, 4), nie_potrafi: lista('Czego nie potrafi (min. 2)', t('Punkt', 90), 2, 4) }), 3, 3, 'nazwa'),
+    }),
+    s5_jak_pracujemy: seg('S5 Jak pracujemy (stos kart po skosie)', { naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 160), kroki: lista('Kroki', tytulOpis(40, 120), 4, 4, 'tytul') }),
+    s6_ograniczenia: seg('S6 Ograniczenia i koszty (stepper 1–4)', { naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 120), kroki: lista('Kroki', t('Treść', 110), 4, 4) }),
+    s7_cena: seg('S7 Cena (cztery kolumny, cena na dole karty)', {
+      naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 160),
+      zakresy: lista('Zakresy', fields.object({ nazwa: t('Nazwa', 40, true), opis: a('Opis', 200), cena: cenaRel() }), 4, 4, 'nazwa'),
+      przypisy: lista('Przypisy pod kartami', a('Przypis', 200), 0, 3),
+    }),
+    s8_przyklad: seg('S8 Przykład pracy (realizacje z kolekcji + puste miejsca „brak realizacji”)', {
+      naglowek: t('Nagłówek H2', 80, true), lead: a('Lead', 160), realizacje: realizacjeWybor(0, 6),
+      puste: lista('Puste miejsca (usługi bez realizacji)', tytulOpis(40, 120), 0, 3, 'tytul'),
+      pilotaz: fields.object({ tytul: t('Tytuł', 50, true), opis: a('Opis', 120), cta: t('Przycisk', 30, true) }, { label: 'Pasek pilotażu' }),
+    }),
+    s9_faq: seg('S9 FAQ: pytania dodajesz w „Treści wspólne → FAQ” (zaznacz tę stronę)', { naglowek: t('Nagłówek H2', 70, true) }),
+    s10_zamkniecie: seg('S10 Zamknięcie (pytanie jako dymek rozmowy)', { naglowek: t('Pytanie', 90, true), cta: t('Przycisk', 24, true), atuty: lista('Etykiety atutów', t('Atut', 30), 0, 4) }),
   }),
 
   'strona-analiza-seo-geo': strona('analiza-seo-geo', 'Strona 30: Analiza SEO/GEO', {

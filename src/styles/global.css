@@ -164,7 +164,7 @@ h1, h2, h3, h4 { color: var(--fk-tekst-naglowek); text-wrap: balance; }
 /* Segment: wspólny nagłówek */
 .segment { scroll-margin-top: calc(var(--fk-wys-paska) + 8px); }
 /* Wnętrze segmentu: kolumna nie rośnie od karuzeli swipe (min-content toru) */
-.segment [class*='-wnetrze'] { grid-template-columns: minmax(0, 1fr); }
+:where(.segment) [class*='-wnetrze'] { grid-template-columns: minmax(0, 1fr); }
 
 /* Karuzela swipe na telefonie (zasada mobile, wzorzec 28): jedna karta, start od 01 */
 @media (max-width: 1023.98px) {

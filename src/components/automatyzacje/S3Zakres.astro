@@ -1,0 +1,52 @@
+---
+// 29 S3 Zakres (wariant D): dwie połowy od krawędzi do krawędzi, jasna i ciemna; dwa rzędy po dwa zakresy.
+// „Dostępny” = przycisk otwiera „Opisz projekt” z nazwą zakresu. „Wkrótce” = „Powiadom mnie” (sheet z niezaznaczoną zgodą).
+// Telefon: zakresy jeden pod drugim, na przemian jasny i ciemny.
+interface Props { t: any }
+const { t } = Astro.props;
+const rzedy = [t.zakresy.slice(0, 2), t.zakresy.slice(2, 4)];
+---
+<section class="s3 baza segment" id="zakres" data-segment="S3 Zakres" aria-labelledby="s3-h">
+  <div class="kontener naglowek">
+    <h2 id="s3-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+    {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+  </div>
+  <ul role="list" class="polowy">
+    {rzedy.flat().map((z: any, i: number) => (
+      <li class:list={['polowa', i % 2 ? 'ciemna' : 'jasna', i % 2 ? 'prawa' : 'lewa']}>
+        <div class="tresc">
+          {z.status === 'wkrótce' && <p class="t-etykieta wkrotce">wkrótce</p>}
+          <h3 class="t-h2">{z.nazwa}</h3>
+          <p class="t-tresc-l">{z.opis}</p>
+          <div>
+            {z.status === 'wkrótce'
+              ? <button type="button" class="przycisk przycisk--glowny" data-otworz-sheet="sheet-powiadom" data-usluga={z.nazwa} aria-haspopup="dialog">Powiadom mnie <span class="sr-only">: {z.nazwa}</span></button>
+              : <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" data-opis={`Interesuje mnie: ${z.nazwa}.`} aria-haspopup="dialog">{z.cta || 'Opisz projekt'}</a>}
+          </div>
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<style>
+  .s3 { padding-top: clamp(48px, 5vw, 70px); }
+  .naglowek { display: grid; gap: 12px; padding-bottom: 40px; }
+  .polowy { display: grid; grid-template-columns: 1fr 1fr; }
+  .polowa { display: flex; min-height: 380px; }
+  .lewa { justify-content: flex-end; }
+  .tresc { width: min(100%, 720px); display: grid; gap: 16px; align-content: center; justify-items: start; padding: 56px max(var(--fk-margines), 64px); }
+  .jasna { background: var(--fk-tlo-powierzchnia); }
+  .ciemna { background: var(--fk-grad-czern); color: var(--fk-panel-czern-tekst); }
+  .polowa h3 { color: inherit; }
+  .polowa:nth-child(n + 3) { border-top: 1px solid var(--fk-obrys); }
+  .ciemna:nth-child(n + 3) { border-top-color: var(--fk-panel-czern-polysk); }
+  .wkrotce { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid currentColor; opacity: 0.85; }
+  .przycisk { cursor: pointer; border: 0; font: inherit; }
+  @media (max-width: 1023.98px) {
+    .naglowek { padding-bottom: 24px; }
+    .polowy { grid-template-columns: minmax(0, 1fr); }
+    .polowa { min-height: 0; }
+    .tresc { padding: 40px var(--fk-margines); }
+  }
+</style>

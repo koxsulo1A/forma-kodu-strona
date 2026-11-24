@@ -1,0 +1,42 @@
+---
+// 29 S6 Ograniczenia i koszty (wariant E): stepper poziomy 1–4 i cztery karty pod nim. Węzły zapalają się po kolei, gdy segment wchodzi w ekran ([data-odslon]).
+// Telefon: jedna karta swipe ze wskaźnikiem od 01 (stepper ukryty: wskaźnik swipe pełni jego rolę).
+interface Props { t: any }
+const { t } = Astro.props;
+const n = t.kroki.length;
+---
+<section class="s6 baza segment" id="ograniczenia" data-segment="S6 Ograniczenia i koszty" aria-labelledby="s6-h">
+  <div class="kontener s6-wnetrze" data-odslon>
+    <header class="naglowek">
+      <h2 id="s6-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
+    <ol class="stepper" aria-hidden="true">{t.kroki.map((_: string, i: number) => <li data-n={i + 1}><span class="t-etykieta">{i + 1}</span></li>)}</ol>
+    <ol role="list" class="karty swipe" data-swipe="s6-wskaznik">
+      {t.kroki.map((k: string, i: number) => <li><p class="t-etykieta akcentowy">{i + 1} / {n}</p><p class="t-h4 naglowkowy">{k}</p></li>)}
+    </ol>
+    <div class="wskaznik-swipe" id="s6-wskaznik" aria-hidden="true">
+      <ol>{t.kroki.map((_: string, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
+      <span data-licznik>1 z {n}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s6 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s6-wnetrze { display: grid; gap: 32px; }
+  .naglowek { display: grid; gap: 12px; max-width: 880px; }
+  .stepper { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; position: relative; list-style: none; padding: 0; }
+  .stepper li { position: relative; }
+  .stepper li:not(:last-child)::after { content: ''; position: absolute; top: 15px; left: 40px; right: -16px; height: 2px; background: var(--fk-obrys-kontrolka); }
+  .stepper span { width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo); color: var(--fk-tekst-pomocniczy); transition: background-color var(--fk-czas-szybki), color var(--fk-czas-szybki); }
+  .stepper li[data-n='1'] span, .widoczny .stepper span { background: var(--fk-kafel-1-tlo); color: var(--fk-kafel-1-tekst); border-color: var(--fk-kafel-1-obrys); }
+  .widoczny .stepper li[data-n='2'] span { transition-delay: 200ms; } .widoczny .stepper li[data-n='3'] span { transition-delay: 400ms; } .widoczny .stepper li[data-n='4'] span { transition-delay: 600ms; }
+  .karty { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .karty li { display: grid; gap: 16px; align-content: start; min-height: 220px; padding: 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  @media (prefers-reduced-motion: reduce) { .stepper span { transition: none; } }
+  @media (max-width: 1023.98px) {
+    .stepper { display: none; }
+    .karty li { min-height: 0; padding: 24px 20px; }
+  }
+</style>

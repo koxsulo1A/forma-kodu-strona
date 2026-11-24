@@ -11,6 +11,7 @@ import Stopka from '../components/wspolne/Stopka.astro';
 import WskaznikSegmentow from '../components/wspolne/WskaznikSegmentow.astro';
 import SheetDostepnosci from '../components/wspolne/SheetDostepnosci.astro';
 import SheetProjekt from '../components/wspolne/SheetProjekt.astro';
+import SheetPowiadom from '../components/wspolne/SheetPowiadom.astro';
 import '../styles/tokens.css';
 import '../styles/global.css';
 import '../styles/animacje.css';
@@ -60,6 +61,7 @@ const { strona, nazwaStrony, okruszki, podstrona } = Astro.props;
     <WskaznikSegmentow />
     <SheetDostepnosci />
     <SheetProjekt />
+    <SheetPowiadom />
     <BanerZgod />
     <script>
       import '../scripts/strona';

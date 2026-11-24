@@ -1,0 +1,65 @@
+---
+// 29 S8 Przykład pracy (wariant O): karty projektów (z kolekcji „Realizacje”) + puste miejsca „Brak realizacji” dla usług bez realizacji, pod nimi pasek pilotażu.
+// Makieta: karuzela z autoprzewijaniem i pauzą po najechaniu. Kod: na komputerze trzy karty obok siebie (wszystkie widać od razu),
+// na telefonie jedna karta swipe w pętli bez końca (zasada mobile 28: listy realizacji = infinite loop).
+import { realizacjeWybrane } from '../../lib/tresc';
+interface Props { t: any }
+const { t } = Astro.props;
+const lista = await realizacjeWybrane(t.realizacje);
+const typ = (e: any) => (e.typ === 'klient' ? 'Projekt klienta' : e.typ === 'projekt własny' ? 'Projekt własny' : 'Przykład układu');
+const status = (e: any) => (e.status === 'w toku' ? 'w przygotowaniu' : 'zakończony');
+const wszystkie = lista.length + t.puste.length;
+---
+<section class="s8 baza segment" id="przyklad" data-segment="S8 Przykład pracy" aria-labelledby="s8-h">
+  <div class="kontener s8-wnetrze">
+    <header class="naglowek">
+      <h2 id="s8-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
+    <ul role="list" class="karty swipe" data-swipe="s8-wskaznik" data-petla>
+      {lista.map((r) => (
+        <li class="karta">
+          <div class="zrzut"><p class="t-etykieta">Miejsce na zrzut z projektu</p><p class="t-maly pomocniczy">{r.entry.naglowek}</p></div>
+          <p class="t-etykieta pomocniczy">{r.entry.kategoria}</p>
+          <p><span class="t-etykieta plak">{typ(r.entry)} · {status(r.entry)}</span></p>
+          <h3 class="t-h3 naglowkowy">{r.entry.typ === 'przykład układu' ? r.entry.naglowek : <a href={`/realizacje/${r.slug}`}>{r.entry.naglowek}</a>}</h3>
+          <p class="t-tresc">{r.entry.opis}</p>
+        </li>
+      ))}
+      {t.puste.map((p: any) => (
+        <li class="karta pusta">
+          <div class="zrzut"><p class="t-etykieta">Miejsce na pierwszą realizację</p><p class="t-maly pomocniczy">Brak realizacji</p></div>
+          <p><span class="t-etykieta plak">Brak realizacji</span></p>
+          <h3 class="t-h3 naglowkowy">{p.tytul}</h3>
+          <p class="t-tresc">{p.opis}</p>
+        </li>
+      ))}
+    </ul>
+    <div class="wskaznik-swipe" id="s8-wskaznik" aria-hidden="true">
+      <ol>{Array.from({ length: wszystkie }, (_, i) => <li aria-current={String(i === 0)}></li>)}</ol>
+      <span data-licznik>1 z {wszystkie}</span>
+    </div>
+    <div class="pilotaz">
+      <div><p class="t-h4 naglowkowy">{t.pilotaz.tytul}</p><p class="t-tresc">{t.pilotaz.opis}</p></div>
+      <a class="przycisk przycisk--drugi" href="/pilotaze">{t.pilotaz.cta}</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s8 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s8-wnetrze { display: grid; gap: 32px; }
+  .naglowek { display: grid; gap: 12px; max-width: 900px; }
+  .karty { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .karta { position: relative; display: grid; gap: 12px; align-content: start; padding: 20px 20px 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .pusta { background: transparent; border-style: dashed; border-color: var(--fk-obrys-kontrolka); }
+  .zrzut { min-height: 220px; display: grid; align-content: center; justify-items: center; gap: 6px; text-align: center; border-radius: var(--radius-control); background: var(--fk-tlo-podniesione); border: 1px dashed var(--fk-obrys-kontrolka); margin-bottom: 8px; }
+  .plak { display: inline-block; padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); }
+  .karta a { color: inherit; text-decoration: none; }
+  .karta a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  .karta:focus-within { outline: 3px solid var(--fk-fokus); outline-offset: 3px; }
+  .karta a:focus-visible { outline: none; }
+  .pilotaz { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--fk-obrys); }
+  .pilotaz > div { display: grid; gap: 4px; }
+  @media (max-width: 1023.98px) { .zrzut { min-height: 160px; } .pilotaz .przycisk { flex: 1; justify-content: center; } }
+</style>
