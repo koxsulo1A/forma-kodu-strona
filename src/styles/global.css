@@ -175,6 +175,8 @@ h1, h2, h3, h4 { color: var(--fk-tekst-naglowek); text-wrap: balance; }
   .swipe::-webkit-scrollbar { display: none; }
   .swipe > * { flex: 0 0 min(300px, 86%); scroll-snap-align: start; }
 }
+/* Kopie kart pętli (data-petla) tylko na telefonie */
+@media (min-width: 1024px) { .swipe > [data-kopia] { display: none; } }
 .wskaznik-swipe { display: none; }
 @media (max-width: 1023.98px) {
   .wskaznik-swipe {

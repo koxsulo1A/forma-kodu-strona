@@ -2,7 +2,7 @@
 // 27 S5 Realizacje (wariant B: kafle z panelem). Projekty wskazane ręcznie w panelu (pole „realizacje”), dane z kolekcji Realizacje.
 // Wyróżniona realizacja ma panel rozwinięty pod pierwszym rzędem. Ostatni kafel to puste miejsce (bez wymyślonych realizacji).
 // Telefon: jedna karta swipe ze wskaźnikiem od 01, panel ukryty (kafel prowadzi do podstrony).
-// [Uproszczenie] pętla „infinite loop” z makiety 28 nie jest jeszcze zrobiona: karuzela kończy się na ostatnim kaflu.
+// Telefon: pętla bez końca (data-petla, zasada mobile 28): kopie kafli dokłada strona.ts.
 import { realizacjeWybrane } from '../../lib/tresc';
 import Ikona from '../wspolne/Ikona.astro';
 interface Props { t: any }
@@ -17,7 +17,7 @@ const kafle = lista.length + 1;
 <section class="s5 baza segment" id="realizacje" data-segment="S5 Realizacje" aria-labelledby="s5-h">
   <div class="kontener s5-wnetrze">
     <h2 id="s5-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
-    <ul role="list" class="kafle swipe" data-swipe="s5-wskaznik">
+    <ul role="list" class="kafle swipe" data-swipe="s5-wskaznik" data-petla>
       {lista.map((r, i) => (
         <>
           <li class:list={['kafel', { aktywny: r === wyrozniona }]}>

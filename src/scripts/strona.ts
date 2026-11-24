@@ -189,20 +189,56 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
 });
 
 // ---------- 7. Wskaźnik swipe (telefon): aktywna kropka = karta przy lewej krawędzi ----------
+// data-petla: nieskończona pętla (zasada mobile 28, listy realizacji i opinii). Przed i za kartami dokładamy kopie
+// (aria-hidden + inert, bez fokusu), a po zatrzymaniu przewijania przeskakujemy niewidocznie do oryginału.
+const mobile = matchMedia('(max-width: 1023.98px)');
 document.querySelectorAll<HTMLElement>('[data-swipe]').forEach((tor) => {
   const kropki = [...(document.getElementById(tor.dataset.swipe!)?.querySelectorAll('li') ?? [])];
   const licznik = document.getElementById(tor.dataset.swipe!)?.querySelector('[data-licznik]');
   if (!kropki.length) return;
+  const widoczne = () => ([...tor.children] as HTMLElement[]).filter((c) => c.offsetWidth > 0);
+  const n = kropki.length;
+  const petla = tor.hasAttribute('data-petla');
+  let szerZestawu = 0;
+  if (petla) {
+    const oryginaly = widoczne();
+    const kopia = (c: HTMLElement) => {
+      const x = c.cloneNode(true) as HTMLElement;
+      x.setAttribute('aria-hidden', 'true'); x.inert = true; x.dataset.kopia = '';
+      x.querySelectorAll('[id]').forEach((e) => e.removeAttribute('id'));
+      return x;
+    };
+    oryginaly.forEach((c) => tor.append(kopia(c)));
+    oryginaly.slice().reverse().forEach((c) => tor.prepend(kopia(c)));
+    const ustaw = () => {
+      if (!mobile.matches) { tor.scrollLeft = 0; return; }
+      const k = widoczne();
+      szerZestawu = k[n].offsetLeft - k[0].offsetLeft;
+      tor.scrollLeft = szerZestawu; // start od 01 (pierwszy oryginał)
+    };
+    ustaw();
+    mobile.addEventListener('change', ustaw);
+    let stop = 0;
+    tor.addEventListener('scroll', () => {
+      clearTimeout(stop);
+      stop = window.setTimeout(() => {
+        if (!mobile.matches || !szerZestawu) return;
+        if (tor.scrollLeft < szerZestawu * 0.5) tor.scrollLeft += szerZestawu;
+        else if (tor.scrollLeft >= szerZestawu * 1.5) tor.scrollLeft -= szerZestawu;
+      }, 140);
+    }, { passive: true });
+  }
   let k = 0;
   tor.addEventListener('scroll', () => {
     cancelAnimationFrame(k);
     k = requestAnimationFrame(() => {
-      const karty = ([...tor.children] as HTMLElement[]).filter((c) => c.offsetWidth > 0);
+      const karty = widoczne();
       const lewa = tor.getBoundingClientRect().left;
       let i = 0;
-      karty.forEach((c, n) => { if (c.getBoundingClientRect().left - lewa < c.offsetWidth / 2) i = n; });
-      kropki.forEach((d, n) => d.setAttribute('aria-current', String(n === i)));
-      if (licznik) licznik.textContent = `${i + 1} z ${kropki.length}`;
+      karty.forEach((c, m) => { if (c.getBoundingClientRect().left - lewa < c.offsetWidth / 2) i = m; });
+      i = ((i % n) + n) % n;
+      kropki.forEach((d, m) => d.setAttribute('aria-current', String(m === i)));
+      if (licznik) licznik.textContent = `${i + 1} z ${n}`;
     });
   }, { passive: true });
 });
