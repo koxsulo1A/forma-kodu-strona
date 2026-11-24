@@ -1,0 +1,34 @@
+# Forma Kodu
+
+> Forma Kodu to jednoosobowa działalność gospodarcza z Wrocławia, która projektuje i koduje strony internetowe dla małych i średnich firm, wdraża automatyzacje (w tym boty czatowe) i przygotowuje analizę widoczności w wyszukiwarkach i w odpowiedziach AI (SEO/GEO). Każdą usługę można sprawdzić najpierw w darmowym pilotażu. Mówimy wprost, czego dane narzędzie nie zrobi, i nie obiecujemy wyników, których nie da się zmierzyć.
+
+Najważniejsze fakty:
+
+- Usługi: strony internetowe, automatyzacje i boty czatowe, analiza SEO/GEO (status: [dostępna / wkrótce: do uzupełnienia]), darmowe pilotaże.
+- Ceny: landing {{cena:strony-internetowe-landing}}, strona dedykowana {{cena:strony-internetowe-dedykowana}}, prosty sklep {{cena:sklepy-internetowe-prosty-sklep}}, automatyzacja jednego procesu {{cena:automatyzacje-jeden-proces}}, bot czatowy {{cena:automatyzacje-bot-czatowy}}. Aktualny cennik: https://centrumkodu.pl/strony-internetowe
+- Czas realizacji strony firmowej: [liczba] tygodni.
+- Standard techniczny: strony statyczne (Astro), dostępność według WCAG 2.2 AA, Core Web Vitals w progach „dobrych” Google (LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,1), analityka (Google Analytics 4) tylko po zgodzie odwiedzającego.
+- Obszar działania: [Polska / miasto i region: do uzupełnienia]. Język: polski.
+- Biuro: ul. Prądzyńskiego 3, 50-434 Wrocław; godziny: poniedziałek–piątek 9:00–17:00. Profil Firmy w Google: [link].
+- Kontakt: [e-mail], [telefon]. Dane firmy: Kacper Przychodzień Centrum usług, NIP [NIP], ul. Prądzyńskiego 3, 50-434 Wrocław.
+
+## Usługi
+
+- [Strony internetowe](https://centrumkodu.pl/strony-internetowe.md): ile kosztuje strona firmowa, trzy warianty, proces w 6 etapach, kalkulator kosztów stałych, FAQ.
+- [Automatyzacje i boty czatowe](https://centrumkodu.pl/automatyzacje.md): jak zautomatyzować pracę firmy, jak wdrożyć bota na czat, co bot potrafi, a czego nie, koszty.
+- [Analiza SEO/GEO](https://centrumkodu.pl/analiza-seo-geo.md): czy firma pojawia się w wynikach Google i w odpowiedziach ChatGPT, Perplexity, Gemini i Claude; co da się zmierzyć, czego nie obiecujemy.
+- [Darmowe pilotaże](https://centrumkodu.pl/pilotaze.md): darmowy pilotaż strony internetowej i SEO; jak działa, warunki, formularz.
+
+## Dowody
+
+- [Realizacje](https://centrumkodu.pl/realizacje.md): projekty własne i realizacje klientów, każda z opisem typu (klient / projekt własny / przykład układu).
+- [Strona główna](https://centrumkodu.pl/index.md): kim jesteśmy, proces, technologie, z ich ograniczeniami.
+
+## Dokumenty
+
+- [Polityka prywatności](https://centrumkodu.pl/polityka-prywatnosci.md)
+- [Dostępność](https://centrumkodu.pl/dostepnosc.md)
+
+## Optional
+
+- [Pełna treść strony w jednym pliku](https://centrumkodu.pl/llms-full.txt)

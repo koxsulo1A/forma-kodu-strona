@@ -1,0 +1,14 @@
+---
+// P2: klauzula informacyjna (warstwa 1, art. 13 RODO) pod formularzem kontaktowym i pilotażu.
+// BEZ checkboxa. Tekst: brama/prawo-rodo-deklaracje.md, szablon 3.4 A. Dane firmy z jednego źródła.
+import { getEntry } from 'astro:content';
+interface Props { id?: string }
+const firma = (await getEntry('firma', 'firma'))!.data;
+const { id = 'klauzula-informacyjna' } = Astro.props;
+const adres = `${firma.adres.ulica}, ${firma.adres.kod} ${firma.adres.miasto}`;
+---
+<p class="klauzula" id={id}>
+  Administratorem Twoich danych jest {firma.nazwa_prawna}, {adres}. Użyjemy ich, żeby odpowiedzieć na to zgłoszenie
+  i przygotować ofertę. Masz prawo m.in. do dostępu do danych, ich usunięcia i sprzeciwu. Szczegóły:
+  <a href="/polityka-prywatnosci">Polityka prywatności</a>.
+</p>

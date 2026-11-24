@@ -1,0 +1,15 @@
+{
+  "adres": "/dostepnosc",
+  "seo_tytul": "Dostępność",
+  "seo_opis": "Jak dbamy o dostępność strony według WCAG 2.2 AA, znane ograniczenia i jak zgłosić problem.",
+  "intencja": "",
+  "og_obraz": "/og/dostepnosc.png",
+  "og_obraz_alt": "Dostępność",
+  "noindex": false,
+  "canonical": "",
+  "aktualizacja": "[data]",
+  "schema": [
+    "WebPage",
+    "BreadcrumbList"
+  ]
+}

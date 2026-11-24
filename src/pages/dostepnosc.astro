@@ -1,0 +1,16 @@
+---
+// Strony dokumentów prawnych: treść z CMS (kolekcja dokumenty), H1 = tytuł, rozdziały = H2.
+// Decyzja 14B: publikujemy z szablonu; pole zatwierdzone_przez_prawnika=false zostaje do przeglądu (CZEKA-NA-KACPRA).
+import Uklad from '../layouts/Uklad.astro';
+import Aktualizacja from '../components/seo/Aktualizacja.astro';
+import { getEntry, render } from 'astro:content';
+const dok = (await getEntry('dokumenty', 'dostepnosc'))!;
+const { Content } = await render(dok);
+---
+<Uklad strona="dostepnosc" nazwaStrony={dok.data.tytul} okruszki={[{ nazwa: 'Strona główna', url: '/' }, { nazwa: dok.data.tytul, url: '/dostepnosc' }]}>
+  <article class="dokument">
+    <h1>{dok.data.tytul}</h1>
+    <Aktualizacja strona="dostepnosc" />
+    <Content />
+  </article>
+</Uklad>

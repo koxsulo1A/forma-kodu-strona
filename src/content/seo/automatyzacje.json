@@ -1,0 +1,16 @@
+{
+  "adres": "/automatyzacje",
+  "seo_tytul": "Jak zautomatyzować pracę i wdrożyć bota na czat?",
+  "seo_opis": "Automatyzujemy powtarzalne zadania i wdrażamy boty czatowe. Piszemy wprost, co bot potrafi, a czego nie, i ile to kosztuje.",
+  "intencja": "Jak zautomatyzować pracę? Jak wdrożyć bota na czat?",
+  "og_obraz": "/og/automatyzacje.png",
+  "og_obraz_alt": "Jak zautomatyzować pracę i wdrożyć bota na czat?",
+  "noindex": false,
+  "canonical": "",
+  "aktualizacja": "[data]",
+  "schema": [
+    "Service",
+    "FAQPage",
+    "BreadcrumbList"
+  ]
+}

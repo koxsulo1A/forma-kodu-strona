@@ -1,0 +1,19 @@
+{
+  "szablon_tytulu": "%s | Forma Kodu",
+  "tytul_domyslny": "Forma Kodu: strony internetowe, automatyzacje i SEO/GEO",
+  "opis_domyslny": "Projektujemy i kodujemy szybkie strony dla firm, wdrażamy automatyzacje i boty czatowe. Każdą usługę sprawdzisz w darmowym pilotażu.",
+  "og_obraz_domyslny": "/og/domyslny.png",
+  "og_obraz_alt": "Logo Forma Kodu na tle zeszytu w kratkę",
+  "jezyk": "pl-PL",
+  "slowa_kluczowe_marki": [
+    "strony internetowe dla firm",
+    "automatyzacja pracy",
+    "bot czatowy dla firmy",
+    "analiza SEO",
+    "GEO",
+    "darmowy pilotaż strony"
+  ],
+  "indexnow_klucz": "0b790b67289f70a9ba6642eacdc031ea",
+  "ga4_id": "[G-identyfikator GA4]",
+  "ga4_retencja_miesiecy": "2"
+}

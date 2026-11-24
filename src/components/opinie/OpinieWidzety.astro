@@ -1,0 +1,64 @@
+---
+// Opinie: 27 S3 i 28 S15 (decyzja Kacpra 24.11, wariant B). Tylko widżety Trustpilot (TrustBox) i Google (dostawca zewnętrzny),
+// bez ręcznie wpisywanych opinii (walidacja nr 2: opinie nigdy wymyślone).
+// - Widżet ładuje się DOPIERO po zgodzie „treści zewnętrzne” z okienka zgód (zdarzenie `fk-zgody` z BanerZgod.astro).
+// - Przed zgodą i bez skryptów: linki do profili z firma.json → profile (zwykły HTML, działa bez JS, widzą go boty).
+// - `pokaz_segment: false` albo brak widżetów i profili = segment się nie renderuje.
+// - CSP: Trustpilot jest w astro.config (script-src + frame-src widget.trustpilot.com). Dla widżetu Google dopisz domenę dostawcy.
+// [Sprawdź przed wdrożeniem] aktualny kod TrustBox w panelu Trustpilot (Integrations → TrustBox) i kod wybranego dostawcy widżetu Google.
+import { getEntry } from 'astro:content';
+interface Props { naglowek?: string; id?: string }
+const { naglowek = 'Opinie klientów', id = 'opinie' } = Astro.props;
+const op = (await getEntry('opinieUstawienia', 'opinie'))!.data;
+const profile = (await getEntry('firma', 'firma'))!.data.profile ?? {};
+const tp = op.widzet_trustpilot;
+const g = op.widzet_google;
+const maTp = !!(tp.business_unit_id && tp.template_id);
+const maG = /^https:\/\//.test(g.skrypt_url) && !!g.klasa_elementu;
+const linki = [
+  profile.google_firma && { nazwa: 'Opinie w Google', url: profile.google_firma },
+  profile.trustpilot && { nazwa: 'Opinie na Trustpilot', url: profile.trustpilot },
+].filter(Boolean) as { nazwa: string; url: string }[];
+const pokaz = op.pokaz_segment && (maTp || maG || linki.length > 0);
+---
+{pokaz && (
+  <section id={id} class="opinie" aria-labelledby={`${id}-h`}>
+    <h2 id={`${id}-h`}>{naglowek}</h2>
+    {(maTp || maG) && (
+      <div class="opinie-widzety" data-opinie-widzety data-tp-skrypt="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" data-g-skrypt={maG ? g.skrypt_url : ''} hidden>
+        {maTp && (
+          <div class="trustpilot-widget" data-locale="pl-PL" data-template-id={tp.template_id} data-businessunit-id={tp.business_unit_id} data-style-height="240px" data-style-width="100%">
+            <a href={profile.trustpilot || 'https://pl.trustpilot.com'} rel="noopener" target="_blank">Trustpilot</a>
+          </div>
+        )}
+        {maG && <div class={g.klasa_elementu}></div>}
+      </div>
+    )}
+    <div class="opinie-zastepczo" data-opinie-zastepczo>
+      {linki.length > 0 && (
+        <ul class="opinie-linki">
+          {linki.map((l) => <li><a href={l.url} rel="noopener" target="_blank">{l.nazwa}</a></li>)}
+        </ul>
+      )}
+      {(maTp || maG) && (
+        <p>Opinie wyświetlamy w okienkach Trustpilot i Google. <button type="button" class="przycisk-link" data-pokaz-opinie>Pokaż opinie</button> (pytamy o zgodę, bo te serwisy mogą zapisać cookies).</p>
+      )}
+    </div>
+  </section>
+)}
+
+<script>
+  let zaladowane = false;
+  const wczytaj = (src: string) => { const s = document.createElement('script'); s.async = true; s.src = src; document.head.appendChild(s); };
+  document.addEventListener('fk-zgody', (e) => {
+    const zgoda = (e as CustomEvent<{ zewnetrzne?: boolean }>).detail;
+    const box = document.querySelector<HTMLElement>('[data-opinie-widzety]');
+    if (!box || !zgoda?.zewnetrzne || zaladowane) return;
+    zaladowane = true;
+    box.hidden = false;
+    document.querySelectorAll<HTMLElement>('[data-opinie-zastepczo] p').forEach((p) => (p.hidden = true));
+    if (box.querySelector('.trustpilot-widget')) wczytaj(box.dataset.tpSkrypt!);
+    if (box.dataset.gSkrypt) wczytaj(box.dataset.gSkrypt);
+  });
+  document.querySelectorAll('[data-pokaz-opinie]').forEach((b) => b.addEventListener('click', () => document.dispatchEvent(new Event('fk-zgody-otworz'))));
+</script>

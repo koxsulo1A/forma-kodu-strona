@@ -1,0 +1,116 @@
+---
+// Strona 31b: szczegóły realizacji (/realizacje/[slug]), Kacper 24.11. Makieta: Figma strona 31, ramka „31b …”.
+// Wszystkie pola z wpisu kolekcji `realizacje` (bez osobnych pól strony). Przyciski: przyciski-27-29.md, wiersze 31b-1…7.
+// „Przykład układu” nie dostaje podstrony. Przejście z karty: View Transitions między stronami (CSS, bez JS; animacje.css).
+// [Do uzupełnienia przez Opusa według makiety 31b] wygląd sekcji, okruszki 31b-3, W6 sheet galerii (31b-4), swipe na telefonie (S3, S4, S6).
+import { getCollection, render, type CollectionEntry } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import Uklad from '../../layouts/Uklad.astro';
+import Aktualizacja from '../../components/seo/Aktualizacja.astro';
+import KartaRealizacji from '../../components/realizacje/KartaRealizacji.astro';
+import { trescStrony, rt } from '../../lib/tresc';
+
+export async function getStaticPaths() {
+  const wszystkie = await getCollection('realizacje');
+  return wszystkie.filter((r) => r.data.typ !== 'przykład układu').map((r) => ({ params: { slug: r.id }, props: { r, wszystkie } }));
+}
+interface Props { r: CollectionEntry<'realizacje'>; wszystkie: CollectionEntry<'realizacje'>[] }
+const { r, wszystkie } = Astro.props;
+const d = r.data;
+const { Content } = await render(r);
+const miesiac = new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(new Date(`${d.data}-01`));
+// S6: 3 najnowsze z tej samej kategorii, bez bieżącej i bez „przykładu układu” (karta bez podstrony też może się pokazać).
+const podobne = wszystkie
+  .filter((x) => x.id !== r.id && x.data.kategoria === d.kategoria)
+  .sort((a, b) => b.data.data.localeCompare(a.data.data))
+  .slice(0, 3);
+const og = await getImage({ src: d.zdjecie_glowne, width: 1200, format: 'jpg' });
+const okruszki = [
+  { nazwa: 'Strona główna', url: '/' },
+  { nazwa: 'Realizacje', url: '/realizacje' },
+  { nazwa: d.naglowek, url: `/realizacje/${r.id}` },
+];
+const efekty = d.benefity.slice(0, 6);
+const s7 = (await trescStrony('strona-realizacje'))?.s3_pilotaze; // S7 = ten sam segment co 31 S3 (wspólny)
+---
+<Uklad
+  strona="realizacje"
+  nazwaStrony={d.naglowek}
+  okruszki={okruszki}
+  podstrona={{
+    tytul: `${d.naglowek} – realizacja`,
+    opis: d.opis,
+    obraz: og.src,
+    obrazAlt: d.zdjecie_alt,
+    aktualizacja: d.aktualizacja,
+    dzielo: { nazwa: d.naglowek, opis: d.opis, obraz: og.src, data: d.data, miasto: d.miasto, technologie: d.technologie },
+  }}
+>
+  <section class="r-hero" aria-labelledby="r-h1">
+    <h1 id="r-h1">{d.naglowek}</h1>
+    <p class="lead">{d.opis}</p>
+    <p class="przyciski">
+      {d.link && <a class="przycisk glowny" href={d.link} target="_blank" rel="noopener">Zobacz stronę ↗<span class="sr-only"> (otwiera nową kartę)</span></a>}
+      <a class="przycisk" href="/realizacje">Wróć do realizacji</a>
+    </p>
+    <Image src={d.zdjecie_glowne} alt={d.zdjecie_alt} widths={[800, 1200, 1600]} sizes="100vw" loading="eager" fetchpriority="high" data-vt={r.id} />
+    <dl class="dane">
+      <div><dt>Kategoria</dt><dd>{d.kategoria}</dd></div>
+      {d.technologie.length > 0 && <div><dt>Technologie</dt><dd>{d.technologie.join(', ')}</dd></div>}
+      {d.miasto && <div><dt>Miasto</dt><dd>{d.miasto}</dd></div>}
+      <div><dt>Data</dt><dd><time datetime={d.data}>{miesiac}</time></dd></div>
+      <div><dt>Typ</dt><dd>{d.typ}{d.status === 'w toku' ? ' (w toku)' : ''}</dd></div>
+    </dl>
+    <Aktualizacja strona="realizacje" data={d.aktualizacja} />
+  </section>
+
+  <section aria-labelledby="r-o-projekcie">
+    <h2 id="r-o-projekcie">O projekcie</h2>
+    <Content />
+  </section>
+
+  {d.zakres.length > 0 && (
+    <section aria-labelledby="r-zakres">
+      <h2 id="r-zakres">Zakres prac</h2>
+      <ol class="zakres">{d.zakres.map((z, i) => <li><span class="nr" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><h3>{z.tytul}</h3><p>{z.opis}</p></li>)}</ol>
+    </section>
+  )}
+
+  {efekty.length > 0 && (
+    <section aria-labelledby="r-efekt">
+      <h2 id="r-efekt">Efekt</h2>
+      <ul class="efekty">{efekty.map((b) => <li><h3>{b.tytul}</h3><p>{b.opis}</p><p class="jak">Jak to sprawdzić: {b.jak_sprawdzic}</p></li>)}</ul>
+    </section>
+  )}
+
+  {d.galeria.length > 0 && (
+    <section aria-labelledby="r-galeria">
+      <h2 id="r-galeria">Galeria</h2>
+      <ul class="galeria">
+        {d.galeria.map((g) => (
+          <li><figure>
+            <button type="button" data-powieksz aria-label={`Powiększ: ${g.alt}`}><Image src={g.obraz} alt={g.alt} widths={[400, 800]} sizes="(min-width: 1024px) 33vw, 100vw" /></button>
+            {g.podpis && <figcaption>{g.podpis}</figcaption>}
+          </figure></li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {podobne.length > 0 && (
+    <section aria-labelledby="r-podobne">
+      <h2 id="r-podobne">Podobne realizacje</h2>
+      <div class="karty">{podobne.map((p) => <KartaRealizacji r={p} />)}</div>
+      <p><a href="/realizacje">Zobacz wszystkie realizacje →</a></p>
+    </section>
+  )}
+
+  {s7 && (
+    <section aria-labelledby="r-zamkniecie">
+      <!-- S7 = treść 31 S3 z panelu (przycisk 31b-7 → /pilotaze). -->
+      <h2 id="r-zamkniecie">{s7.naglowek}</h2>
+      {s7.lead && <p set:html={rt(s7.lead)} />}
+      <p><a class="przycisk" href="/pilotaze">{s7.cta}</a></p>
+    </section>
+  )}
+</Uklad>

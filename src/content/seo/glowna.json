@@ -1,0 +1,16 @@
+{
+  "adres": "/",
+  "seo_tytul": "Strony internetowe, automatyzacje i SEO dla firm",
+  "seo_opis": "Kto zrobi Ci stronę albo automatyzację i ile to kosztuje? Ceny od {{kwota:automatyzacje-jeden-proces}} zł netto, proces w 6 etapach, darmowy pilotaż na start.",
+  "intencja": "Kto zrobi mi stronę albo automatyzację i ile to kosztuje?",
+  "og_obraz": "/og/glowna.png",
+  "og_obraz_alt": "Strony internetowe, automatyzacje i SEO dla firm",
+  "noindex": false,
+  "canonical": "",
+  "aktualizacja": "[data]",
+  "schema": [
+    "WebSite",
+    "Organization",
+    "ProfessionalService"
+  ]
+}

@@ -1,0 +1,51 @@
+---
+// Wszystkie znaczniki <head> dla SEO/GEO. Wstaw w układzie bazowym: <Seo strona="glowna" />.
+// Dane wyłącznie z CMS (src/content/seo/*.json + ustawienia). Żadnych tekstów na sztywno.
+import { getEntry } from 'astro:content';
+import { grafStrony, type Podstrona } from '../../lib/schema';
+
+interface Props {
+  strona: 'glowna' | 'strony-internetowe' | 'automatyzacje' | 'analiza-seo-geo' | 'realizacje' | 'pilotaze' | 'polityka-prywatnosci' | 'dostepnosc';
+  nazwaStrony: string;
+  okruszki?: { nazwa: string; url: string }[];
+  podstrona?: Podstrona;
+}
+const { strona, nazwaStrony, okruszki, podstrona } = Astro.props;
+const seo = (await getEntry('seo', strona))!.data; // znaczniki cen {{…}} podmienia scripts/generuj-markdown.mjs po budowaniu
+const seoG = (await getEntry('seoGlobalne', 'seo'))!.data;
+const firma = (await getEntry('firma', 'firma'))!.data;
+
+// Zaślepka „https://[domena]” nie jest poprawnym URL: do testów bierzemy site z astro.config (example.invalid). Publikację blokuje sprawdz-zaslepki.
+const domena = (firma.domena.includes('[') ? Astro.site!.origin : firma.domena).replace(/\/$/, '');
+const canonical = (!podstrona && seo.canonical) || new URL(Astro.url.pathname, domena).href;
+const tytul = podstrona ? seoG.szablon_tytulu.replace('%s', podstrona.tytul) : strona === 'glowna' ? `${seo.seo_tytul} | ${firma.nazwa_marki}` : seoG.szablon_tytulu.replace('%s', seo.seo_tytul);
+const og = new URL(podstrona?.obraz || seo.og_obraz || seoG.og_obraz_domyslny, domena).href;
+const opis = podstrona?.opis ?? seo.seo_opis;
+const ogTytul = podstrona?.tytul ?? seo.seo_tytul;
+const mdAlt = new URL(strona === 'glowna' ? '/index.md' : `${podstrona ? Astro.url.pathname.replace(/\/$/, '') : seo.adres}.md`, domena).href;
+const graf = await grafStrony(strona, { url: new URL(canonical), nazwaStrony, okruszki, podstrona });
+const robots = seo.noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+---
+<title>{tytul}</title>
+<meta name="description" content={opis} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content={robots} />
+<meta property="og:type" content={strona === 'glowna' ? 'website' : 'article'} />
+<meta property="og:locale" content="pl_PL" />
+<meta property="og:site_name" content={firma.nazwa_marki} />
+<meta property="og:title" content={ogTytul} />
+<meta property="og:description" content={opis} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={og} />
+{!podstrona?.obraz && <><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /></>}
+<meta property="og:image:alt" content={podstrona?.obrazAlt ?? seo.og_obraz_alt} />
+<meta property="article:modified_time" content={podstrona?.aktualizacja ?? seo.aktualizacja} />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="alternate" type="text/markdown" href={mdAlt} title="Wersja Markdown dla asystentów AI" />
+<link rel="alternate" type="text/plain" href={`${domena}/llms.txt`} title="llms.txt" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="manifest" href="/site.webmanifest" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<script type="application/ld+json" is:inline set:html={JSON.stringify(graf)} />

@@ -1,0 +1,44 @@
+{
+  "name": "forma-kodu-strona",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "PANEL=1 astro build && node scripts/generuj-markdown.mjs dist/client $SITE_URL",
+    "build:statyczna": "astro build && node scripts/generuj-markdown.mjs dist $SITE_URL",
+    "build:panel:node": "PANEL=1 SERWER=node astro build && node scripts/generuj-markdown.mjs dist/client $SITE_URL",
+    "start:panel": "HOST=127.0.0.1 PORT=4321 node dist/server/entry.mjs",
+    "preview": "astro preview",
+    "check": "astro check",
+    "check:tresc": "tsx scripts/sprawdz-tresc.ts",
+    "check:seo": "node scripts/sprawdz-seo.mjs dist/client",
+    "check:budzet": "node scripts/sprawdz-budzet.mjs dist/client 50 150",
+    "check:zaslepki": "node scripts/sprawdz-zaslepki.mjs src/content dist/client public",
+    "check:zaslepki:test": "node scripts/sprawdz-zaslepki.mjs src/content dist/client public --tylko-raport",
+    "verify": "npm run build && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki:test",
+    "release": "npm run build && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki",
+    "przeglad": "node scripts/przeglad-tresci.mjs src/content 90 180",
+    "indexnow": "node scripts/indexnow.mjs $SITE_URL $INDEXNOW_KEY dist/client"
+  },
+  "dependencies": {
+    "astro": "7.4.13",
+    "@astrojs/react": "7.1.9",
+    "@astrojs/sitemap": "3.7.6",
+    "@astrojs/node": "11.1.14",
+    "@astrojs/cloudflare": "14.4.9",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "motion": "14.14.0",
+    "@keystatic/core": "0.6.10",
+    "@keystatic/astro": "6.0.0"
+  },
+  "devDependencies": {
+    "turndown": "7.2.0",
+    "tsx": "latest",
+    "wrangler": "4.168.0"
+  }
+}

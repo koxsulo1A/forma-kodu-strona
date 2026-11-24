@@ -1,0 +1,49 @@
+{
+  "nazwa_marki": "Forma Kodu",
+  "nazwa_prawna": "Kacper Przychodzień Centrum usług",
+  "forma_prawna": "JDG",
+  "nip": "[NIP]",
+  "regon": "",
+  "krs": "",
+  "sad_rejestrowy": "",
+  "kapital_zakladowy": "",
+  "adres": {
+    "ulica": "Prądzyńskiego 3",
+    "kod": "50-434",
+    "miasto": "Wrocław",
+    "kraj": "PL"
+  },
+  "adres_publiczny": true,
+  "godziny_otwarcia": [
+    "Mo-Fr 09:00-17:00"
+  ],
+  "wspolrzedne": {
+    "lat": "51.1014374",
+    "lng": "17.0517985"
+  },
+  "email": "[e-mail]",
+  "email_dane_osobowe": "[e-mail]",
+  "telefon": "[telefon]",
+  "domena": "https://centrumkodu.pl",
+  "obszar_dzialania": [
+    "Polska"
+  ],
+  "rok_zalozenia": "[rok]",
+  "profile": {
+    "google_firma": "",
+    "linkedin": "",
+    "facebook": "",
+    "github": "",
+    "trustpilot": ""
+  },
+  "dostepnosc": {
+    "osoba_kontaktowa": "[imię i nazwisko]",
+    "metoda_oceny": "[samoocena / audyt zewnętrzny]",
+    "czas_odpowiedzi_dni": "[liczba]"
+  },
+  "przetwarzanie": {
+    "hosting": "Cloudflare, Inc. (USA): strona, panel treści i formularze",
+    "poczta_formularz": "Brevo SAS (Francja): lista „Powiadom mnie” i wysyłka; Cloudflare: odbiór formularzy",
+    "narzedzie_zgloszen": "[skrzynka / CRM]"
+  }
+}

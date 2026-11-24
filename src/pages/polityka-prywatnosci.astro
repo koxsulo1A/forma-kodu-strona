@@ -1,0 +1,19 @@
+---
+// Strony dokumentów prawnych: treść z CMS (kolekcja dokumenty), H1 = tytuł, rozdziały = H2.
+// Źródło tekstów: brama/prawo-rodo-deklaracje.md (szablon 4.4 + 5.3; dostępność: szablon 2.4 wariant A, bez „strona jest zgodna z WCAG” bez audytu).
+// Decyzje 24.11: 2C, 3A, 4A (§10), 6B, 8C, 9B, 14B. W treści dokumentów nie ma surowego HTML (Keystatic zapisuje Markdown/Markdoc).
+// Kotwica okienka zgód: #8-cookies-i-pamięć-przeglądarki (id z nagłówka §8; zmiana nagłówka = zmiana linku w BanerZgod).
+// Decyzja 14B: publikujemy z szablonu; pole zatwierdzone_przez_prawnika=false zostaje do przeglądu (CZEKA-NA-KACPRA).
+import Uklad from '../layouts/Uklad.astro';
+import Aktualizacja from '../components/seo/Aktualizacja.astro';
+import { getEntry, render } from 'astro:content';
+const dok = (await getEntry('dokumenty', 'polityka-prywatnosci'))!;
+const { Content } = await render(dok);
+---
+<Uklad strona="polityka-prywatnosci" nazwaStrony={dok.data.tytul} okruszki={[{ nazwa: 'Strona główna', url: '/' }, { nazwa: dok.data.tytul, url: '/polityka-prywatnosci' }]}>
+  <article class="dokument">
+    <h1>{dok.data.tytul}</h1>
+    <Aktualizacja strona="polityka-prywatnosci" />
+    <Content />
+  </article>
+</Uklad>

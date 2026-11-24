@@ -1,0 +1,15 @@
+{
+  "adres": "/polityka-prywatnosci",
+  "seo_tytul": "Polityka prywatności",
+  "seo_opis": "Kto przetwarza Twoje dane, po co, jak długo i jakie masz prawa. Bez cookies śledzących.",
+  "intencja": "",
+  "og_obraz": "/og/polityka-prywatnosci.png",
+  "og_obraz_alt": "Polityka prywatności",
+  "noindex": false,
+  "canonical": "",
+  "aktualizacja": "[data]",
+  "schema": [
+    "WebPage",
+    "BreadcrumbList"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "pokaz_segment": false,
+  "widzet_trustpilot": {
+    "business_unit_id": "",
+    "template_id": ""
+  },
+  "widzet_google": {
+    "dostawca": "",
+    "skrypt_url": "",
+    "klasa_elementu": ""
+  }
+}

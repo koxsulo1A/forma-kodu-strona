@@ -1,0 +1,16 @@
+{
+  "adres": "/pilotaze",
+  "seo_tytul": "Darmowy pilotaż strony internetowej i SEO",
+  "seo_opis": "Sprawdź nas za darmo: pilotaż strony internetowej, automatyzacji albo analizy SEO. Jak działa, jakie są warunki i jak się zgłosić.",
+  "intencja": "Darmowy pilotaż strony internetowej i SEO",
+  "og_obraz": "/og/pilotaze.png",
+  "og_obraz_alt": "Darmowy pilotaż strony internetowej i SEO",
+  "noindex": false,
+  "canonical": "",
+  "aktualizacja": "[data]",
+  "schema": [
+    "Service",
+    "FAQPage",
+    "BreadcrumbList"
+  ]
+}

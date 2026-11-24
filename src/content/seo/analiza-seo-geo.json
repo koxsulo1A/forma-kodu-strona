@@ -1,0 +1,16 @@
+{
+  "adres": "/analiza-seo-geo",
+  "seo_tytul": "Czy Twoja firma pojawia się w odpowiedziach AI?",
+  "seo_opis": "Sprawdzamy widoczność firmy w Google oraz w ChatGPT, Perplexity, Gemini i Claude. Co da się zmierzyć, a czego nie obiecujemy.",
+  "intencja": "Czy moja firma pojawia się w odpowiedziach AI?",
+  "og_obraz": "/og/analiza-seo-geo.png",
+  "og_obraz_alt": "Czy Twoja firma pojawia się w odpowiedziach AI?",
+  "noindex": false,
+  "canonical": "",
+  "aktualizacja": "[data]",
+  "schema": [
+    "Service",
+    "FAQPage",
+    "BreadcrumbList"
+  ]
+}

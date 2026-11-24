@@ -1,0 +1,36 @@
+---
+// Karta realizacji (31 S2, 27 S5, 28 S12, 31b S6; przyciski 31-4 i 31b-5). Wzór: karta z designsolutions.pl.
+// Kolejność: zdjęcie 2:1 → kategoria → nagłówek → opis → tagi technologii → „Miasto · data” → plakietka typu → „Zobacz realizację →”.
+// Cała karta klikalna przez JEDEN link na nagłówku rozciągnięty na kartę (::after), bez zagnieżdżonych linków.
+// „Przykład układu” nie ma podstrony: karta bez linku, z etykietą „przykład, nie realizacja” (zasada stała 12).
+// data-vt łączy zdjęcie karty ze zdjęciem w hero podstrony 31b (View Transitions między stronami; nazwy w /przejscia-realizacji.css).
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+interface Props { r: CollectionEntry<'realizacje'>; poziom?: 'h2' | 'h3' }
+const { r, poziom = 'h3' } = Astro.props;
+const d = r.data;
+const H = poziom;
+const link = d.typ === 'przykład układu' ? null : `/realizacje/${r.id}`;
+const miesiac = (rm: string) => new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(new Date(`${rm}-01`));
+const plakietka = d.typ === 'przykład układu' ? 'przykład, nie realizacja' : d.typ === 'projekt własny' ? 'projekt własny' : d.status === 'w toku' ? 'w toku' : '';
+---
+<article class:list={['karta-realizacji', { klikalna: link }]}>
+  <Image src={d.zdjecie_glowne} alt={d.zdjecie_alt} widths={[400, 800, 1200]} sizes="(min-width: 1024px) 33vw, 100vw" data-vt={r.id} />
+  <p class="kategoria">{d.kategoria}</p>
+  <H>{link ? <a href={link}>{d.naglowek}</a> : d.naglowek}</H>
+  <p>{d.opis}</p>
+  {d.technologie.length > 0 && <ul class="tagi" aria-label="Technologie">{d.technologie.map((t) => <li>{t}</li>)}</ul>}
+  <p class="meta">{[d.miasto, miesiac(d.data)].filter(Boolean).join(' · ')}</p>
+  {plakietka && <p class="plakietka">{plakietka}</p>}
+  {link && <p class="wiecej" aria-hidden="true">Zobacz realizację →</p>}
+</article>
+
+<style>
+  .karta-realizacji { position: relative; display: grid; gap: 0.5rem; }
+  .karta-realizacji img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; border-radius: 0.75rem; }
+  .klikalna a::after { content: ''; position: absolute; inset: 0; } /* cała karta = jeden link */
+  .klikalna:focus-within { outline: 3px solid var(--fokus, #7c3aed); outline-offset: 4px; border-radius: 0.75rem; }
+  .klikalna a:focus-visible { outline: none; }
+  .tagi { display: flex; flex-wrap: wrap; gap: 0.25rem; list-style: none; padding: 0; margin: 0; }
+  .tagi li { padding: 0.125rem 0.5rem; border-radius: 999px; border: 1px solid currentColor; font-size: 0.875rem; }
+</style>

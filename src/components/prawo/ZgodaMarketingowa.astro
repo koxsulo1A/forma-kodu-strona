@@ -1,0 +1,20 @@
+---
+// P3: zgoda przy „Powiadom mnie” (art. 398 PKE + art. 6 ust. 1 lit. a i art. 7 RODO).
+// Checkbox NIEZAZNACZONY, osobny, wymagany do wysłania tego formularza. Wersja tekstu wysyłana z formularzem jako dowód zgody (P10).
+import { getEntry } from 'astro:content';
+interface Props { usluga: string; dniUsuniecia?: number; wersja?: string }
+const firma = (await getEntry('firma', 'firma'))!.data;
+const { usluga, dniUsuniecia = 30, wersja = '1.0' } = Astro.props;
+const adres = `${firma.adres.ulica}, ${firma.adres.kod} ${firma.adres.miasto}`;
+---
+<div class="zgoda">
+  <input type="checkbox" id="zgoda-powiadomienie" name="zgoda_powiadomienie" value="tak" required aria-describedby="zgoda-klauzula" />
+  <label for="zgoda-powiadomienie">Chcę dostać od {firma.nazwa_prawna} e-mail z informacją o uruchomieniu {usluga}. (wymagane)</label>
+  <input type="hidden" name="zgoda_wersja" value={wersja} />
+  <p class="klauzula" id="zgoda-klauzula">
+    Administratorem Twoich danych jest {firma.nazwa_prawna}, {adres}. Wyślemy Ci jedną wiadomość o starcie usługi
+    i usuniemy adres w ciągu {dniUsuniecia} dni od wysyłki. Zgodę możesz wycofać w każdej chwili:
+    <a href={`mailto:${firma.email_dane_osobowe}`}>{firma.email_dane_osobowe}</a>. Szczegóły:
+    <a href="/polityka-prywatnosci">Polityka prywatności</a>.
+  </p>
+</div>

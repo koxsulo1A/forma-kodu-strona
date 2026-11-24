@@ -1,0 +1,33 @@
+/* Decyzja 13 (24.11.2026): A na telefonie, B na komputerze.
+   Warstwa A (wszystkie urządzenia): animacje w samym CSS, 0 kB JavaScriptu.
+   - Treść jest widoczna bez animacji (przeglądarka bez obsługi = zwykła strona, boty AI widzą wszystko).
+   - Osoby z włączonym „ogranicz ruch” w systemie nie dostają ruchu.
+   Warstwa B (komputer): ciężkie efekty tylko w wyspach React z client:media (patrz KartaRuch.tsx). */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Pojawianie się przy przewijaniu: animacja sterowana przewijaniem, bez skryptu.
+     Obsługa: Chrome/Edge 115+, Safari 26+; Firefox bez obsługi = treść po prostu widoczna. [Pamięć, sprawdź caniuse] */
+  @supports (animation-timeline: view()) {
+    .pojaw {
+      animation: fk-pojaw linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+  }
+
+  /* Reakcja na najechanie i fokus: lekka, tylko transform i opacity (nie psuje płynności, nie przesuwa układu = CLS 0). */
+  .unies { transition: transform 200ms ease, box-shadow 200ms ease; }
+  .unies:hover, .unies:focus-within { transform: translateY(-4px); }
+}
+
+@keyframes fk-pojaw {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Przejście karta realizacji → podstrona 31b (Kacper 24.11): View Transitions między stronami, sam CSS, zero JS.
+   Zdjęcie karty i zdjęcie w hero mają ten sam data-vt (nazwy w /przejscia-realizacji.css). Przeglądarki bez obsługi po prostu przechodzą do strony.
+   [Oficjalne: developer.mozilla.org/docs/Web/CSS/@view-transition] */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+}

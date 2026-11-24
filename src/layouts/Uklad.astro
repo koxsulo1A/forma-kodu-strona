@@ -1,0 +1,70 @@
+---
+// Układ bazowy każdej strony: <head> z SEO/GEO, link „Przejdź do treści”, <main> z treścią, stopka z danymi firmy, okienko zgód.
+// Techniki z WERYFIKACJA-TECHNIK-SEO-GEO: nr 1 (treść w HTML, zero JS potrzebnego do czytania), 5 (te same dane firmy wszędzie),
+// 6 (data aktualizacji), 10 (jeden graf JSON-LD w Seo.astro). Prawo: art. 206 KSH / art. 5 UŚUDE (dane firmy w stopce), decyzja 2C (okienko zgód).
+import Seo from '../components/seo/Seo.astro';
+import type { Podstrona } from '../lib/schema';
+import BanerZgod from '../components/zgody/BanerZgod.astro';
+import { getEntry } from 'astro:content';
+import '../styles/animacje.css';
+
+interface Props {
+  strona: 'glowna' | 'strony-internetowe' | 'automatyzacje' | 'analiza-seo-geo' | 'realizacje' | 'pilotaze' | 'polityka-prywatnosci' | 'dostepnosc';
+  nazwaStrony: string;
+  okruszki?: { nazwa: string; url: string }[];
+  podstrona?: Podstrona;
+}
+const { strona, nazwaStrony, okruszki, podstrona } = Astro.props;
+const firma = (await getEntry('firma', 'firma'))!.data;
+const adres = firma.adres_publiczny
+  ? `${firma.adres.ulica}, ${firma.adres.kod} ${firma.adres.miasto}`
+  : firma.adres.miasto;
+const menu = [
+  { url: '/strony-internetowe', nazwa: 'Strony internetowe' },
+  { url: '/automatyzacje', nazwa: 'Automatyzacje' },
+  { url: '/analiza-seo-geo', nazwa: 'Analiza SEO/GEO' },
+  { url: '/realizacje', nazwa: 'Realizacje' },
+  { url: '/pilotaze', nazwa: 'Pilotaże' },
+];
+---
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/przejscia-realizacji.css" /> <!-- nazwy View Transitions realizacji (31b) -->
+    <Seo strona={strona} nazwaStrony={nazwaStrony} okruszki={okruszki} podstrona={podstrona} />
+  </head>
+  <body>
+    <a class="pomin" href="#tresc">Przejdź do treści</a>
+    <header>
+      <a href="/" aria-label={`${firma.nazwa_marki}, strona główna`}>{firma.nazwa_marki}</a>
+      <nav aria-label="Główne menu">
+        <ul>{menu.map((m) => <li><a href={m.url} aria-current={Astro.url.pathname === m.url ? 'page' : undefined}>{m.nazwa}</a></li>)}</ul>
+      </nav>
+    </header>
+    {okruszki && okruszki.length > 1 && (
+      <nav aria-label="Jesteś tutaj" class="okruszki">
+        <ol>{okruszki.map((o, i) => <li>{i === okruszki.length - 1 ? <span aria-current="page">{o.nazwa}</span> : <a href={o.url}>{o.nazwa}</a>}</li>)}</ol>
+      </nav>
+    )}
+    <main id="tresc">
+      <slot />
+    </main>
+    <footer>
+      <!-- Te same dane co w JSON-LD, llms.txt i Profilu Firmy w Google (zasada stała 11, decyzja 9B). -->
+      <address>
+        <strong>{firma.nazwa_prawna}</strong><br />
+        {adres}<br />
+        NIP {firma.nip}{firma.krs && <>, KRS {firma.krs}, {firma.sad_rejestrowy}{firma.kapital_zakladowy && <>, kapitał zakładowy {firma.kapital_zakladowy}</>}</>}<br />
+        <a href={`mailto:${firma.email}`}>{firma.email}</a>, <a href={`tel:${firma.telefon.replace(/\s/g, '')}`}>{firma.telefon}</a>
+      </address>
+      <ul>
+        <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
+        <li><a href="/dostepnosc">Deklaracja dostępności</a></li>
+        <li><button type="button" data-otworz-zgody>Ustawienia cookies</button></li>
+      </ul>
+    </footer>
+    <BanerZgod />
+  </body>
+</html>

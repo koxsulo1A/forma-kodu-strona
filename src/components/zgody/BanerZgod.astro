@@ -1,0 +1,154 @@
+---
+// Decyzje 2C + 8C (24.11.2026): okienko zgód + Google Analytics 4 w PODSTAWOWYM trybie zgody Google (Consent Mode v2, basic).
+// Zasady:
+// - Przed zgodą NIE ładuje się żaden kod Google (zero żądań do googletagmanager.com / google-analytics.com).
+// - „Akceptuję” i „Odrzucam” na pierwszym ekranie, ten sam wygląd i wielkość (odmowa tak łatwa jak zgoda: art. 7 ust. 3 RODO, wytyczne EROD 03/2022).
+// - Pokazujemy tylko kategorie, których naprawdę używamy: niezbędne, analityczne (gdy jest GA4) i treści zewnętrzne
+//   (gdy jest widżet opinii Trustpilot/Google, decyzja 24.11 wariant B). Reklamowe sygnały (ad_*) zawsze „denied”.
+// - Po każdej zmianie wyboru wysyłamy zdarzenie `fk-zgody` (detail = zapis); komponent OpinieWidzety ładuje widżet dopiero po zgodzie.
+// - Wybór pamiętany w localStorage `fk-zgody` (zapis konieczny do działania okienka, bez zgody: art. 399 ust. 3 PKE).
+//   Ponowne pytanie po 180 dniach albo po zmianie wersji tekstu (WERSJA). [Ocena: CNIL zaleca 6 miesięcy; polskie prawo nie podaje liczby]
+// - Wycofanie zgody: przycisk „Ustawienia cookies” w stopce (atrybut data-otworz-zgody) → usunięcie cookies _ga* i przeładowanie.
+// - Bez GA4 i bez widżetów komponent nic nie renderuje: nie pytamy o zgodę na coś, czego nie ma.
+// - Treść okienka nie zawiera nagłówków (nie psuje struktury H1–H6 strony) i jest poza <main> (nie trafia do wersji .md).
+import { getEntry } from 'astro:content';
+const seoG = (await getEntry('seoGlobalne', 'seo'))!.data;
+const ga4 = /^G-[A-Z0-9]{6,12}$/.test(seoG.ga4_id) ? seoG.ga4_id : '';
+const op = (await getEntry('opinieUstawienia', 'opinie'))!.data;
+const widzety = op.pokaz_segment && (!!(op.widzet_trustpilot.business_unit_id && op.widzet_trustpilot.template_id) || !!op.widzet_google.skrypt_url);
+const WERSJA = '2'; // 2 = dodana kategoria „treści zewnętrzne” (24.11): wszyscy dostają pytanie ponownie
+---
+{(ga4 || widzety) && (
+  <div id="zgody" class="zgody" role="region" aria-label="Zgoda na cookies" data-ga4={ga4} data-wersja={WERSJA} hidden>
+    <p class="zgody-tytul"><strong>{ga4 ? 'Czy możemy mierzyć odwiedziny?' : 'Czy pokazać opinie z zewnętrznych serwisów?'}</strong></p>
+    <p>
+      {ga4 && <>Za Twoją zgodą włączymy Google Analytics, żeby sprawdzić, które strony są przydatne. Google zapisze wtedy cookies
+      <code>_ga</code> na 2 lata, a dane mogą trafić do USA. </>}
+      {widzety && <>Opinie klientów pokazujemy w okienkach Trustpilot lub Google, które mogą zapisać własne cookies. </>}
+      Bez zgody strona działa tak samo.
+      <a href="/polityka-prywatnosci#8-cookies-i-pamięć-przeglądarki">Szczegóły w polityce prywatności</a>.
+    </p>
+    <div class="zgody-ustawienia" id="zgody-ustawienia" hidden>
+      <p>Niezbędne: zawsze włączone. Pamiętają Twój wybór w tym okienku oraz motyw i rozmiar tekstu, jeśli je zmienisz.</p>
+      {ga4 && <p>
+        <input type="checkbox" id="zgoda-analityka" name="zgoda_analityka" />
+        <label for="zgoda-analityka">Analityczne: Google Analytics 4 (statystyki odwiedzin)</label>
+      </p>}
+      {widzety && <p>
+        <input type="checkbox" id="zgoda-zewnetrzne" name="zgoda_zewnetrzne" />
+        <label for="zgoda-zewnetrzne">Treści zewnętrzne: widżety opinii Trustpilot i Google</label>
+      </p>}
+    </div>
+    <div class="zgody-przyciski">
+      <button type="button" class="przycisk" data-zgoda="tak">Akceptuję</button>
+      <button type="button" class="przycisk" data-zgoda="nie">Odrzucam</button>
+      <button type="button" class="przycisk-link" data-zgoda="ustawienia" aria-expanded="false" aria-controls="zgody-ustawienia">Ustawienia</button>
+      <button type="button" class="przycisk" data-zgoda="zapisz" hidden>Zapisz wybór</button>
+    </div>
+  </div>
+)}
+
+<script>
+  const KLUCZ = 'fk-zgody';
+  const WAZNOSC_DNI = 180;
+  const el = document.getElementById('zgody');
+
+  type Wybor = { analityka: boolean; zewnetrzne: boolean };
+  type Zapis = Wybor & { data: string; wersja: string };
+  const czytaj = (): Zapis | null => {
+    try { return JSON.parse(localStorage.getItem(KLUCZ) || 'null'); } catch { return null; }
+  };
+  const zapisz = (w: Wybor) => {
+    const z: Zapis = { ...w, data: new Date().toISOString(), wersja: el?.dataset.wersja || '1' };
+    try { localStorage.setItem(KLUCZ, JSON.stringify(z)); } catch { /* tryb prywatny: pytamy przy każdej wizycie */ }
+    return z;
+  };
+  const oglos = (z: Wybor) => document.dispatchEvent(new CustomEvent('fk-zgody', { detail: z }));
+  const pole = (id: string) => document.getElementById(id) as HTMLInputElement | null;
+
+  let gaWlaczone = false;
+  const wlaczGA = (id: string) => {
+    if (gaWlaczone) return;
+    gaWlaczone = true;
+    const w = window as unknown as { dataLayer: unknown[]; gtag: (...a: unknown[]) => void };
+    w.dataLayer = w.dataLayer || [];
+    w.gtag = function gtag() { w.dataLayer.push(arguments); };
+    w.gtag('consent', 'default', { ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied', analytics_storage: 'denied' });
+    w.gtag('consent', 'update', { analytics_storage: 'granted' });
+    w.gtag('js', new Date());
+    w.gtag('config', id);
+    const s = document.createElement('script');
+    s.async = true;
+    s.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
+    document.head.appendChild(s);
+  };
+
+  const usunCookiesGA = () => {
+    const host = location.hostname;
+    const domeny = ['', host, `.${host}`, `.${host.split('.').slice(-2).join('.')}`];
+    for (const c of document.cookie.split(';')) {
+      const nazwa = c.split('=')[0].trim();
+      if (!/^_ga/.test(nazwa)) continue;
+      for (const d of domeny) document.cookie = `${nazwa}=; Max-Age=0; path=/${d ? `; domain=${d}` : ''}`;
+    }
+  };
+
+  const pokaz = () => {
+    if (!el) return;
+    const z = czytaj();
+    // zaznaczone tylko, jeśli ktoś wcześniej sam się zgodził
+    if (pole('zgoda-analityka')) pole('zgoda-analityka')!.checked = !!z?.analityka;
+    if (pole('zgoda-zewnetrzne')) pole('zgoda-zewnetrzne')!.checked = !!z?.zewnetrzne;
+    el.hidden = false;
+  };
+
+  const zastosuj = (w: Wybor) => {
+    const poprzednio = czytaj();
+    zapisz(w);
+    if (el) el.hidden = true;
+    if (w.analityka && el?.dataset.ga4) wlaczGA(el.dataset.ga4);
+    // wycofanie zgody: kod zewnętrzny nie może dalej działać na tej stronie
+    if ((!w.analityka && poprzednio?.analityka) || (!w.zewnetrzne && poprzednio?.zewnetrzne)) { usunCookiesGA(); location.reload(); return; }
+    oglos(w);
+  };
+
+  if (el) {
+    const z = czytaj();
+    const wazny = z && z.wersja === el.dataset.wersja && Date.now() - Date.parse(z.data) < WAZNOSC_DNI * 864e5;
+    if (wazny) { if (z!.analityka && el.dataset.ga4) wlaczGA(el.dataset.ga4); oglos(z!); }
+    else pokaz();
+
+    el.addEventListener('click', (e) => {
+      const b = (e.target as HTMLElement).closest('button');
+      if (!b) return;
+      const typ = b.dataset.zgoda;
+      if (typ === 'tak') zastosuj({ analityka: true, zewnetrzne: true });
+      if (typ === 'nie') zastosuj({ analityka: false, zewnetrzne: false });
+      if (typ === 'ustawienia') {
+        const panel = document.getElementById('zgody-ustawienia')!;
+        panel.hidden = !panel.hidden;
+        b.setAttribute('aria-expanded', String(!panel.hidden));
+        (el.querySelector('[data-zgoda="zapisz"]') as HTMLElement).hidden = panel.hidden;
+      }
+      if (typ === 'zapisz') zastosuj({ analityka: !!pole('zgoda-analityka')?.checked, zewnetrzne: !!pole('zgoda-zewnetrzne')?.checked });
+    });
+  }
+
+  document.querySelectorAll('[data-otworz-zgody]').forEach((b) => b.addEventListener('click', pokaz));
+  // Przycisk „Pokaż opinie” w OpinieWidzety otwiera to okienko.
+  document.addEventListener('fk-zgody-otworz', pokaz);
+</script>
+
+<style>
+  .zgody {
+    position: fixed; inset: auto 1rem 1rem 1rem; z-index: 50; max-width: 40rem; margin-inline: auto;
+    padding: 1rem 1.25rem; border-radius: 1rem;
+    background: var(--tlo-okna, #fff); color: var(--tekst, #1a1a1a);
+    box-shadow: 0 8px 32px rgb(0 0 0 / 0.18);
+  }
+  .zgody-przyciski { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+  /* Akceptacja i odmowa wyglądają tak samo (bez „ciemnych wzorców”). */
+  .zgody .przycisk { min-height: 44px; padding: 0.5rem 1rem; border-radius: 0.75rem; border: 2px solid currentColor; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+  .zgody .przycisk-link { min-height: 44px; background: none; border: 0; text-decoration: underline; color: inherit; font: inherit; cursor: pointer; }
+  .zgody :focus-visible { outline: 3px solid var(--fokus, #7c3aed); outline-offset: 2px; }
+</style>

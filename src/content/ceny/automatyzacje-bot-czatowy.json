@@ -1,0 +1,10 @@
+{
+  "nazwa": "Bot czatowy",
+  "kwota_od": 1800,
+  "waluta": "PLN",
+  "netto": true,
+  "okres": "jednorazowo",
+  "nasza_cena": true,
+  "zrodlo": "Cennik Forma Kodu, kwota z makiety 27 S13, decyzja Kacpra 24.11.2026 (ceny zsynchronizowane)",
+  "data_odczytu": "2026-11-24"
+}

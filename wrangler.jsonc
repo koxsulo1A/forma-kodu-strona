@@ -1,0 +1,8 @@
+// Konfiguracja Cloudflare Workers (adapter @astrojs/cloudflare łączy ją z wygenerowaną dist/server/wrangler.json).
+// drop-trailing-slash: adresy bez ukośnika na końcu, zgodnie z trailingSlash: 'never' i adresami kanonicznymi.
+// Bez tego Cloudflare przekierowywał /realizacje/x na /realizacje/x/ (test 24.11), czyli inny adres niż canonical.
+// [Oficjalne] developers.cloudflare.com/workers/static-assets/routing/advanced/html-handling/
+{
+  "name": "centrumkodu",
+  "assets": { "html_handling": "drop-trailing-slash" }
+}

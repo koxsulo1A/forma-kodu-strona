@@ -1,0 +1,16 @@
+{
+  "adres": "/realizacje",
+  "seo_tytul": "Realizacje: strony i automatyzacje",
+  "seo_opis": "Projekty własne i realizacje klientów z opisem, co zrobiliśmy i jaki był wynik. Każda karta mówi, czy to klient, projekt własny czy przykład układu.",
+  "intencja": "Co już zrobili? Czy mogę im zaufać?",
+  "og_obraz": "/og/realizacje.png",
+  "og_obraz_alt": "Realizacje: strony i automatyzacje",
+  "noindex": false,
+  "canonical": "",
+  "aktualizacja": "[data]",
+  "schema": [
+    "CollectionPage",
+    "BreadcrumbList",
+    "FAQPage"
+  ]
+}
