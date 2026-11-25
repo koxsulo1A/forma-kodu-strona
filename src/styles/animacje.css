@@ -72,3 +72,30 @@ html:not(.bez-ruchu) .przewijane [role=tabpanel]:not([hidden]) { animation: fk-w
   .slowo .litera, .kropki span { transition: none; animation: none; opacity: 1; }
   .przewijane { height: auto; }
 }
+
+/* ---------- Ruch z klatek Figma Motion na makietach 27–32 (dodane 25.11) ---------- */
+
+/* Hero każdej podstrony: bloki wjeżdżają po załadowaniu (makiety: 0,2 s i 0,3 s, 500 ms, y 24 → 0). Sam CSS, bez mignięcia. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js:not(.bez-ruchu) [data-segment^="S1 "] > .kontener > :not(.sr-only):not(.wskaznik-swipe) {
+    animation: fk-wejscie 500ms var(--fk-krzywa-wejscie) 200ms backwards;
+  }
+  html.js:not(.bez-ruchu) [data-segment^="S1 "] > .kontener > :nth-child(2) { animation-delay: 300ms; }
+  html.js:not(.bez-ruchu) [data-segment^="S1 "] > .kontener > :nth-child(n+3) { animation-delay: 400ms; }
+}
+@keyframes fk-wejscie { from { opacity: 0; transform: translate3d(0, 24px, 0); } }
+
+/* Segment, którego treść wjeżdża z boku: przycinamy to, co wystaje (bez poziomego paska przewijania; sticky działa dalej). */
+.ruch-poziomy { overflow-x: clip; }
+
+/* 27 S5: dwa paski realizacji w pętli (ruch.ts, punkt 7). */
+.pasy { display: grid; gap: 20px; }
+.pas { overflow: hidden; padding-block: 4px; mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
+.pas-tor { display: flex; width: max-content; animation: fk-pas var(--czas, 40s) linear infinite; }
+.pas-tor > li { flex: 0 0 424px; margin-right: 20px; }
+.pas--wstecz .pas-tor { animation-direction: reverse; }
+.pasy:hover .pas-tor, .pasy:focus-within .pas-tor, .pasy.stop .pas-tor, .pasy.poza .pas-tor { animation-play-state: paused; }
+.pas-stop { justify-self: end; padding: 8px 14px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: transparent; color: inherit; cursor: pointer; }
+.pas-stop:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
+@keyframes fk-pas { to { transform: translate3d(-50%, 0, 0); } }
+@media (prefers-reduced-motion: reduce) { .pas-tor { animation: none; } }

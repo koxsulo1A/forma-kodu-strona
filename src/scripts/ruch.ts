@@ -17,21 +17,35 @@ const segment = (kod: string) => document.querySelector<HTMLElement>(`[data-segm
 // Wyjątki: 27 S6 (450 ms, y 32, kaskada 140 ms), 27 S9 (450 ms, kaskada 90 ms od lewej),
 // 30 S2 treść z góry, 30 S3 karty z lewej (500 ms, odstęp 80 ms).
 type Kierunek = 'dol' | 'gora' | 'lewo' | 'prawo';
-interface Kaskada { kody: string[] | 'wszystkie'; czas?: number; krok?: number; odleglosc?: number; kierunek?: Kierunek; max?: number }
+// osobno: każdy element odsłania się sam, gdy wejdzie w ekran („jeden na każdy ruch scrolla”, Figma Motion 28 S2/S3, 27 S7).
+// kody 'reszta': wszystkie segmenty strony poza POMIN i poza tymi, które mają własną regułę wyżej.
+interface Kaskada { kody: string[] | 'reszta'; czas?: number; krok?: number; odleglosc?: number; kierunek?: Kierunek; max?: number; osobno?: boolean }
 const PLAN: Record<string, Kaskada[]> = {
   '/': [
     { kody: ['S2', 'S8', 'S10', 'S11', 'S13'] },
     { kody: ['S6'], czas: 450, krok: 140, odleglosc: 32 },
     { kody: ['S9'], czas: 450, krok: 90 },
+    // Figma Motion 100:30: kroki 2–6 wjeżdżają z 120 px, po kolei.
+    { kody: ['S7'], odleglosc: 120, osobno: true },
   ],
-  '/strony-internetowe': [{ kody: 'wszystkie' }],
-  '/automatyzacje': [{ kody: 'wszystkie' }],
+  // Figma Motion 203:50: S2 punkty z prawej (480 px), S3 warianty z lewej (1400 px), po jednym. Na stronie krócej (160/240 px), żeby nie wypychać treści poza ekran.
+  '/strony-internetowe': [
+    { kody: ['S2'], kierunek: 'prawo', odleglosc: 160, krok: 250 },
+    { kody: ['S3'], kierunek: 'lewo', odleglosc: 240, osobno: true },
+    { kody: 'reszta' },
+  ],
+  '/automatyzacje': [{ kody: 'reszta' }],
   '/analiza-seo-geo': [
     { kody: ['S2'], kierunek: 'gora', krok: 80 },
     { kody: ['S3'], kierunek: 'lewo', krok: 80 },
+    { kody: 'reszta' },
   ],
+  '/realizacje': [{ kody: 'reszta' }],
+  '/realizacje/*': [{ kody: 'reszta' }],
+  '/pilotaze': [{ kody: 'reszta' }],
 };
-// Segmenty z własnym ruchem albo bez ruchu (decyzje Kacpra 23.11): pomijane przy „wszystkie”.
+const planStrony = () => PLAN[sciezka] ?? (sciezka.startsWith('/realizacje/') ? PLAN['/realizacje/*'] : undefined);
+// Segmenty z własnym ruchem albo bez ruchu: hero ma wjazd w CSS (animacje.css), stopka ma kurtynę.
 const POMIN = ['S1', 'S14'];
 
 // Bloki do kaskady: dzieci nagłówka segmentu, a potem dzieci list i siatek (karty). Jeden poziom, bez zagłębiania.
@@ -40,7 +54,7 @@ function bloki(seg: HTMLElement): HTMLElement[] {
   const kontener = (seg.querySelector(':scope > .kontener, :scope > div') ?? seg) as HTMLElement;
   const wezmij = (el: Element) => {
     const e = el as HTMLElement;
-    if (e.hidden || e.matches('[role=tablist][hidden], script, style, [data-kopia]')) return;
+    if (e.hidden || e.matches('[role=tablist][hidden], script, style, [data-kopia], .sr-only')) return;
     const dzieci = [...e.children].filter((c) => !(c as HTMLElement).hidden && !c.matches('[data-kopia], script, style')) as HTMLElement[];
     const lista = e.matches('ul, ol, header, .naglowek, [class*=naglowek]') || (dzieci.length >= 2 && e.matches('[class*=karty], [class*=kafle], [class*=siatka], [class*=kolumny], [class*=lista], [class*=bloki]'));
     if (lista && dzieci.length >= 2) wynik.push(...dzieci);
@@ -55,37 +69,48 @@ function przesuniecie(k: Kierunek, d: number) {
 }
 
 function kaskady() {
-  const plan = PLAN[sciezka];
+  const plan = planStrony();
   if (!plan || ograniczRuch() || !('IntersectionObserver' in window)) return;
   const wszystkie = [...document.querySelectorAll<HTMLElement>('[data-segment]')];
+  const nazwane = plan.flatMap((p) => (p.kody === 'reszta' ? [] : p.kody));
+  const pasuje = (s: HTMLElement, kody: string[]) => kody.some((k) => s.dataset.segment!.startsWith(`${k} `));
   plan.forEach((p) => {
-    const segmenty = p.kody === 'wszystkie'
-      ? wszystkie.filter((s) => !POMIN.some((k) => s.dataset.segment!.startsWith(`${k} `)))
+    const segmenty = p.kody === 'reszta'
+      ? wszystkie.filter((s) => !pasuje(s, POMIN) && !pasuje(s, nazwane))
       : p.kody.map(segment).filter(Boolean) as HTMLElement[];
     segmenty.forEach((seg) => {
       const el = bloki(seg);
       if (!el.length) return;
       const czas = p.czas ?? 500, krok = p.krok ?? 60, max = p.max ?? 6;
-      const start = przesuniecie(p.kierunek ?? 'dol', p.odleglosc ?? 24);
-      // Element już widoczny na starcie (np. po odświeżeniu w połowie strony) też dostaje ruch, ale od razu.
+      const kierunek = p.kierunek ?? 'dol';
+      const start = przesuniecie(kierunek, p.odleglosc ?? 24);
+      if (kierunek === 'lewo' || kierunek === 'prawo') seg.classList.add('ruch-poziomy');
       el.forEach((e) => { e.style.opacity = '0'; e.style.transform = start; });
+      const pokaz = (e: HTMLElement, i: number) => {
+        const opoz = p.osobno ? 0 : Math.min(i, max - 1) * krok;
+        e.style.transition = `opacity ${czas}ms var(--fk-krzywa-wejscie), transform ${czas}ms var(--fk-krzywa-wejscie)`;
+        e.style.transitionDelay = `${opoz}ms`;
+        requestAnimationFrame(() => { e.style.opacity = ''; e.style.transform = ''; });
+        // Po animacji czyścimy, żeby nie blokować własnych przejść elementu (najechanie, rozwinięcie).
+        setTimeout(() => { e.style.transition = ''; e.style.transitionDelay = ''; }, czas + opoz + 50);
+      };
+      if (p.osobno) {
+        // Każdy element osobno: odsłania się, gdy jego górna krawędź minie 85% wysokości ekranu.
+        const obs = new IntersectionObserver((wpisy) => wpisy.forEach((w) => {
+          if (!w.isIntersecting) return;
+          obs.unobserve(w.target);
+          pokaz(w.target as HTMLElement, 0);
+        }), { rootMargin: '0px 0px -15% 0px' });
+        el.forEach((e) => obs.observe(e));
+        return;
+      }
       const obs = new IntersectionObserver((wpisy) => {
         if (!wpisy.some((w) => w.isIntersecting)) return;
         obs.disconnect();
-        el.forEach((e, i) => {
-          e.style.transition = `opacity ${czas}ms var(--fk-krzywa-wejscie), transform ${czas}ms var(--fk-krzywa-wejscie)`;
-          e.style.transitionDelay = `${Math.min(i, max - 1) * krok}ms`;
-          requestAnimationFrame(() => { e.style.opacity = ''; e.style.transform = ''; });
-          // Po animacji czyścimy, żeby nie blokować własnych przejść elementu (najechanie, rozwinięcie).
-          setTimeout(() => { e.style.transition = ''; e.style.transitionDelay = ''; }, czas + Math.min(i, max - 1) * krok + 50);
-        });
-      }, { threshold: 0.3 });
+        el.forEach(pokaz);
+      }, seg.offsetHeight > innerHeight * 2 ? { rootMargin: '0px 0px -30% 0px' } : { threshold: 0.3 });
       // Próg 30% liczony od segmentu; przy bardzo wysokich segmentach wystarczy, że wejdzie na 30% ekranu.
-      const wysoki = seg.offsetHeight > innerHeight * 2;
-      if (wysoki) {
-        const o2 = new IntersectionObserver((w) => { if (w[0].isIntersecting) { o2.disconnect(); obs.disconnect(); el.forEach((e) => { e.style.transition = `opacity ${czas}ms var(--fk-krzywa-wejscie), transform ${czas}ms var(--fk-krzywa-wejscie)`; e.style.opacity = ''; e.style.transform = ''; }); } }, { rootMargin: '0px 0px -30% 0px' });
-        o2.observe(seg);
-      } else obs.observe(seg);
+      obs.observe(seg);
     });
   });
 }
@@ -244,9 +269,73 @@ function blokiPrzewijane() {
   tryb();
 }
 
+// ---------- 7. 27 S5: dwa paski realizacji w pętli, w przeciwne strony (komputer, Figma Motion 100:30) ----------
+// Rząd 1 jedzie w lewo, rząd 2 w prawo. Kafle oryginalne zostają w DOM (linki, fokus), kopie są aria-hidden + inert.
+// WCAG 2.2.2: ruch staje po najechaniu, przy fokusie klawiatury, przyciskiem „Zatrzymaj” i poza ekranem.
+// Tempo: 50 px/s (makieta: 1332 px w 12,4 s ≈ 107 px/s; to tempo pokazowe osi czasu, przy czytaniu za szybkie).
+function pasyRealizacji() {
+  const ul = document.querySelector<HTMLElement>('#realizacje .kafle');
+  if (!ul || ograniczRuch()) return;
+  let zbudowane: { pasy: HTMLElement; powrot: { el: HTMLElement; nast: Node | null }[] } | null = null;
+  const kopia = (c: HTMLElement) => {
+    const x = c.cloneNode(true) as HTMLElement;
+    x.setAttribute('aria-hidden', 'true'); x.inert = true; x.dataset.kopiaPasa = '';
+    x.querySelectorAll('[id]').forEach((e) => e.removeAttribute('id'));
+    return x;
+  };
+  const zbuduj = () => {
+    if (zbudowane || !komputer.matches) return;
+    const kafle = [...ul.children].filter((c) => c.matches('.kafel') && !c.hasAttribute('data-kopia')) as HTMLElement[];
+    if (kafle.length < 2) return;
+    const powrot = kafle.map((el) => ({ el, nast: el.nextSibling }));
+    const pol = Math.ceil(kafle.length / 2);
+    const szer = 424 + 20; // kafel + odstęp
+    const pasy = document.createElement('div');
+    pasy.className = 'pasy';
+    [kafle.slice(0, pol), kafle.slice(pol)].forEach((rzad, r) => {
+      const pas = document.createElement('div');
+      pas.className = r ? 'pas pas--wstecz' : 'pas';
+      const tor = document.createElement('ul');
+      tor.setAttribute('role', 'list');
+      tor.className = 'pas-tor';
+      tor.append(...rzad);
+      // Jeden zestaw musi być szerszy od pasa, potem całość podwajamy: przesunięcie o -50% = płynna pętla.
+      let zestaw = rzad.length;
+      while (zestaw * szer < ul.offsetWidth + szer) { rzad.forEach((c) => tor.append(kopia(c))); zestaw += rzad.length; }
+      [...tor.children].forEach((c) => tor.append(kopia(c as HTMLElement)));
+      tor.style.setProperty('--czas', `${Math.round((zestaw * szer) / 50)}s`);
+      pas.append(tor);
+      pasy.append(pas);
+    });
+    const przycisk = document.createElement('button');
+    przycisk.type = 'button';
+    przycisk.className = 'pas-stop t-maly';
+    przycisk.setAttribute('aria-pressed', 'false');
+    przycisk.textContent = 'Zatrzymaj przesuwanie';
+    przycisk.addEventListener('click', () => {
+      const stop = pasy.classList.toggle('stop');
+      przycisk.setAttribute('aria-pressed', String(stop));
+      przycisk.textContent = stop ? 'Wznów przesuwanie' : 'Zatrzymaj przesuwanie';
+    });
+    pasy.append(przycisk);
+    ul.before(pasy);
+    new IntersectionObserver((w) => pasy.classList.toggle('poza', !w[0].isIntersecting)).observe(pasy);
+    zbudowane = { pasy, powrot };
+  };
+  const rozbierz = () => {
+    if (!zbudowane || komputer.matches) return;
+    zbudowane.powrot.slice().reverse().forEach(({ el, nast }) => ul.insertBefore(el, nast && nast.parentNode === ul ? nast : null));
+    zbudowane.pasy.remove();
+    zbudowane = null;
+  };
+  zbuduj();
+  komputer.addEventListener('change', () => { zbuduj(); rozbierz(); });
+}
+
 kaskady();
 kurtyna();
 zmianaSlow();
 osProcesu();
 lejek();
 blokiPrzewijane();
+pasyRealizacji();
