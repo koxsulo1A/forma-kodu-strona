@@ -52,10 +52,12 @@
   html:not(.bez-ruchu) .przycisk:active { transform: translateY(1px) scale(0.98); }
 }
 
-/* 29 S4 od 1024 px: sekcja ma wysokość 3 ekranów, treść przyklejona; blok zmienia się przewijaniem. */
+/* 29 S4 od 1024 px: treść przyklejona 24 px pod górną krawędzią, wysokość sekcji liczy ruch.ts (punkt 6):
+   wysokość treści + 0,9 ekranu przewijania na każdy blok. Treść nie zajmuje całego ekranu, więc pod ostatnim
+   blokiem wyjeżdża już początek S5 (Kacper 25.11 16:06). */
 @media (min-width: 1024px) {
   .przewijane { height: 300vh; }
-  .przewijane > .kontener { position: sticky; top: 0; min-height: 100vh; align-content: center; }
+  .przewijane > .kontener { position: sticky; top: 24px; }
 }
 html:not(.bez-ruchu) .przewijane [role=tabpanel]:not([hidden]) { animation: fk-wymiana 320ms cubic-bezier(0.16, 1, 0.3, 1); }
 @keyframes fk-wymiana { from { opacity: 0; transform: translateY(16px); } }
@@ -84,7 +86,7 @@ html:not(.bez-ruchu) .przewijane [role=tabpanel]:not([hidden]) { animation: fk-w
 .pasy { display: grid; gap: 20px; }
 .pas { overflow: hidden; padding-block: 4px; mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
 .pas-tor { display: flex; width: max-content; animation: fk-pas var(--czas, 40s) linear infinite; }
-.pas-tor > li { flex: 0 0 424px; margin-right: 20px; }
+.pas-tor > li { flex: 0 0 var(--szer-kafla, 424px); margin-right: 20px; }
 .pas--wstecz .pas-tor { animation-direction: reverse; }
 .pasy:hover .pas-tor, .pasy:focus-within .pas-tor, .pasy.stop .pas-tor, .pasy.poza .pas-tor { animation-play-state: paused; }
 .pas-stop { justify-self: end; padding: 8px 14px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: transparent; color: inherit; cursor: pointer; }

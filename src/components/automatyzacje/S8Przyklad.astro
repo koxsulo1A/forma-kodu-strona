@@ -2,6 +2,8 @@
 // 29 S8 Przykład pracy (wariant O): karty projektów (z kolekcji „Realizacje”) + puste miejsca „Brak realizacji” dla usług bez realizacji, pod nimi pasek pilotażu.
 // Makieta: karuzela z autoprzewijaniem i pauzą po najechaniu. Kod: na komputerze trzy karty obok siebie (wszystkie widać od razu),
 // na telefonie jedna karta swipe w pętli bez końca (zasada mobile 28: listy realizacji = infinite loop).
+// Kacper 25.11 16:06: na komputerze karty jadą w pętli jak realizacje na stronie głównej (ruch.ts, pasyRealizacji; stop po najechaniu
+// i przyciskiem), każda karta klikalna: realizacja → jej podstrona, puste miejsce → /pilotaze (pierwsza realizacja powstaje w pilotażu).
 import { realizacjeWybrane } from '../../lib/tresc';
 interface Props { t: any }
 const { t } = Astro.props;
@@ -30,7 +32,7 @@ const wszystkie = lista.length + t.puste.length;
         <li class="karta pusta">
           <div class="zrzut"><p class="t-etykieta">Miejsce na pierwszą realizację</p><p class="t-maly pomocniczy">Brak realizacji</p></div>
           <p><span class="t-etykieta plak">Brak realizacji</span></p>
-          <h3 class="t-h3 naglowkowy">{p.tytul}</h3>
+          <h3 class="t-h3 naglowkowy"><a href="/pilotaze">{p.tytul}<span class="sr-only">: zapytaj o pilotaż</span></a></h3>
           <p class="t-tresc">{p.opis}</p>
         </li>
       ))}
@@ -59,6 +61,9 @@ const wszystkie = lista.length + t.puste.length;
   .karta a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
   .karta:focus-within { outline: 3px solid var(--fk-fokus); outline-offset: 3px; }
   .karta a:focus-visible { outline: none; }
+  .karta { transition: border-color var(--fk-czas-szybki), transform var(--fk-czas-szybki) var(--fk-krzywa-standard); }
+  .karta:hover { border-color: var(--fk-akcent); }
+  .karta:hover h3 { color: var(--fk-akcent); }
   .pilotaz { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; padding-top: 24px; border-top: 1px solid var(--fk-obrys); }
   .pilotaz > div { display: grid; gap: 4px; }
   @media (max-width: 1023.98px) { .zrzut { min-height: 160px; } .pilotaz .przycisk { flex: 1; justify-content: center; } }

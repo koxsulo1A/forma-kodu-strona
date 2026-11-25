@@ -463,6 +463,8 @@ document.querySelectorAll<HTMLElement>('[data-czat-demo]').forEach((czat) => {
     const wzor = lista.querySelector('li');
     if (wzor) [...wzor.attributes].filter((a) => a.name.startsWith('data-astro-cid')).forEach((a) => { li.setAttribute(a.name, a.value); s.setAttribute(a.name, a.value); });
     lista.append(li);
+    // Okno czatu ma stałą wysokość: nowe wiadomości przewijają listę do dołu (Kacper 25.11 16:06).
+    lista.scrollTo({ top: lista.scrollHeight, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   };
   const przyciski = (opcje: [string, string][]) => {
     const wzor = odp.querySelector('button');
@@ -474,17 +476,51 @@ document.querySelectorAll<HTMLElement>('[data-czat-demo]').forEach((czat) => {
       cid.forEach((a) => b.setAttribute(a.name, a.value));
       return b;
     }));
-    (odp.querySelector('button') as HTMLButtonElement | null)?.focus();
+    (odp.querySelector('button') as HTMLButtonElement | null)?.focus({ preventScroll: true });
   };
   odp.addEventListener('click', (e) => {
     const b = (e.target as HTMLElement).closest<HTMLButtonElement>('button[data-czat]');
     if (!b) return;
     const akcja = b.dataset.czat;
-    if (akcja === 'od-nowa') { lista.innerHTML = start.html; odp.innerHTML = start.przyciski; (odp.querySelector('button') as HTMLButtonElement | null)?.focus(); return; }
+    if (akcja === 'od-nowa') { lista.innerHTML = start.html; lista.scrollTop = 0; odp.innerHTML = start.przyciski; (odp.querySelector('button') as HTMLButtonElement | null)?.focus({ preventScroll: true }); return; }
     dodaj('klient', b.textContent ?? '');
     if (akcja === 'dni') { dodaj('asystent', 'Jasne, mam w te dni miejsce o godzinie 11–12. Pasuje?'); przyciski([['Tak', 'tak'], ['Nie', 'nie']]); }
     else { dodaj('asystent', akcja === 'tak' ? 'Jasne, to widzimy się na treningu!' : 'Szkoda, może spróbujemy inne dni?'); przyciski([['Zacznij od nowa', 'od-nowa']]); }
   });
+});
+
+// ---------- 9g. Okna w hero 29 S1 (Figma 617:1775): czat → diagram → recepcjonistka → czat, zmiana przewinięciem w dół ----------
+// Każde okno stoi 6 s, potem kolumna przesuwa się o jedno okno w górę (700 ms). Najechanie, fokus albo klik w okno zatrzymuje
+// zmianę (klik w czat: do końca wizyty, żeby dokończyć rozmowę). Niewidoczne okna są inert. Bez ruchu: okna jedno pod drugim.
+document.querySelectorAll<HTMLElement>('[data-okna]').forEach((okna) => {
+  const tor = okna.querySelector<HTMLElement>('[data-okna-tor]');
+  const lista = [...okna.querySelectorAll<HTMLElement>('[data-okno]')];
+  if (!tor || lista.length < 2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  okna.classList.add('karuzela');
+  const kopia = lista[0].cloneNode(true) as HTMLElement; // płynne przejście z ostatniego na pierwszy
+  kopia.setAttribute('aria-hidden', 'true'); kopia.inert = true; kopia.removeAttribute('data-okno');
+  kopia.querySelectorAll('[id]').forEach((e) => e.removeAttribute('id'));
+  tor.append(kopia);
+  let i = 0, stop = false, najechane = false;
+  const krok = () => lista[0].offsetHeight + parseFloat(getComputedStyle(tor).rowGap || '0');
+  const ustaw = (n: number, anim: boolean) => {
+    tor.style.transition = anim ? 'transform 700ms cubic-bezier(0.65, 0, 0.35, 1)' : 'none';
+    tor.style.transform = `translate3d(0, ${-n * krok()}px, 0)`;
+    lista.forEach((o, j) => { o.inert = j !== n % lista.length; });
+  };
+  ustaw(0, false);
+  setInterval(() => {
+    if (stop || najechane || document.hidden) return;
+    i += 1;
+    ustaw(i, true);
+    if (i === lista.length) setTimeout(() => { i = 0; ustaw(0, false); }, 720);
+  }, 6000);
+  okna.addEventListener('pointerenter', () => { najechane = true; });
+  okna.addEventListener('pointerleave', () => { najechane = false; });
+  okna.addEventListener('focusin', () => { najechane = true; });
+  okna.addEventListener('focusout', () => { najechane = false; });
+  okna.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('button')) stop = true; });
+  addEventListener('resize', () => ustaw(i % lista.length, false));
 });
 
 // ---------- 9e. Odsłona przy wejściu w ekran (29 S5 stos kart, 29 S6 stepper): klasa .widoczny raz, gdy segment jest w 25% widoczny ----------

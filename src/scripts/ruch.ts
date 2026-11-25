@@ -365,32 +365,50 @@ function lejek() {
 }
 
 // ---------- 6. 29 S4: blok zmienia się przy przewijaniu (od 1024 px) ----------
-// Sekcja ma wysokość 3 ekranów, środek przyklejony; 0–33% blok 1, 33–66% blok 2, 66–100% blok 3.
+// Kacper 25.11 16:06: wcześniej blok zmieniał się zbyt łatwo. Teraz każdy blok ma 0,9 wysokości ekranu przewijania,
+// a zmiana wymaga wyjścia 6% poza granicę odcinka (histereza), więc drobny ruch kółkiem nie przełącza bloków.
+// Treść ma stałą wysokość (najwyższy blok), przyklejona 24 px od góry; pod nią przy końcu widać początek S5.
 // Wymiana: zanik 200 ms + y 16 → 0 w 320 ms. Telefon i „ogranicz ruch”: zakładki jak dotąd.
 function blokiPrzewijane() {
   const seg = document.querySelector<HTMLElement>('[data-bloki-przewijane]');
   if (!seg || ograniczRuch()) return;
   const zakladki = [...seg.querySelectorAll<HTMLButtonElement>('[role=tab]')];
-  if (zakladki.length < 2) return;
+  const kontener = seg.querySelector<HTMLElement>(':scope > .kontener');
+  const panele = [...seg.querySelectorAll<HTMLElement>('[role=tabpanel]')];
+  if (zakladki.length < 2 || !kontener) return;
+  const GORA = 24, NA_BLOK = 0.9, HISTEREZA = 0.06;
   let ramka = 0, ostatni = -1;
+  const zakres = () => Math.max(1, seg.offsetHeight - kontener.offsetHeight - GORA);
+  const wymiary = () => {
+    if (!komputer.matches) { seg.style.height = ''; kontener.style.minHeight = ''; return; }
+    // najwyższy panel: wszystkie na chwilę widoczne (bez malowania, w tej samej klatce)
+    const ukryte = panele.map((p) => p.hidden);
+    kontener.style.minHeight = '';
+    let max = 0;
+    panele.forEach((p) => { panele.forEach((q) => { q.hidden = q !== p; }); max = Math.max(max, kontener.offsetHeight); });
+    panele.forEach((p, i) => { p.hidden = ukryte[i]; });
+    kontener.style.minHeight = `${max}px`;
+    seg.style.height = `${max + GORA + zakladki.length * innerHeight * NA_BLOK}px`;
+  };
   const licz = () => {
     ramka = 0;
     if (!komputer.matches) return;
     const r = seg.getBoundingClientRect();
-    const zakres = r.height - innerHeight;
-    if (zakres <= 0) return;
-    const p = Math.min(0.999, Math.max(0, -r.top / zakres));
-    const i = Math.floor(p * zakladki.length);
+    const poz = Math.min(zakladki.length - 0.001, Math.max(0, ((GORA - r.top) / zakres()) * zakladki.length));
+    let i = Math.floor(poz);
+    if (ostatni >= 0 && i !== ostatni && poz > ostatni - HISTEREZA && poz < ostatni + 1 + HISTEREZA) i = ostatni;
     if (i !== ostatni) { ostatni = i; zakladki[i].click(); }
   };
-  const tryb = () => { seg.classList.toggle('przewijane', komputer.matches); licz(); };
+  const tryb = () => { seg.classList.toggle('przewijane', komputer.matches); wymiary(); licz(); };
   komputer.addEventListener('change', tryb);
+  addEventListener('resize', () => { wymiary(); licz(); });
+  document.fonts?.ready.then(() => { wymiary(); licz(); });
   addEventListener('scroll', () => { if (!ramka) ramka = requestAnimationFrame(licz); }, { passive: true });
-  // Klik w zakładkę na komputerze przewija do jej odcinka sekcji, żeby przewijanie i zakładki się zgadzały.
+  // Klik w zakładkę na komputerze przewija do środka jej odcinka sekcji, żeby przewijanie i zakładki się zgadzały.
   zakladki.forEach((z, i) => z.addEventListener('click', (e) => {
     if (!komputer.matches || !e.isTrusted) return;
-    const zakres = seg.offsetHeight - innerHeight;
-    scrollTo({ top: seg.offsetTop + (zakres * (i + 0.5)) / zakladki.length, behavior: 'smooth' });
+    ostatni = i;
+    scrollTo({ top: seg.getBoundingClientRect().top + scrollY - GORA + (zakres() * (i + 0.5)) / zakladki.length, behavior: 'smooth' });
   }));
   tryb();
 }
@@ -399,8 +417,9 @@ function blokiPrzewijane() {
 // Rząd 1 jedzie w lewo, rząd 2 w prawo. Kafle oryginalne zostają w DOM (linki, fokus), kopie są aria-hidden + inert.
 // WCAG 2.2.2: ruch staje po najechaniu, przy fokusie klawiatury, przyciskiem „Zatrzymaj” i poza ekranem.
 // Tempo: 50 px/s (makieta: 1332 px w 12,4 s ≈ 107 px/s; to tempo pokazowe osi czasu, przy czytaniu za szybkie).
-function pasyRealizacji() {
-  const ul = document.querySelector<HTMLElement>('#realizacje .kafle');
+// 29 S8 (Kacper 25.11 16:06: „animacje z głównej strony”): ten sam mechanizm, jeden pas kart 540 px (szerokość karty z Figmy 243:530).
+function pasyRealizacji(lista = '#realizacje .kafle', element = '.kafel', rzedy = 2, kafel = 424) {
+  const ul = document.querySelector<HTMLElement>(lista);
   if (!ul || ograniczRuch()) return;
   let zbudowane: { pasy: HTMLElement; powrot: { el: HTMLElement; nast: Node | null }[] } | null = null;
   const kopia = (c: HTMLElement) => {
@@ -411,14 +430,14 @@ function pasyRealizacji() {
   };
   const zbuduj = () => {
     if (zbudowane || !komputer.matches) return;
-    const kafle = [...ul.children].filter((c) => c.matches('.kafel') && !c.hasAttribute('data-kopia')) as HTMLElement[];
+    const kafle = [...ul.children].filter((c) => c.matches(element) && !c.hasAttribute('data-kopia')) as HTMLElement[];
     if (kafle.length < 2) return;
     const powrot = kafle.map((el) => ({ el, nast: el.nextSibling }));
-    const pol = Math.ceil(kafle.length / 2);
-    const szer = 424 + 20; // kafel + odstęp
+    const pol = rzedy > 1 ? Math.ceil(kafle.length / 2) : kafle.length;
+    const szer = kafel + 20; // kafel + odstęp
     const pasy = document.createElement('div');
     pasy.className = 'pasy';
-    [kafle.slice(0, pol), kafle.slice(pol)].forEach((rzad, r) => {
+    (rzedy > 1 ? [kafle.slice(0, pol), kafle.slice(pol)] : [kafle]).forEach((rzad, r) => {
       const pas = document.createElement('div');
       pas.className = r ? 'pas pas--wstecz' : 'pas';
       const tor = document.createElement('ul');
@@ -430,6 +449,7 @@ function pasyRealizacji() {
       while (zestaw * szer < ul.offsetWidth + szer) { rzad.forEach((c) => tor.append(kopia(c))); zestaw += rzad.length; }
       [...tor.children].forEach((c) => tor.append(kopia(c as HTMLElement)));
       tor.style.setProperty('--czas', `${Math.round((zestaw * szer) / 50)}s`);
+      tor.style.setProperty('--szer-kafla', `${kafel}px`);
       pas.append(tor);
       pasy.append(pas);
     });
@@ -535,6 +555,8 @@ function stosProcesu() {
   komputer.addEventListener('change', () => (komputer.matches ? wlacz() : wylacz()));
 }
 
+// 29 S8: pas budujemy przed kaskadą, żeby kaskada odsłoniła cały pas naraz (kopie kart nie zostają z opacity 0).
+pasyRealizacji('#przyklad .karty', '.karta', 1, 540);
 kaskady();
 kurtyna();
 zmianaSlow();

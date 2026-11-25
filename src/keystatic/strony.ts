@@ -219,7 +219,7 @@ export const strony = {
       bloki: lista('Bloki', fields.object({ nazwa: t('Nazwa (zakładka)', 40, true), tytul: t('Tytuł bloku', 60, true), podtytul: t('Podtytuł', 80), potrafi: lista('Co potrafi', t('Punkt', 90), 1, 4), nie_potrafi: lista('Czego nie potrafi (min. 2)', t('Punkt', 90), 2, 4) }), 3, 3, 'nazwa'),
     }),
     s5_jak_pracujemy: seg('S5 Jak pracujemy (stos kart po skosie)', { naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 160), kroki: lista('Kroki', tytulOpis(40, 120), 4, 4, 'tytul') }),
-    s6_ograniczenia: seg('S6 Ograniczenia i koszty (stepper 1–4)', { naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 120), kroki: lista('Kroki', t('Treść', 110), 4, 4) }),
+    s6_ograniczenia: seg('S6 Ograniczenia i koszty: segment usunięty ze strony 25.11, pole nieużywane', { naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 120), kroki: lista('Kroki', t('Treść', 110), 4, 4) }),
     s7_cena: seg('S7 Cena (cztery kolumny, cena na dole karty)', {
       naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 160),
       zakresy: lista('Zakresy', fields.object({ nazwa: t('Nazwa', 40, true), opis: a('Opis', 200), cena: cenaRel() }), 4, 4, 'nazwa'),

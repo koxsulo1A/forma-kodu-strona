@@ -4,14 +4,14 @@
 interface Props { t: any }
 const { t } = Astro.props;
 ---
-<section class="s2 kratka segment" id="dla-kogo" data-segment="S2 Dla kogo" aria-labelledby="s2-h">
+<section class="s2 baza segment" id="dla-kogo" data-segment="S2 Dla kogo" aria-labelledby="s2-h">
   <div class="kontener s2-wnetrze">
     <header class="naglowek">
       <h2 id="s2-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
       {t.lead && <p class="t-tresc-l">{t.lead}</p>}
     </header>
     <ul role="list" class="sytuacje swipe" data-swipe="s2-wskaznik">
-      {t.sytuacje.map((s: any) => <li><h3 class="t-h4 naglowkowy">{s.tytul}</h3><p class="t-tresc">{s.opis}</p></li>)}
+      {t.sytuacje.map((s: any) => <li class="w1 wyciecie"><h3 class="t-h4 naglowkowy">{s.tytul}</h3><p class="t-tresc">{s.opis}</p></li>)}
     </ul>
     <div class="wskaznik-swipe" id="s2-wskaznik" aria-hidden="true">
       <ol>{t.sytuacje.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
@@ -25,6 +25,6 @@ const { t } = Astro.props;
   .s2-wnetrze { display: grid; gap: 32px; }
   .naglowek { display: grid; gap: 12px; max-width: 760px; }
   .sytuacje { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .sytuacje li { display: grid; gap: 12px; align-content: start; min-height: 155px; padding: 28px; border-radius: var(--radius-card); background: var(--fk-tlo); border: 1px solid var(--fk-obrys); }
+  .sytuacje li { display: grid; gap: 12px; align-content: start; min-height: 155px; padding: 28px; } /* Figma 203:352: karty to wycięcia w białej bazie (Kacper 25.11) */
   @media (max-width: 1023.98px) { .sytuacje li { padding: 24px 20px; min-height: 0; } }
 </style>

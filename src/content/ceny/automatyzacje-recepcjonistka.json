@@ -1,0 +1,10 @@
+{
+  "nazwa": "Automatyczna recepcjonistka",
+  "kwota_od": 1000,
+  "waluta": "PLN",
+  "netto": true,
+  "okres": "jednorazowo",
+  "nasza_cena": true,
+  "zrodlo": "Cennik Forma Kodu, decyzja Kacpra 25.11.2026 („od 1k”)",
+  "data_odczytu": "2026-11-25"
+}

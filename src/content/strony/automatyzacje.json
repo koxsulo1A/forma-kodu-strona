@@ -150,7 +150,7 @@
     ]
   },
   "s7_cena": {
-    "naglowek": "Ile to kosztuje",
+    "naglowek": "Cztery zakresy do wyboru",
     "lead": "Cena zależy od procesu, narzędzi i tego, ile jest wyjątków.",
     "zakresy": [
       {
@@ -161,7 +161,7 @@
       {
         "nazwa": "Automatyzacja wielu procesów",
         "opis": "Wkrótce. Kilka powiązanych czynności w jednym przepływie. Każdy proces opisujemy i sprawdzamy osobno.",
-        "cena": null
+        "cena": "automatyzacje-wiele-procesow"
       },
       {
         "nazwa": "Bot czatowy",
@@ -169,13 +169,12 @@
         "cena": "automatyzacje-bot-czatowy"
       },
       {
-        "nazwa": "Automatyczny recepcjonista",
+        "nazwa": "Automatyczna recepcjonistka",
         "opis": "Wkrótce. Przyjmuje zgłoszenia i przekazuje je do kalendarza lub do Ciebie. Terminy rezerwuje tylko po połączeniu z kalendarzem.",
-        "cena": null
+        "cena": "automatyzacje-recepcjonistka"
       }
     ],
     "przypisy": [
-      "Kwoty „od” z naszego cennika. Cenę dla Ciebie podajemy na piśmie po rozmowie o procesie.",
       "Koszty narzędzi i modeli AI są osobne, podajemy je przed startem. Wyjątki od reguł obsługuje człowiek, nie bot."
     ]
   },
