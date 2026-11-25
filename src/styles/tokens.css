@@ -127,8 +127,8 @@
   --radius-12: 12px;
   --radius-24: 24px;
   --radius-28: 28px;
-  --fk-margines: clamp(20px, 4.5vw, 64px); /* 20 px na telefonie, 64 px od 1440 */
-  --fk-szerokosc: 1312px;
+  --fk-margines: clamp(16px, 2.8vw, 40px); /* 16 px na telefonie, 40 px od ~1430 (Kacper 25.11: mniejsze ograniczenie po bokach) */
+  --fk-szerokosc: 1440px;
   --fk-wys-paska: 72px;
 
   /* 5. Ruch (tryb „Pełny”) */

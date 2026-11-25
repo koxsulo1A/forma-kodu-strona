@@ -4,19 +4,18 @@
 interface Props { t: any }
 const { t } = Astro.props;
 const slupki = [12, 18, 17, 26, 31, 38];
-// Zmiana słów w H1 (plansza 529:2269): część H1 równa pierwszemu słowu z listy wymienia się litera po literze (ruch.ts, punkt 3).
+// Zmiana słów w H1 (plansza 529:2269, efekt GSAP ScrambleText z pena QWzZwxR): część H1 równa pierwszemu słowu z listy
+// „rozsypuje się” w losowe litery i składa w następne słowo (ruch.ts, punkt 3). Przecinek stoi zaraz za słowem, bez odstępu.
 // Czytnik ekranu i wyszukiwarki dostają pełne H1 z HTML; zmienna część jest dekoracją (aria-hidden), obok tekst sr-only.
 const slowa: string[] = (t.h1_slowa ?? []).filter(Boolean);
 const poz = slowa.length > 1 ? t.h1.indexOf(slowa[0]) : -1;
 const reszta = poz < 0 ? '' : t.h1.slice(poz + slowa[0].length);
-const znak = reszta.match(/^[,.;:!?]/)?.[0] ?? ''; // znak po słowie trzymamy przy nim, żeby nie spadał do nowej linii
-const najdluzsze = slowa.reduce((a: string, b: string) => (b.length > a.length ? b : a), '');
 ---
 <section class="s1 baza segment" id="start" data-segment="S1 Hero" aria-labelledby="s1-h">
   <div class="kontener s1-podzial">
     <div class="s1-tekst">
       <h1 id="s1-h" class="t-display pojaw">{poz < 0 ? t.h1 : (
-        <>{t.h1.slice(0, poz)}<span class="sr-only">{slowa[0]}</span><span class="slowa-ze-znakiem"><span class="slowa" data-slowa={JSON.stringify(slowa)} aria-hidden="true"><span class="slowa-miara">{najdluzsze}</span><span class="slowa-widok" data-slowa-widok><span class="slowo jest">{slowa[0]}</span></span></span>{znak}</span>{reszta.slice(znak.length)}</>
+        <>{t.h1.slice(0, poz)}<span class="sr-only">{slowa[0]}</span><span class="slowo-zmienne" data-slowa={JSON.stringify(slowa)} aria-hidden="true">{slowa[0]}</span>{reszta}</>
       )}</h1>
       <p class="t-tresc-l">{t.lead}</p>
       <div class="s1-akcje">
@@ -24,36 +23,51 @@ const najdluzsze = slowa.reduce((a: string, b: string) => (b.length > a.length ?
         {t.cta_2 && <a class="przycisk przycisk--drugi" href="#oferta">{t.cta_2}</a>}
       </div>
     </div>
-    <div class="s1-ilustracja" aria-hidden="true">
-      <div class="okno">
-        <div class="okno-pasek">
+    <div class="s1-ilustracja" role="group" aria-label="Przykład: strona gabinetu z rezerwacją, czat z asystentem i wykres widoczności (dane przykładowe)">
+      <div class="okno" data-okno-demo>
+        <div class="okno-pasek" aria-hidden="true">
           <i class="k1"></i><i class="k2"></i><i class="k3"></i>
           <span class="t-etykieta okno-adres">gabinet.przyklad</span>
         </div>
         <div class="okno-tresc">
           <p class="t-maly pomocniczy">Gabinet fizjoterapii (firma przykładowa)</p>
           <p class="t-h4 naglowkowy">Wolne terminy w tym tygodniu</p>
-          <div class="terminy t-maly"><span>czw 16:00</span><span>pt 9:30</span><span>sob 10:00</span></div>
-          <div class="okno-akcje"><span class="rezerwuj t-maly-mocny">Zarezerwuj termin</span><span class="t-nawigacja">Godziny i dojazd</span></div>
+          <div class="terminy t-maly" role="group" aria-label="Wybierz termin (przykład)">
+            <button type="button" aria-pressed="false" data-termin>czw 16:00</button><button type="button" aria-pressed="false" data-termin>pt 9:30</button><button type="button" aria-pressed="false" data-termin>sob 10:00</button>
+          </div>
+          <div class="okno-akcje">
+            <button type="button" class="rezerwuj t-maly-mocny" data-rezerwuj>Zarezerwuj termin</button>
+            <p class="potwierdzenie t-maly-mocny" data-potwierdzenie role="status" hidden></p>
+            <span class="t-nawigacja">Godziny i dojazd</span>
+          </div>
         </div>
       </div>
-      <div class="czat">
+      <div class="czat" data-czat-hero>
         <div class="czat-gora"><p class="t-maly-mocny">Asystent na stronie</p><p class="t-etykieta">Przykładowa rozmowa</p></div>
-        <div class="czat-wiadomosci">
-          <p class="dymek klient"><small>Klient</small>Czy w sobotę są wolne terminy?</p>
-          <p class="dymek asystent"><small>Asystent</small>Wolne terminy są w kalendarzu rezerwacji. Podać link?</p>
-          <p class="dymek klient"><small>Klient</small>Tak, poproszę.</p>
+        <ol role="list" class="czat-wiadomosci" data-czat-lista aria-live="polite" tabindex="0" aria-label="Rozmowa (przykład, przewijana)">
+          <li class="dymek klient"><small>Klient</small>Czy w sobotę są wolne terminy?</li>
+          <li class="dymek asystent"><small>Asystent</small>Wolne terminy są w kalendarzu rezerwacji. Podać link?</li>
+          <li class="dymek klient"><small>Klient</small>Tak, poproszę.</li>
+        </ol>
+        <div class="podpowiedzi" role="group" aria-label="Zadaj pytanie (przykład)">
+          <button type="button" data-odpowiedz="Cena zależy od zakresu. Pokazać pakiety?">Ile to kosztuje?</button>
+          <button type="button" data-odpowiedz="Strona podstawowa zajmuje 1–2 tygodnie, dedykowana 2–4 tygodnie. Opisać zakres?">Jak długo trwa?</button>
+          <button type="button" data-odpowiedz="Najbliższe: czw 16:00, pt 9:30 i sob 10:00. Zarezerwować?">Wolne terminy</button>
         </div>
-        <div class="podpowiedzi"><span>Ile to kosztuje?</span><span>Jak długo trwa?</span><span>Wolne terminy</span></div>
       </div>
-      <div class="wykres">
+      <div class="wykres" aria-hidden="true">
         <p class="t-maly-mocny naglowkowy">Widoczność SEO/GEO</p>
         <p class="t-maly pomocniczy">Dane przykładowe, nie pomiar</p>
-        <p class="wykres-os t-etykieta">wejścia z wyszukiwarki</p>
-        <div class="slupki">
-          {slupki.map((v, i) => <span class:list={['slupek', v < 19 ? 'niski' : v < 30 ? 'sredni' : 'wysoki']} data-v={v} data-i={i + 1}></span>)}
+        <div class="wykres-pole">
+          <span class="wykres-os t-etykieta">wejścia z wyszukiwarki</span>
+          <span class="poz p40">40</span><span class="poz p20">20</span><span class="poz p0">0</span>
+          <i class="linia l40"></i><i class="linia l20"></i><i class="linia l0"></i>
+          <div class="slupki">
+            {slupki.map((v, i) => <span class:list={['slupek', v < 19 ? 'niski' : v < 30 ? 'sredni' : 'wysoki']} data-v={v} data-i={i + 1}></span>)}
+          </div>
+          <p class="wykres-x">{slupki.map((_, i) => <span>{i + 1}</span>)}</p>
+          <span class="tydzien">tydzień</span>
         </div>
-        <p class="wykres-x t-etykieta"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></p>
         <p class="legenda"><span>niski wynik</span><i></i><span>→ wysoki wynik</span></p>
       </div>
     </div>
@@ -72,7 +86,8 @@ const najdluzsze = slowa.reduce((a: string, b: string) => (b.length > a.length ?
 
 <style>
   .s1 { padding-bottom: 38px; }
-  .s1-podzial { display: grid; grid-template-columns: minmax(0, 712fr) minmax(0, 512fr); gap: 88px; align-items: center; min-height: 643px; padding-block: 40px; }
+  .s1-podzial { display: grid; grid-template-columns: minmax(0, 712fr) minmax(0, 512fr); gap: 88px; align-items: center; min-height: 643px; padding-block: 28px 20px; }
+  .s1-tekst .t-tresc-l { max-width: 660px; }
   .s1-tekst { display: grid; gap: 28px; }
   .s1-akcje { display: flex; flex-wrap: wrap; gap: 16px; }
   .pas {
@@ -82,42 +97,58 @@ const najdluzsze = slowa.reduce((a: string, b: string) => (b.length > a.length ?
   .pas-lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 32px; }
   .pas-lista li { display: grid; gap: 8px; align-content: start; padding-left: 32px; border-left: 1px solid var(--fk-obrys); }
 
-  /* Ilustracja (40%) */
-  .s1-ilustracja { position: relative; display: grid; grid-template-columns: 273fr 224fr; gap: 15px; align-items: start; }
-  .okno { grid-column: 1 / -1; background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); overflow: hidden; }
+  /* Ilustracja (40%, makieta 107:48: 512 × 643; okno u góry, pod nim czat 273 × 300 i wykres 224, odstęp 16 px) */
+  .s1-ilustracja { position: relative; display: grid; grid-template-columns: 273fr 224fr; gap: 16px 15px; align-items: start; }
+  .okno { grid-column: 1 / -1; background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--fk-cien-karta, 0 1px 2px rgb(28 36 48 / 0.08), 0 8px 24px -4px rgb(28 36 48 / 0.08), 0 24px 48px -12px rgb(28 36 48 / 0.06)); }
   .okno-pasek { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--fk-tlo-podniesione); }
   .okno-pasek i { width: 10px; height: 10px; border-radius: 50%; }
   .k1 { background: var(--fk-okno-kropka-1); } .k2 { background: var(--fk-okno-kropka-2); } .k3 { background: var(--fk-okno-kropka-3); }
   .okno-adres { flex: 1; background: var(--fk-tlo); border-radius: var(--radius-pill); padding: 4px 12px; color: var(--fk-tekst-pomocniczy); }
   .okno-tresc { display: grid; gap: 12px; padding: 24px 28px 28px; }
   .terminy { display: flex; gap: 8px; flex-wrap: wrap; }
-  .terminy span { padding: 8px 16px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: var(--radius-control); }
-  .okno-akcje { display: flex; align-items: center; gap: 16px; padding-top: 8px; }
-  .rezerwuj { background: var(--fk-krok-koncowy); color: var(--fk-krok-koncowy-tekst); padding: 8px 16px; border-radius: var(--radius-control); }
-  .czat { background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: 20px; overflow: hidden; }
-  .czat-gora { background: var(--fk-kafel-2-tlo); color: var(--fk-kafel-2-tekst); padding: 12px 16px; display: grid; gap: 4px; }
-  .czat-wiadomosci { display: grid; gap: 8px; padding: 16px; }
-  .dymek { font-size: var(--fk-font-maly); line-height: 1.5; color: var(--fk-tekst-naglowek); padding: 8px 12px; border-radius: 12px; display: grid; gap: 4px; max-width: 90%; }
-  .dymek small { font-family: var(--fk-rodzina-mono); font-size: 11px; color: var(--fk-tekst-pomocniczy); }
-  .klient { background: var(--fk-tlo-podniesione); justify-self: end; }
-  .asystent { border: 1px solid var(--fk-obrys); }
-  .podpowiedzi { display: flex; gap: 6px; padding: 0 16px 14px; overflow: hidden; }
-  .podpowiedzi span { flex: none; font-size: 11px; color: var(--fk-akcent); border: 1px solid var(--fk-akcent); border-radius: var(--radius-pill); padding: 6px 10px; }
-  .wykres { background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); padding: 16px; display: grid; gap: 8px; }
-  .wykres-os { color: var(--fk-tekst-pomocniczy); }
-  .slupki {
-    height: 110px; display: flex; align-items: flex-end; gap: 13px; padding-left: 8px;
-    border-bottom: 1px solid var(--fk-obrys-kontrolka);
-    background: linear-gradient(var(--fk-obrys) 1px, transparent 1px) 0 0 / 100% 50%;
-  }
-  .slupek { width: 14px; }
+  /* Plansza 450:1815: najechanie = obrys akcentu + cień (150 ms); wybór = zieleń, biały tekst (200 ms). */
+  .terminy button { font: inherit; color: var(--fk-tekst); background: var(--fk-tlo); padding: 8px 16px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: var(--radius-control); cursor: pointer; transition: border-color 150ms, box-shadow 150ms, background-color 200ms, color 200ms; }
+  .terminy button:hover, .terminy button:focus-visible { border-color: var(--fk-akcent); box-shadow: 0 4px 12px -4px rgb(86 56 204 / 0.35); }
+  .terminy button[aria-pressed='true'] { background: var(--fk-krok-koncowy); border-color: var(--fk-krok-koncowy); color: var(--fk-krok-koncowy-tekst); }
+  .okno-akcje { display: flex; align-items: center; gap: 16px; padding-top: 8px; min-height: 45px; }
+  .rezerwuj { font: inherit; border: 0; cursor: pointer; background: var(--fk-krok-koncowy); color: var(--fk-krok-koncowy-tekst); padding: 8px 16px; border-radius: var(--radius-control); transition: transform 300ms var(--fk-krzywa-wejscie), opacity 300ms; }
+  .rezerwuj.zwija { transform: scaleX(0.6); opacity: 0; }
+  .potwierdzenie { color: var(--fk-krok-koncowy); animation: fk-wejscie 300ms var(--fk-krzywa-wejscie); }
+  .czat { display: flex; flex-direction: column; height: 300px; background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: 20px; overflow: hidden; box-shadow: 0 1px 2px rgb(28 36 48 / 0.08), 0 8px 24px -4px rgb(28 36 48 / 0.08); }
+  .czat-gora { flex: none; background: var(--fk-kafel-2-tlo); color: var(--fk-kafel-2-tekst); padding: 12px 16px; display: grid; gap: 4px; }
+  /* Wiadomości przewijane w pionie, widać najnowsze (makieta: pasek przewijania 4 px). */
+  .czat-wiadomosci { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 16px 12px 12px 16px; margin: 0; list-style: none; scrollbar-width: thin; scrollbar-color: var(--fk-obrys-kontrolka) transparent; overscroll-behavior: contain; }
+  .czat-wiadomosci > :first-child { margin-top: auto; }
+  .czat-wiadomosci:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: -3px; }
+  .czat :global(.dymek) { font-size: var(--fk-font-maly); line-height: 1.5; color: var(--fk-tekst-naglowek); padding: 8px 12px; border-radius: 12px; display: grid; gap: 4px; max-width: 88%; flex: none; }
+  .czat :global(.dymek small) { font-family: var(--fk-rodzina-mono); font-size: 11px; line-height: 14px; color: var(--fk-tekst-pomocniczy); }
+  .czat :global(.klient) { background: var(--fk-tlo-podniesione); align-self: flex-end; }
+  .czat :global(.asystent) { border: 1px solid var(--fk-obrys); align-self: flex-start; }
+  .czat :global(.dymek.nowy) { animation: czat-wjazd 250ms var(--fk-krzywa-wejscie); }
+  .czat :global(.pisze) { letter-spacing: 3px; color: var(--fk-tekst-pomocniczy); }
+  @keyframes czat-wjazd { from { opacity: 0; transform: translateY(8px); } }
+  .podpowiedzi { flex: none; display: flex; gap: 6px; padding: 8px 16px 14px; flex-wrap: wrap; }
+  .podpowiedzi button { flex: none; font: inherit; font-size: 11px; color: var(--fk-akcent); background: var(--fk-tlo); border: 1px solid var(--fk-akcent); border-radius: var(--radius-pill); padding: 6px 10px; cursor: pointer; transition: background-color 100ms, color 100ms; }
+  .podpowiedzi button:hover { background: var(--fk-tlo-powierzchnia); }
+  .podpowiedzi button.wcisnieta { background: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
+  .wykres { background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); padding: 16px; display: grid; gap: 8px; margin-top: 5px; box-shadow: 0 1px 2px rgb(28 36 48 / 0.08), 0 8px 24px -4px rgb(28 36 48 / 0.08); }
+  /* Wykres 107:95: pole 192 × 160, oś Y 0/20/40, słupki co 27 px, podpis „tydzień”. */
+  .wykres-pole { position: relative; height: 160px; font-family: var(--fk-rodzina-mono); font-size: 10px; line-height: 12px; color: var(--fk-tekst-pomocniczy); }
+  .wykres-os { position: absolute; left: 0; top: 0; font-size: 10px; white-space: nowrap; }
+  .poz { position: absolute; left: 0; width: 20px; text-align: right; }
+  .p40 { top: 18px; } .p20 { top: 70px; } .p0 { top: 122px; }
+  .linia { position: absolute; left: 26px; right: 0; height: 1px; background: var(--fk-obrys); }
+  .l40 { top: 24px; } .l20 { top: 76px; } .l0 { top: 128px; background: var(--fk-obrys-kontrolka); }
+  .slupki { position: absolute; left: 34px; right: 0; top: 24px; height: 104px; display: flex; align-items: flex-end; gap: 13px; }
+  .slupek { width: 14px; border-radius: 3px 3px 0 0; }
   .slupek.niski { background: var(--fk-okno-kropka-1); }
   .slupek.sredni { background: var(--fk-okno-kropka-2); }
   .slupek.wysoki { background: var(--fk-krok-koncowy); }
-  .slupek[data-v='12'] { height: 31%; } .slupek[data-v='18'] { height: 47%; } .slupek[data-v='17'] { height: 44%; }
-  .slupek[data-v='26'] { height: 68%; } .slupek[data-v='31'] { height: 81%; } .slupek[data-v='38'] { height: 99%; }
-  .wykres-x { display: flex; gap: 13px; padding-left: 10px; color: var(--fk-tekst-pomocniczy); }
+  .slupek[data-v='12'] { height: 30%; } .slupek[data-v='18'] { height: 45%; } .slupek[data-v='17'] { height: 42.5%; }
+  .slupek[data-v='26'] { height: 65%; } .slupek[data-v='31'] { height: 77.5%; } .slupek[data-v='38'] { height: 95%; }
+  .wykres-x { position: absolute; left: 34px; top: 132px; display: flex; gap: 13px; margin: 0; }
   .wykres-x span { width: 14px; text-align: center; }
+  .tydzien { position: absolute; left: 142px; top: 146px; }
   .legenda { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--fk-tekst-pomocniczy); }
   .legenda i { width: 40px; height: 8px; border-radius: 4px; background: var(--fk-grad-skala); }
 
@@ -133,6 +164,7 @@ const najdluzsze = slowa.reduce((a: string, b: string) => (b.length > a.length ?
     .s1-podzial { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding-block: 24px 16px; }
     .s1-akcje .przycisk { flex: 1; }
     .s1-ilustracja { max-width: 512px; grid-template-columns: 1fr; }
+    .wykres { margin-top: 0; }
     .pas { grid-template-columns: 1fr; gap: 0; padding: 28px 24px; margin-top: 32px; }
     .pas-naglowek { padding-bottom: 28px; }
     .pas-lista { grid-template-columns: 1fr; gap: 0; }

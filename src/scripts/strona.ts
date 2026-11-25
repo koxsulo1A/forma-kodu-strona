@@ -481,3 +481,61 @@ document.querySelectorAll<HTMLElement>('[data-stos]').forEach((stos) => {
     setTimeout(() => stos.classList.remove('w-ruchu'), 800);
   });
 });
+
+// ---------- 9f. 27 S1: klikalne okno strony i czat w ilustracji (plansze 450:1815 i 450:1947, dane przykładowe) ----------
+{
+  const okno = document.querySelector<HTMLElement>('[data-okno-demo]');
+  if (okno) {
+    const terminy = [...okno.querySelectorAll<HTMLButtonElement>('[data-termin]')];
+    const rezerwuj = okno.querySelector<HTMLButtonElement>('[data-rezerwuj]')!;
+    const potw = okno.querySelector<HTMLElement>('[data-potwierdzenie]')!;
+    let wybrany = '';
+    terminy.forEach((b) => b.addEventListener('click', () => {
+      wybrany = b.textContent ?? '';
+      terminy.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      rezerwuj.textContent = `Zarezerwuj ${wybrany}`;
+      rezerwuj.hidden = false; potw.hidden = true; rezerwuj.classList.remove('zwija');
+    }));
+    rezerwuj.addEventListener('click', () => {
+      if (!wybrany) { terminy[0]?.focus(); terminy.forEach((x) => x.animate?.([{ borderColor: 'var(--fk-akcent)' }, {}], { duration: 600 })); return; }
+      const pokaz = () => { rezerwuj.hidden = true; potw.textContent = `✓ Zarezerwowano: ${wybrany} (przykład)`; potw.hidden = false; };
+      if (ograniczRuch()) { pokaz(); return; }
+      rezerwuj.classList.add('zwija');
+      setTimeout(pokaz, 300);
+    });
+  }
+  const czat = document.querySelector<HTMLElement>('[data-czat-hero]');
+  if (czat) {
+    const lista = czat.querySelector<HTMLElement>('[data-czat-lista]')!;
+    const cid = [...(lista.querySelector('li')?.attributes ?? [])].filter((a) => a.name.startsWith('data-astro-cid'));
+    const dymek = (kto: 'klient' | 'asystent', tekst: string, klasa = '') => {
+      const li = document.createElement('li');
+      li.className = `dymek ${kto} nowy ${klasa}`.trim();
+      const s = document.createElement('small');
+      s.textContent = kto === 'klient' ? 'Klient' : 'Asystent';
+      li.append(s, tekst);
+      [li, s].forEach((e) => cid.forEach((a) => e.setAttribute(a.name, a.value)));
+      lista.append(li);
+      lista.scrollTo({ top: lista.scrollHeight, behavior: ograniczRuch() ? 'auto' : 'smooth' });
+      return li;
+    };
+    lista.scrollTop = lista.scrollHeight;
+    czat.querySelectorAll<HTMLButtonElement>('[data-odpowiedz]').forEach((b) => b.addEventListener('click', () => {
+      const pytanie = b.textContent ?? '', odp = b.dataset.odpowiedz!;
+      const dalej = () => {
+        const fokus = document.activeElement === b;
+        const nast = (b.nextElementSibling ?? b.previousElementSibling) as HTMLElement | null;
+        b.remove(); dymek('klient', pytanie);
+        if (fokus) (nast ?? lista).focus();
+      };
+      if (ograniczRuch()) { dalej(); dymek('asystent', odp); return; }
+      b.classList.add('wcisnieta');
+      setTimeout(() => {
+        dalej();
+        let pisze: HTMLElement | null = null;
+        setTimeout(() => { pisze = dymek('asystent', '• • •', 'pisze'); pisze.setAttribute('aria-hidden', 'true'); }, 600);
+        setTimeout(() => { pisze?.remove(); dymek('asystent', odp); }, 1200);
+      }, 100);
+    }));
+  }
+}

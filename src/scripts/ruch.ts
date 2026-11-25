@@ -107,8 +107,9 @@ function kaskady() {
         if (!wpisy.some((w) => w.isIntersecting)) return;
         obs.disconnect();
         el.forEach(pokaz);
-      }, seg.offsetHeight > innerHeight * 2 ? { rootMargin: '0px 0px -30% 0px' } : { threshold: 0.3 });
-      // Próg 30% liczony od segmentu; przy bardzo wysokich segmentach wystarczy, że wejdzie na 30% ekranu.
+      }, { rootMargin: '0px 0px -15% 0px' });
+      // Segment odsłania się, gdy jego górna krawędź minie 85% wysokości ekranu (wcześniej: 30% segmentu).
+      // Dzięki temu „kawałek S8” pod przyklejonym S7 nie jest pustym miejscem (Kacper 25.11).
       obs.observe(seg);
     });
   });
@@ -132,43 +133,56 @@ function kurtyna() {
   licz();
 }
 
-// ---------- 3. 27 S1: zmiana słów w H1 ----------
-// Plansza 529:2269: słowo widoczne 2,5 s; wymiana 0,6 s, litery z opóźnieniem 30 ms; stare litery w górę i gasną, nowe wjeżdżają od dołu.
-// Po 3 obiegach zatrzymuje się na pierwszym słowie. Czytnik ekranu czyta pełne H1 z HTML (zmienna część aria-hidden).
+// ---------- 3. 27 S1: zmiana słów w H1 (efekt „scramble”, GSAP ScrambleText, pen QWzZwxR) ----------
+// Słowo widoczne 2,5 s, potem rozsypuje się w losowe litery (duże i małe) i składa w następne: litery odsłaniają się
+// od lewej po 20% czasu, długość płynnie przechodzi do długości nowego słowa (tweenLength), ease power2.inOut, 1,4 s.
+// Przecinek stoi w HTML zaraz za słowem, więc przy krótszym słowie nie ma odstępu. Wysokość H1 = najwyższy wariant (nic nie skacze).
+// Po 3 obiegach zostaje pierwsze słowo. Czytnik ekranu czyta pełne H1 z HTML (zmienna część aria-hidden).
 function zmianaSlow() {
-  const box = document.querySelector<HTMLElement>('[data-slowa]');
-  if (!box) return;
+  const el = document.querySelector<HTMLElement>('[data-slowa]');
+  if (!el) return;
   let slowa: string[] = [];
-  try { slowa = JSON.parse(box.dataset.slowa!); } catch { return; }
+  try { slowa = JSON.parse(el.dataset.slowa!); } catch { return; }
   if (slowa.length < 2 || ograniczRuch()) return;
-  const widok = box.querySelector<HTMLElement>('[data-slowa-widok]')!;
-  const litery = (s: string, klasa: string) => {
-    const w = document.createElement('span');
-    w.className = `slowo ${klasa}`;
-    [...s].forEach((ch, i) => {
-      if (ch === ' ') { w.append(' '); return; } // zwykła spacja: słowo może się złamać na wąskim ekranie
-      const l = document.createElement('span');
-      l.className = 'litera';
-      l.textContent = ch === ' ' ? ' ' : ch;
-      l.style.transitionDelay = `${i * 30}ms`;
-      w.append(l);
-    });
-    return w;
+  const h1 = el.closest('h1') as HTMLElement;
+  const ustawWysokosc = () => {
+    h1.style.minHeight = '';
+    const teraz = el.textContent;
+    const max = Math.max(...slowa.map((w) => { el.textContent = w; return h1.offsetHeight; }));
+    el.textContent = teraz;
+    h1.style.minHeight = `${max}px`;
+  };
+  ustawWysokosc();
+  document.fonts?.ready.then(ustawWysokosc);
+  addEventListener('resize', ustawWysokosc);
+  const ZNAKI = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const los = () => ZNAKI[Math.floor(Math.random() * ZNAKI.length)];
+  const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2); // power2.inOut
+  const CZAS = 1400, ODSLONA_OD = 0.2;
+  const rozsyp = (z: string, na: string, gotowe: () => void) => {
+    const start = performance.now();
+    let ostatnia = 0;
+    const klatka = (teraz: number) => {
+      const t = Math.min(1, (teraz - start) / CZAS);
+      if (teraz - ostatnia > 45 || t === 1) { // losowe litery zmieniamy co ok. 45 ms, nie w każdej klatce
+        ostatnia = teraz;
+        const e = ease(t);
+        const dl = Math.round(z.length + (na.length - z.length) * e);
+        const odsl = Math.floor(Math.max(0, (e - ODSLONA_OD) / (1 - ODSLONA_OD)) * na.length);
+        let tekst = na.slice(0, odsl);
+        for (let i = odsl; i < dl; i++) tekst += na[i] === ' ' || (i >= na.length && z[i] === ' ') ? ' ' : los();
+        el.textContent = t === 1 ? na : tekst;
+      }
+      if (t < 1) requestAnimationFrame(klatka); else gotowe();
+    };
+    requestAnimationFrame(klatka);
   };
   let i = 0, obiegi = 0;
-  let aktualne = litery(slowa[0], 'jest');
-  widok.replaceChildren(aktualne);
   const nastepne = () => {
+    const z = slowa[i];
     i = (i + 1) % slowa.length;
     if (i === 0) obiegi++;
-    const nowe = litery(slowa[i], 'wchodzi');
-    widok.append(nowe);
-    const stare = aktualne;
-    requestAnimationFrame(() => requestAnimationFrame(() => { stare.className = 'slowo wychodzi'; nowe.className = 'slowo jest'; }));
-    setTimeout(() => stare.remove(), 600 + slowa[i].length * 30 + 400);
-    aktualne = nowe;
-    if (obiegi >= 3 && i === 0) return;
-    setTimeout(nastepne, 2500 + 600);
+    rozsyp(z, slowa[i], () => { if (obiegi < 3 || i !== 0) setTimeout(nastepne, 2500); });
   };
   setTimeout(nastepne, 2500);
 }
@@ -345,10 +359,11 @@ function stosProcesu() {
   const przyciski = etapy.map((k) => k.querySelector<HTMLButtonElement>('[data-krok-przycisk]'));
   const stanyPoczatkowe = etapy.map((k) => k.classList.contains('rozwiniety'));
   const kroki = etapy.length + 1; // etapy + „Start”
-  let wlaczony = false, ramka = 0;
+  const wnetrze = sekcja.querySelector<HTMLElement>('.s7-wnetrze') ?? os;
+  let wlaczony = false, ramka = 0, koniec = innerHeight;
   const licz = () => {
     ramka = 0;
-    const zakres = sekcja.offsetHeight - innerHeight;
+    const zakres = sekcja.offsetHeight - koniec;
     const p = Math.min(0.9999, Math.max(0, -sekcja.getBoundingClientRect().top / Math.max(1, zakres)));
     const stan = Math.floor(p * kroki);
     const wierzch = Math.min(stan, etapy.length - 1);
@@ -365,6 +380,16 @@ function stosProcesu() {
     const wys = Math.max(...[...etapy, start].filter(Boolean).map((k) => k!.querySelector<HTMLElement>('.tresc')!.offsetHeight));
     os.style.setProperty('--wys-karty', `${wys}px`);
     sekcja.style.setProperty('--kroki', String(kroki));
+    // Kacper 25.11: pusta przestrzeń pod przyklejoną kartą o połowę mniejsza, żeby na końcu było widać kawałek S8.
+    // Wolne miejsce = ekran − odstęp od góry − wnętrze − dolny padding sekcji; sekcja kończy się w połowie tego miejsca.
+    const gora = parseFloat(getComputedStyle(wnetrze).top) || 0;
+    const dol = parseFloat(getComputedStyle(sekcja).paddingBottom) || 0;
+    const wolne = Math.max(0, innerHeight - gora - wnetrze.offsetHeight - dol);
+    // Następny segment zaczyna się od własnego paddingu; odejmujemy go, żeby w połowie wolnego miejsca było widać treść S8, nie pusty margines.
+    const nast = sekcja.nextElementSibling as HTMLElement | null;
+    const nastPad = nast ? parseFloat(getComputedStyle(nast).paddingTop) || 0 : 0;
+    koniec = Math.max(gora + wnetrze.offsetHeight + dol, innerHeight - wolne / 2 - nastPad);
+    sekcja.style.height = `${Math.round(koniec + kroki * 0.6 * innerHeight)}px`;
   };
   const wlacz = () => {
     if (wlaczony) return;
@@ -384,6 +409,7 @@ function stosProcesu() {
     removeEventListener('scroll', naScroll);
     removeEventListener('resize', wymiary);
     sekcja.classList.remove('stos-krokow', 'zlaczone');
+    sekcja.style.removeProperty('height');
     etapy.forEach((k, i) => {
       k.classList.remove('na-stosie', 'na-wierzchu');
       k.classList.toggle('rozwiniety', stanyPoczatkowe[i]);
