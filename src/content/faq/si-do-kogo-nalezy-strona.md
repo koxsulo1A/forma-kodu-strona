@@ -4,4 +4,4 @@ strony: ["strony-internetowe"]
 kolejnosc: 4
 aktualizacja: "[data]"
 ---
-Do Ciebie, czyli do kupującego. Po odbiorze strona jest Twoja.
+Do Ciebie. Po odbiorze przekazujemy Ci wszystkie dostępy: do domeny, hostingu i narzędzi, razem z hasłami. W umowie przenosimy na Ciebie całą własność intelektualną. Strona jest Twoja, nie nasza.
