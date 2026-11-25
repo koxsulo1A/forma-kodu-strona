@@ -7,7 +7,7 @@ zatwierdzone_przez_prawnika: false
 ---
 
 
-[Nazwa firmy] chce, żeby strona [adres strony] była wygodna dla wszystkich,
+Kacper Przychodzień Centrum usług chce, żeby strona centrumkodu.pl była wygodna dla wszystkich,
 także dla osób korzystających z czytnika ekranu, samej klawiatury albo powiększenia.
 
 ## Standard
@@ -36,5 +36,5 @@ ustawy z 4 kwietnia 2019 r., która dotyczy podmiotów publicznych.
 [lista albo: „Strona nie używa własnych skrótów klawiszowych.”]
 
 ## Zgłoś problem
-Napisz: [e-mail]. Zadzwoń: [telefon]. Odpowiadamy w ciągu [liczba] dni roboczych.
+Napisz: kontakt@formakodu.pl. Odpowiadamy w ciągu [liczba] dni roboczych.
 Podaj adres podstrony i opisz, co nie działa.
