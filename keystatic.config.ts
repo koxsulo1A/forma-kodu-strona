@@ -14,7 +14,7 @@ import { przygotowaneKolekcje, przygotowaneSingletony } from './src/keystatic/pr
 
 // import.meta.env istnieje w Astro/Vite; poza nim (np. skrypt testowy w Node) przyjmujemy tryb lokalny.
 const PRODUKCJA = Boolean(import.meta.env?.PROD);
-const REPO = '[konto/repozytorium]' as `${string}/${string}`; // CZEKA-NA-KACPRA, część B
+const REPO = 'koxsulo1A/forma-kodu-strona' as const; // repozytorium strony (25.11)
 
 // Daty jako tekst RRRR-MM-DD, bo do etapu E6 w plikach są zaślepki „[data]” (blokuje je sprawdz-zaslepki).
 // Po uzupełnieniu danych można zamienić na fields.date (zapisuje ten sam format).
