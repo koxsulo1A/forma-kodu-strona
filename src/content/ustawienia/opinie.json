@@ -1,5 +1,5 @@
 {
-  "pokaz_segment": false,
+  "pokaz_segment": true,
   "widzet_trustpilot": {
     "business_unit_id": "",
     "template_id": ""

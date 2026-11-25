@@ -1,5 +1,5 @@
 ---
-// Formularz „Opisz projekt” (R19, 398:330): Imię, Adres e-mail, Krótki opis projektu, Wyślij. Stany: domyślny, błąd pola, wysyłanie, błąd wysyłki, sukces.
+// Formularz „Opisz projekt” (R19, 398:330): Imię, Adres e-mail, Numer telefonu (wymagany, Kacper 25.11), Krótki opis projektu, Wyślij. Stany: domyślny, błąd pola, wysyłanie, błąd wysyłki, sukces.
 // Prawo: pod formularzem klauzula informacyjna BEZ pola zgody (decyzja 1A; makieta ma checkbox RODO z zaślepką, kod idzie za decyzją).
 // Wysyłka: POST /api/kontakt (Worker Cloudflare → Brevo, moduł src/lib/wysylka.ts, następny krok). Bez JS: zwykły POST formularza.
 import KlauzulaInformacyjna from '../prawo/KlauzulaInformacyjna.astro';
@@ -20,6 +20,11 @@ const firma = (await getEntry('firma', 'firma'))!.data;
     <input id={`${id}-email`} name="email" type="email" autocomplete="email" placeholder="nazwa@firma.pl" required maxlength="120" aria-describedby={`${id}-email-pomoc`} />
     <p class="t-maly pomocniczy" id={`${id}-email-pomoc`}>Odpowiemy na ten adres.</p>
     <p class="pole-blad t-maly" id={`${id}-email-blad`} hidden>Wpisz adres w formacie nazwa@firma.pl.</p>
+  </div>
+  <div class="pole">
+    <label class="t-maly naglowkowy" for={`${id}-telefon`}>Numer telefonu</label>
+    <input id={`${id}-telefon`} name="telefon" type="tel" autocomplete="tel" inputmode="tel" placeholder="np. 600 100 200" required minlength="9" maxlength="20" pattern="[+0-9 ()\-]{9,20}" />
+    <p class="pole-blad t-maly" id={`${id}-telefon-blad`} hidden>Wpisz numer telefonu, np. 600 100 200.</p>
   </div>
   <div class="pole">
     <label class="t-maly naglowkowy" for={`${id}-opis`}>Krótki opis projektu</label>

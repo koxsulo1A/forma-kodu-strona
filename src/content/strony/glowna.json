@@ -519,8 +519,8 @@
   "s12_kim_jestesmy": {
     "osoby": [
       {
-        "imie": "[imię i nazwisko]",
-        "rola": "[rola]",
+        "imie": "Kacper Przychodzień",
+        "rola": "Założyciel, programista i inżynier",
         "zdjecie": {
           "plik": null,
           "alt": "",
@@ -528,7 +528,7 @@
         }
       }
     ],
-    "kto_opis": "Jesteśmy małą firmą: dziś jedna osoba rozmawia z Tobą, wykonuje i sprawdza pracę.",
+    "kto_opis": "Jesteśmy małą firmą. Dziś za cały projekt odpowiada jedna osoba: prowadzi z Tobą rozmowę, projektuje, pisze kod, sprawdza go i zostaje z Tobą po starcie.",
     "misja": "„Tłumaczymy, co wdrażamy, pokazujemy ograniczenia i nie obiecujemy wyników, których nie da się zmierzyć.”",
     "naglowek": "Pracujemy dla firm, w których klientów zna się po imieniu",
     "lead": "Salon, gabinet, studio treningowe. Strona ma Ci pomagać w pracy, a nie dokładać obowiązków.",

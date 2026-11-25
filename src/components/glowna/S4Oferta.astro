@@ -27,7 +27,7 @@ const wszystkie = [
 
     <ul role="list" class="bento swipe" data-swipe="s4-wskaznik">
       {wszystkie.map((x, i) => (
-        <li class:list={['usluga', x.styl, { duzy: x.duzy, grupa: x.styl === 'bialy' }]} data-i={i + 1}>
+        <li class:list={['usluga', x.styl, { duzy: x.duzy, grupa: x.styl === 'bialy', w1: x.styl === 'wkrotce' }]} data-i={i + 1}>
           {x.styl === 'bialy' && (i === 2 || i === 4) && <p class="t-maly grupa-nazwa">{i === 2 ? t.grupa_opieka : t.grupa_sklepy}</p>}
           <div class="usluga-gora">
             <h3 class="t-h4">{x.nazwa}</h3>

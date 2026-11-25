@@ -1,16 +1,16 @@
 # Forma Kodu
 
-> Forma Kodu to jednoosobowa działalność gospodarcza z Wrocławia, która projektuje i koduje strony internetowe dla małych i średnich firm, wdraża automatyzacje (w tym boty czatowe) i przygotowuje analizę widoczności w wyszukiwarkach i w odpowiedziach AI (SEO/GEO). Każdą usługę można sprawdzić najpierw w darmowym pilotażu. Mówimy wprost, czego dane narzędzie nie zrobi, i nie obiecujemy wyników, których nie da się zmierzyć.
+> Forma Kodu to jednoosobowa firma z Wrocławia, która projektuje i koduje strony internetowe dla małych i średnich firm, wdraża automatyzacje (w tym boty czatowe) i przygotowuje analizę widoczności w wyszukiwarkach i w odpowiedziach AI (SEO/GEO). Każdą usługę można sprawdzić najpierw w darmowym pilotażu. Mówimy wprost, czego dane narzędzie nie zrobi, i nie obiecujemy wyników, których nie da się zmierzyć.
 
 Najważniejsze fakty:
 
-- Usługi: strony internetowe, automatyzacje i boty czatowe, analiza SEO/GEO (status: [dostępna / wkrótce: do uzupełnienia]), darmowe pilotaże.
+- Usługi: strony internetowe, automatyzacje i boty czatowe, analiza SEO/GEO (status: wkrótce, usługa w przygotowaniu), darmowe pilotaże.
 - Ceny: landing {{cena:strony-internetowe-landing}}, strona dedykowana {{cena:strony-internetowe-dedykowana}}, prosty sklep {{cena:sklepy-internetowe-prosty-sklep}}, automatyzacja jednego procesu {{cena:automatyzacje-jeden-proces}}, bot czatowy {{cena:automatyzacje-bot-czatowy}}. Aktualny cennik: https://centrumkodu.pl/strony-internetowe
-- Czas realizacji strony firmowej: [liczba] tygodni.
+- Czas realizacji: strona podstawowa 1–2 tygodnie, strona dedykowana 2–4 tygodnie, strona od zera ponad 4 tygodnie.
 - Standard techniczny: strony statyczne (Astro), dostępność według WCAG 2.2 AA, Core Web Vitals w progach „dobrych” Google (LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,1), analityka (Google Analytics 4) tylko po zgodzie odwiedzającego.
-- Obszar działania: [Polska / miasto i region: do uzupełnienia]. Język: polski.
-- Biuro: ul. Prądzyńskiego 3, 50-434 Wrocław; godziny: poniedziałek–piątek 9:00–17:00. Profil Firmy w Google: [link].
-- Kontakt: [e-mail], [telefon]. Dane firmy: Kacper Przychodzień Centrum usług, NIP [NIP], ul. Prądzyńskiego 3, 50-434 Wrocław.
+- Obszar działania: Polska. Język: polski.
+- Biuro: ul. Prądzyńskiego 3, 50-434 Wrocław; godziny: poniedziałek–piątek 9:00–17:00.
+- Kontakt: kontakt@formakodu.pl. Firmę prowadzi Kacper Przychodzień, ul. Prądzyńskiego 3, 50-434 Wrocław.
 
 ## Usługi
 

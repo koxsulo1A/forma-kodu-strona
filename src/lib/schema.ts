@@ -32,9 +32,9 @@ export async function grafStrony(strona: Strona, opts: { url: URL; nazwaStrony: 
     image: `${domena}${seoG.og_obraz_domyslny}`,
     description: seoG.opis_domyslny,
     email: firma.email,
-    telephone: firma.telefon,
-    taxID: firma.nip,
-    vatID: firma.nip ? `PL${firma.nip}` : '',
+    telephone: firma.telefon || undefined,
+    taxID: firma.nip || undefined,
+    vatID: firma.nip ? `PL${firma.nip}` : undefined,
     foundingDate: firma.rok_zalozenia,
     // Decyzja 9B: adres biura publiczny i identyczny jak w Profilu Firmy w Google (nazwa, adres, telefon co do znaku).
     address: firma.adres_publiczny
@@ -46,7 +46,7 @@ export async function grafStrony(strona: Strona, opts: { url: URL; nazwaStrony: 
     areaServed: firma.obszar_dzialania.map((n) => ({ '@type': 'Country', name: n })),
     knowsAbout: seoG.slowa_kluczowe_marki,
     sameAs: Object.values(firma.profile).filter(Boolean),
-    contactPoint: [{ '@type': 'ContactPoint', contactType: 'customer service', email: firma.email, telephone: firma.telefon, availableLanguage: ['pl'] }],
+    contactPoint: [{ '@type': 'ContactPoint', contactType: 'customer service', email: firma.email, telephone: firma.telefon || undefined, availableLanguage: ['pl'] }],
   });
 
   const witryna = { '@type': 'WebSite', '@id': SITE, url: `${domena}/`, name: firma.nazwa_marki, inLanguage: seoG.jezyk, publisher: { '@id': ORG } };

@@ -99,3 +99,23 @@ html:not(.bez-ruchu) .przewijane [role=tabpanel]:not([hidden]) { animation: fk-w
 .pas-stop:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
 @keyframes fk-pas { to { transform: translate3d(-50%, 0, 0); } }
 @media (prefers-reduced-motion: reduce) { .pas-tor { animation: none; } }
+
+/* 27 S7: etapy nakładane od dołu (ruch.ts, punkt 8). Klasy dokłada skrypt tylko na komputerze i bez „ogranicz ruch”. */
+.s7.stos-krokow { height: calc(100vh + var(--kroki, 7) * 60vh); }
+.s7.stos-krokow .s7-wnetrze { position: sticky; top: calc(var(--fk-wys-paska) + 16px); }
+.s7.stos-krokow .os { display: block; height: calc(var(--wys-karty, 300px) + 84px); padding-top: 84px; }
+.s7.stos-krokow .os::before, .s7.stos-krokow .os::after { display: none; }
+.s7.stos-krokow .krok {
+  position: absolute; left: 0; right: 0; top: 84px;
+  opacity: 0; transform: translate3d(0, 420px, 0);
+  transition: transform 500ms var(--fk-krzywa-wejscie), opacity 300ms var(--fk-krzywa-wejscie);
+}
+.s7.stos-krokow .krok .tresc { height: var(--wys-karty); align-content: start; box-shadow: 0 10px 28px -14px rgb(40 30 90 / 0.35); }
+.s7.stos-krokow .krok.na-stosie { opacity: 1; transform: translate3d(0, calc(var(--glebia, 0) * -14px), 0) scale(calc(1 - var(--glebia, 0) * 0.012)); }
+.s7.stos-krokow .krok:not(.na-wierzchu) .wezel { opacity: 0; }
+.s7.stos-krokow .krok.na-wierzchu .wezel { background: var(--fk-krok-koncowy); border: 0; color: var(--fk-krok-koncowy-tekst); }
+.s7.stos-krokow .krok:not(.na-wierzchu):not(.start) .tresc > * { opacity: 0.35; }
+.s7.stos-krokow.zlaczone .krok.na-stosie { transform: none; opacity: 0; transition: transform 300ms var(--fk-krzywa-standard), opacity 240ms 300ms; }
+.s7.stos-krokow .krok.start { transition: opacity 240ms 300ms, transform 300ms; transform: none; }
+.s7.stos-krokow.zlaczone .krok.start, .s7.stos-krokow .krok.start:focus-within { opacity: 1; }
+.s7.stos-krokow .krok.start .wezel { opacity: 1; }

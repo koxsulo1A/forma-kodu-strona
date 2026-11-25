@@ -2,7 +2,7 @@
   "nazwa_marki": "Forma Kodu",
   "nazwa_prawna": "Kacper Przychodzień Centrum usług",
   "forma_prawna": "JDG",
-  "nip": "[NIP]",
+  "nip": "",
   "regon": "",
   "krs": "",
   "sad_rejestrowy": "",
@@ -21,9 +21,9 @@
     "lat": "51.1014374",
     "lng": "17.0517985"
   },
-  "email": "[e-mail]",
-  "email_dane_osobowe": "[e-mail]",
-  "telefon": "[telefon]",
+  "email": "kontakt@formakodu.pl",
+  "email_dane_osobowe": "kontakt@formakodu.pl",
+  "telefon": "",
   "domena": "https://centrumkodu.pl",
   "obszar_dzialania": [
     "Polska"
@@ -37,7 +37,7 @@
     "trustpilot": ""
   },
   "dostepnosc": {
-    "osoba_kontaktowa": "[imię i nazwisko]",
+    "osoba_kontaktowa": "Kacper Przychodzień",
     "metoda_oceny": "[samoocena / audyt zewnętrzny]",
     "czas_odpowiedzi_dni": "[liczba]"
   },

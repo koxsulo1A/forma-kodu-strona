@@ -42,7 +42,7 @@ const zaslepka = (s: string | undefined) => !s || /^\[.*\]$/.test(s);
       </div>
       <div class="prawa">
         <h3 class="t-h4 naglowkowy">{t.zyski_naglowek}</h3>
-        <div class="wyrozniony">
+        <div class="wyrozniony w1">
           <div>
             <p class="t-h4 niebieski">{t.wyrozniony.tytul}</p>
             <p class="t-maly">{t.wyrozniony.opis}</p>
@@ -50,9 +50,9 @@ const zaslepka = (s: string | undefined) => !s || /^\[.*\]$/.test(s);
           <p class="t-h3 niebieski">{t.wyrozniony.cytat}</p>
         </div>
         <ul role="list" class="benefity">
-          {t.benefity.map((b: any) => <li><p class="t-tresc-mocna niebieski">{b.tytul}</p><p class="t-maly">{b.opis}</p></li>)}
+          {t.benefity.map((b: any) => <li class="w1"><p class="t-tresc-mocna niebieski">{b.tytul}</p><p class="t-maly">{b.opis}</p></li>)}
         </ul>
-        <div class="ograniczenia">
+        <div class="ograniczenia w1">
           <p class="t-tresc-mocna niebieski">{t.ograniczenia.tytul}</p>
           <p class="t-maly">{t.ograniczenia.opis}</p>
         </div>

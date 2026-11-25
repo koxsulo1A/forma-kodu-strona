@@ -18,7 +18,7 @@ const warstwy = (n: number) => (n === 1 ? 'warstwa' : n % 10 >= 2 && n % 10 <= 4
         const w = p.warstwy;
         const srodek = w.slice(1, -1);
         return (
-          <article class="kolumna" aria-labelledby={`s10-p${k}`}>
+          <article class="kolumna w1" aria-labelledby={`s10-p${k}`}>
             <div class="kol-naglowek">
               <div class="kol-tytul">
                 <h3 id={`s10-p${k}`} class="t-h4 naglowkowy">{p.nazwa}</h3>

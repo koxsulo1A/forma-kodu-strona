@@ -25,8 +25,7 @@ const PLAN: Record<string, Kaskada[]> = {
     { kody: ['S2', 'S8', 'S10', 'S11', 'S13'] },
     { kody: ['S6'], czas: 450, krok: 140, odleglosc: 32 },
     { kody: ['S9'], czas: 450, krok: 90 },
-    // Figma Motion 100:30: kroki 2–6 wjeżdżają z 120 px, po kolei.
-    { kody: ['S7'], odleglosc: 120, osobno: true },
+    { kody: ['S3'] },
   ],
   // Figma Motion 203:50: S2 punkty z prawej (480 px), S3 warianty z lewej (1400 px), po jednym. Na stronie krócej (160/240 px), żeby nie wypychać treści poza ekran.
   '/strony-internetowe': [
@@ -184,6 +183,7 @@ function osProcesu() {
   kroki.forEach((k) => {
     const przycisk = k.querySelector<HTMLButtonElement>('[data-krok-przycisk]');
     przycisk?.addEventListener('click', () => {
+      if (os.closest('.stos-krokow')) return; // komputer: wszystkie etapy rozwinięte w stosie (punkt 8)
       const otworz = !k.classList.contains('rozwiniety');
       kroki.forEach((x) => {
         const wl = x === k && otworz;
@@ -332,6 +332,71 @@ function pasyRealizacji() {
   komputer.addEventListener('change', () => { zbuduj(); rozbierz(); });
 }
 
+// ---------- 8. 27 S7: etapy nakładane od dołu, na końcu blok „Start” (plansza 443:5802, Kacper 23.11 17:31) ----------
+// Komputer: sekcja przyklejona na czas sekwencji. Każdy krok przewinięcia wsuwa od dołu kolejny etap (y +420 → 0, 500 ms)
+// na wierzch poprzedniego; poprzednie wystają po 14 px. Po etapie 6 stos złącza się w jeden (300 ms), a w jego miejscu
+// pojawia się „Start” (zanik 240 ms). Telefon i „ogranicz ruch”: zwykła lista etapów pod sobą (bez przyklejania).
+function stosProcesu() {
+  const sekcja = document.querySelector<HTMLElement>('[data-segment="S7 Proces"]');
+  const os = sekcja?.querySelector<HTMLElement>('[data-os-procesu]');
+  if (!sekcja || !os || ograniczRuch()) return;
+  const etapy = [...os.querySelectorAll<HTMLElement>('[data-krok-procesu]')];
+  const start = os.querySelector<HTMLElement>('.krok.start');
+  const przyciski = etapy.map((k) => k.querySelector<HTMLButtonElement>('[data-krok-przycisk]'));
+  const stanyPoczatkowe = etapy.map((k) => k.classList.contains('rozwiniety'));
+  const kroki = etapy.length + 1; // etapy + „Start”
+  let wlaczony = false, ramka = 0;
+  const licz = () => {
+    ramka = 0;
+    const zakres = sekcja.offsetHeight - innerHeight;
+    const p = Math.min(0.9999, Math.max(0, -sekcja.getBoundingClientRect().top / Math.max(1, zakres)));
+    const stan = Math.floor(p * kroki);
+    const wierzch = Math.min(stan, etapy.length - 1);
+    etapy.forEach((k, i) => {
+      k.classList.toggle('na-stosie', i <= stan);
+      k.classList.toggle('na-wierzchu', i === wierzch && stan < etapy.length);
+      k.style.setProperty('--glebia', String(Math.max(0, wierzch - i)));
+    });
+    sekcja.classList.toggle('zlaczone', stan >= etapy.length);
+  };
+  const naScroll = () => { if (!ramka) ramka = requestAnimationFrame(licz); };
+  const wymiary = () => {
+    os.style.removeProperty('--wys-karty');
+    const wys = Math.max(...[...etapy, start].filter(Boolean).map((k) => k!.querySelector<HTMLElement>('.tresc')!.offsetHeight));
+    os.style.setProperty('--wys-karty', `${wys}px`);
+    sekcja.style.setProperty('--kroki', String(kroki));
+  };
+  const wlacz = () => {
+    if (wlaczony) return;
+    wlaczony = true;
+    sekcja.classList.add('stos-krokow');
+    etapy.forEach((k, i) => { k.classList.add('rozwiniety'); k.style.zIndex = String(i + 1); });
+    if (start) start.style.zIndex = String(kroki + 1);
+    przyciski.forEach((b) => { b?.setAttribute('aria-expanded', 'true'); b?.setAttribute('tabindex', '-1'); });
+    wymiary();
+    licz();
+    addEventListener('scroll', naScroll, { passive: true });
+    addEventListener('resize', wymiary);
+  };
+  const wylacz = () => {
+    if (!wlaczony) return;
+    wlaczony = false;
+    removeEventListener('scroll', naScroll);
+    removeEventListener('resize', wymiary);
+    sekcja.classList.remove('stos-krokow', 'zlaczone');
+    etapy.forEach((k, i) => {
+      k.classList.remove('na-stosie', 'na-wierzchu');
+      k.classList.toggle('rozwiniety', stanyPoczatkowe[i]);
+      k.style.removeProperty('--glebia'); k.style.zIndex = '';
+      przyciski[i]?.setAttribute('aria-expanded', String(stanyPoczatkowe[i]));
+      przyciski[i]?.removeAttribute('tabindex');
+    });
+    if (start) start.style.zIndex = '';
+  };
+  if (komputer.matches) wlacz();
+  komputer.addEventListener('change', () => (komputer.matches ? wlacz() : wylacz()));
+}
+
 kaskady();
 kurtyna();
 zmianaSlow();
@@ -339,3 +404,4 @@ osProcesu();
 lejek();
 blokiPrzewijane();
 pasyRealizacji();
+stosProcesu();

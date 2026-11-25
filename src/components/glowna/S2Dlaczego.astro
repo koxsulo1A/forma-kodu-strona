@@ -23,7 +23,7 @@ const kolory = ['bialy', 'zielen', 'khaki', 'fiolet'];
       </article>
       <ul role="list" class="pozostale swipe" data-swipe="s2-wskaznik">
         {t.kafle.map((k: any, i: number) => (
-          <li class:list={['kafel', kolory[i % 4], i === 0 || i === 3 ? 'szeroki' : 'waski']}>
+          <li class:list={['kafel', kolory[i % 4], i === 0 || i === 3 ? 'szeroki' : 'waski', { w1: i === 0 }]}>
             <h3 class="t-h4">{k.tytul}</h3>
             <p class:list={[i === 0 || i === 3 ? 't-tresc' : 't-maly']}>{k.opis}</p>
           </li>

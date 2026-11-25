@@ -33,7 +33,7 @@ const rok = new Date().getFullYear();
         <ul role="list">
           <li><a href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">Opisz projekt (formularz)</a></li>
           <li>E-mail: <a href={`mailto:${firma.email}`}>{firma.email}</a></li>
-          <li>Telefon: <a href={`tel:${firma.telefon.replace(/\s/g, '')}`}>{firma.telefon}</a></li>
+          {firma.telefon && <li>Telefon: <a href={`tel:${firma.telefon.replace(/\s/g, '')}`}>{firma.telefon}</a></li>}
           <li>Biuro: {godziny}</li>
         </ul>
       </div>
@@ -44,7 +44,7 @@ const rok = new Date().getFullYear();
           <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
           <li>
             <address>
-              {firma.nazwa_prawna}<br />{adres}<br />NIP {firma.nip}
+              {firma.nazwa_prawna}<br />{adres}{firma.nip && <><br />NIP {firma.nip}</>}
               {firma.krs && <><br />KRS {firma.krs}, {firma.sad_rejestrowy}</>}
             </address>
           </li>

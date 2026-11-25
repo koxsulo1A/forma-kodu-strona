@@ -7,8 +7,8 @@
 // - CSP: Trustpilot jest w astro.config (script-src + frame-src widget.trustpilot.com). Dla widżetu Google dopisz domenę dostawcy.
 // [Sprawdź przed wdrożeniem] aktualny kod TrustBox w panelu Trustpilot (Integrations → TrustBox) i kod wybranego dostawcy widżetu Google.
 import { getEntry } from 'astro:content';
-interface Props { naglowek?: string; id?: string }
-const { naglowek = 'Opinie klientów', id = 'opinie' } = Astro.props;
+interface Props { naglowek?: string; id?: string; nr?: string }
+const { naglowek = 'Opinie klientów', id = 'opinie', nr = 'S3' } = Astro.props;
 const op = (await getEntry('opinieUstawienia', 'opinie'))!.data;
 const profile = (await getEntry('firma', 'firma'))!.data.profile ?? {};
 const tp = op.widzet_trustpilot;
@@ -19,11 +19,23 @@ const linki = [
   profile.google_firma && { nazwa: 'Opinie w Google', url: profile.google_firma },
   profile.trustpilot && { nazwa: 'Opinie na Trustpilot', url: profile.trustpilot },
 ].filter(Boolean) as { nazwa: string; url: string }[];
-const pokaz = op.pokaz_segment && (maTp || maG || linki.length > 0);
+// Stan pusty (makieta 27, 328:298): gdy nie ma widżetów, segment pokazuje jeden blok „Jeszcze nie mamy opinii” zamiast pustych kart.
+const pusty = !maTp && !maG;
+const pokaz = op.pokaz_segment;
 ---
 {pokaz && (
-  <section id={id} class="opinie" aria-labelledby={`${id}-h`}>
-    <h2 id={`${id}-h`}>{naglowek}</h2>
+  <section id={id} class="opinie baza segment" data-segment={`${nr} Opinie`} aria-labelledby={`${id}-h`}>
+   <div class="kontener opinie-wnetrze">
+    <header class="opinie-naglowek">
+      <h2 id={`${id}-h`} class="t-h2 naglowkowy">{naglowek}</h2>
+      {pusty && <p class="t-tresc-l">Opinie dodamy po zakończeniu pilotażu. Pokażemy tylko prawdziwe opinie z naszych profili w Google Maps i Trustpilot, z autorem, datą i linkiem do źródła.</p>}
+    </header>
+    {pusty && (
+      <div class="opinie-pusto">
+        <h3 class="t-h4 naglowkowy">Jeszcze nie mamy opinii klientów</h3>
+        <p class="t-maly">Gdy pierwsi klienci wyrażą zgodę, ich opinie pojawią się tutaj w całości, z autorem i źródłem. Dziś ich jeszcze nie ma, więc niczego nie pokazujemy.</p>
+      </div>
+    )}
     {(maTp || maG) && (
       <div class="opinie-widzety" data-opinie-widzety data-tp-skrypt="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" data-g-skrypt={maG ? g.skrypt_url : ''} hidden>
         {maTp && (
@@ -44,8 +56,18 @@ const pokaz = op.pokaz_segment && (maTp || maG || linki.length > 0);
         <p>Opinie wyświetlamy w okienkach Trustpilot i Google. <button type="button" class="przycisk-link" data-pokaz-opinie>Pokaż opinie</button> (pytamy o zgodę, bo te serwisy mogą zapisać cookies).</p>
       )}
     </div>
+   </div>
   </section>
 )}
+
+<style>
+  .opinie { padding-block: clamp(40px, 5vw, 72px); }
+  .opinie-wnetrze { display: grid; gap: 28px; }
+  .opinie-naglowek { display: grid; gap: 12px; max-width: 880px; }
+  .opinie-pusto { display: grid; gap: 12px; padding: 40px 40px; border-radius: var(--radius-card); border: 1.5px dashed var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); }
+  .opinie-linki { display: flex; flex-wrap: wrap; gap: 16px; padding: 0; list-style: none; }
+  @media (max-width: 1023.98px) { .opinie-pusto { padding: 24px 20px; } }
+</style>
 
 <script>
   let zaladowane = false;
