@@ -142,16 +142,17 @@ const reszta = poz < 0 ? '' : t.h1.slice(poz + slowa[0].length);
   .p40 { top: 18px; } .p20 { top: 70px; } .p0 { top: 122px; }
   .linia { position: absolute; left: 26px; right: 0; height: 1px; background: var(--fk-obrys); }
   .l40 { top: 24px; } .l20 { top: 76px; } .l0 { top: 128px; background: var(--fk-obrys-kontrolka); }
-  .slupki { position: absolute; left: 34px; right: 0; top: 24px; height: 104px; display: flex; align-items: flex-end; gap: 13px; }
-  .slupek { width: 14px; border-radius: 3px 3px 0 0; }
+  /* Słupki i cyfry osi w tej samej siatce 6 kolumn (audyt 25.11): przy węższej karcie cyfry zostają pod słupkami i nie wychodzą poza kartę. */
+  .slupki, .wykres-x { position: absolute; left: 34px; right: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); justify-items: center; }
+  .slupki { top: 24px; height: 104px; grid-template-rows: 100%; align-items: end; }
+  .slupek { width: min(14px, 100%); border-radius: 3px 3px 0 0; }
   .slupek.niski { background: var(--fk-okno-kropka-1); }
   .slupek.sredni { background: var(--fk-okno-kropka-2); }
   .slupek.wysoki { background: var(--fk-krok-koncowy); }
   .slupek[data-v='12'] { height: 30%; } .slupek[data-v='18'] { height: 45%; } .slupek[data-v='17'] { height: 42.5%; }
   .slupek[data-v='26'] { height: 65%; } .slupek[data-v='31'] { height: 77.5%; } .slupek[data-v='38'] { height: 95%; }
-  .wykres-x { position: absolute; left: 34px; top: 132px; display: flex; gap: 13px; margin: 0; }
-  .wykres-x span { width: 14px; text-align: center; }
-  .tydzien { position: absolute; left: 142px; top: 146px; }
+  .wykres-x { top: 132px; margin: 0; }
+  .tydzien { position: absolute; right: 0; top: 146px; }
   .legenda { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--fk-tekst-pomocniczy); }
   .legenda i { width: 40px; height: 8px; border-radius: 4px; background: var(--fk-grad-skala); }
 

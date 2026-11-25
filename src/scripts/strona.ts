@@ -210,7 +210,11 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
   const sukces = f.nextElementSibling as HTMLElement;
   const pola = [...f.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input[required], textarea[required]')];
   const sprawdz = (p: HTMLInputElement | HTMLTextAreaElement) => {
-    const ok = p.type === 'radio' ? !!f.querySelector(`input[name="${p.name}"]:checked`) : p.type === 'checkbox' ? (p as HTMLInputElement).checked : p.value.trim() !== '' && (p.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(p.value.trim()));
+    const v = p.value.trim();
+    // Telefon (audyt 25.11): ten sam warunek co atrybut pattern (cyfry, spacje, +, nawiasy, myślnik; 9–20 znaków) i co najmniej 9 cyfr.
+    const ok = p.type === 'radio' ? !!f.querySelector(`input[name="${p.name}"]:checked`) : p.type === 'checkbox' ? (p as HTMLInputElement).checked
+      : v !== '' && (p.type !== 'email' || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v))
+        && (p.type !== 'tel' || (/^[+0-9 ()-]{9,20}$/.test(v) && v.replace(/\D/g, '').length >= 9));
     const blad = document.getElementById(`${p.id}-blad`);
     p.setAttribute('aria-invalid', String(!ok));
     const opisy = (p.getAttribute('aria-describedby') ?? '').split(' ').filter((x) => x && x !== blad?.id);

@@ -3,6 +3,8 @@
 // Dane firmy z jednego źródła (Dane firmy w panelu): art. 206 KSH / art. 5 UŚUDE. Zaślepki [..] blokują publikację (sprawdz-zaslepki).
 import { getEntry } from 'astro:content';
 import Logo from './Logo.astro';
+import { ustawieniaZgod } from '../../lib/zgody';
+const zgody = await ustawieniaZgod();
 const firma = (await getEntry('firma', 'firma'))!.data;
 const adres = firma.adres_publiczny ? `${firma.adres.ulica}, ${firma.adres.kod} ${firma.adres.miasto}` : firma.adres.miasto;
 const godziny = firma.godziny_otwarcia.map((g) => g.replace('Mo-Fr', 'pn–pt').replace(/(\d\d):00/g, (_, h) => String(Number(h)))).join(', ');
@@ -42,6 +44,7 @@ const rok = new Date().getFullYear();
         <ul role="list">
           <li><a href="/dostepnosc">Deklaracja dostępności</a></li>
           <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
+          {zgody.potrzebne && <li><button type="button" class="link-zgody" data-otworz-zgody>Ustawienia cookies</button></li>}
           <li>
             <address>
               {firma.nazwa_prawna}<br />{adres}{firma.nip && <><br />NIP {firma.nip}</>}
@@ -74,6 +77,8 @@ const rok = new Date().getFullYear();
   .kolumna h2 { color: var(--fk-panel-czern-tekst); font-weight: 400; margin-bottom: 12px; }
   .kolumna ul { display: grid; gap: 12px; padding-top: 4px; font-size: var(--fk-font-maly); line-height: 1.5; }
   .kolumna a { color: var(--fk-akcent-na-ciemnym); text-decoration: underline; }
+  /* Przycisk okienka zgód wygląda jak link w tej kolumnie (polityka §5 i §8 odsyła do niego). */
+  .link-zgody { padding: 0; border: 0; background: none; font: inherit; color: var(--fk-akcent-na-ciemnym); text-decoration: underline; cursor: pointer; text-align: left; }
   .kolumna address { font-style: normal; }
   .wkrotce { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
   .wkrotce .znacznik { background: var(--fk-panel-czern-polysk); color: var(--fk-panel-czern-tekst); padding: 4px 8px; }

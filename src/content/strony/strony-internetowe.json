@@ -152,14 +152,14 @@
     "pozycje": [
       {
         "nazwa": "Domena",
-        "zakres": "ok. 100-200 zł",
+        "zakres": "100-200 zł",
         "okres": "rocznie",
         "zrodlo": "[źródło kwoty do uzupełnienia]",
         "data": "[data]"
       },
       {
         "nazwa": "Hosting",
-        "zakres": "ok. 300-500 zł",
+        "zakres": "300-500 zł",
         "okres": "rocznie",
         "zrodlo": "[źródło kwoty do uzupełnienia]",
         "data": "[data]"

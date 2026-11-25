@@ -67,7 +67,7 @@ const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,
               </div>
               <div class="pole">
                 <label class="t-maly naglowkowy" for="p-telefon">Numer telefonu <span class="t-etykieta akcentowy">wymagane</span></label>
-                <input id="p-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" placeholder="np. 600 100 200" required minlength="9" maxlength="20" pattern="[+0-9 ()\-]{9,20}" />
+                <input id="p-telefon" name="telefon" type="tel" autocomplete="tel" inputmode="tel" placeholder="np. 600 100 200" required minlength="9" maxlength="20" pattern="[+0-9 \(\)\-]{9,20}" />
                 <p class="pole-blad t-maly" id="p-telefon-blad" hidden>Wpisz numer telefonu, np. 600 100 200.</p>
               </div>
             </div>

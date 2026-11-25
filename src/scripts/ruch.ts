@@ -256,10 +256,12 @@ function zmianaSlow() {
     if (nowa > h1.offsetHeight) h1.style.height = `${nowa}px`; // podnagłówek jedzie w dół razem z nagłówkiem
     rozsyp(z, slowa[i], () => {
       h1.style.height = `${wysokoscDla(slowa[i])}px`; // …a w górę dopiero po ułożeniu słowa
-      setTimeout(nastepne, 2500);
+      setTimeout(dalej, 2500);
     });
   };
-  setTimeout(nastepne, 2500);
+  // W ukrytej karcie nie zmieniamy słów: czekamy, aż użytkownik do niej wróci (audyt 25.11).
+  const dalej = () => { if (document.hidden) document.addEventListener('visibilitychange', dalej, { once: true }); else nastepne(); };
+  setTimeout(dalej, 2500);
 }
 
 // ---------- 3b. Terminal macOS przed ilustracją hero (28 plansza 461:1738; Kacper 25.11: także 27 S1) ----------

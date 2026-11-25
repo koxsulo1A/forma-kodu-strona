@@ -72,7 +72,7 @@
   },
   "s4_boty": {
     "naglowek": "Co potrafią, a czego nie",
-    "lead": "Bot czatowy, automatyczna recepcjonistka i automatyzacja procesu. O ograniczeniach mówimy przed startem.",
+    "lead": "Bot czatowy, automatyczny recepcjonista i automatyzacja procesu. O ograniczeniach mówimy przed startem.",
     "bloki": [
       {
         "nazwa": "Bot czatowy",
@@ -90,8 +90,8 @@
         ]
       },
       {
-        "nazwa": "Automatyczna recepcjonistka",
-        "tytul": "Automatyczna recepcjonistka: co potrafi, a czego nie",
+        "nazwa": "Automatyczny recepcjonista",
+        "tytul": "Automatyczny recepcjonista: co potrafi, a czego nie",
         "podtytul": "Usłyszysz to, zanim cokolwiek uruchomimy.",
         "potrafi": [
           "Przyjmuje zgłoszenia i pytania",

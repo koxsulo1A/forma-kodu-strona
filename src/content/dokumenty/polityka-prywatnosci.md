@@ -19,7 +19,7 @@ Kontakt w sprawach danych: [e-mail], [adres do korespondencji].
 
 | Sytuacja | Dane | Cel | Podstawa prawna | Jak długo |
 |--|--|--|--|--|
-| Wysyłasz formularz kontaktowy lub zgłoszenie do pilotażu | imię, e-mail, telefon (nieobowiązkowo), treść wiadomości, wybrana usługa | odpowiedź i przygotowanie oferty | art. 6 ust. 1 lit. b RODO (działania na Twoje żądanie przed zawarciem umowy); przy innych pytaniach art. 6 ust. 1 lit. f (nasz interes: obsługa korespondencji) | 12 miesięcy od ostatniej wiadomości, jeśli nie zawrzemy umowy |
+| Wysyłasz formularz kontaktowy lub zgłoszenie do pilotażu | imię, e-mail, telefon, treść wiadomości, wybrana usługa | odpowiedź i przygotowanie oferty | art. 6 ust. 1 lit. b RODO (działania na Twoje żądanie przed zawarciem umowy); przy innych pytaniach art. 6 ust. 1 lit. f (nasz interes: obsługa korespondencji) | 12 miesięcy od ostatniej wiadomości, jeśli nie zawrzemy umowy |
 | Zapisujesz się na „Powiadom mnie” | e-mail, data i treść zgody | wysłanie jednej wiadomości o starcie usługi (zasady w §10) | art. 6 ust. 1 lit. a RODO (zgoda) | do 30 dni po wysłaniu wiadomości albo do wycofania zgody, jeśli nastąpi wcześniej |
 | Zawieramy umowę | dane z umowy i faktur | wykonanie umowy, rozliczenia | art. 6 ust. 1 lit. b i c RODO | przez czas umowy, a dokumenty księgowe 5 lat od końca roku, w którym minął termin płatności podatku |
 | Możliwe roszczenia | dane z korespondencji i umowy | ustalenie, dochodzenie i obrona roszczeń | art. 6 ust. 1 lit. f RODO (nasz interes: ochrona praw) | do przedawnienia roszczeń |

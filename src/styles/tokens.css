@@ -161,6 +161,10 @@
   --fk-cien-przycisk: 0 2px 6px rgb(14 17 23 / 0.12), 0 12px 32px rgb(14 17 23 / 0.18);
 }
 
+/* Od 768 px przycisk WCAG to zakładka 28 px przy lewej krawędzi: margines min. 30 px, żeby nie wchodziła na treść (audyt 25.11). */
+@media (min-width: 768px) {
+  :root { --fk-margines: clamp(30px, 2vw, 32px); }
+}
 @media (min-width: 1024px) {
   :root { --space-section: 160px; }
 }

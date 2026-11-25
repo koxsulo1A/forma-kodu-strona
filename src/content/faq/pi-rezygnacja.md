@@ -4,4 +4,4 @@ strony: ["pilotaze"]
 kolejnosc: 5
 aktualizacja: "[data]"
 ---
-[Zasady rezygnacji do uzupełnienia.] Spiszemy je w warunkach przed startem, razem z tym, co dzieje się z wykonaną już pracą.
+Nic się nie dzieje. Jedynym warunkiem udziału w pilotażu jest zgoda na pokazanie tego projektu w naszych realizacjach i w case study.

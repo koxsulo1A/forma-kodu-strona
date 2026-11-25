@@ -11,11 +11,8 @@
 // - Wycofanie zgody: przycisk „Ustawienia cookies” w stopce (atrybut data-otworz-zgody) → usunięcie cookies _ga* i przeładowanie.
 // - Bez GA4 i bez widżetów komponent nic nie renderuje: nie pytamy o zgodę na coś, czego nie ma.
 // - Treść okienka nie zawiera nagłówków (nie psuje struktury H1–H6 strony) i jest poza <main> (nie trafia do wersji .md).
-import { getEntry } from 'astro:content';
-const seoG = (await getEntry('seoGlobalne', 'seo'))!.data;
-const ga4 = /^G-[A-Z0-9]{6,12}$/.test(seoG.ga4_id) ? seoG.ga4_id : '';
-const op = (await getEntry('opinieUstawienia', 'opinie'))!.data;
-const widzety = op.pokaz_segment && (!!(op.widzet_trustpilot.business_unit_id && op.widzet_trustpilot.template_id) || !!op.widzet_google.skrypt_url);
+import { ustawieniaZgod } from '../../lib/zgody';
+const { ga4, widzety } = await ustawieniaZgod();
 const WERSJA = '2'; // 2 = dodana kategoria „treści zewnętrzne” (24.11): wszyscy dostają pytanie ponownie
 ---
 {(ga4 || widzety) && (
@@ -25,7 +22,7 @@ const WERSJA = '2'; // 2 = dodana kategoria „treści zewnętrzne” (24.11): w
       {ga4 && <>Za Twoją zgodą włączymy Google Analytics, żeby sprawdzić, które strony są przydatne. Google zapisze wtedy cookies
       <code>_ga</code> na 2 lata, a dane mogą trafić do USA. </>}
       {widzety && <>Opinie klientów pokazujemy w okienkach Trustpilot lub Google, które mogą zapisać własne cookies. </>}
-      Bez zgody strona działa tak samo.
+      Bez zgody strona działa tak samo.{" "}
       <a href="/polityka-prywatnosci#8-cookies-i-pamięć-przeglądarki">Szczegóły w polityce prywatności</a>.
     </p>
     <div class="zgody-ustawienia" id="zgody-ustawienia" hidden>

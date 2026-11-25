@@ -4,4 +4,4 @@ strony: ["pilotaze"]
 kolejnosc: 4
 aktualizacja: "[data]"
 ---
-Tego nie obiecujemy. Dostajesz opis wyniku razem z jego ograniczeniami i sposobem, jak samodzielnie sprawdzić efekt.
+Tego nie możemy obiecać. Możemy za to zadbać, żeby Twoja strona była lepiej widoczna w Google i w odpowiedziach AI. Pilnujemy, żeby była czytelna i miała lekki, szybki kod. To wprost wpływa na pozycję w wyszukiwarce i na to, ilu odwiedzających zostaje Twoimi klientami.
