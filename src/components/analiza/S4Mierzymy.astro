@@ -42,7 +42,7 @@ const zMalej = (x: string) => (x ? x[0].toLowerCase() + x.slice(1) : x);
   .os { margin: 0; padding: 32px; list-style: none; border-radius: 16px; background: var(--fk-tlo-powierzchnia); border: 2px solid var(--fk-tlo); box-shadow: 0 4px 16px rgb(0 0 0 / 0.08); }
   .os li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 28px; border-radius: 12px; transition: background var(--fk-czas-szybki) var(--fk-krzywa-standard); }
   .punkt-osi { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
-  .kropka { flex: none; width: 16px; height: 16px; border-radius: 50%; background: #18794e; }
+  .kropka { flex: none; width: 16px; height: 16px; border-radius: 50%; background: var(--fk-zielen-przycisk); }
   .linia { flex: 1; width: 2px; background: var(--fk-obrys-kontrolka); }
   .os li:last-child .linia { display: none; }
   .tresc { display: grid; gap: 8px; padding-bottom: 44px; }

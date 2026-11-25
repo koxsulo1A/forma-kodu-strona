@@ -12,37 +12,47 @@ const d = r.data;
 const H = poziom;
 const przyklad = d.typ === 'przykład układu';
 const link = przyklad ? null : `/realizacje/${r.id}`;
+// Zdjęcie zastępcze (miejsce-na-zrzut.png) → ramka z napisem jak w Figmie 226:243 („zrzut: jeszcze nie ma” / „przykład układu”).
+const brakZdjecia = String(d.zdjecie_glowne?.src ?? '').includes('miejsce-na-zrzut');
+// Wartości zastępcze z panelu w nawiasach („[RRRR-MM]”) nie trafiają na stronę.
+const wypelnione = (x: string) => Boolean(x) && !/^\[.*\]$/.test(x.trim());
+const miejsceData = [d.miasto, d.data].filter(wypelnione).join(' · ');
 const plakietka = przyklad
   ? 'Przykład: układ, nie realizacja'
   : `${d.typ === 'klient' ? 'Projekt klienta' : 'Projekt własny'} · ${d.status === 'w toku' ? 'w przygotowaniu' : 'zakończony'}`;
 ---
 <article class:list={['karta-realizacji', { klikalna: link, przyklad }]}>
-  <div class="zdjecie">
-    <Image src={d.zdjecie_glowne} alt={d.zdjecie_alt} widths={[400, 800]} sizes="(min-width: 1024px) 25vw, 80vw" data-vt={link ? r.id : undefined} />
-  </div>
+  {brakZdjecia
+    ? <div class="zdjecie zastepcze" data-vt={link ? r.id : undefined}><p class="t-etykieta pomocniczy">{przyklad ? 'przykład układu' : 'zrzut: jeszcze nie ma'}</p></div>
+    : <div class="zdjecie"><Image src={d.zdjecie_glowne} alt={d.zdjecie_alt} widths={[400, 800]} sizes="(min-width: 1024px) 25vw, 80vw" data-vt={link ? r.id : undefined} /></div>}
   <p class="t-etykieta pomocniczy">{d.podkategoria || d.kategoria}</p>
-  <H class="t-h4 naglowkowy">{link ? <a href={link}>{d.naglowek}</a> : d.naglowek}</H>
-  <p class="t-maly opis">{d.opis}</p>
+  <H class="tytul naglowkowy">{link ? <a href={link}>{d.naglowek}</a> : d.naglowek}</H>
+  <p class="opis">{d.opis}</p>
   {d.technologie.length > 0 && <ul class="tagi" aria-label="Technologie">{d.technologie.map((t) => <li class="t-etykieta">{t}</li>)}</ul>}
-  <p class="t-etykieta pomocniczy">{[d.miasto, d.data].filter(Boolean).join(' · ')}</p>
+  {miejsceData && <p class="t-etykieta pomocniczy">{miejsceData}</p>}
   <p><span class="t-etykieta plakietka">{plakietka}</span></p>
   {link && <p class="t-etykieta akcentowy wiecej" aria-hidden="true">Zobacz realizację →</p>}
 </article>
 
 <style>
-  .karta-realizacji { position: relative; height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 16px 16px 20px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); transition: border-color var(--fk-czas-szybki); }
+  /* Wygląd 1:1 z Figmą 226:243: karta pad 20/18/24, promień 16, odstęp 12; tytuł 19 px regular, opis 14 px, etykiety mono 12 px. */
+  .karta-realizacji { position: relative; height: 100%; display: flex; flex-direction: column; gap: 12px; padding: 20px 18px 24px; border-radius: 16px; background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); transition: border-color var(--fk-czas-szybki), transform var(--fk-czas-szybki) var(--fk-krzywa-standard); }
+  .karta-realizacji > * { margin: 0; }
   .karta-realizacji.klikalna:hover { border-color: var(--fk-obrys-kontrolka); }
-  .przyklad { border: 1px dashed var(--fk-obrys-kontrolka); background: transparent; }
-  .zdjecie { margin-bottom: 6px; border-radius: var(--radius-control); overflow: hidden; background: var(--fk-tlo-podniesione); }
+  .przyklad { border: 1.5px dashed var(--fk-obrys-kontrolka); }
+  .zdjecie { border-radius: 10px; overflow: hidden; background: var(--fk-tlo-podniesione); }
   .zdjecie img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; }
-  .przyklad .zdjecie img { opacity: 0.6; }
-  .opis { color: var(--fk-tekst); }
+  .zastepcze { aspect-ratio: 2 / 1; display: grid; place-items: center; border: 1px dashed var(--fk-obrys); }
+  .zastepcze p { margin: 0; }
+  .tytul { font-size: 19px; font-weight: 400; line-height: 1.55; }
+  .opis { font-size: 14px; line-height: 1.5; color: var(--fk-tekst); }
   .klikalna a { color: inherit; text-decoration: none; }
   .klikalna a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; } /* cała karta = jeden link */
   .klikalna:focus-within { outline: 3px solid var(--fk-fokus); outline-offset: 3px; }
   .klikalna a:focus-visible { outline: none; }
   .tagi { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-  .tagi li { padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); }
-  .plakietka { display: inline-block; padding: 4px 10px; border-radius: var(--radius-control); border: 1px solid var(--fk-tekst-naglowek); color: var(--fk-tekst-naglowek); }
+  .tagi li { padding: 3px 9px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys); color: var(--fk-tekst-pomocniczy); }
+  .plakietka { display: inline-block; max-width: 100%; white-space: nowrap; font-size: 12px; padding: 5px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); color: var(--fk-tekst); }
   .wiecej { margin-top: auto; }
+  @media (max-width: 1023.98px) { .plakietka { white-space: normal; } }
 </style>

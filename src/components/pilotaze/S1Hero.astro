@@ -1,5 +1,6 @@
 ---
-// 32 S1 Hero (wariant B): plakietka, wyśrodkowany nagłówek, 2 akapity, przycisk do formularza; pod spodem pasek „W skrócie” (4 fakty z ✓).
+// 32 S1 Hero (Figma 241:285, wariant B): plakietka, wyśrodkowany nagłówek 64 px, 2 akapity, zielony przycisk do formularza;
+// pod spodem pasek „W skrócie” (4 fakty z ✓, separatory). Kacper 25.11 16:06: segment 1:1 z Figmą.
 // Telefon: fakty jako jedna karta swipe ze wskaźnikiem od 01 (zasada 28).
 import Ikona from '../wspolne/Ikona.astro';
 interface Props { t: any }
@@ -9,33 +10,42 @@ const { t } = Astro.props;
   <div class="kontener s1-wnetrze">
     <div class="srodek">
       {t.etykieta && <p><span class="t-etykieta plak">{t.etykieta}</span></p>}
-      <h1 id="s1-h" class="t-display naglowkowy">{t.h1}</h1>
-      <p class="t-tresc-l">{t.lead}</p>
-      {t.lead_2 && <p class="t-tresc pomocniczy">{t.lead_2}</p>}
-      <p><a class="przycisk przycisk--akcent" href="#zgloszenie">{t.cta}</a></p>
+      <h1 id="s1-h" class="naglowkowy tytul">{t.h1}</h1>
+      <p class="lead">{t.lead}</p>
+      {t.lead_2 && <p class="lead-2">{t.lead_2}</p>}
+      <p><a class="przycisk zielony" href="#zgloszenie">{t.cta}</a></p>
     </div>
     <h2 class="sr-only">W skrócie</h2>
     <ul role="list" class="fakty swipe" data-swipe="s1-wskaznik">
-      {t.fakty.map((f: string) => <li class="t-tresc"><span class="ok" aria-hidden="true"><Ikona nazwa="check" rozmiar={16} /></span>{f}</li>)}
+      {t.fakty.map((f: string) => <li><span class="ok" aria-hidden="true"><Ikona nazwa="check" rozmiar={20} /></span>{f}</li>)}
     </ul>
     <div class="wskaznik-swipe" id="s1-wskaznik" aria-hidden="true"><ol>{t.fakty.map((_: string, i: number) => <li aria-current={String(i === 0)}></li>)}</ol><span data-licznik>1 z {t.fakty.length}</span></div>
   </div>
 </section>
 
 <style>
-  .s1 { padding-block: clamp(32px, 5vw, 72px) clamp(40px, 5vw, 64px); }
-  .s1-wnetrze { display: grid; gap: 32px; }
-  .srodek { display: grid; gap: 20px; justify-items: center; text-align: center; max-width: 960px; margin-inline: auto; }
-  .plak { display: inline-block; padding: 4px 14px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); }
-  .fakty { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
-  .fakty li { display: grid; gap: 10px; align-content: start; padding: 24px 28px; }
+  .s1 { padding-block: clamp(32px, 6.25vw, 90px) clamp(40px, 4vw, 58px); }
+  .s1-wnetrze { display: grid; gap: 40px; }
+  .srodek { display: grid; gap: 24px; justify-items: center; text-align: center; max-width: 960px; margin-inline: auto; }
+  .srodek > * { margin: 0; }
+  .plak { display: inline-block; padding: 6px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); color: var(--fk-tekst-pomocniczy); }
+  .tytul { font-size: clamp(40px, 4.45vw, 64px); font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; }
+  .lead { font-size: 19px; line-height: 1.55; color: var(--fk-tekst); }
+  .lead-2 { font-size: 17px; line-height: 1.55; color: var(--fk-tekst-pomocniczy); }
+  /* Przycisk z Figmy: zieleń 90:2, promień 10, podwójny cień. */
+  .zielony { padding: 15px 24px; border-radius: 10px; background: var(--fk-zielen-przycisk); border-color: var(--fk-zielen-przycisk); color: #fff; font-weight: 600; box-shadow: 0 1px 2px rgb(26 31 37 / 0.4), 0 6px 16px rgb(26 31 37 / 0.35); }
+  .zielony:hover { background: #136640; border-color: #136640; }
+  .fakty { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-radius: 16px; background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .fakty li { display: grid; gap: 12px; align-content: start; padding: 24px 28px 28px; font-size: 17px; line-height: 1.55; color: var(--fk-tekst); }
   .fakty li + li { border-left: 1px solid var(--fk-obrys); }
-  .ok { color: var(--fk-zielen-srednia); display: grid; }
+  .ok { color: #1f7a50; display: grid; }
   @media (max-width: 1023.98px) {
-    .srodek { text-align: left; justify-items: start; }
+    .srodek { text-align: left; justify-items: start; gap: 20px; }
     .srodek > p { width: 100%; }
+    .lead { font-size: 17px; }
+    .lead-2 { font-size: 16px; }
     .srodek .przycisk { width: 100%; justify-content: center; }
     .fakty { background: none; border: 0; }
-    .fakty li { border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys) !important; padding: 20px; }
+    .fakty li { border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys) !important; padding: 20px; font-size: 16px; }
   }
 </style>

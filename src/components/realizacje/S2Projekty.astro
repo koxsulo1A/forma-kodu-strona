@@ -1,6 +1,7 @@
 ---
 // 31 S2 Nad czym pracujemy: wszystkie wpisy kolekcji „Realizacje” (najpierw prawdziwe, potem przykłady układu; w grupie najnowsze pierwsze).
 // Filtr kategorii: przyciski z licznikami (aria-pressed) i zdanie „Pokazano X z Y: …” (strona.ts 7b). Bez JS widać wszystkie karty, przyciski są ukryte.
+// Wygląd 1:1 z Figmą 226:243 (Kacper 25.11 16:06): filtry 14 px, aktywny z gradientem fiolet→satyna, karty z KartaRealizacji.
 // Komputer: siatka 4 kolumny. Telefon: jedna karuzela swipe ze wskaźnikiem od 01 (makieta: 2 rzędy po 4; przy filtrze rzędy tracą sens).
 import KartaRealizacji from './KartaRealizacji.astro';
 import { opisListy } from '../../lib/odmiana';
@@ -12,12 +13,12 @@ const kategorie = ['Strony', 'Automatyzacje', 'Aplikacje'].map((k) => ({ k, n: l
   <div class="kontener s2-wnetrze">
     <header class="naglowek">
       <h2 id="s2-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
-      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+      {t.lead && <p class="lead">{t.lead}</p>}
     </header>
     <div class="filtr">
       <div class="przyciski" role="group" aria-label="Pokaż kategorię">
-        <button type="button" class="t-maly" data-kategoria="wszystkie" aria-pressed="true">Wszystkie <span class="t-etykieta ile">{lista.length}</span></button>
-        {kategorie.map(({ k, n }) => <button type="button" class="t-maly" data-kategoria={k} aria-pressed="false">{k} <span class="t-etykieta ile">{n}</span></button>)}
+        <button type="button" data-kategoria="wszystkie" aria-pressed="true">Wszystkie <span class="t-etykieta ile">{lista.length}</span></button>
+        {kategorie.map(({ k, n }) => <button type="button" data-kategoria={k} aria-pressed="false">{k} <span class="t-etykieta ile">{n}</span></button>)}
       </div>
       <p class="t-etykieta pomocniczy" data-filtr-status aria-live="polite">{opisListy(lista.map((r) => r.data.typ), lista.length)}</p>
     </div>
@@ -32,19 +33,26 @@ const kategorie = ['Strony', 'Automatyzacje', 'Aplikacje'].map((k) => ({ k, n: l
 </section>
 
 <style>
-  .s2 { padding-block: clamp(48px, 5vw, 72px); }
-  .s2-wnetrze { display: grid; gap: 28px; }
-  .naglowek { display: grid; gap: 12px; max-width: 760px; }
+  .s2 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s2-wnetrze { display: grid; gap: 40px; }
+  .naglowek { display: grid; gap: 16px; max-width: 760px; }
+  .naglowek > * { margin: 0; }
+  .lead { font-size: 19px; line-height: 1.55; color: var(--fk-tekst); }
   .filtr { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
-  .przyciski { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filtr > p { margin: 0; }
+  .przyciski { display: flex; flex-wrap: wrap; gap: 12px; }
   :global(html:not(.js)) .przyciski { display: none; }
-  .przyciski button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 18px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); font: inherit; cursor: pointer; }
-  .przyciski button[aria-pressed='true'] { background: var(--fk-grad-przelamanie); border-color: transparent; color: var(--fk-przelamanie-tekst); }
+  .przyciski button { display: inline-flex; align-items: center; gap: 8px; min-height: 45px; padding: 11px 20px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); font: inherit; font-size: 14px; line-height: 1.5; cursor: pointer; }
+  .przyciski button:hover { border-color: var(--fk-akcent); }
+  .przyciski button[aria-pressed='true'] { background: linear-gradient(90deg, #3a2a86 0%, #0e1117 100%); border-color: var(--fk-akcent); color: #fff; }
   .przyciski button:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
-  .ile { opacity: 0.8; }
-  .siatka { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .ile { color: var(--fk-tekst-pomocniczy); }
+  .przyciski button[aria-pressed='true'] .ile { color: #fff; }
+  .siatka { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px 20px; margin: 0; padding: 0; list-style: none; }
   .siatka > li[hidden] { display: none; }
   @media (max-width: 1023.98px) {
+    .s2-wnetrze { gap: 28px; }
+    .lead { font-size: 17px; }
     .przyciski button { flex: 1 1 auto; justify-content: center; }
   }
 </style>
