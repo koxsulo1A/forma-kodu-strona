@@ -8,7 +8,7 @@
     "fakty": [
       "4 kategorie z naborem, po 3 miejsca w każdej; 2 kategorie wkrótce.",
       "Wykonanie bezpłatne.",
-      "Hosting i koszty działania po Twojej stronie, jeśli się zgodzisz.",
+      "Hosting płacisz Ty, dopiero po publikacji strony.",
       "Zakres, termin, zgoda na pokazanie realizacji i zasady danych na piśmie przed startem."
     ]
   },
@@ -44,7 +44,7 @@
     "lead": "Wszystko, co ważne, ustalamy z Tobą na piśmie, zanim zaczniemy.",
     "warunki": [
       { "tytul": "Wykonanie jest bezpłatne.", "opis": "Za naszą pracę w pilotażu nie płacisz." },
-      { "tytul": "Hosting i koszty działania pokrywasz Ty, jeśli się na to zgodzisz.", "opis": "Opłaty za serwer, domenę i usługi, z których korzysta rozwiązanie, płacisz bezpośrednio ich dostawcom. Kwoty podamy na piśmie przed startem." },
+      { "tytul": "Hosting opłacasz dopiero po publikacji strony.", "opis": "Płacisz go bezpośrednio dostawcy, gdy strona jest gotowa do publikacji. Wyjątek to WordPress: potrzebuje serwera już w czasie budowy. Pozostałe koszty działania, np. domenę, i ich kwoty podamy na piśmie przed startem." },
       { "tytul": "Wszystko na piśmie przed startem.", "opis": "Spisujemy zakres, termin, zgodę na pokazanie realizacji i zasady dotyczące danych. Praca zaczyna się dopiero po Twojej akceptacji." },
       { "tytul": "Zgoda na pokazanie realizacji.", "opis": "Realizację pokażemy tylko za Twoją zgodą. Co pokażemy, ustalamy z Tobą i zapisujemy." },
       { "tytul": "3 miejsca w każdej kategorii z naborem.", "opis": "Przy każdej kategorii widzisz, ile miejsc zostało. Gdy miejsc zabraknie, możesz zapisać się na listę oczekujących." }

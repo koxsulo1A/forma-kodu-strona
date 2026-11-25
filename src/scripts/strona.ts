@@ -493,7 +493,7 @@ document.querySelectorAll<HTMLElement>('[data-czat-demo]').forEach((czat) => {
   });
 });
 
-// ---------- 9g. Okna w hero 29 S1 (Figma 617:1775): czat → diagram → recepcjonistka → czat, zmiana przewinięciem w dół ----------
+// ---------- 9g. Okna w hero 29 S1 (Figma 617:1775): czat → diagram → recepcjonista → czat, zmiana przewinięciem w dół ----------
 // Każde okno stoi 6 s, potem kolumna przesuwa się o jedno okno w górę (700 ms). Najechanie, fokus albo klik w okno zatrzymuje
 // zmianę (klik w czat: do końca wizyty, żeby dokończyć rozmowę). Niewidoczne okna są inert. Bez ruchu: okna jedno pod drugim.
 document.querySelectorAll<HTMLElement>('[data-okna]').forEach((okna) => {

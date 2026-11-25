@@ -1,6 +1,6 @@
 ---
 // 29 S1 Hero: pytanie klienta, dwa przyciski; po prawej okna, które zmieniają się przewinięciem w dół (Figma 617:1775, Kacper 25.11 16:06):
-// czat z botem (klikalny, stała wysokość, nowe wiadomości przewijają się w środku) → diagram automatyzacji → automatyczna recepcjonistka.
+// czat z botem (klikalny, stała wysokość, nowe wiadomości przewijają się w środku) → diagram automatyzacji → automatyczny recepcjonista.
 // Bez oznaczeń „przykład” i bez etykiet atutów nad H1 (Kacper 25.11). Zachowanie: data-czat-demo (9d) i data-okna (9g) w strona.ts.
 // Bez JS albo bez ruchu: okna jedno pod drugim.
 interface Props { t: any }
@@ -52,12 +52,12 @@ const pola = [['Usługa', 'Trening personalny'], ['Termin', 'wtorek i czwartek, 
           <p class="t-etykieta pomocniczy stopka-okna">Każdy krok zapisuje się w historii, więc wiesz, co zrobiła automatyzacja.</p>
         </figure>
         <figure class="okno" data-okno aria-labelledby="s1-rec-h">
-          <figcaption class="okno-gora"><span id="s1-rec-h" class="tytul naglowkowy">Automatyczna recepcjonistka</span><span class="t-etykieta etykieta">nowe zgłoszenie</span></figcaption>
+          <figcaption class="okno-gora"><span id="s1-rec-h" class="tytul naglowkowy">Automatyczny recepcjonista</span><span class="t-etykieta etykieta">nowe zgłoszenie</span></figcaption>
           <dl class="zgloszenie">
             {pola.map(([k, v]) => <div><dt class="t-etykieta pomocniczy">{k}</dt><dd>{v}</dd></div>)}
           </dl>
           <p class="statusy"><span class="t-etykieta ok">✓ Dane kompletne</span><span class="t-etykieta dalej">→ Przekazano do kalendarza</span></p>
-          <p class="wyjatek">Nietypowa prośba? Recepcjonistka nie decyduje sama: zgłoszenie trafia do Ciebie.</p>
+          <p class="wyjatek">Nietypowa prośba? Recepcjonista nie decyduje sam: zgłoszenie trafia do Ciebie.</p>
         </figure>
       </div>
     </div>
@@ -118,7 +118,7 @@ const pola = [['Usługa', 'Trening personalny'], ['Termin', 'wtorek i czwartek, 
   .opis { display: grid; gap: 2px; font-size: 16px; line-height: 1.35; }
   .opis .t-etykieta { opacity: 0.75; }
   .stopka-okna { margin-top: auto; }
-  /* Recepcjonistka */
+  /* Recepcjonista */
   .zgloszenie { display: grid; gap: 10px; margin: 0; padding: 16px 20px; border-radius: 12px; background: var(--fk-tlo); border: 1px solid var(--fk-obrys); }
   .zgloszenie div { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 12px; align-items: center; }
   .zgloszenie dd { margin: 0; color: var(--fk-tekst-naglowek); }

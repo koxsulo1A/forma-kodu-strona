@@ -63,7 +63,7 @@
         "cta": ""
       },
       {
-        "nazwa": "Automatyczna recepcjonistka",
+        "nazwa": "Automatyczny recepcjonista",
         "opis": "Przyjmuje zgłoszenia i pytania, przekazuje je do kalendarza lub do Ciebie. Terminy rezerwuje tylko po połączeniu z kalendarzem, wyjątki obsługuje człowiek.",
         "status": "wkrótce",
         "cta": ""
@@ -169,7 +169,7 @@
         "cena": "automatyzacje-bot-czatowy"
       },
       {
-        "nazwa": "Automatyczna recepcjonistka",
+        "nazwa": "Automatyczny recepcjonista",
         "opis": "Wkrótce. Przyjmuje zgłoszenia i przekazuje je do kalendarza lub do Ciebie. Terminy rezerwuje tylko po połączeniu z kalendarzem.",
         "cena": "automatyzacje-recepcjonistka"
       }
@@ -190,7 +190,7 @@
         "opis": "Jeszcze bez realizacji. Pierwsza powstanie w pilotażu."
       },
       {
-        "tytul": "Automatyczna recepcjonistka",
+        "tytul": "Automatyczny recepcjonista",
         "opis": "Jeszcze bez realizacji. Pierwsza powstanie w pilotażu."
       }
     ],
