@@ -33,6 +33,7 @@
 
   /* 2. Role od odcienia */
   --fk-krok-koncowy: #18794e;
+  --fk-zielen-przycisk: #18794e; /* zmienna Figmy „zielen” 90:2, hover przycisków głównych */
   --fk-krok-koncowy-tekst: #ffffff;
   --fk-sukces-jasne-tlo: #93dfb0;
   --fk-sukces-jasne-tekst: #0d3b24;
@@ -57,6 +58,11 @@
   --fk-kafel-1-koniec: #83dabf;
   --fk-kafel-1-tekst: #0d3b24;
   --fk-kafel-1-obrys: #6cc992;
+  /* Kacper 25.11: zielony blok mozaiki zamieniony na morski (petrol) z białym tekstem, kontrast jak w bloku niebieskim/fioletowym (biały na #0e6170 ≈ 7:1). */
+  --fk-kafel-7-tlo: #0e6170;
+  --fk-kafel-7-koniec: #0b4f63;
+  --fk-kafel-7-tekst: #ffffff;
+  --fk-kafel-7-obrys: #0e6170;
   --fk-kafel-2-tlo: #1e3a8a;
   --fk-kafel-2-koniec: #2c2092;
   --fk-kafel-2-tekst: #ffffff;
@@ -81,6 +87,7 @@
   --fk-grad-przelamanie: linear-gradient(135deg, var(--fk-przelamanie), var(--fk-przelamanie-koniec));
   --fk-grad-kafel-1: linear-gradient(135deg, var(--fk-kafel-1-tlo), var(--fk-kafel-1-koniec));
   --fk-grad-kafel-2: linear-gradient(135deg, var(--fk-kafel-2-tlo), var(--fk-kafel-2-koniec));
+  --fk-grad-kafel-7: linear-gradient(135deg, var(--fk-kafel-7-tlo), var(--fk-kafel-7-koniec));
   --fk-grad-kafel-4: linear-gradient(135deg, var(--fk-kafel-4-tlo), var(--fk-kafel-4-koniec));
   --fk-grad-kafel-5: linear-gradient(135deg, var(--fk-kafel-5-tlo), var(--fk-kafel-5-koniec));
   --fk-grad-kafel-6: linear-gradient(135deg, var(--fk-kafel-6-tlo), var(--fk-kafel-6-koniec));
@@ -204,6 +211,7 @@
   --fk-satyna-3: #2a2a2f;
   --fk-kafel-1-obrys: #93dfb0;
   --fk-kafel-2-obrys: #4a68c9;
+  --fk-kafel-7-obrys: #3fa3b5;
   --fk-kafel-3-tlo: #f1f4f9;
   --fk-kafel-3-obrys: #f1f4f9;
   --fk-kafel-4-obrys: #8a74ee;

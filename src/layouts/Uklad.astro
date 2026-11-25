@@ -50,9 +50,11 @@ const { strona, nazwaStrony, okruszki, podstrona } = Astro.props;
     <a class="pomin" href="#tresc">Przejdź do treści</a>
     <Nawigacja />
     {okruszki && okruszki.length > 1 && (
-      <nav aria-label="Jesteś tutaj" class="okruszki kontener">
-        <ol>{okruszki.map((o, i) => <li>{i === okruszki.length - 1 ? <span aria-current="page">{o.nazwa}</span> : <a href={o.url}>{o.nazwa}</a>}</li>)}</ol>
-      </nav>
+      <div class="okruszki-pas">
+        <nav aria-label="Jesteś tutaj" class="okruszki kontener">
+          <ol>{okruszki.map((o, i) => <li>{i === okruszki.length - 1 ? <span aria-current="page">{o.nazwa}</span> : <a href={o.url}>{o.nazwa}</a>}</li>)}</ol>
+        </nav>
+      </div>
     )}
     <main id="tresc" tabindex="-1">
       <slot />
@@ -74,7 +76,12 @@ const { strona, nazwaStrony, okruszki, podstrona } = Astro.props;
   main { display: block; padding-top: var(--fk-wys-paska); }
   main:focus { outline: none; }
   @media (max-width: 1023.98px) { main { padding-top: 61px; } }
-  .okruszki { padding-top: calc(var(--fk-wys-paska) + 16px); margin-bottom: -48px; position: relative; z-index: 1; }
+  /* Kacper 25.11: pas okruszków leży na bazie (W2), bez wycięcia do kratki; treść i położenie bez zmian. */
+  .okruszki-pas {
+    background: var(--fk-tlo); position: relative; z-index: 1;
+    padding: calc(var(--fk-wys-paska) + 16px) 0 calc(var(--fk-wys-paska) - 48px); margin-bottom: calc(-1 * var(--fk-wys-paska));
+  }
+  @media (max-width: 1023.98px) { .okruszki-pas { padding-bottom: 13px; margin-bottom: -61px; } }
   .okruszki ol { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; font-size: var(--fk-font-maly); }
   .okruszki li + li::before { content: '/'; margin-right: 8px; color: var(--fk-tekst-pomocniczy); }
 </style>

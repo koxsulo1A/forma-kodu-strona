@@ -153,7 +153,16 @@ h1, h2, h3, h4 { color: var(--fk-tekst-naglowek); text-wrap: balance; }
 }
 .przycisk:active { transform: scale(0.98); }
 .przycisk--glowny { background: var(--fk-kafel-3-tlo); color: var(--fk-kafel-3-tekst); }
-.przycisk--glowny:hover { background: var(--fk-tlo-powierzchnia); box-shadow: var(--fk-cien-przycisk); }
+/* Makieta 27 (289:1489, plansza 423:707): po najechaniu lub fokusie tło i obrys przechodzą w zieleń #18794E, tekst biały, 160 ms; naciśnięcie skala 0,98.
+   Ten sam wzorzec dla każdego „Opisz projekt” (także w wersji akcent/drugi). */
+.przycisk--glowny:is(:hover, :focus-visible),
+.przycisk[data-otworz-sheet='sheet-projekt']:is(:hover, :focus-visible) {
+  background: var(--fk-zielen-przycisk); border-color: var(--fk-zielen-przycisk); color: #fff; box-shadow: var(--fk-cien-przycisk);
+}
+.przycisk--glowny, .przycisk[data-otworz-sheet='sheet-projekt'] {
+  transition: background-color 160ms var(--fk-krzywa-standard), border-color 160ms var(--fk-krzywa-standard), color 160ms var(--fk-krzywa-standard),
+    box-shadow 160ms var(--fk-krzywa-standard), transform var(--fk-czas-nacisk) var(--fk-krzywa-standard);
+}
 .przycisk--drugi { background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); }
 .przycisk--drugi:hover { background: var(--fk-tlo-podniesione); }
 .przycisk--akcent {

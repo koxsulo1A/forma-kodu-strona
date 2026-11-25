@@ -1,0 +1,36 @@
+---
+// Terminal macOS (makieta 28, plansza 461:1738 „S1: terminal buduje stronę, potem okno przeglądarki”).
+// Po wejściu na stronę terminal przykrywa ilustrację: polecenia pisane znak po znaku (30 ms), linie wyniku od razu.
+// Po ostatniej linii terminal gaśnie (400 ms) i odsłania elementy [data-po-terminalu] sceny [data-terminal-scena] (ruch.ts, terminale()).
+// Dekoracja: aria-hidden, bez JS i przy „ogranicz ruch” nie jest pokazywany (od razu widać gotowe komponenty).
+interface Props { linie: string[]; tytul?: string }
+const { linie, tytul = 'zsh' } = Astro.props;
+---
+<div class="terminal" data-terminal aria-hidden="true">
+  <div class="terminal-pasek"><i></i><i></i><i></i><span>{tytul}</span></div>
+  <div class="terminal-tresc">
+    {linie.map((l) => <p class:list={['linia', l.startsWith('$') ? 'polecenie' : 'wynik']} data-linia={l}></p>)}
+  </div>
+</div>
+
+<style>
+  .terminal {
+    position: absolute; inset: 0; z-index: 3; display: none; flex-direction: column; overflow: hidden;
+    background: #262c38; color: #f1f4f9; border-radius: var(--radius-card);
+    box-shadow: 0 1px 2px rgb(28 36 48 / 0.12), 0 18px 40px -12px rgb(28 36 48 / 0.35);
+    transition: opacity 400ms var(--fk-krzywa-standard);
+  }
+  :global(.terminal-gra) > .terminal, :global(.terminal-gra) .terminal { display: flex; }
+  :global(.terminal-koniec) .terminal { opacity: 0; }
+  .terminal-pasek { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #1c212b; }
+  .terminal-pasek i { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
+  .terminal-pasek i:nth-child(2) { background: #febc2e; }
+  .terminal-pasek i:nth-child(3) { background: #28c840; }
+  .terminal-pasek span { flex: 1; text-align: center; margin-right: 46px; font-family: var(--fk-rodzina-mono); font-size: 11px; color: #9aa4b8; }
+  .terminal-tresc { display: grid; align-content: start; gap: 10px; padding: 20px 22px; font-family: var(--fk-rodzina-mono); font-size: 13px; line-height: 1.5; }
+  .linia { margin: 0; min-height: 1.5em; white-space: pre-wrap; word-break: break-word; }
+  .linia:empty { display: none; }
+  .wynik { color: #93dfb0; }
+  .linia.pisze::after { content: ''; display: inline-block; width: 0.55em; height: 1.1em; margin-left: 2px; vertical-align: text-bottom; background: #f1f4f9; animation: kursor 900ms steps(1) infinite; }
+  @keyframes kursor { 50% { opacity: 0; } }
+</style>

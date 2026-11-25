@@ -1,16 +1,24 @@
 ---
-// Okno przykładowej strony gabinetu (28 S1, „Okno przykładu strony”). Dane i firma są przykładowe, podpis nad oknem to mówi.
-// Ilustracja: aria-hidden (dekoracja), podpis „Przykład” jest widoczny dla wszystkich.
+// Okno strony gabinetu (28 S1, „Okno przykładu strony”; plansza 461:1738). Kacper 25.11: bez dopisków „przykład”;
+// najpierw terminal macOS buduje stronę, potem gaśnie i zostaje okno Safari; okno jest klikalne jak w 27 S1
+// (wybór terminu → „Zarezerwuj …” → potwierdzenie; strona.ts 9f, data-okno-demo).
+import Terminal from './Terminal.astro';
 ---
-<figure class="okno-przyklad">
-  <figcaption class="podpis"><span class="t-etykieta znacznik">Przykład</span><span class="t-maly pomocniczy">Dane i firma są przykładowe.</span></figcaption>
-  <div class="okno" aria-hidden="true">
-    <div class="okno-pasek"><i class="k1"></i><i class="k2"></i><i class="k3"></i><span class="t-etykieta okno-adres">gabinet.przyklad</span></div>
+<figure class="okno-przyklad" data-terminal-scena>
+  <Terminal tytul="gabinet — zsh" linie={["$ npm create astro@latest gabinet", "✓ szablon pobrany, zależności zainstalowane", "$ npm run build", "✓ zbudowano 6 stron w 1,8 s", "$ npx wrangler deploy", "✓ opublikowano: gabinet.formakodu.pl"]} />
+  <div class="okno" data-okno-demo data-po-terminalu role="group" aria-label="Strona gabinetu z rezerwacją terminów">
+    <div class="okno-pasek" aria-hidden="true"><i class="k1"></i><i class="k2"></i><i class="k3"></i><span class="t-etykieta okno-adres">gabinet.formakodu.pl</span></div>
     <div class="okno-tresc">
-      <p class="t-maly pomocniczy">Gabinet fizjoterapii (firma przykładowa)</p>
+      <p class="t-maly pomocniczy">Gabinet fizjoterapii</p>
       <p class="t-h4 naglowkowy">Wolne terminy w tym tygodniu</p>
-      <div class="terminy t-maly"><span>czw 16:00</span><span>pt 9:30</span><span>sob 10:00</span></div>
-      <div class="okno-akcje"><span class="rezerwuj t-maly-mocny">Zarezerwuj termin</span><span class="t-nawigacja">Godziny i dojazd</span></div>
+      <div class="terminy t-maly" role="group" aria-label="Wybierz termin">
+        <button type="button" aria-pressed="false" data-termin>czw 16:00</button><button type="button" aria-pressed="false" data-termin>pt 9:30</button><button type="button" aria-pressed="false" data-termin>sob 10:00</button>
+      </div>
+      <div class="okno-akcje">
+        <button type="button" class="rezerwuj t-maly-mocny" data-rezerwuj>Zarezerwuj termin</button>
+        <p class="potwierdzenie t-maly-mocny" data-potwierdzenie role="status" hidden></p>
+        <span class="t-nawigacja">Godziny i dojazd</span>
+      </div>
     </div>
     <div class="godziny">
       <p class="t-maly pomocniczy">Godziny otwarcia</p>
@@ -20,9 +28,7 @@
 </figure>
 
 <style>
-  .okno-przyklad { display: grid; gap: 16px; margin: 0; }
-  .podpis { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .znacznik { padding: 4px 12px; border-radius: var(--radius-pill); background: var(--fk-grad-przelamanie); color: var(--fk-przelamanie-tekst); }
+  .okno-przyklad { position: relative; margin: 0; }
   .okno { background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); overflow: hidden; }
   .okno-pasek { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--fk-tlo-podniesione); }
   .okno-pasek i { width: 10px; height: 10px; border-radius: 50%; }
@@ -30,9 +36,14 @@
   .okno-adres { flex: 1; background: var(--fk-tlo-powierzchnia); border-radius: var(--radius-pill); padding: 4px 12px; color: var(--fk-tekst-pomocniczy); }
   .okno-tresc { display: grid; gap: 12px; padding: 24px 28px 28px; }
   .terminy { display: flex; gap: 8px; flex-wrap: wrap; }
-  .terminy span { padding: 8px 16px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: var(--radius-control); background: var(--fk-tlo); }
-  .okno-akcje { display: flex; align-items: center; gap: 16px; padding-top: 8px; flex-wrap: wrap; }
-  .rezerwuj { background: var(--fk-grad-przelamanie); color: var(--fk-przelamanie-tekst); padding: 8px 16px; border-radius: var(--radius-control); }
+  /* Jak 27 S1 (plansza 450:1815): najechanie = obrys akcentu + cień; wybór = zieleń, biały tekst. */
+  .terminy button { font: inherit; color: var(--fk-tekst); background: var(--fk-tlo); padding: 8px 16px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: var(--radius-control); cursor: pointer; transition: border-color 150ms, box-shadow 150ms, background-color 200ms, color 200ms; }
+  .terminy button:hover, .terminy button:focus-visible { border-color: var(--fk-akcent); box-shadow: 0 4px 12px -4px rgb(86 56 204 / 0.35); }
+  .terminy button[aria-pressed='true'] { background: var(--fk-krok-koncowy); border-color: var(--fk-krok-koncowy); color: var(--fk-krok-koncowy-tekst); }
+  .okno-akcje { display: flex; align-items: center; gap: 16px; padding-top: 8px; flex-wrap: wrap; min-height: 45px; }
+  .rezerwuj { font: inherit; border: 0; cursor: pointer; background: var(--fk-grad-przelamanie); color: var(--fk-przelamanie-tekst); padding: 8px 16px; border-radius: var(--radius-control); transition: transform 300ms var(--fk-krzywa-wejscie), opacity 300ms; }
+  .rezerwuj.zwija { transform: scaleX(0.6); opacity: 0; }
+  .potwierdzenie { color: var(--fk-krok-koncowy); animation: fk-wejscie 300ms var(--fk-krzywa-wejscie); }
   .godziny { display: grid; gap: 8px; padding: 4px 28px 28px; }
   .wiersze { display: flex; gap: 8px 32px; flex-wrap: wrap; }
 </style>

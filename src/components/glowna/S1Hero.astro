@@ -1,6 +1,8 @@
 ---
 // 27 S1 Hero (93:35, wariant C: jedno okno i zakres; ilustracja B wybrana 24.11). Podział 60/40 + pas zakresu (wycięcie w bazie, widać kratkę W1).
-// Ilustracja to przykład (firma przykładowa, dane przykładowe, podpisane na ilustracji): dekoracja aria-hidden, bez wpływu na treść.
+// Ilustracja: Kacper 25.11 – bez dopisków „przykład” w komponentach (zasada projektu). Na start terminal macOS buduje stronę,
+// potem gaśnie i po kolei pojawiają się trzy komponenty (Terminal.astro + ruch.ts, terminale()).
+import Terminal from '../wspolne/Terminal.astro';
 interface Props { t: any }
 const { t } = Astro.props;
 const slupki = [12, 18, 17, 26, 31, 38];
@@ -14,7 +16,7 @@ const reszta = poz < 0 ? '' : t.h1.slice(poz + slowa[0].length);
 <section class="s1 baza segment" id="start" data-segment="S1 Hero" aria-labelledby="s1-h">
   <div class="kontener s1-podzial">
     <div class="s1-tekst">
-      <h1 id="s1-h" class="t-display pojaw">{poz < 0 ? t.h1 : (
+      <h1 id="s1-h" class="t-display">{poz < 0 ? t.h1 : (
         <>{t.h1.slice(0, poz)}<span class="sr-only">{slowa[0]}</span><span class="slowo-zmienne" data-slowa={JSON.stringify(slowa)} aria-hidden="true">{slowa[0]}</span>{reszta}</>
       )}</h1>
       <p class="t-tresc-l">{t.lead}</p>
@@ -23,16 +25,17 @@ const reszta = poz < 0 ? '' : t.h1.slice(poz + slowa[0].length);
         {t.cta_2 && <a class="przycisk przycisk--drugi" href="#oferta">{t.cta_2}</a>}
       </div>
     </div>
-    <div class="s1-ilustracja" role="group" aria-label="Przykład: strona gabinetu z rezerwacją, czat z asystentem i wykres widoczności (dane przykładowe)">
-      <div class="okno" data-okno-demo>
+    <div class="s1-ilustracja" role="group" aria-label="Strona gabinetu z rezerwacją terminów, czat z asystentem i wykres widoczności w wyszukiwarkach" data-terminal-scena>
+      <Terminal tytul="gabinet — zsh" linie={["$ npm create astro@latest gabinet", "✓ szablon pobrany, zależności zainstalowane", "$ npm run build", "✓ zbudowano 6 stron w 1,8 s: rezerwacje, czat, pomiar", "$ npx wrangler deploy", "✓ opublikowano: gabinet.formakodu.pl"]} />
+      <div class="okno" data-okno-demo data-po-terminalu>
         <div class="okno-pasek" aria-hidden="true">
           <i class="k1"></i><i class="k2"></i><i class="k3"></i>
-          <span class="t-etykieta okno-adres">gabinet.przyklad</span>
+          <span class="t-etykieta okno-adres">gabinet.formakodu.pl</span>
         </div>
         <div class="okno-tresc">
-          <p class="t-maly pomocniczy">Gabinet fizjoterapii (firma przykładowa)</p>
+          <p class="t-maly pomocniczy">Gabinet fizjoterapii</p>
           <p class="t-h4 naglowkowy">Wolne terminy w tym tygodniu</p>
-          <div class="terminy t-maly" role="group" aria-label="Wybierz termin (przykład)">
+          <div class="terminy t-maly" role="group" aria-label="Wybierz termin">
             <button type="button" aria-pressed="false" data-termin>czw 16:00</button><button type="button" aria-pressed="false" data-termin>pt 9:30</button><button type="button" aria-pressed="false" data-termin>sob 10:00</button>
           </div>
           <div class="okno-akcje">
@@ -42,22 +45,22 @@ const reszta = poz < 0 ? '' : t.h1.slice(poz + slowa[0].length);
           </div>
         </div>
       </div>
-      <div class="czat" data-czat-hero>
-        <div class="czat-gora"><p class="t-maly-mocny">Asystent na stronie</p><p class="t-etykieta">Przykładowa rozmowa</p></div>
-        <ol role="list" class="czat-wiadomosci" data-czat-lista aria-live="polite" tabindex="0" aria-label="Rozmowa (przykład, przewijana)">
+      <div class="czat" data-czat-hero data-po-terminalu>
+        <div class="czat-gora"><p class="t-maly-mocny">Asystent na stronie</p><p class="t-etykieta">Odpowiada od razu, także po godzinach</p></div>
+        <ol role="list" class="czat-wiadomosci" data-czat-lista aria-live="polite" tabindex="0" aria-label="Rozmowa z asystentem (przewijana)">
           <li class="dymek klient"><small>Klient</small>Czy w sobotę są wolne terminy?</li>
           <li class="dymek asystent"><small>Asystent</small>Wolne terminy są w kalendarzu rezerwacji. Podać link?</li>
           <li class="dymek klient"><small>Klient</small>Tak, poproszę.</li>
         </ol>
-        <div class="podpowiedzi" role="group" aria-label="Zadaj pytanie (przykład)">
+        <div class="podpowiedzi" role="group" aria-label="Zadaj pytanie">
           <button type="button" data-odpowiedz="Cena zależy od zakresu. Pokazać pakiety?">Ile to kosztuje?</button>
           <button type="button" data-odpowiedz="Strona podstawowa zajmuje 1–2 tygodnie, dedykowana 2–4 tygodnie. Opisać zakres?">Jak długo trwa?</button>
           <button type="button" data-odpowiedz="Najbliższe: czw 16:00, pt 9:30 i sob 10:00. Zarezerwować?">Wolne terminy</button>
         </div>
       </div>
-      <div class="wykres" aria-hidden="true">
+      <div class="wykres" aria-hidden="true" data-po-terminalu>
         <p class="t-maly-mocny naglowkowy">Widoczność SEO/GEO</p>
-        <p class="t-maly pomocniczy">Dane przykładowe, nie pomiar</p>
+        <p class="t-maly pomocniczy">Wejścia z Google i asystentów AI</p>
         <div class="wykres-pole">
           <span class="wykres-os t-etykieta">wejścia z wyszukiwarki</span>
           <span class="poz p40">40</span><span class="poz p20">20</span><span class="poz p0">0</span>

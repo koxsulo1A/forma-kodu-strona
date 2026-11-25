@@ -1,11 +1,18 @@
 ---
 // 27 S8 Cennik (wariant E zmodyfikowany: małe bloki, wspólna dolna krawędź). Ceny z jednego cennika (kolekcja „Ceny”, relacja w panelu).
-// Klik w „Co zawiera i czego nie zawiera” w dowolnym pakiecie rozwija listy we wszystkich trzech (animacja 27 S8).
+// Klik w „Co zawiera i czego nie zawiera” w dowolnym pakiecie rozwija listy we wszystkich trzech (decyzja Kacpra 23.11).
+// Wygląd 1:1 z makietą 165:1213 (Kacper 25.11): pasek nagłówka (numer w kółku, etykieta, ikona), tytuł, opis, wcięta tabliczka ceny,
+// stopka „Co zawiera… +”; po rozwinięciu listy Zawiera / Nie zawiera i przycisk „Zapytaj o ten pakiet” (240 ms, grid-rows 0fr → 1fr, treść 160 ms).
 // „Zapytaj o ten pakiet” otwiera sheet „Opisz projekt” z wpisaną nazwą pakietu (data-opis).
 // Makieta: etykieta „Przykład z rynku, nie nasz cennik”. Kod: „Cena Forma Kodu”, bo cennik ma nasza_cena: true (decyzja Kacpra 24.11).
 import { cena, cenaTekst } from '../../lib/ceny.mjs';
 interface Props { t: any; nr?: string; nazwa?: string }
 const { t, nr = 'S8', nazwa = 'Cennik' } = Astro.props;
+const ikony = [
+  '<path d="M6.5 2.5H13.5C14.6 2.5 15.5 3.4 15.5 4.5V15.5C15.5 16.6 14.6 17.5 13.5 17.5H6.5C5.4 17.5 4.5 16.6 4.5 15.5V4.5C4.5 3.4 5.4 2.5 6.5 2.5Z"/><path d="M7.5 7H12.5M7.5 10H12.5M7.5 13H10.5" stroke-linecap="round"/>',
+  '<path d="M4.5 3.5H15.5C16.6 3.5 17.5 4.4 17.5 5.5V14.5C17.5 15.6 16.6 16.5 15.5 16.5H4.5C3.4 16.5 2.5 15.6 2.5 14.5V5.5C2.5 4.4 3.4 3.5 4.5 3.5Z"/><path d="M2.5 7.5H17.5M8 7.5V16.5"/>',
+  '<path d="M6 9H14C15.1 9 16 9.9 16 11V15.5C16 16.6 15.1 17.5 14 17.5H6C4.9 17.5 4 16.6 4 15.5V11C4 9.9 4.9 9 6 9Z"/><path d="M6.75 9V6.5C6.75 4.7 8.2 3.25 10 3.25C11.8 3.25 13.25 4.7 13.25 6.5V9" stroke-linecap="round"/>',
+];
 const pakiety = t.pakiety.map((p: any, i: number) => {
   const c = cena(p.cena);
   return { ...p, nr: i + 1, cenaTxt: cenaTekst(c), etykietaCeny: c ? (c.nasza_cena ? 'Cena Forma Kodu' : 'Przykład z rynku, nie nasz cennik') : 'Cena' };
@@ -16,24 +23,39 @@ const pakiety = t.pakiety.map((p: any, i: number) => {
     <h2 id="s8-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
     <div class="pakiety-ramka" data-rozwin-grupa>
       <ul role="list" class="pakiety swipe" data-swipe="s8-wskaznik">
-        {pakiety.map((p: any) => (
-          <li class:list={['pakiet', 'w1', { polecany: p.polecany, najwyzszy: p.nr === 3 }]}>
+        {pakiety.map((p: any, i: number) => (
+          <li class:list={['pakiet', 'w1', { polecany: p.polecany, jasny: i === 2 }]}>
             {p.polecany && <p class="znacznik-polecany t-etykieta">Polecany pakiet</p>}
-            <p class="pakiet-gora"><span class="nr t-liczba-m" aria-hidden="true">{p.nr}</span><span class="t-etykieta pomocniczy">{p.etykieta}</span></p>
-            <h3 class="t-h4 naglowkowy">{p.nazwa}</h3>
-            <p class="t-maly">{p.opis}</p>
-            <div class="cena">
-              <p class="t-etykieta pomocniczy">{p.etykietaCeny}</p>
-              <p class="t-h3 naglowkowy">{p.cenaTxt}</p>
-              {p.podpis_ceny && <p class="t-maly pomocniczy">{p.podpis_ceny}</p>}
+            <div class="pakiet-pasek">
+              <span class="nr t-etykieta" aria-hidden="true">{p.nr}</span>
+              <span class="t-etykieta etykieta">{p.etykieta}</span>
+              <svg class="ikona" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" set:html={ikony[i % 3]} />
             </div>
-            <div class="listy" id={`s8-lista-${p.nr}`}>
-              <div><p class="t-maly-mocny naglowkowy">Zawiera</p><ul class="t-maly">{p.zawiera.map((z: string) => <li class="tak">{z}</li>)}</ul></div>
-              <div><p class="t-maly-mocny naglowkowy">Nie zawiera</p><ul class="t-maly">{p.nie_zawiera.map((z: string) => <li class="nie">{z}</li>)}</ul></div>
+            <div class="pakiet-tresc">
+              <div class="tytul">
+                <h3 class="t-h3 naglowkowy">{p.nazwa}</h3>
+                <p class="t-tresc">{p.opis}</p>
+              </div>
+              <div class:list={['tabliczka', { biala: i === 2 }]}>
+                <p class="t-etykieta">{p.etykietaCeny}</p>
+                <p class="t-liczba-m kwota naglowkowy">{p.cenaTxt}</p>
+                {p.podpis_ceny && <p class="t-maly">{p.podpis_ceny}</p>}
+              </div>
+              <div class="rozwijane" id={`s8-lista-${p.nr}`}>
+                <div class="listy">
+                  <div class="podlista"><p class="t-etykieta">Zawiera</p><ul role="list" class="t-maly">{p.zawiera.map((z: string) => <li class="tak">{z}</li>)}</ul></div>
+                  <div class="podlista"><p class="t-etykieta">Nie zawiera</p><ul role="list" class="t-maly">{p.nie_zawiera.map((z: string) => <li class="nie">{z}</li>)}</ul></div>
+                </div>
+              </div>
             </div>
-            <div class="akcje">
-              <button type="button" class="rozwin t-nawigacja" data-rozwin={`s8-lista-${p.nr}`}>Co zawiera i czego nie zawiera <span class="caret" aria-hidden="true">▾</span></button>
-              <a class:list={['przycisk', p.polecany ? 'przycisk--akcent' : 'przycisk--glowny']} href="/kontakt" data-otworz-sheet="sheet-projekt" data-opis={`Pytam o pakiet: ${p.nazwa}.`} aria-haspopup="dialog">{p.cta}<span class="sr-only">: {p.nazwa}</span></a>
+            <button type="button" class="rozwin t-nawigacja" data-rozwin={`s8-lista-${p.nr} s8-cta-${p.nr}`}>
+              <span>Co zawiera i czego nie zawiera</span>
+              <svg class="plus" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M4 8H12M8 12V4" /></svg>
+            </button>
+            <div class="rozwijane" id={`s8-cta-${p.nr}`}>
+              <div class="stopka-pakietu">
+                <a class="przycisk przycisk--akcent" href="/kontakt" data-otworz-sheet="sheet-projekt" data-opis={`Pytam o pakiet: ${p.nazwa}.`} aria-haspopup="dialog">{p.cta}<span class="sr-only">: {p.nazwa}</span></a>
+              </div>
             </div>
           </li>
         ))}
@@ -50,11 +72,9 @@ const pakiety = t.pakiety.map((p: any, i: number) => {
           <div>
             <dt class="t-maly">{k.nazwa}</dt>
             <dd class="t-h3 naglowkowy">{k.zakres}</dd>
-            <dd class="t-etykieta pomocniczy">{k.okres} · {k.zrodlo}, {k.data}</dd>
           </div>
         ))}
       </dl>
-      {t.zrodla && <p class="t-maly pomocniczy">{t.zrodla}</p>}
     </div>
   </div>
 </section>
@@ -62,35 +82,59 @@ const pakiety = t.pakiety.map((p: any, i: number) => {
 <style>
   .s8 { padding-block: clamp(48px, 6.5vw, 90px) 46px; }
   .s8-wnetrze { display: grid; gap: 48px; }
-  /* Makieta 165:1213: boczne pakiety 428 px, środkowy 472 px (wyższy o 44 px w górę), wspólna dolna krawędź. */
-  .pakiety { display: grid; grid-template-columns: 408fr 448fr 408fr; gap: 24px; align-items: stretch; padding-top: 48px; }
-  .pakiet.polecany { margin-top: -48px; }
-  .pakiet { position: relative; display: grid; gap: 12px; align-content: start; padding: 28px; border-radius: var(--radius-card); border: 1.5px solid var(--fk-obrys); background: var(--fk-tlo); }
-  .pakiet.polecany { border: 2px solid var(--fk-obrys-kontrolka); padding-block: 40px 32px; }
-  .pakiet.najwyzszy { background: var(--fk-tlo-powierzchnia); }
-  .znacznik-polecany { position: absolute; top: -14px; left: 28px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
-  .pakiet-gora { display: flex; align-items: center; gap: 12px; }
-  .nr { color: var(--fk-akcent); }
-  .cena { display: grid; gap: 4px; padding-block: 12px; border-block: 1px solid var(--fk-obrys); }
-  .listy { display: grid; gap: 16px; }
-  .listy[hidden] { display: none; }
-  .listy ul { display: grid; gap: 6px; margin-top: 8px; padding: 0; list-style: none; }
-  .listy li { padding-left: 22px; position: relative; }
-  .listy li::before { position: absolute; left: 0; font-weight: 700; }
+  /* Makieta 165:1213: boczne pakiety 408 × 428 (odsunięte 44–48 px), środkowy 448 × 472; wspólna dolna krawędź, rozwinięcie rośnie w dół. */
+  .pakiety { display: grid; grid-template-columns: 408fr 448fr 408fr; gap: 24px; align-items: stretch; padding-top: 44px; }
+  .pakiet { position: relative; display: flex; flex-direction: column; border-radius: var(--radius-card); border: 1.5px solid var(--fk-obrys); color: var(--fk-tekst); }
+  /* Wysokość z treści (rząd wyrównany do najwyższego bloku), bez sztywnych 428 px z makiety — inaczej przy
+     krótszej treści pod tabliczką ceny zostaje pusta przestrzeń. Środkowy wystaje 44 px w górę, dolne krawędzie równe. */
+  .pakiet.polecany { margin-top: -44px; border: 2px solid var(--fk-obrys-kontrolka); }
+  /* Figma 165:1213: trzeci blok ma jasne wypełnienie (#F3F5F8) nad wycięciem. */
+  .pakiet.jasny.w1.w1.w1.w1 { background: var(--fk-tlo-powierzchnia); }
+  .znacznik-polecany { position: absolute; top: -17px; right: 24px; z-index: 1; padding: 5px 12px; border-radius: 8px; background: var(--fk-tlo-powierzchnia); border: 2px solid var(--fk-obrys-kontrolka); color: var(--fk-tekst-naglowek); }
+  .pakiet-pasek { display: flex; align-items: center; gap: 12px; padding: 14px 24px; border-bottom: 1px solid var(--fk-tekst-naglowek); color: var(--fk-tekst-naglowek); }
+  .polecany .pakiet-pasek { padding: 22px 32px; }
+  .nr { flex: none; width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid var(--fk-tekst-naglowek); border-radius: 50%; }
+  .etykieta { flex: 1; color: var(--fk-tekst); }
+  .ikona { flex: none; }
+  .pakiet-tresc { flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 24px; }
+  .polecany .pakiet-tresc { padding: 40px 32px; }
+  .tytul { display: grid; gap: 8px; }
+  .tabliczka { display: grid; gap: 4px; padding: 16px 18px; border-radius: 12px; border: 1px solid var(--fk-tekst-naglowek); background: var(--fk-tlo-powierzchnia); box-shadow: inset 0 1px 2px rgb(17 24 39 / 0.06); }
+  .tabliczka.biala { background: var(--fk-tlo); }
+  .kwota { font-size: 28px; }
+  .rozwin { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; padding: 16px 24px; border: 0; border-top: 1px solid var(--fk-tekst-naglowek); background: none; color: var(--fk-tekst); cursor: pointer; text-align: left; font-size: 14px; }
+  .polecany .rozwin { padding: 18px 32px; }
+  .rozwin:hover span { text-decoration: underline; }
+  .plus { flex: none; color: var(--fk-tekst-naglowek); transition: transform 240ms cubic-bezier(0.2, 0, 0.2, 1); }
+  :global(.rozwiniete) .plus { transform: rotate(45deg); }
+  /* Rozwinięcie: wysokość 240 ms (grid-template-rows 0fr → 1fr), treść zanikiem 160 ms. */
+  .rozwijane { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 240ms cubic-bezier(0.2, 0, 0.2, 1); }
+  .rozwijane > * { min-height: 0; overflow: hidden; opacity: 0; transition: opacity 160ms cubic-bezier(0.2, 0, 0.2, 1); }
+  :global(.rozwiniete) .rozwijane { grid-template-rows: 1fr; }
+  :global(.rozwiniete) .rozwijane > * { opacity: 1; }
+  .listy { display: grid; }
+  .podlista { display: grid; gap: 8px; padding-block: 12px; border-top: 1px solid var(--fk-tekst-naglowek); }
+  .podlista ul { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .podlista li { position: relative; padding-left: 26px; }
+  .podlista li::before { position: absolute; left: 0; top: 0; width: 16px; text-align: center; font-weight: 700; }
   .tak::before { content: '✓'; color: var(--fk-sukces); }
   .nie::before { content: '–'; color: var(--fk-tekst-pomocniczy); }
-  .akcje { display: grid; gap: 12px; justify-items: start; padding-top: 4px; }
-  .rozwin { display: inline-flex; align-items: center; gap: 6px; padding: 10px 0; border: 0; background: none; color: var(--fk-akcent); cursor: pointer; text-align: left; }
-  .rozwin:hover { text-decoration: underline; }
-  .caret { transition: transform var(--fk-czas-standard) var(--fk-krzywa-standard); }
-  :global(.rozwiniete) .caret { transform: rotate(180deg); }
+  /* Zwinięte rozwijane części nie mogą zostawiać pustego miejsca: odstęp treści (20 px) i odstępy stopki
+     pojawiają się dopiero po rozwinięciu, razem z animacją wysokości. */
+  .pakiet-tresc > .rozwijane { margin-top: -20px; transition: grid-template-rows 240ms cubic-bezier(0.2, 0, 0.2, 1), margin-top 240ms cubic-bezier(0.2, 0, 0.2, 1); }
+  :global(.rozwiniete) .pakiet-tresc > .rozwijane { margin-top: 0; }
+  .stopka-pakietu { padding-inline: 24px; padding-block: 0; transition: padding-block 240ms cubic-bezier(0.2, 0, 0.2, 1); }
+  .polecany .stopka-pakietu { padding-inline: 32px; }
+  :global(.rozwiniete) .stopka-pakietu { padding-block: 16px 20px; }
   .koszty { display: grid; gap: 28px; padding: 24px; border-radius: var(--radius-card); border: 1px solid var(--fk-obrys); }
-  .kwoty { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
+  .kwoty { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin: 0; }
   .kwoty div { display: grid; gap: 4px; align-content: start; }
+  .kwoty dd { margin: 0; }
+  @media (prefers-reduced-motion: reduce) { .rozwijane, .rozwijane > *, .plus { transition: none; } }
   @media (max-width: 1023.98px) {
-    .pakiety { align-items: stretch; padding-top: 16px; }
+    .pakiety { padding-top: 16px; }
     .pakiet.polecany { margin-top: 0; }
-    .pakiet { padding: 24px 20px; }
-    .kwoty { grid-template-columns: 1fr 1fr; }
+    .pakiet, .pakiet.polecany { min-height: 0; }
+    .kwoty { display: grid; grid-template-columns: 1fr 1fr; }
   }
 </style>

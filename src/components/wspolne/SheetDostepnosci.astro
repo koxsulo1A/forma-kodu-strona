@@ -43,7 +43,17 @@
     border: 2px solid var(--fk-kafel-3-tlo); box-shadow: var(--fk-cien-zakladka);
   }
   .dostepnosc-przycisk:focus-visible { outline-color: var(--fk-akcent); }
-  /* Kacper 25.11: przycisk WCAG po lewej, na wysokości środka ekranu. Na telefonie lewy dolny róg, żeby nie zasłaniał tekstu (16 px marginesu). */
+  /* Kacper 25.11: przycisk WCAG po lewej, na wysokości środka ekranu. Na komputerze to zakładka przyklejona
+     do lewej krawędzi (28 px), żeby nie zasłaniała nagłówków; po najechaniu lub fokusie wysuwa się do 52 px. */
+  @media (min-width: 768px) {
+    .dostepnosc-przycisk {
+      left: 0; width: 28px; height: 56px; border-radius: 0 14px 14px 0; border-left: 0; overflow: hidden;
+      transition: width var(--fk-czas-szybki) var(--fk-krzywa-standard);
+    }
+    .dostepnosc-przycisk svg { width: 20px; height: 20px; flex: none; }
+    .dostepnosc-przycisk:is(:hover, :focus-visible) { width: 52px; }
+  }
+  /* Telefon: lewy dolny róg, 16 px marginesu. */
   @media (max-width: 767.98px) { .dostepnosc-przycisk { top: auto; bottom: 16px; transform: none; width: 48px; height: 48px; } }
   .przelaczniki { display: grid; gap: 16px; margin-block: 24px; }
   .przelaczniki li { display: flex; justify-content: space-between; align-items: center; gap: 16px; }

@@ -19,12 +19,25 @@ const segment = (kod: string) => document.querySelector<HTMLElement>(`[data-segm
 type Kierunek = 'dol' | 'gora' | 'lewo' | 'prawo';
 // osobno: każdy element odsłania się sam, gdy wejdzie w ekran („jeden na każdy ruch scrolla”, Figma Motion 28 S2/S3, 27 S7).
 // kody 'reszta': wszystkie segmenty strony poza POMIN i poza tymi, które mają własną regułę wyżej.
-interface Kaskada { kody: string[] | 'reszta'; czas?: number; krok?: number; odleglosc?: number; kierunek?: Kierunek; max?: number; osobno?: boolean }
+interface Kaskada { kody: string[] | 'reszta'; czas?: number; krok?: number; odleglosc?: number; kierunek?: Kierunek; max?: number; osobno?: boolean; sekwencja?: Sekwencja }
+// Sekwencja (Kacper 25.11 16:06, tylko komputer; telefon = zwykła kaskada): nagłówek najpierw (stoi albo wjeżdża przy scrollu),
+// potem bloki pojawiają się po kolei dopiero, gdy cały segment mieści się na ekranie („pełen obraz”, ZDJ1/ZDJ2 Kacpra).
+interface Sekwencja {
+  bloki: string;            // selektor bloków w kolejności pokazywania
+  naglowek: 'stoi' | 'wjezdza';
+  naglowekSel?: string;     // selektor nagłówka (gdy „wjezdza”)
+  stale?: number;           // ile pierwszych bloków widać od razu z nagłówkiem (27 S6: 1)
+  pierwszyPrzyWejsciu?: boolean; // pierwszy blok odsłania się, gdy wejdzie w ekran; reszta przy pełnym obrazie (27 S2, S4)
+  naKoniec?: string;        // element pokazywany po ostatnim bloku (27 S9: podnagłówek)
+  pelny?: string;           // element, który musi być cały widoczny (domyślnie: rodzic bloków)
+}
 const PLAN: Record<string, Kaskada[]> = {
   '/': [
-    { kody: ['S2', 'S8', 'S10', 'S11', 'S13'] },
-    { kody: ['S6'], czas: 450, krok: 140, odleglosc: 32 },
-    { kody: ['S9'], czas: 450, krok: 90 },
+    { kody: ['S8', 'S10', 'S11', 'S13'] },
+    { kody: ['S2'], sekwencja: { bloki: '.mozaika .kafel', naglowek: 'stoi', pierwszyPrzyWejsciu: true, pelny: '.mozaika' } },
+    { kody: ['S4'], sekwencja: { bloki: '.bento > li', naglowek: 'stoi', pierwszyPrzyWejsciu: true, pelny: '.s4-wnetrze' } },
+    { kody: ['S6'], czas: 450, krok: 140, odleglosc: 32, sekwencja: { bloki: '.os .blok', naglowek: 'stoi', stale: 1, pelny: '.s6-wnetrze' } },
+    { kody: ['S9'], czas: 450, krok: 90, sekwencja: { bloki: '.schody > li', naglowek: 'wjezdza', naglowekSel: '.s9-naglowek h2', naKoniec: '.s9-naglowek > p', pelny: '.s9-wnetrze' } },
     { kody: ['S3'] },
   ],
   // Figma Motion 203:50: S2 punkty z prawej (480 px), S3 warianty z lewej (1400 px), po jednym. Na stronie krócej (160/240 px), żeby nie wypychać treści poza ekran.
@@ -67,6 +80,50 @@ function przesuniecie(k: Kierunek, d: number) {
   return k === 'gora' ? `translate3d(0, ${-d}px, 0)` : k === 'lewo' ? `translate3d(${-d}px, 0, 0)` : k === 'prawo' ? `translate3d(${d}px, 0, 0)` : `translate3d(0, ${d}px, 0)`;
 }
 
+// Sekwencja odsłaniania (opis przy interfejsie Sekwencja). Zwraca false, gdy segment nie pasuje (wtedy zwykła kaskada).
+function sekwencja(seg: HTMLElement, k: Sekwencja, czas: number): boolean {
+  const lista = [...seg.querySelectorAll<HTMLElement>(k.bloki)].filter((e) => e.offsetParent !== null);
+  if (lista.length < 2) return false;
+  const pelny = (k.pelny ? seg.querySelector<HTMLElement>(k.pelny) : lista[0].parentElement) ?? seg;
+  const nagl = k.naglowek === 'wjezdza' && k.naglowekSel ? seg.querySelector<HTMLElement>(k.naglowekSel) : null;
+  const koniec = k.naKoniec ? seg.querySelector<HTMLElement>(k.naKoniec) : null;
+  const ukryte = lista.slice(k.stale ?? 0);
+  const ukryj = (e: HTMLElement) => { e.style.opacity = '0'; e.style.transform = 'translate3d(0, 24px, 0)'; };
+  [...ukryte, nagl, koniec].forEach((e) => e && ukryj(e));
+  const pokaz = (e: HTMLElement, opoz = 0) => {
+    e.style.transition = `opacity ${czas}ms var(--fk-krzywa-wejscie), transform ${czas}ms var(--fk-krzywa-wejscie)`;
+    e.style.transitionDelay = `${opoz}ms`;
+    requestAnimationFrame(() => { e.style.opacity = ''; e.style.transform = ''; });
+    setTimeout(() => { e.style.transition = ''; e.style.transitionDelay = ''; }, czas + opoz + 50);
+  };
+  const KROK = 260; // blok po bloku: każdy następny startuje, gdy poprzedni jest w połowie wejścia
+  let etap = 0; // 0 czeka, 1 pokazany pierwszy (przy wejściu), 2 wszystko
+  const pasekWys = () => (html.classList.contains('pasek-schowany') ? 0 : parseFloat(getComputedStyle(html).getPropertyValue('--fk-wys-paska')) || 72);
+  const sprawdz = () => {
+    const r = pelny.getBoundingClientRect();
+    if (nagl && nagl.style.opacity === '0' && nagl.getBoundingClientRect().top < innerHeight * 0.85) pokaz(nagl);
+    if (etap === 0 && k.pierwszyPrzyWejsciu && ukryte[0] && ukryte[0].getBoundingClientRect().top < innerHeight * 0.85) { pokaz(ukryte[0]); etap = 1; }
+    // „Pełen obraz”: cały segment na ekranie. Gdy jest wyższy niż ekran albo użytkownik przewinął szybko
+    // i ominął ten moment, wystarczy, że góra segmentu dojdzie pod pasek (lub go minie).
+    const widacCaly = r.bottom <= innerHeight + 4 && r.top >= pasekWys() - 4;
+    // segment wyższy niż ekran: pełen obraz, gdy jego góra jest w górnych 15% ekranu
+    const minal = r.top <= pasekWys() + (r.height > innerHeight - pasekWys() ? innerHeight * 0.15 : 16);
+    if (etap < 2 && (widacCaly || minal)) {
+      const reszta = etap === 1 ? ukryte.slice(1) : ukryte;
+      reszta.forEach((e, i) => pokaz(e, i * KROK));
+      if (koniec) pokaz(koniec, reszta.length * KROK + 120);
+      if (nagl && nagl.style.opacity === '0') pokaz(nagl);
+      etap = 2;
+      removeEventListener('scroll', naScroll);
+    }
+  };
+  let ramka = 0;
+  const naScroll = () => { if (!ramka) ramka = requestAnimationFrame(() => { ramka = 0; sprawdz(); }); };
+  addEventListener('scroll', naScroll, { passive: true });
+  requestAnimationFrame(sprawdz);
+  return true;
+}
+
 function kaskady() {
   const plan = planStrony();
   if (!plan || ograniczRuch() || !('IntersectionObserver' in window)) return;
@@ -78,6 +135,7 @@ function kaskady() {
       ? wszystkie.filter((s) => !pasuje(s, POMIN) && !pasuje(s, nazwane))
       : p.kody.map(segment).filter(Boolean) as HTMLElement[];
     segmenty.forEach((seg) => {
+      if (p.sekwencja && komputer.matches && sekwencja(seg, p.sekwencja, p.czas ?? 500)) return;
       const el = bloki(seg);
       if (!el.length) return;
       const czas = p.czas ?? 500, krok = p.krok ?? 60, max = p.max ?? 6;
@@ -145,13 +203,21 @@ function zmianaSlow() {
   try { slowa = JSON.parse(el.dataset.slowa!); } catch { return; }
   if (slowa.length < 2 || ograniczRuch()) return;
   const h1 = el.closest('h1') as HTMLElement;
-  const ustawWysokosc = () => {
-    h1.style.minHeight = '';
-    const teraz = el.textContent;
-    const max = Math.max(...slowa.map((w) => { el.textContent = w; return h1.offsetHeight; }));
-    el.textContent = teraz;
-    h1.style.minHeight = `${max}px`;
+  // Kacper 25.11 16:06: zmiana słów ciągła (bez końca); gdy nagłówek zmienia liczbę wierszy, podnagłówek płynnie jedzie razem z nim
+  // (wysokość H1 przechodzi do wysokości nowego słowa w czasie rozsypywania liter, zamiast stałej rezerwy na najdłuższe słowo).
+  const wysokoscDla = (w: string) => {
+    const teraz = el.textContent; const h = h1.style.height;
+    h1.style.height = ''; el.textContent = w;
+    const wynik = h1.offsetHeight;
+    el.textContent = teraz; h1.style.height = h;
+    return wynik;
   };
+  // Wysokość nigdy nie jest mniejsza niż tekst, który akurat widać: rośnie na początku zmiany (gdy nowe słowo
+  // jest dłuższe), a maleje dopiero po ułożeniu liter — dzięki temu nagłówek nie nachodzi na podnagłówek.
+  const CZAS_WYS = 700;
+  const przejscie = `height ${CZAS_WYS}ms cubic-bezier(0.45, 0, 0.55, 1)`;
+  h1.style.transition = przejscie;
+  const ustawWysokosc = () => { h1.style.transition = 'none'; h1.style.height = `${wysokoscDla(el.textContent ?? '')}px`; void h1.offsetHeight; h1.style.transition = przejscie; };
   ustawWysokosc();
   document.fonts?.ready.then(ustawWysokosc);
   addEventListener('resize', ustawWysokosc);
@@ -172,19 +238,62 @@ function zmianaSlow() {
         let tekst = na.slice(0, odsl);
         for (let i = odsl; i < dl; i++) tekst += na[i] === ' ' || (i >= na.length && z[i] === ' ') ? ' ' : los();
         el.textContent = t === 1 ? na : tekst;
+        // losowe litery bywają szersze i mogą na chwilę dodać wiersz — wtedy wysokość od razu go obejmuje
+        if (h1.scrollHeight > h1.clientHeight + 1) h1.style.height = `${h1.scrollHeight}px`;
       }
       if (t < 1) requestAnimationFrame(klatka); else gotowe();
     };
     requestAnimationFrame(klatka);
   };
-  let i = 0, obiegi = 0;
+  let i = 0;
   const nastepne = () => {
     const z = slowa[i];
     i = (i + 1) % slowa.length;
-    if (i === 0) obiegi++;
-    rozsyp(z, slowa[i], () => { if (obiegi < 3 || i !== 0) setTimeout(nastepne, 2500); });
+    const nowa = wysokoscDla(slowa[i]);
+    if (nowa > h1.offsetHeight) h1.style.height = `${nowa}px`; // podnagłówek jedzie w dół razem z nagłówkiem
+    rozsyp(z, slowa[i], () => {
+      h1.style.height = `${wysokoscDla(slowa[i])}px`; // …a w górę dopiero po ułożeniu słowa
+      setTimeout(nastepne, 2500);
+    });
   };
   setTimeout(nastepne, 2500);
+}
+
+// ---------- 3b. Terminal macOS przed ilustracją hero (28 plansza 461:1738; Kacper 25.11: także 27 S1) ----------
+// Polecenia pisane 30 ms na znak, linie wyniku od razu (przerwa 220 ms); potem terminal gaśnie 400 ms
+// i po kolei (co 150 ms) pojawiają się elementy [data-po-terminalu]. Raz na wejście. Bez ruchu: od razu stan końcowy.
+function terminale() {
+  document.querySelectorAll<HTMLElement>('[data-terminal-scena]').forEach((scena) => {
+    const term = scena.querySelector<HTMLElement>('[data-terminal]');
+    if (!term || ograniczRuch()) return;
+    const linie = [...term.querySelectorAll<HTMLElement>('[data-linia]')];
+    const elementy = [...scena.querySelectorAll<HTMLElement>('[data-po-terminalu]')];
+    elementy.forEach((e) => { e.style.opacity = '0'; e.style.transform = 'translate3d(0, 16px, 0)'; });
+    scena.classList.add('terminal-gra');
+    const czekaj = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    (async () => {
+      await czekaj(450); // po wjeździe hero (fk-wejscie 200–400 ms)
+      for (const l of linie) {
+        const tekst = l.dataset.linia ?? '';
+        if (tekst.startsWith('$')) {
+          l.classList.add('pisze');
+          for (let i = 1; i <= tekst.length; i++) { l.textContent = tekst.slice(0, i); await czekaj(30); }
+          l.classList.remove('pisze');
+          await czekaj(180);
+        } else { l.textContent = tekst; await czekaj(220); }
+      }
+      await czekaj(250);
+      scena.classList.add('terminal-koniec');
+      await czekaj(400);
+      scena.classList.remove('terminal-gra', 'terminal-koniec');
+      elementy.forEach((e, i) => {
+        e.style.transition = 'opacity 450ms var(--fk-krzywa-wejscie), transform 450ms var(--fk-krzywa-wejscie)';
+        e.style.transitionDelay = `${i * 150}ms`;
+        requestAnimationFrame(() => { e.style.opacity = ''; e.style.transform = ''; });
+        setTimeout(() => { e.style.transition = ''; e.style.transitionDelay = ''; }, 500 + i * 150);
+      });
+    })();
+  });
 }
 
 // ---------- 4. 27 S7: oś procesu ----------
@@ -426,6 +535,7 @@ function stosProcesu() {
 kaskady();
 kurtyna();
 zmianaSlow();
+terminale();
 osProcesu();
 lejek();
 blokiPrzewijane();

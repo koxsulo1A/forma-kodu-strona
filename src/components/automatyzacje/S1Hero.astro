@@ -9,7 +9,7 @@ const { t } = Astro.props;
   <div class="kontener s1-wnetrze">
     <div class="tekst">
       {t.atuty.length > 0 && <ul role="list" class="atuty">{t.atuty.map((a: string) => <li class="t-etykieta">{a}</li>)}</ul>}
-      <h1 id="s1-h" class="t-display naglowkowy pojaw">{t.h1}</h1>
+      <h1 id="s1-h" class="t-display naglowkowy">{t.h1}</h1>
       <p class="t-tresc-l">{t.lead}</p>
       <div class="akcje">
         <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta_1}</a>

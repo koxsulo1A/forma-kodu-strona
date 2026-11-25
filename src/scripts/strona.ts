@@ -69,7 +69,7 @@ function zbudujWskaznik() {
   wskaznik.querySelectorAll<HTMLElement>('[data-proc]').forEach((k) => { k.style.top = `${(Number(k.dataset.proc) / 100) * wys}px`; });
   wskaznik.hidden = false;
 }
-// Lista minionych segmentów: rośnie nad bieżącym; nowo dodany element powiększa się z małej etykiety.
+// Lista minionych segmentów: stos w prawym górnym rogu; nowo dodany element powiększa się z małej etykiety.
 function ulozPominiete(aktywny: number) {
   if (!pominiete || !wskaznik) return;
   const nowe = aktywny > ostatniAktywny && ostatniAktywny >= 0;
@@ -81,11 +81,8 @@ function ulozPominiete(aktywny: number) {
     return li;
   }));
   pominiete.hidden = aktywny === 0;
-  const li = linkiSeg[aktywny]?.parentElement;
-  const gora = li ? parseFloat(li.style.top) : 0;
-  pominiete.style.bottom = `${Math.max(0, wskaznik.clientHeight - gora + 8)}px`;
-  pominiete.style.top = '';
-  if (pominiete.offsetTop < 0) { pominiete.style.bottom = ''; pominiete.style.top = '0px'; }
+  // Kacper 25.11 16:06: stos minionych nagłówków w prawym górnym rogu ekranu (góra wskaźnika).
+  pominiete.style.top = '0px';
   if (nowe && !ograniczRuch()) {
     pominiete.querySelectorAll<HTMLElement>('li').forEach((el, i) => {
       if (i >= ostatniAktywny) el.animate([{ transform: 'scale(0.75)', opacity: 0.4, transformOrigin: 'right center' }, { transform: 'scale(1)', opacity: 1, transformOrigin: 'right center' }], { duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)' });
@@ -504,18 +501,18 @@ document.querySelectorAll<HTMLElement>('[data-czat-demo]').forEach((czat) => {
 // ---------- 10a. Rozwijanie grupowe (S8): klik w dowolnym „Co zawiera” rozwija wszystkie trzy pakiety ----------
 document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) => {
   const przyciski = [...grupa.querySelectorAll<HTMLButtonElement>('[data-rozwin]')];
-  const listy = przyciski.map((b) => document.getElementById(b.dataset.rozwin!)).filter(Boolean) as HTMLElement[];
+  const listy = przyciski.flatMap((b) => b.dataset.rozwin!.split(' ').map((id) => document.getElementById(id))).filter(Boolean) as HTMLElement[];
+  // Zwinięte listy są w DOM (animacja wysokości), ale niedostępne dla klawiatury i czytnika: inert.
+  const ustaw = (wl: boolean) => {
+    przyciski.forEach((x) => x.setAttribute('aria-expanded', String(wl)));
+    listy.forEach((l) => { l.inert = !wl; });
+    grupa.classList.toggle('rozwiniete', wl);
+  };
   przyciski.forEach((b) => {
-    b.setAttribute('aria-expanded', 'false');
     b.setAttribute('aria-controls', listy.map((l) => l.id).join(' '));
-    b.addEventListener('click', () => {
-      const wl = b.getAttribute('aria-expanded') !== 'true';
-      przyciski.forEach((x) => x.setAttribute('aria-expanded', String(wl)));
-      listy.forEach((l) => (l.hidden = !wl));
-      grupa.classList.toggle('rozwiniete', wl);
-    });
+    b.addEventListener('click', () => ustaw(b.getAttribute('aria-expanded') !== 'true'));
   });
-  listy.forEach((l) => (l.hidden = true));
+  ustaw(false);
 });
 
 // ---------- 10b. Stos kart (S10): „+N warstwy” rozkłada stos w listę, „Zwiń warstwy” składa ----------
@@ -550,8 +547,7 @@ document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) =>
 
 // ---------- 9f. 27 S1: klikalne okno strony i czat w ilustracji (plansze 450:1815 i 450:1947, dane przykładowe) ----------
 {
-  const okno = document.querySelector<HTMLElement>('[data-okno-demo]');
-  if (okno) {
+  document.querySelectorAll<HTMLElement>('[data-okno-demo]').forEach((okno) => {
     const terminy = [...okno.querySelectorAll<HTMLButtonElement>('[data-termin]')];
     const rezerwuj = okno.querySelector<HTMLButtonElement>('[data-rezerwuj]')!;
     const potw = okno.querySelector<HTMLElement>('[data-potwierdzenie]')!;
@@ -564,12 +560,12 @@ document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) =>
     }));
     rezerwuj.addEventListener('click', () => {
       if (!wybrany) { terminy[0]?.focus(); terminy.forEach((x) => x.animate?.([{ borderColor: 'var(--fk-akcent)' }, {}], { duration: 600 })); return; }
-      const pokaz = () => { rezerwuj.hidden = true; potw.textContent = `✓ Zarezerwowano: ${wybrany} (przykład)`; potw.hidden = false; };
+      const pokaz = () => { rezerwuj.hidden = true; potw.textContent = `✓ Zarezerwowano: ${wybrany}`; potw.hidden = false; };
       if (ograniczRuch()) { pokaz(); return; }
       rezerwuj.classList.add('zwija');
       setTimeout(pokaz, 300);
     });
-  }
+  });
   const czat = document.querySelector<HTMLElement>('[data-czat-hero]');
   if (czat) {
     const lista = czat.querySelector<HTMLElement>('[data-czat-lista]')!;

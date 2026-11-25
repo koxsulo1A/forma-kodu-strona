@@ -64,7 +64,7 @@ const rzedy = [pytania.slice(0, 4), pytania.slice(4, 8)].filter((r) => r.length)
   :global(html:not(.bez-ruchu)) .odpowiedz:not([hidden]) { animation: rozwin var(--fk-czas-rozwiniecie) var(--fk-krzywa-wejscie); }
   @media (prefers-reduced-motion: reduce) { .odpowiedz:not([hidden]) { animation: none !important; } .ikona { transition: none; } }
   @keyframes rozwin { from { opacity: 0; transform: translateY(-6px); } }
-  .zielen { background: var(--fk-kafel-1-tlo); color: var(--fk-kafel-1-tekst); border: 1px solid var(--fk-kafel-1-obrys); }
+  .zielen { background: var(--fk-grad-kafel-7); color: var(--fk-kafel-7-tekst); border: 1px solid var(--fk-kafel-7-obrys); } /* Kacper 25.11: morski zamiast zielonego, biały tekst */
   .niebieski { background: var(--fk-kafel-2-tlo); color: var(--fk-kafel-2-tekst); border: 1px solid var(--fk-kafel-2-obrys); }
   .khaki { background: var(--fk-kafel-5-tlo); color: var(--fk-kafel-5-tekst); border: 1px solid var(--fk-kafel-5-obrys); }
   .fiolet { background: var(--fk-kafel-4-tlo); color: var(--fk-kafel-4-tekst); border: 1px solid var(--fk-kafel-4-obrys); }

@@ -4,7 +4,7 @@
 // Segmenty to elementy strony z atrybutem data-segment="S1 HERO" (kolejność jak na stronie); położenie liczy skrypt strona.ts.
 // Element dekoracyjny dla myszy: dla czytnika ekranu jest lista „Na tej stronie” z linkami do segmentów.
 // Kacper 25.11: nazwy bez numerów („Powitanie”, „Dlaczego my”, „Benefity”), pasek prawie nieprzezroczysty i przy samej prawej krawędzi.
-// Segmenty już minięte znikają z szyny i zbierają się w powiększoną listę tuż nad bieżącym segmentem (klik = powrót).
+// Segmenty już minięte znikają z szyny i układają się w stos w prawym górnym rogu ekranu (klik = powrót).
 ---
 <nav class="wskaznik" aria-label="Na tej stronie" data-wskaznik hidden>
   <div class="wskaznik-szyna" aria-hidden="true">
@@ -20,7 +20,10 @@
     position: fixed; right: 0; top: 24px; bottom: 24px; width: 200px; z-index: 40;
     opacity: 0; pointer-events: none; transition: opacity var(--fk-czas-szybki) var(--fk-krzywa-standard);
   }
-  :global(html.pasek-schowany) .wskaznik { opacity: 0.95; pointer-events: auto; }
+  /* Kacper 25.11 16:06: większa przezroczystość; pełne krycie po najechaniu. Pas 200 px sam nie łapie kliknięć
+     (pod nim są przyciski treści) — klikalne są tylko etykiety segmentów. */
+  :global(html.pasek-schowany) .wskaznik { opacity: 0.5; }
+  :global(html.pasek-schowany) .wskaznik :global(a) { pointer-events: auto; }
   .wskaznik:hover, .wskaznik:focus-within { opacity: 1 !important; }
   @media (max-width: 1023.98px) { .wskaznik { display: none; } }
   .wskaznik-szyna { position: absolute; right: 9px; top: 0; bottom: 0; width: 2px; background: var(--fk-obrys); }
