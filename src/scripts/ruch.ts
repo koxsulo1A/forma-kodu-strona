@@ -19,7 +19,8 @@ const segment = (kod: string) => document.querySelector<HTMLElement>(`[data-segm
 type Kierunek = 'dol' | 'gora' | 'lewo' | 'prawo';
 // osobno: każdy element odsłania się sam, gdy wejdzie w ekran („jeden na każdy ruch scrolla”, Figma Motion 28 S2/S3, 27 S7).
 // kody 'reszta': wszystkie segmenty strony poza POMIN i poza tymi, które mają własną regułę wyżej.
-interface Kaskada { kody: string[] | 'reszta'; czas?: number; krok?: number; odleglosc?: number; kierunek?: Kierunek; max?: number; osobno?: boolean; sekwencja?: Sekwencja }
+// bloki: własny selektor animowanych elementów (wtedy nagłówek segmentu stoi); naprzemian: kolejne elementy wjeżdżają na zmianę z lewej i z prawej.
+interface Kaskada { kody: string[] | 'reszta'; czas?: number; krok?: number; odleglosc?: number; kierunek?: Kierunek; max?: number; osobno?: boolean; sekwencja?: Sekwencja; bloki?: string; naprzemian?: boolean }
 // Sekwencja (Kacper 25.11 16:06, tylko komputer; telefon = zwykła kaskada): nagłówek najpierw (stoi albo wjeżdża przy scrollu),
 // potem bloki pojawiają się po kolei dopiero, gdy cały segment mieści się na ekranie („pełen obraz”, ZDJ1/ZDJ2 Kacpra).
 interface Sekwencja {
@@ -43,7 +44,8 @@ const PLAN: Record<string, Kaskada[]> = {
   // Figma Motion 203:50: S2 punkty z prawej (480 px), S3 warianty z lewej (1400 px), po jednym. Na stronie krócej (160/240 px), żeby nie wypychać treści poza ekran.
   '/strony-internetowe': [
     { kody: ['S2'], kierunek: 'prawo', odleglosc: 160, krok: 250 },
-    { kody: ['S3'], kierunek: 'lewo', odleglosc: 240, osobno: true },
+    // Kacper 25.11 16:06: nagłówek S3 widać od razu; 01 z lewej, 02 z prawej, 03 z lewej — każdy osobno, gdy dojedzie do niego ekran.
+    { kody: ['S3'], kierunek: 'lewo', odleglosc: 240, osobno: true, bloki: '.bloki > li', naprzemian: true },
     { kody: 'reszta' },
   ],
   '/automatyzacje': [{ kody: 'reszta' }],
@@ -136,13 +138,14 @@ function kaskady() {
       : p.kody.map(segment).filter(Boolean) as HTMLElement[];
     segmenty.forEach((seg) => {
       if (p.sekwencja && komputer.matches && sekwencja(seg, p.sekwencja, p.czas ?? 500)) return;
-      const el = bloki(seg);
+      const el = p.bloki ? [...seg.querySelectorAll<HTMLElement>(p.bloki)] : bloki(seg);
       if (!el.length) return;
       const czas = p.czas ?? 500, krok = p.krok ?? 60, max = p.max ?? 6;
       const kierunek = p.kierunek ?? 'dol';
       const start = przesuniecie(kierunek, p.odleglosc ?? 24);
+      const odwrotnie = przesuniecie(kierunek === 'lewo' ? 'prawo' : 'lewo', p.odleglosc ?? 24);
       if (kierunek === 'lewo' || kierunek === 'prawo') seg.classList.add('ruch-poziomy');
-      el.forEach((e) => { e.style.opacity = '0'; e.style.transform = start; });
+      el.forEach((e, i) => { e.style.opacity = '0'; e.style.transform = p.naprzemian && i % 2 ? odwrotnie : start; });
       const pokaz = (e: HTMLElement, i: number) => {
         const opoz = p.osobno ? 0 : Math.min(i, max - 1) * krok;
         e.style.transition = `opacity ${czas}ms var(--fk-krzywa-wejscie), transform ${czas}ms var(--fk-krzywa-wejscie)`;

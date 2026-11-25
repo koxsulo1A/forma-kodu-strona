@@ -1,26 +1,34 @@
 ---
-// 28 S8 Pasek standardu (wariant D): nagłówek i pięć cech z ✓ w jednym rzędzie. Telefon: cechy w dwóch kolumnach.
+// 28 S8 Standard strony. Kacper 25.11 16:06: układ i ruch jak S4 — po lewej blok z tłem jak karty S3 (nagłówek
+// i opcjonalny podnagłówek z panelu), przyklejony przy przewijaniu; po prawej cechy z ✓ rozdzielone liniami,
+// odsłaniane po kolei. Telefon: blok nad listą.
 import Ikona from '../wspolne/Ikona.astro';
 interface Props { t: any }
 const { t } = Astro.props;
+const naglowek = String(t.naglowek ?? '').replace(/:\s*$/, '');
 ---
 <section class="s8 baza segment" id="standard" data-segment="S8 Standard strony" aria-labelledby="s8s-h">
   <div class="kontener s8-wnetrze">
-    <h2 id="s8s-h" class="t-h4 naglowkowy">{t.naglowek}</h2>
+    <header class="naglowek">
+      <h2 id="s8s-h" class="t-h2 naglowkowy">{naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
     <ul role="list" class="cechy">
-      {t.cechy.map((c: string) => <li class="t-maly"><span class="znak" aria-hidden="true"><Ikona nazwa="check" rozmiar={18} /></span>{c}</li>)}
+      {t.cechy.map((c: string) => <li><span class="znak" aria-hidden="true"><Ikona nazwa="check" rozmiar={22} /></span><span class="t-h4 naglowkowy">{c}</span></li>)}
     </ul>
   </div>
 </section>
 
 <style>
-  .s8 { padding-block: 22px 17px; }
-  .s8-wnetrze { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 24px; align-items: center; }
-  .cechy { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 24px; }
-  .cechy li { display: flex; gap: 8px; align-items: flex-start; }
-  .znak { color: var(--fk-sukces); flex: none; padding-top: 2px; }
+  .s8 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s8-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 792fr); gap: 80px; align-items: start; }
+  .naglowek { display: grid; gap: 12px; position: sticky; top: calc(var(--fk-wys-paska) + 24px); padding: 48px; border-radius: 24px; background: var(--fk-tlo-powierzchnia); }
+  .cechy { border-top: 1px solid var(--fk-obrys-kontrolka); }
+  .cechy li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 24px; align-items: center; padding: 24px 0; border-bottom: 1px solid var(--fk-obrys); }
+  .znak { color: var(--fk-sukces); display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid currentColor; }
   @media (max-width: 1023.98px) {
-    .s8-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-    .cechy { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; }
+    .s8-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .naglowek { position: static; padding: 28px 24px; }
+    .cechy li { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 16px 0; }
   }
 </style>

@@ -179,7 +179,7 @@ export const strony = {
       naglowek: t('Nagłówek H2', 60, true), etykieta: t('Etykieta przy nagłówku', 40),
       pozycje: lista('Pozycje', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Kwota od–do', 30, true), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 2, 6, 'nazwa'),
     }),
-    s8_standard: seg('S8 Pasek standardu', { naglowek: t('Nagłówek', 30, true), cechy: lista('Cechy', t('Cecha', 40), 3, 6) }),
+    s8_standard: seg('S8 Standard strony (blok z nagłówkiem po lewej, lista cech po prawej)', { naglowek: t('Nagłówek', 30, true), lead: a('Podnagłówek (opcjonalnie)', 200), cechy: lista('Cechy', t('Cecha', 40), 3, 6) }),
     s9_wcag: seg('S9 Jak wdrażamy WCAG (oś pionowa; bez obietnic „zgodność gwarantowana”)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 220), kroki: lista('Kroki', tytulOpis(40, 160), 3, 6, 'tytul') }),
     s10_obowiazek: seg('S10 Dostępność w małej firmie (drzewo decyzji; fakty prawne tylko ze źródłem)', {
       naglowek: t('Nagłówek H2', 80, true), lead: a('Lead', 200),

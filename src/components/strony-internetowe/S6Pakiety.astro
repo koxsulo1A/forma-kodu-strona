@@ -1,15 +1,15 @@
 ---
-// 28 S6 Pakiety i cennik: trzy karty z listą „co zawiera” (wycięcie w bazie: widać kratkę W1). Ceny są niżej, w S14 (jeden cennik).
+// 28 S6 Pakiety i cennik (Figma 203:953): biała baza W2, trzy karty jako wycięcia w bazie (przez nie widać kratkę W1), nagłówek wyśrodkowany. Ceny są niżej, w S14 (jeden cennik).
 // Telefon: jedna karta swipe ze wskaźnikiem od 01.
 interface Props { t: any }
 const { t } = Astro.props;
 ---
-<section class="s6 kratka segment" id="pakiety" data-segment="S6 Pakiety" aria-labelledby="s6-h">
+<section class="s6 baza segment" id="pakiety" data-segment="S6 Pakiety" aria-labelledby="s6-h">
   <div class="kontener s6-wnetrze">
-    <h2 id="s6-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+    <h2 id="s6-h" class="t-h2 naglowkowy s6-naglowek">{t.naglowek}</h2>
     <ul role="list" class="pakiety swipe" data-swipe="s6-wskaznik">
       {t.pakiety.map((p: any) => (
-        <li>
+        <li class="w1 wyciecie">
           <h3 class="t-h3 naglowkowy">{p.nazwa}</h3>
           <p class="t-tresc">{p.opis}</p>
           <ul role="list" class="zakres">{p.zawiera.map((z: string) => <li class="t-tresc">{z}</li>)}</ul>
@@ -27,7 +27,8 @@ const { t } = Astro.props;
   .s6 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
   .s6-wnetrze { display: grid; gap: 40px; }
   .pakiety { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .pakiety > li { display: grid; gap: 20px; align-content: start; padding: 32px; border-radius: var(--radius-card); background: var(--fk-tlo); border: 1px solid var(--fk-obrys); }
+  .s6-naglowek { text-align: center; }
+  .pakiety > li { display: grid; gap: 20px; align-content: start; padding: 32px; }
   .zakres { display: grid; gap: 12px; }
   .zakres li { display: grid; grid-template-columns: 8px minmax(0, 1fr); gap: 12px; align-items: baseline; }
   .zakres li::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--fk-sukces); transform: translateY(-1px); }

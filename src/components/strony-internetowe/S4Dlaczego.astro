@@ -1,5 +1,6 @@
 ---
 // 28 S4 Dlaczego my (wariant B): nagłówek przyklejony po lewej (sticky), po prawej lista 01–06 rozdzielona liniami.
+// Kacper 25.11 16:06: nagłówek i podnagłówek w bloku z tłem jak karty S3 (powierzchnia, zaokrąglenie 24 px).
 // Telefon: nagłówek nad listą, lista zostaje listą (to treść informacyjna na całą szerokość).
 interface Props { t: any }
 const { t } = Astro.props;
@@ -21,13 +22,13 @@ const { t } = Astro.props;
 <style>
   .s4 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
   .s4-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 792fr); gap: 80px; align-items: start; }
-  .naglowek { display: grid; gap: 12px; position: sticky; top: calc(var(--fk-wys-paska) + 24px); }
+  .naglowek { display: grid; gap: 12px; position: sticky; top: calc(var(--fk-wys-paska) + 24px); padding: 48px; border-radius: 24px; background: var(--fk-tlo-powierzchnia); }
   .lista { border-top: 1px solid var(--fk-obrys-kontrolka); }
   .lista li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 24px; padding: 24px 0; border-bottom: 1px solid var(--fk-obrys); }
   .lista li > div { display: grid; gap: 8px; }
   @media (max-width: 1023.98px) {
     .s4-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 24px; }
-    .naglowek { position: static; }
+    .naglowek { position: static; padding: 28px 24px; }
     .lista li { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 20px 0; }
   }
 </style>

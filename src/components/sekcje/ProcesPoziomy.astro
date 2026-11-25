@@ -20,52 +20,63 @@ const dwa = (i: number) => String(i).padStart(2, '0');
         </button>
       ))}
     </div>
-    {t.etapy.map((e, i) => (
-      <div class="etap" role="tabpanel" id={`${p}-e-${i}`} aria-labelledby={`${p}-z-${i}`} tabindex="0">
-        <h3 class="t-h3 naglowkowy"><span class="akcentowy">{dwa(i + 1)}</span> {e.tytul}</h3>
-        <dl class="role">
-          <div><dt class="t-etykieta pomocniczy">My robimy</dt><dd class="t-tresc-l">{e.my_robimy}</dd></div>
-          <div><dt class="t-etykieta pomocniczy">Ty robisz</dt><dd class="t-tresc-l">{e.ty_robisz}</dd></div>
-          <div><dt class="t-etykieta pomocniczy">Ty dostajesz</dt><dd class="t-tresc-l">{e.ty_dostajesz}</dd></div>
-        </dl>
+    <div class="karta w1 wyciecie">
+      {t.etapy.map((e, i) => (
+        <div class="etap" role="tabpanel" id={`${p}-e-${i}`} aria-labelledby={`${p}-z-${i}`} tabindex="0">
+          <h3 class="t-h3 naglowkowy">{dwa(i + 1)}&nbsp; {e.tytul}</h3>
+          <dl class="role">
+            <div><dt class="t-etykieta pomocniczy">My robimy</dt><dd class="t-tresc-l">{e.my_robimy}</dd></div>
+            <div><dt class="t-etykieta pomocniczy">Ty robisz</dt><dd class="t-tresc-l">{e.ty_robisz}</dd></div>
+            <div><dt class="t-etykieta pomocniczy">Ty dostajesz</dt><dd class="t-tresc-l">{e.ty_dostajesz}</dd></div>
+          </dl>
+        </div>
+      ))}
+      <div class="paginacja" hidden>
+        <button type="button" class="t-etykieta wstecz" data-krok="-1">← Wstecz</button>
+        <span class="t-etykieta naglowkowy" data-kroki-licznik aria-live="polite">01 / {dwa(n)}</span>
+        <button type="button" class="t-etykieta dalej" data-krok="1">Dalej →</button>
       </div>
-    ))}
-    <div class="paginacja" hidden>
-      <button type="button" class="t-etykieta wstecz" data-krok="-1">← Wstecz</button>
-      <span class="t-etykieta naglowkowy" data-kroki-licznik aria-live="polite">01 / {dwa(n)}</span>
-      <button type="button" class="t-etykieta dalej" data-krok="1">Dalej →</button>
     </div>
   </div>
 </section>
 
 <style>
+  /* Figma 227:712 (28 S13 wariant D): węzły 48 px rozłożone na całą szerokość, aktywny zielony #18794E z jasnym pierścieniem,
+     podpisy pod węzłami (pierwszy do lewej, ostatni do prawej), panel etapu jako wycięcie w bazie z paginacją w środku. */
   .proces { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
-  .proces-wnetrze { display: grid; gap: 32px; }
-  .os { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); position: relative; }
+  .proces-wnetrze { display: grid; gap: 24px; }
+  .os { display: flex; justify-content: space-between; position: relative; padding-bottom: 43px; }
   .os[hidden] { display: none; }
-  .os::before { content: ''; position: absolute; top: 24px; left: calc(100% / 12); right: calc(100% / 12); height: 2px; background: var(--fk-obrys-kontrolka); }
-  .os button { position: relative; display: grid; justify-items: center; gap: 12px; padding: 0 4px; background: none; border: 0; cursor: pointer; color: var(--fk-tekst-pomocniczy); font: inherit; }
-  .wezel { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-tlo); border: 2px solid var(--fk-obrys-kontrolka); transition: background-color var(--fk-czas-szybki), color var(--fk-czas-szybki); }
+  .os::before { content: ''; position: absolute; top: 23px; left: 24px; right: 24px; height: 2px; background: var(--fk-obrys-kontrolka); }
+  .os button { position: relative; display: block; width: 48px; height: 48px; padding: 0; background: none; border: 0; cursor: pointer; color: var(--fk-tekst-pomocniczy); font: inherit; }
+  .wezel { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-tlo); border: 2px solid var(--fk-obrys-kontrolka); color: var(--fk-tekst-pomocniczy); transition: background-color var(--fk-czas-szybki), color var(--fk-czas-szybki), box-shadow var(--fk-czas-szybki); }
+  .podpis { position: absolute; top: 72px; left: 50%; transform: translateX(-50%); white-space: nowrap; font-size: 16px; font-weight: 600; }
+  .os button:first-child .podpis { left: 0; transform: none; }
+  .os button:last-child .podpis { left: auto; right: 0; transform: none; }
   .os [aria-selected='true'] { color: var(--fk-tekst-naglowek); }
-  .os [aria-selected='true'] .wezel, .os .przeszly .wezel { background: var(--fk-kafel-1-tlo); color: var(--fk-kafel-1-tekst); border-color: var(--fk-kafel-1-obrys); }
+  .os [aria-selected='true'] .wezel, .os .przeszly .wezel { background: var(--fk-zielen-przycisk); color: #fff; border-color: var(--fk-zielen-przycisk); }
+  .os [aria-selected='true'] .wezel { box-shadow: 0 0 0 4px #93dfb0; }
   .os .przeszly .wezel { font-size: 0; }
   .os .przeszly .wezel::after { content: '✓'; font-size: 18px; }
-  .os button:hover .wezel { border-color: var(--fk-akcent); }
-  .etap { display: grid; gap: 20px; padding: 28px 32px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .os button:hover:not([aria-selected='true']) .wezel { border-color: var(--fk-akcent); }
+  .karta { display: grid; gap: 24px; padding: 40px; }
+  .etap { display: grid; gap: 24px; }
   .etap[hidden] { display: none; }
-  .role { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
-  .role div { display: grid; gap: 8px; align-content: start; }
+  .role { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .role div { display: grid; gap: 4px; align-content: start; }
+  .role dd { color: var(--fk-tekst); }
   .paginacja { display: flex; align-items: center; gap: 16px; justify-self: start; }
   .paginacja[hidden] { display: none; }
   .paginacja button { padding: 8px 16px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: none; color: var(--fk-tekst-pomocniczy); cursor: pointer; }
-  .paginacja .dalej { background: var(--fk-kafel-1-tlo); color: var(--fk-kafel-1-tekst); border-color: var(--fk-kafel-1-obrys); }
+  .paginacja .dalej { background: var(--fk-zielen-przycisk); color: #fff; border-color: var(--fk-zielen-przycisk); }
   .paginacja button:disabled { opacity: 0.45; cursor: default; }
   @media (prefers-reduced-motion: reduce) { .wezel { transition: none; } }
   @media (max-width: 1023.98px) {
-    .podpis { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-    .wezel { width: 40px; height: 40px; }
-    .os::before { top: 20px; }
-    .etap { padding: 24px 20px; }
+    .os { padding-bottom: 0; }
+    .podpis { top: auto; left: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); transform: none; }
+    .os button, .wezel { width: 40px; height: 40px; }
+    .os::before { top: 19px; left: 20px; right: 20px; }
+    .karta { padding: 24px 20px; }
     .role { grid-template-columns: minmax(0, 1fr); gap: 16px; }
     .paginacja { justify-self: stretch; justify-content: space-between; }
   }
