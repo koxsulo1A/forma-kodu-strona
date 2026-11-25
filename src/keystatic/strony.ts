@@ -188,7 +188,16 @@ export const strony = {
       my: fields.object({ tytul: t('Tytuł', 40, true), opis: a('Opis', 260) }, { label: 'Co robimy my (zielony blok)' }),
     }),
     s11_ai: seg('S11 Wyszukiwarki i asystenci AI (bez obietnic cytowań)', {
-      naglowek: t('Nagłówek H2', 90, true), lead: a('Lead', 160), dostawcy: lista('Dostawcy (pigułki)', t('Nazwa', 30), 0, 12), uwaga: a('Akapit pod pigułkami', 220),
+      naglowek: t('Nagłówek H2', 90, true), lead: a('Lead', 160),
+      // Kacper 25.11 16:06: pigułki = zakładki. Pierwsza „Wszystkie” (wszystkie karty) jest stała; po kliknięciu dostawcy widać jego panel i tylko związane z nim karty (Figma 630:2604 i dalej).
+      dostawcy: lista('Dostawcy (zakładki; po kliknięciu panel i wybrane karty)', fields.object({
+        nazwa: t('Nazwa na zakładce', 30, true),
+        skad: a('Skąd bierze informacje (tylko fakty z oficjalnej dokumentacji)', 220, true),
+        sprawdzamy: t('Sprawdzamy w', 80),
+        roboty: lista('Roboty w pliku robots.txt', fields.object({ nazwa: t('Nazwa robota (user-agent)', 30, true), rola: t('Do czego służy', 90, true) }), 0, 4, 'nazwa'),
+        karty: fields.multiselect({ label: 'Które karty pokazać (numer = kolejność na liście „Karty”; 2–4)', options: ['1', '2', '3', '4', '5', '6'].map((v) => ({ label: `Karta ${v}`, value: v })) }),
+      }), 0, 12, 'nazwa'),
+      uwaga: a('Akapit pod pigułkami', 220),
       karty: lista('Karty', tytulOpis(40, 120), 3, 6, 'tytul'),
       nie_robimy: fields.object({ naglowek: t('Nagłówek', 50, true), pozycje: lista('Pozycje', tytulOpis(60, 80), 2, 4, 'tytul') }, { label: 'Czego nie robimy (ciemny blok)' }),
     }),

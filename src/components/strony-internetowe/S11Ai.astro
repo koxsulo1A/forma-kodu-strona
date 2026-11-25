@@ -1,9 +1,16 @@
 ---
-// 28 S11 Wyszukiwarki i asystenci AI: pigułki dostawców, siatka 3×2 kart „co sprawdzisz na stronie”, ciemny blok „Nie robimy zbędnych rzeczy”.
-// Bez obietnic cytowań w odpowiedziach AI. Telefon: karty jako jedna karta swipe ze wskaźnikiem; ciemny blok 2×2 → jedna kolumna.
+// 28 S11 Wyszukiwarki i asystenci AI (Figma 203:1468; warianty po kliknięciu 630:2604 i dalej, animacja 632:2906, Kacper 25.11 16:06).
+// Pigułki dostawców = zakładki (strona.ts 9: klik, strzałki ←/→, Home/End). „Wszystkie” = siatka 3×2 kart; dostawca = panel
+// (skąd bierze informacje, roboty z robots.txt, gdzie sprawdzamy) i tylko związane z nim karty. Każdy widok ma inne wycięcia
+// w bazie (W1 widać w panelu i kartach): 4 karty = panel z lewej i 2×2, 3 karty = panel na całą szerokość i rząd, 2 karty = panel i kolumna.
+// Zmiana zakładki: wycięcia otwierają się od środka (12 px), treść wjeżdża 16 px w górę, 400 ms; przy „ogranicz ruch” bez animacji.
+// Bez JS: lista nazw i widok „Wszystkie”. Telefon: karty jako jedna karta swipe ze wskaźnikiem, ciemny blok w jednej kolumnie.
+// Fakty o robotach: oficjalne strony OpenAI, Anthropic, Google, Perplexity, Meta, Microsoft Bing, DuckDuckGo (sprawdzone 25.11.2026).
 interface Props { t: any }
 const { t } = Astro.props;
 const nr = t.nie_robimy;
+const dostawcy: any[] = (t.dostawcy ?? []).filter((d: any) => d && typeof d === 'object' && d.nazwa);
+const kartyDostawcy = (d: any) => (d.karty ?? []).map((n: string) => t.karty[Number(n) - 1]).filter(Boolean);
 ---
 <section class="s11 baza segment" id="ai" data-segment="S11 Wyszukiwarki i AI" aria-labelledby="s11-h">
   <div class="kontener s11-wnetrze">
@@ -11,14 +18,61 @@ const nr = t.nie_robimy;
       <h2 id="s11-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
       {t.lead && <p class="t-tresc-l">{t.lead}</p>}
     </header>
-    {t.dostawcy.length > 0 && <ul role="list" class="dostawcy">{t.dostawcy.map((d: string) => <li class="t-maly naglowkowy">{d}</li>)}</ul>}
+    {dostawcy.length > 0 && (
+      <>
+        <div role="tablist" aria-label="Dostawcy" class="dostawcy" hidden>
+          {['Wszystkie', ...dostawcy.map((d) => d.nazwa)].map((n, i) => (
+            <button type="button" role="tab" id={`s11-z-${i}`} aria-controls={`s11-p-${i}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1}>{n}</button>
+          ))}
+        </div>
+        <ul role="list" class="dostawcy bez-js">{dostawcy.map((d) => <li>{d.nazwa}</li>)}</ul>
+      </>
+    )}
     {t.uwaga && <p class="t-tresc uwaga">{t.uwaga}</p>}
-    <ul role="list" class="karty swipe" data-swipe="s11-wskaznik">
-      {t.karty.map((k: any) => <li><h3 class="t-h4 naglowkowy">{k.tytul}</h3><p class="t-tresc">{k.opis}</p></li>)}
-    </ul>
-    <div class="wskaznik-swipe" id="s11-wskaznik" aria-hidden="true">
-      <ol>{t.karty.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
-      <span data-licznik>1 z {t.karty.length}</span>
+    <div class="widoki">
+      <div role="tabpanel" id="s11-p-0" aria-labelledby="s11-z-0" class="widok">
+        <ul role="list" class="karty swipe siatka" data-swipe="s11-wskaznik-0">
+          {t.karty.map((k: any) => <li class="karta w1 wyciecie"><h3 class="tytul">{k.tytul}</h3><p class="opis">{k.opis}</p></li>)}
+        </ul>
+        <div class="wskaznik-swipe" id="s11-wskaznik-0" aria-hidden="true">
+          <ol>{t.karty.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
+          <span data-licznik>1 z {t.karty.length}</span>
+        </div>
+      </div>
+      {dostawcy.map((d, i) => {
+        const karty = kartyDostawcy(d);
+        const n = i + 1;
+        return (
+          <div role="tabpanel" id={`s11-p-${n}`} aria-labelledby={`s11-z-${n}`} class:list={['widok', `uklad-${Math.min(4, Math.max(2, karty.length))}`, { 'bez-robotow': !d.roboty?.length }]} hidden>
+            <div class="panel w1 wyciecie">
+              <div class="opis-dostawcy">
+                <h3 class="nazwa">{d.nazwa}</h3>
+                <p class="skad">{d.skad}</p>
+                {d.sprawdzamy && <p class="sprawdzamy"><strong>Sprawdzamy w:</strong> {d.sprawdzamy}</p>}
+              </div>
+              {d.roboty?.length > 0 && (
+                <div class="roboty">
+                  <p class="etykieta-robotow">Roboty w pliku robots.txt</p>
+                  <dl>
+                    {d.roboty.map((r: any) => <div class="robot"><dt lang="en">{r.nazwa}</dt><dd>{r.rola}</dd></div>)}
+                  </dl>
+                </div>
+              )}
+            </div>
+            {karty.length > 0 && (
+              <>
+                <ul role="list" class="karty swipe" data-swipe={`s11-wskaznik-${n}`} aria-label={`Co sprawdzamy dla: ${d.nazwa}`}>
+                  {karty.map((k: any) => <li class="karta w1 wyciecie"><h4 class="tytul">{k.tytul}</h4><p class="opis">{k.opis}</p></li>)}
+                </ul>
+                <div class="wskaznik-swipe" id={`s11-wskaznik-${n}`} aria-hidden="true">
+                  <ol>{karty.map((_: any, j: number) => <li aria-current={String(j === 0)}></li>)}</ol>
+                  <span data-licznik>1 z {karty.length}</span>
+                </div>
+              </>
+            )}
+          </div>
+        );
+      })}
     </div>
     <div class="nie-robimy">
       <h3 class="t-h3">{nr.naglowek}</h3>
@@ -31,21 +85,91 @@ const nr = t.nie_robimy;
 
 <style>
   .s11 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
-  .s11-wnetrze { display: grid; gap: 32px; }
-  .naglowek { display: grid; gap: 16px; max-width: 980px; }
-  .dostawcy { display: flex; flex-wrap: wrap; gap: 12px; }
-  .dostawcy li { padding: 8px 16px; border-radius: var(--radius-pill); background: var(--fk-tlo-powierzchnia); }
-  .uwaga { max-width: 860px; }
-  .karty { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
-  .karty li { display: grid; gap: 12px; align-content: start; padding: 28px; border-radius: var(--radius-card); border: 1px solid var(--fk-obrys); background: var(--fk-tlo); }
+  .s11-wnetrze { display: grid; gap: 40px; }
+  .naglowek { display: grid; gap: 16px; max-width: 1100px; }
+  .naglowek > * { margin: 0; }
+
+  /* Zakładki (pigułki). Wybrana: akcent, biały tekst. Bez JS: zwykła lista nazw. */
+  .dostawcy { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; padding: 0; list-style: none; }
+  .dostawcy[hidden] { display: none; }
+  :global(html.js) .dostawcy.bez-js { display: none; }
+  .dostawcy li, .dostawcy button {
+    padding: 8px 16px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka);
+    background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); font: inherit; font-size: 14px; line-height: 1.5;
+  }
+  .dostawcy button { min-height: 44px; cursor: pointer; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease; }
+  .dostawcy button:hover { border-color: var(--fk-akcent); }
+  .dostawcy button[aria-selected='true'] { background: var(--fk-akcent); border-color: var(--fk-akcent); color: #fff; font-weight: 600; }
+  .dostawcy button:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
+  .uwaga { max-width: 1312px; margin: 0; }
+
+  /* Widoki: każdy ma własny układ wycięć. */
+  .widok[hidden] { display: none; }
+  .widok { display: grid; gap: 24px; }
+  .karty { display: grid; gap: 24px; margin: 0; padding: 0; list-style: none; }
+  .siatka { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .karta { display: grid; gap: 12px; align-content: start; padding: 28px; }
+  .karta.w1.w1.w1.w1 { border-color: var(--fk-obrys); border-radius: 16px; }
+  .karta > * { margin: 0; }
+  .tytul { font-size: 22px; font-weight: 600; line-height: 1.3; color: var(--fk-tekst-naglowek); }
+  .opis { font-size: 17px; line-height: 1.55; color: var(--fk-tekst); }
+
+  .panel { display: grid; gap: 16px; align-content: start; padding: 32px 36px; }
+  .panel.w1.w1.w1.w1 { border: 1px solid var(--fk-tekst-naglowek); border-radius: 20px; }
+  .opis-dostawcy { display: grid; gap: 16px; align-content: start; }
+  .opis-dostawcy > *, .roboty > * { margin: 0; }
+  .nazwa { font-size: 30px; font-weight: 600; line-height: 1.2; color: var(--fk-tekst-naglowek); }
+  .skad { font-size: 19px; line-height: 1.55; color: var(--fk-tekst); }
+  .sprawdzamy { font-size: 17px; line-height: 1.55; color: var(--fk-tekst-pomocniczy); }
+  .sprawdzamy strong { font-weight: 600; }
+  .roboty { display: grid; gap: 12px; align-content: start; }
+  .etykieta-robotow { font-size: 14px; line-height: 1.5; color: var(--fk-tekst-pomocniczy); }
+  .roboty dl { display: grid; gap: 12px; margin: 0; }
+  .robot { display: grid; gap: 2px; padding-top: 12px; border-top: 1px solid var(--fk-obrys); }
+  .robot dt { font-family: var(--fk-rodzina-mono); font-size: 14px; font-weight: 500; line-height: 1.5; color: var(--fk-akcent); overflow-wrap: anywhere; }
+  .robot dd { margin: 0; font-size: 17px; line-height: 1.55; color: var(--fk-tekst); }
+
+  @media (min-width: 1024px) {
+    /* 4 karty: panel 520 z lewej, karty 2×2 obok (wysokość = panel). */
+    .uklad-4 { grid-template-columns: minmax(0, 520fr) minmax(0, 768fr); }
+    .uklad-4 .karty { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: 1fr; }
+    /* 3 karty: panel na całą szerokość (opis | roboty), pod nim rząd trzech kart. */
+    .uklad-3 .panel { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 48px; }
+    .uklad-3.bez-robotow .panel { grid-template-columns: minmax(0, 1fr); }
+    .uklad-3 .karty { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .uklad-3 .karta { min-height: 151px; }
+    /* 2 karty: panel 864 z lewej, karty jedna pod drugą obok. */
+    .uklad-2 { grid-template-columns: minmax(0, 864fr) minmax(0, 424fr); }
+    .uklad-2 .karty { grid-auto-rows: 1fr; }
+    .widok:is(.uklad-4, .uklad-2) .panel { min-height: 326px; }
+  }
+
+  /* Zmiana zakładki: CSS-owa animacja startuje sama, gdy widok przestaje być ukryty (display: none → grid). */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js) .s11 .widok :is(.panel, .karta) { animation: s11-wyciecie 400ms cubic-bezier(0.16, 1, 0.3, 1) backwards; }
+    :global(html.js) .s11 .widok :is(.panel, .karta) > * { animation: s11-tresc 400ms cubic-bezier(0.16, 1, 0.3, 1) backwards; animation-delay: inherit; }
+    :global(html.js) .s11 .widok .karta:nth-child(2) { animation-delay: 40ms; }
+    :global(html.js) .s11 .widok .karta:nth-child(3) { animation-delay: 80ms; }
+    :global(html.js) .s11 .widok .karta:nth-child(4) { animation-delay: 120ms; }
+    :global(html.js) .s11 .widok .karta:nth-child(n + 5) { animation-delay: 160ms; }
+  }
+  @keyframes s11-wyciecie { from { clip-path: inset(12px round 16px); opacity: 0.4; } to { clip-path: inset(0 round 0); opacity: 1; } }
+  @keyframes s11-tresc { from { opacity: 0; transform: translate3d(0, 16px, 0); } to { opacity: 1; transform: none; } }
+
   .nie-robimy { display: grid; gap: 20px; padding: 32px; border-radius: var(--radius-card); background: var(--fk-grad-czern); color: var(--fk-panel-czern-tekst); }
   .nie-robimy :is(h3, h4) { color: inherit; }
   .pozycje { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
   .pozycje li { display: grid; gap: 8px; align-content: start; }
+
   @media (max-width: 1023.98px) {
     .s11-wnetrze { gap: 24px; }
     .dostawcy { gap: 8px; }
-    .karty li { padding: 24px 20px; }
+    .siatka { grid-template-columns: none; }
+    .karta { padding: 24px 20px; }
+    .panel { padding: 24px 20px; }
+    .nazwa { font-size: 24px; }
+    .skad { font-size: 17px; }
+    .widok { gap: 16px; }
     .nie-robimy { padding: 24px 20px; }
     .pozycje { grid-template-columns: minmax(0, 1fr); gap: 16px; }
   }

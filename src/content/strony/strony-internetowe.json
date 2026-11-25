@@ -242,17 +242,184 @@
   },
   "s11_ai": {
     "naglowek": "Klient pyta ChatGPT o fizjoterapeutę w okolicy. Co zobaczy o Tobie?",
-    "lead": "Przygotowujemy stronę tak, żeby mogli ją odczytać i zrozumieć m.in.:",
+    "lead": "Przygotowujemy stronę tak, żeby mogli ją odczytać i zrozumieć. Kliknij nazwę, żeby zobaczyć szczegóły:",
     "dostawcy": [
-      "Google (w tym AI Overviews)",
-      "ChatGPT",
-      "Perplexity",
-      "Gemini",
-      "Bing i Copilot",
-      "Meta AI",
-      "Grok",
-      "Claude",
-      "DuckDuckGo"
+      {
+        "nazwa": "Google (w tym AI Overviews)",
+        "skad": "Odpowiedzi AI w Google (AI Overviews i tryb AI) korzystają z tego samego indeksu co zwykłe wyniki. Nie wymagają dodatkowego pliku ani znacznika.",
+        "sprawdzamy": "Google Search Console i Profil Firmy w Google",
+        "roboty": [
+          {
+            "nazwa": "Googlebot",
+            "rola": "odwiedza stronę dla wyników Google, także tych z AI"
+          },
+          {
+            "nazwa": "Google-Extended",
+            "rola": "osobna zgoda na trening modeli i odpowiedzi Gemini; nie wpływa na wyniki Google"
+          }
+        ],
+        "karty": [
+          "1",
+          "4",
+          "5",
+          "6"
+        ]
+      },
+      {
+        "nazwa": "ChatGPT",
+        "skad": "ChatGPT pokazuje strony w wynikach wyszukiwania, gdy jego robot ma do nich wstęp.",
+        "sprawdzamy": "plik robots.txt i ustawienia zapory serwera",
+        "roboty": [
+          {
+            "nazwa": "OAI-SearchBot",
+            "rola": "wyniki wyszukiwania w ChatGPT"
+          },
+          {
+            "nazwa": "ChatGPT-User",
+            "rola": "otwiera stronę, gdy prosi o to użytkownik"
+          },
+          {
+            "nazwa": "GPTBot",
+            "rola": "trening modeli; o zgodzie decydujesz osobno"
+          }
+        ],
+        "karty": [
+          "2",
+          "3",
+          "5"
+        ]
+      },
+      {
+        "nazwa": "Perplexity",
+        "skad": "Perplexity w odpowiedziach podaje linki do stron, z których skorzystał.",
+        "sprawdzamy": "plik robots.txt i ustawienia zapory serwera",
+        "roboty": [
+          {
+            "nazwa": "PerplexityBot",
+            "rola": "wyniki i linki w Perplexity; nie służy do trenowania modeli"
+          },
+          {
+            "nazwa": "Perplexity-User",
+            "rola": "otwiera stronę, gdy prosi o to użytkownik"
+          }
+        ],
+        "karty": [
+          "2",
+          "5"
+        ]
+      },
+      {
+        "nazwa": "Gemini",
+        "skad": "Gemini korzysta z indeksu Google. Zgodę na trening i odpowiedzi Gemini ustawia się osobno, bez wpływu na wyniki Google.",
+        "sprawdzamy": "plik robots.txt i Google Search Console",
+        "roboty": [
+          {
+            "nazwa": "Googlebot",
+            "rola": "ten sam robot co w wyszukiwarce Google"
+          },
+          {
+            "nazwa": "Google-Extended",
+            "rola": "trening modeli i odpowiedzi Gemini poza wyszukiwarką"
+          }
+        ],
+        "karty": [
+          "1",
+          "2",
+          "4"
+        ]
+      },
+      {
+        "nazwa": "Bing i Copilot",
+        "skad": "Bing Webmaster Tools pokazuje, jak często Copilot i podsumowania AI w Bing cytują Twoje strony. Nowe i zmienione podstrony zgłaszamy przez IndexNow.",
+        "sprawdzamy": "Bing Webmaster Tools (raport AI Performance)",
+        "roboty": [
+          {
+            "nazwa": "bingbot",
+            "rola": "indeks Bing: wyniki wyszukiwania i odpowiedzi Copilota"
+          }
+        ],
+        "karty": [
+          "1",
+          "3"
+        ]
+      },
+      {
+        "nazwa": "Meta AI",
+        "skad": "Meta AI może cytować strony i linkować do nich w odpowiedziach, jeśli ma wstęp jej robot wyszukiwania.",
+        "sprawdzamy": "plik robots.txt i ustawienia zapory serwera",
+        "roboty": [
+          {
+            "nazwa": "Meta-WebIndexer",
+            "rola": "wyniki i linki w odpowiedziach Meta AI"
+          },
+          {
+            "nazwa": "Meta-ExternalAgent",
+            "rola": "trening modeli i indeksowanie; o zgodzie decydujesz osobno"
+          },
+          {
+            "nazwa": "Meta-ExternalFetcher",
+            "rola": "otwiera link, gdy prosi o to użytkownik"
+          }
+        ],
+        "karty": [
+          "2",
+          "3",
+          "5"
+        ]
+      },
+      {
+        "nazwa": "Grok",
+        "skad": "Dla Groka nie ma ustawień, których działanie da się sprawdzić na stronie. Dbamy więc o to, co działa u wszystkich: czytelny tekst, jasne tytuły i spójne dane.",
+        "sprawdzamy": "treść strony, bez osobnych ustawień",
+        "roboty": [],
+        "karty": [
+          "3",
+          "4",
+          "6"
+        ]
+      },
+      {
+        "nazwa": "Claude",
+        "skad": "Claude może wyszukiwać w sieci i otwierać strony, o które pyta użytkownik.",
+        "sprawdzamy": "plik robots.txt i ustawienia zapory serwera",
+        "roboty": [
+          {
+            "nazwa": "Claude-SearchBot",
+            "rola": "indeksuje strony dla wyszukiwania w Claude"
+          },
+          {
+            "nazwa": "Claude-User",
+            "rola": "otwiera stronę, gdy prosi o to użytkownik"
+          },
+          {
+            "nazwa": "ClaudeBot",
+            "rola": "trening modeli; o zgodzie decydujesz osobno"
+          }
+        ],
+        "karty": [
+          "2",
+          "5"
+        ]
+      },
+      {
+        "nazwa": "DuckDuckGo",
+        "skad": "Zwykłe wyniki DuckDuckGo pochodzą w dużej mierze z Bing. Odpowiedzi AI (DuckAssist) podają źródła.",
+        "sprawdzamy": "Bing Webmaster Tools i plik robots.txt",
+        "roboty": [
+          {
+            "nazwa": "DuckDuckBot",
+            "rola": "własny robot wyszukiwarki"
+          },
+          {
+            "nazwa": "DuckAssistBot",
+            "rola": "odpowiedzi AI ze źródłami; nie służy do trenowania modeli"
+          }
+        ],
+        "karty": [
+          "1",
+          "2"
+        ]
+      }
     ],
     "uwaga": "Każdy z tych dostawców ma własne roboty i zasady, a odpowiedzi AI zmieniają się z pytania na pytanie. Dlatego robimy to, co da się sprawdzić na stronie.",
     "karty": [
