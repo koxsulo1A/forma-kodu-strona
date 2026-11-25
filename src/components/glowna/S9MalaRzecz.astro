@@ -30,8 +30,8 @@ const { t } = Astro.props;
 <style>
   .s9 { padding-block: clamp(32px, 4vw, 48px); }
   .s9-wnetrze { display: grid; gap: 48px; padding: clamp(40px, 5vw, 77px) clamp(20px, 3vw, 48px) 38px; border-radius: var(--radius-24); width: min(100% - 2 * var(--fk-margines), 1392px); }
-  .s9-naglowek { display: grid; gap: 20px; max-width: 1320px; margin-inline: auto; width: 100%; }
-  .schody { display: grid; grid-template-columns: 272fr 212fr 212fr 212fr 228fr; gap: 16px; align-items: end; max-width: 1320px; margin-inline: auto; width: 100%; }
+  .s9-naglowek { display: grid; gap: 20px; max-width: var(--fk-szerokosc); margin-inline: auto; width: 100%; }
+  .schody { display: grid; grid-template-columns: 272fr 212fr 212fr 212fr 228fr; gap: 16px; align-items: end; max-width: var(--fk-szerokosc); margin-inline: auto; width: 100%; }
   .stopien { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; padding: 28px; border-radius: var(--radius-card); background: var(--fk-grad-s9); color: var(--fk-tekst-na-akcencie); }
   .stopien[data-st='1'] { min-height: 300px; } .stopien[data-st='2'] { min-height: 332px; } .stopien[data-st='3'] { min-height: 364px; }
   .stopien[data-st='4'] { min-height: 396px; } .stopien[data-st='5'] { min-height: 428px; }

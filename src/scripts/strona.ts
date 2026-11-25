@@ -37,13 +37,22 @@ const wskaznik = document.querySelector<HTMLElement>('[data-wskaznik]');
 const lista = document.querySelector<HTMLOListElement>('[data-wskaznik-lista]');
 const pozycja = document.querySelector<HTMLElement>('[data-wskaznik-pozycja]');
 const segmenty = [...document.querySelectorAll<HTMLElement>('[data-segment]')];
+const pominiete = document.querySelector<HTMLOListElement>('[data-wskaznik-pominiete]');
 let linkiSeg: HTMLAnchorElement[] = [];
+let ostatniAktywny = -1;
+// Nazwa w pasku bez numeru segmentu: „S2 Dlaczego my” → „Dlaczego my”, hero → „Powitanie” (Kacper 25.11).
+const nazwaSegmentu = (s: HTMLElement) => {
+  const n = (s.dataset.segment ?? '').replace(/^S\d+[a-z]?\s+/i, '').trim();
+  if (/^hero/i.test(n)) return 'Powitanie';
+  return n.charAt(0).toUpperCase() + n.slice(1);
+};
 function zbudujWskaznik() {
   if (!wskaznik || !lista || !segmenty.length) return;
   const calosc = document.documentElement.scrollHeight;
   const wys = wskaznik.clientHeight;
   lista.replaceChildren();
   linkiSeg = [];
+  ostatniAktywny = -1;
   segmenty.forEach((s, i) => {
     if (!s.id) s.id = `segment-${i + 1}`;
     const li = document.createElement('li');
@@ -52,7 +61,7 @@ function zbudujWskaznik() {
     li.style.height = `${Math.max(4, (s.offsetHeight / calosc) * wys - 3)}px`;
     const a = document.createElement('a');
     a.href = `#${s.id}`;
-    a.textContent = s.dataset.segment ?? '';
+    a.textContent = nazwaSegmentu(s);
     li.append(a);
     lista.append(li);
     linkiSeg.push(a);
@@ -60,13 +69,37 @@ function zbudujWskaznik() {
   wskaznik.querySelectorAll<HTMLElement>('[data-proc]').forEach((k) => { k.style.top = `${(Number(k.dataset.proc) / 100) * wys}px`; });
   wskaznik.hidden = false;
 }
+// Lista minionych segmentów: rośnie nad bieżącym; nowo dodany element powiększa się z małej etykiety.
+function ulozPominiete(aktywny: number) {
+  if (!pominiete || !wskaznik) return;
+  const nowe = aktywny > ostatniAktywny && ostatniAktywny >= 0;
+  pominiete.replaceChildren(...linkiSeg.slice(0, aktywny).map((a) => {
+    const li = document.createElement('li');
+    const k = document.createElement('a');
+    k.href = a.getAttribute('href') ?? '#'; k.textContent = a.textContent; k.tabIndex = -1;
+    li.append(k);
+    return li;
+  }));
+  pominiete.hidden = aktywny === 0;
+  const li = linkiSeg[aktywny]?.parentElement;
+  const gora = li ? parseFloat(li.style.top) : 0;
+  pominiete.style.bottom = `${Math.max(0, wskaznik.clientHeight - gora + 8)}px`;
+  pominiete.style.top = '';
+  if (pominiete.offsetTop < 0) { pominiete.style.bottom = ''; pominiete.style.top = '0px'; }
+  if (nowe && !ograniczRuch()) {
+    pominiete.querySelectorAll<HTMLElement>('li').forEach((el, i) => {
+      if (i >= ostatniAktywny) el.animate([{ transform: 'scale(0.75)', opacity: 0.4, transformOrigin: 'right center' }, { transform: 'scale(1)', opacity: 1, transformOrigin: 'right center' }], { duration: 260, easing: 'cubic-bezier(.2,.8,.2,1)' });
+    });
+  }
+}
 function aktualizujWskaznik(proc: number) {
   if (!wskaznik || wskaznik.hidden) return;
   if (pozycja) pozycja.style.top = `${proc * wskaznik.clientHeight}px`;
   const srodek = scrollY + innerHeight / 3;
   let aktywny = 0;
   segmenty.forEach((s, i) => { if (s.offsetTop <= srodek) aktywny = i; });
-  linkiSeg.forEach((a, i) => a.setAttribute('aria-current', String(i === aktywny)));
+  linkiSeg.forEach((a, i) => { a.setAttribute('aria-current', String(i === aktywny)); a.classList.toggle('pominiety', i < aktywny); });
+  if (aktywny !== ostatniAktywny) { ulozPominiete(aktywny); ostatniAktywny = aktywny; }
 }
 addEventListener('load', () => { zbudujWskaznik(); naPrzewiniecie(); });
 addEventListener('resize', () => { zbudujWskaznik(); naPrzewiniecie(); });
@@ -149,6 +182,29 @@ menuPrzycisk?.addEventListener('click', () => {
 });
 menu?.querySelectorAll<HTMLAnchorElement>('a[data-link-menu]:not([data-otworz-sheet])').forEach((a) => a.addEventListener('click', () => menu.close()));
 matchMedia('(min-width: 1024px)').addEventListener('change', (e) => { if (e.matches && menu?.open) menu.close(); });
+
+// ---------- 5b. Rozwijane grupy w pasku (Kacper 25.11): najechanie myszą, klik, Enter/Spacja; Esc i klik obok zamykają ----------
+{
+  const grupy = [...document.querySelectorAll<HTMLElement>('[data-grupa]')];
+  const ustaw = (g: HTMLElement, otwarta: boolean) => {
+    g.classList.toggle('otwarta', otwarta);
+    g.querySelector('[data-grupa-przycisk]')?.setAttribute('aria-expanded', String(otwarta));
+  };
+  const zamknijWszystkie = (oprocz?: HTMLElement) => grupy.forEach((g) => g !== oprocz && ustaw(g, false));
+  const mysz = matchMedia('(hover: hover) and (pointer: fine)');
+  grupy.forEach((g) => {
+    const b = g.querySelector<HTMLButtonElement>('[data-grupa-przycisk]')!;
+    let czasZamk = 0;
+    b.addEventListener('click', () => { const o = !g.classList.contains('otwarta'); zamknijWszystkie(g); ustaw(g, o); });
+    g.addEventListener('pointerenter', (e) => { if (e.pointerType !== 'mouse' || !mysz.matches) return; clearTimeout(czasZamk); zamknijWszystkie(g); ustaw(g, true); });
+    g.addEventListener('pointerleave', (e) => { if (e.pointerType !== 'mouse') return; czasZamk = window.setTimeout(() => ustaw(g, false), 180); });
+    g.addEventListener('focusout', (e) => { if (!g.contains(e.relatedTarget as Node)) ustaw(g, false); });
+    g.addEventListener('keydown', (e) => { if (e.key === 'Escape' && g.classList.contains('otwarta')) { ustaw(g, false); b.focus(); } });
+    g.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => ustaw(g, false)));
+  });
+  document.addEventListener('click', (e) => { if (!(e.target as Element).closest?.('[data-grupa]')) zamknijWszystkie(); });
+  addEventListener('scroll', () => { if (html.classList.contains('pasek-schowany')) zamknijWszystkie(); }, { passive: true });
+}
 
 // ---------- 6. Formularz „Opisz projekt” (stany R19: błąd pola, wysyłanie, błąd wysyłki, sukces) ----------
 document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
@@ -463,24 +519,34 @@ document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) =>
 });
 
 // ---------- 10b. Stos kart (S10): „+N warstwy” rozkłada stos w listę, „Zwiń warstwy” składa ----------
-document.querySelectorAll<HTMLElement>('[data-stos]').forEach((stos) => {
-  const b = stos.querySelector<HTMLButtonElement>('[data-stos-przycisk]');
-  const etykieta = b?.querySelector('[data-stos-etykieta]');
-  const podpis = b?.querySelector<HTMLElement>('[data-stos-podpis]');
-  if (!b || !etykieta) return;
-  const zwiniety = etykieta.textContent;
-  stos.classList.add('zlozony');
-  b.setAttribute('aria-expanded', 'false');
-  b.addEventListener('click', () => {
-    const wl = b.getAttribute('aria-expanded') !== 'true';
-    b.setAttribute('aria-expanded', String(wl));
-    stos.classList.toggle('zlozony', !wl);
-    etykieta.textContent = wl ? 'Zwiń warstwy' : zwiniety;
-    if (podpis) podpis.hidden = wl;
-    if (!ograniczRuch() && wl) stos.classList.add('w-ruchu');
-    setTimeout(() => stos.classList.remove('w-ruchu'), 800);
+// Kacper 25.11: rozwinięty jest najwyżej jeden stos naraz; otwarcie kolejnego zwija poprzedni.
+{
+  const stosy: ((wl: boolean) => void)[] = [];
+  document.querySelectorAll<HTMLElement>('[data-stos]').forEach((stos) => {
+    const b = stos.querySelector<HTMLButtonElement>('[data-stos-przycisk]');
+    const etykieta = b?.querySelector('[data-stos-etykieta]');
+    const podpis = b?.querySelector<HTMLElement>('[data-stos-podpis]');
+    if (!b || !etykieta) return;
+    const zwiniety = etykieta.textContent;
+    stos.classList.add('zlozony');
+    b.setAttribute('aria-expanded', 'false');
+    const ustaw = (wl: boolean) => {
+      if ((b.getAttribute('aria-expanded') === 'true') === wl) return;
+      b.setAttribute('aria-expanded', String(wl));
+      stos.classList.toggle('zlozony', !wl);
+      etykieta.textContent = wl ? 'Zwiń warstwy' : zwiniety;
+      if (podpis) podpis.hidden = wl;
+      if (!ograniczRuch() && wl) stos.classList.add('w-ruchu');
+      setTimeout(() => stos.classList.remove('w-ruchu'), 800);
+    };
+    stosy.push(ustaw);
+    b.addEventListener('click', () => {
+      const wl = b.getAttribute('aria-expanded') !== 'true';
+      if (wl) stosy.forEach((f) => f !== ustaw && f(false));
+      ustaw(wl);
+    });
   });
-});
+}
 
 // ---------- 9f. 27 S1: klikalne okno strony i czat w ilustracji (plansze 450:1815 i 450:1947, dane przykładowe) ----------
 {

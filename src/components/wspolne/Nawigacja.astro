@@ -4,11 +4,39 @@
 // Pod paskiem fioletowy pasek postępu 0–100%. Gdy pasek schowany, po prawej pojawia się boczny wskaźnik segmentów (WskaznikSegmentow.astro).
 // Przyciski: W1 (linki), W2 (Opisz projekt), W3 (menu < 1024 px), W12 (motyw). Bez JS: linki widoczne, menu i motyw ukryte.
 import Logo from './Logo.astro';
-const menu = [
-  { url: '/strony-internetowe', nazwa: 'Strony internetowe' },
-  { url: '/automatyzacje', nazwa: 'Automatyzacje' },
-  { url: '/#realizacje', nazwa: 'Realizacje' },
-  { url: '/pilotaze', nazwa: 'Pilotaże' },
+import { getCollection, getEntry } from 'astro:content';
+// Kacper 25.11: rozwijane przyciski Oferta, Pilotaże, Realizacje, Case study, Kontakt (panel rozwija się w dół, jak opis „Linki” 93:38).
+const firma = (await getEntry('firma', 'firma'))!.data;
+const realizacje = (await getCollection('realizacje'))
+  .filter((r) => r.data.typ !== 'przykład układu')
+  .sort((a, b) => Number(b.data.wyrozniona) - Number(a.data.wyrozniona))
+  .slice(0, 3);
+type Pozycja = { url?: string; nazwa: string; opis?: string; sheet?: boolean; wkrotce?: boolean };
+const grupy: { id: string; nazwa: string; sciezki: string[]; pozycje: Pozycja[]; notka?: string }[] = [
+  { id: 'oferta', nazwa: 'Oferta', sciezki: ['/strony-internetowe', '/automatyzacje', '/analiza-seo-geo'], pozycje: [
+    { url: '/strony-internetowe', nazwa: 'Strony internetowe', opis: 'Od strony na szablonie po stronę pisaną od zera.' },
+    { url: '/automatyzacje', nazwa: 'Automatyzacje', opis: 'Boty, przypomnienia i formularze, które pracują same.' },
+    { url: '/analiza-seo-geo', nazwa: 'Analiza SEO/GEO', opis: 'Jak widzą Cię Google i asystenci AI.', wkrotce: true },
+    { url: '/#cennik', nazwa: 'Cennik', opis: 'Pakiety na start i koszty stałe.' },
+  ] },
+  { id: 'pilotaze', nazwa: 'Pilotaże', sciezki: ['/pilotaze'], pozycje: [
+    { url: '/pilotaze#jak-dziala', nazwa: 'Jak działa pilotaż', opis: 'Krok po kroku, od zgłoszenia do wyniku.' },
+    { url: '/pilotaze#kategorie', nazwa: 'Dla jakich firm', opis: 'Kategorie, w których szukamy firm.' },
+    { url: '/pilotaze#warunki', nazwa: 'Warunki', opis: 'Co robimy my, a co Ty.' },
+    { url: '/pilotaze#zgloszenie', nazwa: 'Zgłoś firmę', opis: 'Krótki formularz zgłoszeniowy.' },
+  ] },
+  { id: 'realizacje', nazwa: 'Realizacje', sciezki: ['/realizacje'], pozycje: [
+    { url: '/realizacje', nazwa: 'Wszystkie realizacje', opis: 'Strony, automatyzacje i aplikacje.' },
+    ...realizacje.map((r) => ({ url: `/realizacje/${r.id}`, nazwa: r.data.naglowek, opis: r.data.podkategoria ?? r.data.kategoria })),
+  ] },
+  { id: 'case-study', nazwa: 'Case study', sciezki: [], notka: 'Pierwsze opisy z liczbami (przed i po) opublikujemy po zakończeniu pilotażu.', pozycje: [
+    { url: '/realizacje', nazwa: 'Zobacz realizacje', opis: 'Na razie: co zrobiliśmy i jak to sprawdzić.' },
+    { url: '/pilotaze', nazwa: 'Zostań pierwszym case study', opis: 'Zgłoś firmę do pilotażu.' },
+  ] },
+  { id: 'kontakt', nazwa: 'Kontakt', sciezki: ['/kontakt'], pozycje: [
+    { url: '/kontakt', nazwa: 'Opisz projekt', opis: 'Formularz: odpowiadamy na e-mail.', sheet: true },
+    { url: `mailto:${firma.email}`, nazwa: firma.email, opis: 'Napisz bezpośrednio.' },
+  ], notka: 'Biuro: poniedziałek–piątek, 9:00–17:00.' },
 ];
 const sciezka = Astro.url.pathname.replace(/\/$/, '') || '/';
 ---
@@ -16,8 +44,29 @@ const sciezka = Astro.url.pathname.replace(/\/$/, '') || '/';
   <div class="pasek-wnetrze">
     <a class="pasek-logo" href="/" aria-label="Forma Kodu, strona główna"><Logo /></a>
     <nav class="pasek-linki" aria-label="Główna">
-      <ul role="list">
-        {menu.map((m) => <li><a class="t-maly" href={m.url} aria-current={sciezka === m.url ? 'page' : undefined}>{m.nazwa}</a></li>)}
+      <ul role="list" class="grupy">
+        {grupy.map((g) => (
+          <li class="grupa" data-grupa>
+            <button type="button" class="t-maly grupa-przycisk" aria-expanded="false" aria-controls={`panel-${g.id}`} data-grupa-przycisk
+              aria-current={g.sciezki.includes(sciezka) ? 'page' : undefined}>
+              {g.nazwa}
+              <svg class="grupa-caret" width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 3.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </button>
+            <div class="panel" id={`panel-${g.id}`} data-panel>
+              <ul role="list" class="panel-lista">
+                {g.pozycje.map((x) => (
+                  <li>
+                    <a href={x.url} class="panel-link" data-otworz-sheet={x.sheet ? 'sheet-projekt' : undefined} aria-haspopup={x.sheet ? 'dialog' : undefined}>
+                      <span class="t-przycisk naglowkowy">{x.nazwa}{x.wkrotce && <span class="t-etykieta wkrotce"> wkrótce</span>}</span>
+                      {x.opis && <span class="t-maly pomocniczy">{x.opis}</span>}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              {g.notka && <p class="t-maly pomocniczy panel-notka">{g.notka}</p>}
+            </div>
+          </li>
+        ))}
       </ul>
     </nav>
     <div class="pasek-akcje">
@@ -42,7 +91,22 @@ const sciezka = Astro.url.pathname.replace(/\/$/, '') || '/';
   </div>
   <nav aria-label="Główna (telefon)">
     <ul role="list" class="menu-lista">
-      {menu.map((m) => <li><a class="t-h4" href={m.url} data-link-menu aria-current={sciezka === m.url ? 'page' : undefined}><span>{m.nazwa}</span><span class="t-etykieta pomocniczy" aria-hidden="true">→</span></a></li>)}
+      {grupy.map((g) => (
+        <li>
+          <details class="menu-grupa">
+            <summary class="t-h4"><span>{g.nazwa}</span><span class="t-etykieta pomocniczy" aria-hidden="true">+</span></summary>
+            <ul role="list" class="menu-podlista">
+              {g.pozycje.map((x) => (
+                <li><a href={x.url} data-link-menu data-otworz-sheet={x.sheet ? 'sheet-projekt' : undefined} aria-haspopup={x.sheet ? 'dialog' : undefined}>
+                  <span class="t-przycisk naglowkowy">{x.nazwa}{x.wkrotce && <span class="t-etykieta wkrotce"> wkrótce</span>}</span>
+                  {x.opis && <span class="t-maly pomocniczy">{x.opis}</span>}
+                </a></li>
+              ))}
+            </ul>
+            {g.notka && <p class="t-maly pomocniczy panel-notka">{g.notka}</p>}
+          </details>
+        </li>
+      ))}
     </ul>
   </nav>
   <a class="przycisk przycisk--akcent przycisk--pelny" href="/kontakt" data-otworz-sheet="sheet-projekt" data-link-menu aria-haspopup="dialog">Opisz projekt</a>
@@ -61,9 +125,33 @@ const sciezka = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
   .pasek-logo { flex: none; border-radius: 4px; }
   .pasek-linki { flex: 1; display: flex; justify-content: center; }
-  .pasek-linki ul { display: flex; gap: 32px; }
-  .pasek-linki a { color: var(--fk-tekst); text-decoration: none; padding: 8px 0; }
-  .pasek-linki a:hover, .pasek-linki a[aria-current='page'] { color: var(--fk-tekst-naglowek); text-decoration: underline; }
+  .grupy { display: flex; gap: 8px; }
+  .grupa { position: relative; }
+  .grupa-przycisk {
+    display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; border: 0; border-radius: var(--radius-pill);
+    background: none; color: var(--fk-tekst); cursor: pointer;
+  }
+  .grupa-przycisk:hover, .grupa-przycisk[aria-expanded='true'] { background: var(--fk-tlo-podniesione); color: var(--fk-tekst-naglowek); }
+  .grupa-przycisk[aria-current='page'] { color: var(--fk-tekst-naglowek); text-decoration: underline; text-underline-offset: 4px; }
+  .grupa-caret { transition: transform var(--fk-czas-szybki) var(--fk-krzywa-standard); }
+  .grupa-przycisk[aria-expanded='true'] .grupa-caret { transform: rotate(180deg); }
+  /* Panel rozwija się w dół pod przyciskiem (najechanie, klik, klawiatura). Bez JS: panel otwiera się na najechanie i fokus. */
+  .panel {
+    position: absolute; top: calc(100% + 12px); left: 50%; width: 340px; padding: 12px; z-index: 5;
+    background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card);
+    box-shadow: 0 18px 40px -18px rgb(16 24 40 / 0.35);
+    opacity: 0; visibility: hidden; transform: translate(-50%, -6px);
+    transition: opacity var(--fk-czas-szybki) var(--fk-krzywa-wejscie), transform var(--fk-czas-szybki) var(--fk-krzywa-wejscie), visibility 0s linear var(--fk-czas-szybki);
+  }
+  .panel::before { content: ''; position: absolute; inset: -14px 0 auto; height: 14px; } /* mostek: kursor nie gubi panelu */
+  .grupa.otwarta .panel, :global(html:not(.js)) .grupa:is(:hover, :focus-within) .panel {
+    opacity: 1; visibility: visible; transform: translate(-50%, 0); transition-delay: 0s;
+  }
+  .panel-lista { display: grid; gap: 2px; }
+  .panel-link { display: grid; gap: 2px; padding: 10px 12px; border-radius: var(--radius-12); text-decoration: none; color: inherit; }
+  .panel-link:hover, .panel-link:focus-visible { background: var(--fk-tlo-powierzchnia); }
+  .wkrotce { color: var(--fk-akcent); }
+  .panel-notka { padding: 10px 12px 4px; border-top: 1px solid var(--fk-obrys); margin-top: 6px; }
   .pasek-akcje { display: flex; align-items: center; gap: 16px; margin-left: auto; }
 
   .motyw {
@@ -88,7 +176,7 @@ const sciezka = Astro.url.pathname.replace(/\/$/, '') || '/';
     :global(html.js) .pasek-linki { display: none; }
     :global(html:not(.js)) .pasek-wnetrze { flex-wrap: wrap; height: auto; padding-block: 8px; }
     :global(html:not(.js)) .pasek-linki { order: 3; flex-basis: 100%; justify-content: flex-start; }
-    :global(html:not(.js)) .pasek-linki ul { flex-wrap: wrap; gap: 4px 20px; }
+    :global(html:not(.js)) .grupy { flex-wrap: wrap; gap: 4px 8px; }
     :global(html.js) .menu-przycisk { display: inline-flex; }
     .motyw { display: none; }
     .pasek-cta { min-height: 44px; padding: 10px 16px; }
@@ -112,8 +200,11 @@ const sciezka = Astro.url.pathname.replace(/\/$/, '') || '/';
   }
   .menu-gora .menu-przycisk { display: inline-flex; }
   .menu-lista { padding-top: 8px; }
-  .menu-lista a {
-    display: flex; justify-content: space-between; align-items: center; padding: 16px 4px;
-    border-bottom: 1px solid var(--fk-obrys); text-decoration: none;
-  }
+  .menu-grupa { border-bottom: 1px solid var(--fk-obrys); }
+  .menu-grupa summary { display: flex; justify-content: space-between; align-items: center; padding: 16px 4px; cursor: pointer; list-style: none; }
+  .menu-grupa summary::-webkit-details-marker { display: none; }
+  .menu-grupa[open] summary span:last-child { transform: rotate(45deg); }
+  .menu-podlista { display: grid; gap: 4px; padding: 0 4px 12px; }
+  .menu-podlista a { display: grid; gap: 2px; padding: 10px 12px; border-radius: var(--radius-12); background: var(--fk-tlo-powierzchnia); text-decoration: none; color: inherit; }
+  .menu-grupa .panel-notka { border: 0; padding: 0 8px 14px; }
 </style>

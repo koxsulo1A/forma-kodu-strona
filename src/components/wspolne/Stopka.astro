@@ -66,7 +66,7 @@ const rok = new Date().getFullYear();
 <style>
   .stopka { background: var(--fk-tlo); padding: 51px var(--fk-margines) 24px; }
   .stopka-panel {
-    max-width: 1280px; margin-inline: auto; padding: 40px 40px 32px; border-radius: var(--radius-card);
+    max-width: var(--fk-szerokosc); margin-inline: auto; padding: 40px 40px 32px; border-radius: var(--radius-card);
     background: var(--fk-grad-czern); border: 1px solid var(--fk-panel-czern-polysk); color: var(--fk-panel-czern-tekst);
     display: grid; gap: 32px;
   }
@@ -80,7 +80,7 @@ const rok = new Date().getFullYear();
   hr { border: 0; border-top: 1px solid var(--fk-obrys-kontrolka); }
   .marka { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
   .marka-misja { display: grid; gap: 8px; max-width: 620px; }
-  .prawa { max-width: 1280px; margin: 20px auto 0; }
+  .prawa { max-width: var(--fk-szerokosc); margin: 20px auto 0; }
   @media (max-width: 1023.98px) {
     .stopka { padding: 48px 20px; }
     .stopka-panel { padding: 40px 20px 32px; }

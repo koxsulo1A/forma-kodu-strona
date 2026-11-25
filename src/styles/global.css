@@ -110,7 +110,7 @@ h1, h2, h3, h4 { color: var(--fk-tekst-naglowek); text-wrap: balance; }
 
 /* ---------- układ ---------- */
 .kontener { width: min(100% - 2 * var(--fk-margines), var(--fk-szerokosc)); margin-inline: auto; }
-.kontener-waski { width: min(100% - 2 * var(--fk-margines), 1320px); margin-inline: auto; }
+.kontener-waski { width: min(100% - 2 * var(--fk-margines), 1440px); margin-inline: auto; }
 
 /* W1: zeszyt w kratkę 24 px z połyskiem (warstwa stała pod bazą). Widać ją w „wycięciach” (W2).
    .w1 = wycięcie w bazie: element pokazuje nieruchomą kratkę (background-attachment: fixed), jak dziura w W2.

@@ -127,8 +127,8 @@
   --radius-12: 12px;
   --radius-24: 24px;
   --radius-28: 28px;
-  --fk-margines: clamp(16px, 2.8vw, 40px); /* 16 px na telefonie, 40 px od ~1430 (Kacper 25.11: mniejsze ograniczenie po bokach) */
-  --fk-szerokosc: 1440px;
+  --fk-margines: clamp(16px, 2vw, 32px); /* 16 px na telefonie, 32 px od 1600 (Kacper 25.11: jak najmniejsze ograniczenie po bokach) */
+  --fk-szerokosc: 1680px;
   --fk-wys-paska: 72px;
 
   /* 5. Ruch (tryb „Pełny”) */
@@ -181,12 +181,13 @@
 /* Ciemny motyw (Alt 6 „Dark”) */
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --fk-tlo: #0b1020;
-  --fk-tlo-powierzchnia: #131a2e;
-  --fk-tlo-podniesione: #1b2440;
-  --fk-tekst-naglowek: #f1f4f9;
-  --fk-tekst: #d3d9e4;
-  --fk-tekst-pomocniczy: #9aa4b8;
+  /* Kacper 25.11: ciemny motyw na czerni (#050505), neutralne szarości bez granatu. */
+  --fk-tlo: #050505;
+  --fk-tlo-powierzchnia: #0e0e10;
+  --fk-tlo-podniesione: #18181b;
+  --fk-tekst-naglowek: #f5f5f7;
+  --fk-tekst: #d6d6db;
+  --fk-tekst-pomocniczy: #9d9da6;
   --fk-tekst-na-akcencie: #15103f;
   --fk-akcent: #a898ff;
   --fk-akcent-hover: #b7aaff;
@@ -194,18 +195,18 @@
   --fk-wyroznienie: #93b1ff;
   --fk-sukces: #6fcf97;
   --fk-blad: #f28b82;
-  --fk-obrys: #263050;
-  --fk-obrys-kontrolka: #76839f;
+  --fk-obrys: #2a2a2f;
+  --fk-obrys-kontrolka: #7a7a84;
   --fk-fokus: #ffffff;
-  --fk-wylaczone-tlo: #1f2638;
-  --fk-satyna-1: #4a5366;
-  --fk-satyna-2: #3a4252;
-  --fk-satyna-3: #2b3240;
+  --fk-wylaczone-tlo: #1c1c1f;
+  --fk-satyna-1: #101012;
+  --fk-satyna-2: #1f1f24;
+  --fk-satyna-3: #2a2a2f;
   --fk-kafel-1-obrys: #93dfb0;
   --fk-kafel-2-obrys: #4a68c9;
   --fk-kafel-3-tlo: #f1f4f9;
   --fk-kafel-3-obrys: #f1f4f9;
   --fk-kafel-4-obrys: #8a74ee;
   --fk-kafel-5-obrys: #cec6a4;
-  --fk-kafel-6-obrys: #4a5366;
+  --fk-kafel-6-obrys: #3a3a41;
 }

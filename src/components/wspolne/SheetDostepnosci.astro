@@ -38,11 +38,13 @@
 
 <style>
   .dostepnosc-przycisk {
-    position: fixed; right: 24px; bottom: 24px; z-index: 45; width: 56px; height: 56px; border-radius: 28px;
+    position: fixed; left: 12px; top: 50%; transform: translateY(-50%); z-index: 45; width: 56px; height: 56px; border-radius: 28px;
     display: grid; place-items: center; background: var(--fk-przelamanie); color: var(--fk-przelamanie-tekst);
     border: 2px solid var(--fk-kafel-3-tlo); box-shadow: var(--fk-cien-zakladka);
   }
   .dostepnosc-przycisk:focus-visible { outline-color: var(--fk-akcent); }
+  /* Kacper 25.11: przycisk WCAG po lewej, na wysokości środka ekranu. Na telefonie lewy dolny róg, żeby nie zasłaniał tekstu (16 px marginesu). */
+  @media (max-width: 767.98px) { .dostepnosc-przycisk { top: auto; bottom: 16px; transform: none; width: 48px; height: 48px; } }
   .przelaczniki { display: grid; gap: 16px; margin-block: 24px; }
   .przelaczniki li { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
   .przelacznik { position: relative; width: 52px; height: 28px; border-radius: 14px; border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-podniesione); flex: none; }
