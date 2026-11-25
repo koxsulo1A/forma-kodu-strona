@@ -1,54 +1,69 @@
 ---
-// 30 S6 Lejek: schodkowe słupki z liczbami PRZYKŁADOWYMI (etykieta w panelu), wskaźnik 7,5% i jedna obserwacja.
-// Wysokość słupków orientacyjna (malejące schodki), nie w skali: 12 000 i 12 w skali dałyby niewidoczny słupek.
-// Wysokości w klasach w0–w3 (CSP blokuje atrybut style). Telefon: słupki poziome jeden pod drugim.
+// 30 S6 Lejek (Figma 239:310, wariant D): nagłówek, podnagłówek, wiersz „7,5%” z obserwacją, cztery słupki obok siebie wyrównane do dołu
+// (liczba mono nad słupkiem, nazwa pod nim), kolory od jasnego fioletu do akcentu. Wysokość słupków orientacyjna, nie w skali.
+// Ruch (Figma 513:1038): segment przypięty; na starcie nagłówek i słupek „12 000”, każdy odcinek przewijania dokłada kolejny słupek
+// (rośnie 0,4 s), przy ostatnim po 0,3 s pojawia się „7,5%” z obserwacją (ruch.ts, krokiPrzypiete). Bez JS / „ogranicz ruch”: wszystko widać.
+// Wysokości i kolory w klasach poz0–poz3 (nie w0–w3: .w1 to globalne wycięcie W1) (CSP blokuje atrybut style). Telefon: słupki poziome jeden pod drugim.
 interface Props { t: any }
 const { t } = Astro.props;
-const fmt = (n: number) => n.toLocaleString('pl-PL');
-// Wskaźnik (np. „7,5%”): liczba w osobnym elemencie, żeby ruch mógł ją liczyć w dół (tabela ruchu: 900 ms).
-const wsk = String(t.wskaznik ?? '').match(/^(.*?)(\d+(?:,\d+)?)(.*)$/s);
+const fmt = (n: number) => n.toLocaleString('pl-PL', { useGrouping: 'always' } as any);
+const ostatni = t.etapy.length - 1;
 ---
-<section class="s6 baza segment" id="lejek" data-segment="S6 Lejek" aria-labelledby="s6-h">
+<section class="s6 baza segment" id="lejek" data-segment="S6 Lejek" aria-labelledby="s6-h" data-kroki-przypiete data-ruch-wlasny>
   <div class="kontener s6-wnetrze">
     <header class="naglowek">
       <h2 id="s6-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
-      {t.etykieta && <p><span class="t-etykieta plak">{t.etykieta}</span></p>}
+      {t.etykieta && <p class="podtytul naglowkowy">{t.etykieta}</p>}
     </header>
-    <div class="karta" data-lejek>
-      <ol role="list" class="slupki">
-        {t.etapy.map((e: any, i: number) => (
-          <li class={`w${Math.min(i, 3)}`}>
-            <span class="slupek" aria-hidden="true"></span>
-            <span class="t-h3 naglowkowy liczba" data-liczba={e.liczba}>{fmt(e.liczba)}</span>
-            <span class="t-maly">{e.nazwa}</span>
-          </li>
-        ))}
-      </ol>
-      <div class="wniosek">
-        <p class="t-h2 akcentowy wskaznik">{wsk ? <>{wsk[1]}<span data-liczba={wsk[2].replace(',', '.')} data-od="100" data-koniec={wsk[2]}>{wsk[2]}</span>{wsk[3]}</> : t.wskaznik}</p>
-        <p class="t-tresc">{t.obserwacja}</p>
-      </div>
+    <div class="wniosek" data-krok={ostatni}>
+      <p class="wskaznik">{t.wskaznik}</p>
+      <p class="obserwacja">{t.obserwacja}</p>
     </div>
-    <p class="t-maly pomocniczy">{t.uwaga}{t.zrodlo && ` Źródło: ${t.zrodlo}${t.data ? `, ${t.data}` : ''}.`}</p>
+    <ol role="list" class="slupki">
+      {t.etapy.map((e: any, i: number) => (
+        <li class={`poz${Math.min(i, 3)}`} data-krok={i}>
+          <span class="liczba naglowkowy">{fmt(e.liczba)}</span>
+          <span class="slupek" aria-hidden="true"></span>
+          <span class="nazwa">{e.nazwa}</span>
+        </li>
+      ))}
+    </ol>
+    <p class="uwaga t-maly pomocniczy">{t.uwaga}{t.zrodlo && ` Źródło: ${t.zrodlo}${t.data ? `, ${t.data}` : ''}.`}</p>
   </div>
 </section>
 
 <style>
-  .s6 { padding-block: clamp(48px, 5vw, 72px); }
+  .s6 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
   .s6-wnetrze { display: grid; gap: 24px; }
-  .naglowek { display: grid; gap: 12px; }
-  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); }
-  .karta { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 40px; align-items: end; padding: 32px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
-  .slupki { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: end; height: 340px; }
-  .w0 { --wys: 100%; } .w1 { --wys: 72%; } .w2 { --wys: 50%; } .w3 { --wys: 30%; }
-  .slupki li { display: grid; grid-template-rows: 1fr auto auto; gap: 6px; height: 100%; }
-  .slupek { align-self: end; height: var(--wys); border-radius: var(--radius-control) var(--radius-control) 0 0; background: var(--fk-grad-przelamanie); }
-  .wniosek { display: grid; gap: 8px; padding-left: 24px; border-left: 2px solid var(--fk-akcent); }
+  .s6-wnetrze p { margin: 0; }
+  .naglowek { display: grid; gap: 24px; }
+  .podtytul { font-size: 22px; font-weight: 600; line-height: 1.3; }
+  .wniosek { display: flex; align-items: center; gap: 24px; }
+  .wskaznik { flex: none; font-size: clamp(44px, 4.45vw, 64px); font-weight: 700; line-height: 1.05; letter-spacing: -0.01em; color: var(--fk-akcent); }
+  .obserwacja { font-size: 19px; line-height: 1.55; color: var(--fk-tekst-naglowek); }
+  .slupki { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; align-items: end; margin: 0; padding: 0; list-style: none; }
+  .slupki li { display: grid; gap: 12px; }
+  .liczba { font-family: var(--fk-rodzina-mono); font-weight: 500; font-size: 40px; line-height: 1.1; letter-spacing: -0.05em; }
+  .slupek { display: block; height: var(--wys); border-radius: 12px; background: var(--kolor); transform-origin: bottom; }
+  .nazwa { font-size: 17px; line-height: 1.55; color: var(--fk-tekst); }
+  .poz0 { --wys: 320px; --kolor: #ead9f0; } .poz1 { --wys: 230px; --kolor: #b9a3e4; } .poz2 { --wys: 150px; --kolor: #876ed8; } .poz3 { --wys: 80px; --kolor: var(--fk-akcent); }
+  :global([data-theme='dark']) .poz0 { --kolor: #4a3d6e; } :global([data-theme='dark']) .poz1 { --kolor: #6450a8; }
+  .uwaga { margin-top: 0; }
+  /* Ruch: czekający słupek ma wysokość 0 (scaleY), liczba i nazwa są ukryte; „7,5%” wchodzi 0,3 s po ostatnim słupku. */
+  .slupek { transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1); }
+  .liczba, .nazwa, .wniosek { transition: opacity 300ms var(--fk-krzywa-wejscie), transform 300ms var(--fk-krzywa-wejscie); }
+  .slupki li:global(.czeka) .slupek { transform: scaleY(0); }
+  .slupki li:global(.czeka) :is(.liczba, .nazwa) { opacity: 0; transform: translate3d(0, 12px, 0); }
+  .wniosek:global(.czeka) { opacity: 0; transform: translate3d(0, 12px, 0); }
+  .wniosek:not(:global(.czeka)) { transition-delay: 300ms; }
   @media (max-width: 1023.98px) {
-    .karta { grid-template-columns: minmax(0, 1fr); padding: 20px; gap: 24px; }
-    .slupki { grid-template-columns: minmax(0, 1fr); height: auto; gap: 12px; }
-    .slupki li { grid-template-rows: auto; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 12px; height: auto; }
-    .slupek { grid-column: 1 / -1; height: 12px; width: var(--wys); border-radius: var(--radius-pill); }
-    .wniosek { padding-left: 16px; }
+    .wniosek { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .obserwacja { font-size: 17px; }
+    .slupki { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .slupki li { grid-template-columns: auto minmax(0, 1fr); align-items: baseline; column-gap: 12px; row-gap: 6px; }
+    .liczba { font-size: 28px; }
+    .slupek { grid-column: 1 / -1; grid-row: 2; height: 14px; width: calc(var(--wys) / 3.2); max-width: 100%; border-radius: var(--radius-pill); }
+    .poz0 .slupek { width: 100%; } .poz1 .slupek { width: 72%; } .poz2 .slupek { width: 47%; } .poz3 .slupek { width: 25%; }
+    .nazwa { font-size: 16px; }
   }
 </style>

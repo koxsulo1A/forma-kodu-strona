@@ -1,36 +1,39 @@
 ---
-// 30 S8 Powiadom mnie (wycięcie W1 = kratka): nagłówek po lewej, po prawej karta „Pilotaż SEO/GEO” z formularzem e-mail + zgoda.
+// 30 S8 Powiadom mnie (Figma 203:1528): biała baza W2, karta „Pilotaż SEO/GEO” jest wycięciem z przerywaną ramką (przez nie widać kratkę W1).
+// Nagłówek po lewej, po prawej karta z formularzem e-mail + zgoda.
 // Formularz naprawdę zapisuje (POST /api/powiadom → Brevo); makieta miała dopisek „Formularz niczego jeszcze nie wysyła” — pominięty.
 import FormularzPowiadom from '../wspolne/FormularzPowiadom.astro';
 interface Props { t: any }
 const { t } = Astro.props;
 ---
-<section class="s8 kratka segment" id="powiadom" data-segment="S8 Powiadom mnie" aria-labelledby="s8-h">
+<section class="s8 baza segment" id="powiadom" data-segment="S8 Powiadom mnie" aria-labelledby="s8-h">
   <div class="kontener s8-wnetrze">
     <header class="naglowek">
       <h2 id="s8-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
       {t.lead && <p class="t-tresc-l">{t.lead}</p>}
     </header>
-    <div class="karta">
-      <p class="plakietki"><span class="t-etykieta plak plak--pelna">Pilotaż</span><span class="t-etykieta plak">Wkrótce</span></p>
-      <h3 class="t-h3 naglowkowy">{t.karta_tytul}</h3>
-      {t.karta_opis && <p class="t-tresc pomocniczy">{t.karta_opis}</p>}
+    <div class="karta w1 wyciecie">
+      <p class="plakietki"><span class="t-etykieta plak plak--szara">Pilotaż</span><span class="t-etykieta plak">Wkrótce</span></p>
+      <h3 class="tytul naglowkowy">{t.karta_tytul}</h3>
+      {t.karta_opis && <p class="t-tresc">{t.karta_opis}</p>}
       <FormularzPowiadom id="s8-pw" usluga={t.usluga} przycisk="Powiadom mnie, gdy ruszymy" />
     </div>
   </div>
 </section>
 
 <style>
-  .s8 { padding-block: clamp(56px, 6vw, 88px); }
-  .s8-wnetrze { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+  .s8 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s8-wnetrze { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 690px); gap: 96px; align-items: center; }
   .naglowek { display: grid; gap: 12px; }
-  .karta { display: grid; gap: 14px; padding: 32px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys-kontrolka); }
+  .karta { display: grid; gap: 14px; padding: 32px; }
+  .karta.w1.w1.w1.w1 { border: 1.5px dashed var(--fk-obrys-kontrolka); }
+  .tytul { font-size: 22px; font-weight: 600; line-height: 1.3; }
   .plakietki { display: flex; gap: 8px; }
-  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); }
-  .plak--pelna { background: var(--fk-akcent); color: var(--fk-tlo); }
+  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); background: var(--fk-tlo); }
+  .plak--szara { border-color: var(--fk-obrys-kontrolka); color: var(--fk-tekst-naglowek); }
   @media (max-width: 1023.98px) {
     .s8-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 24px; }
     .naglowek { text-align: center; justify-items: center; }
-    .karta { padding: 20px; }
+    .karta { padding: 24px 20px; }
   }
 </style>

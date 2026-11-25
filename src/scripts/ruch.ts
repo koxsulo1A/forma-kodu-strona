@@ -4,7 +4,7 @@
 //  - Animujemy tylko transform i opacity (bez skoków układu, CLS 0).
 //  - Style ustawiamy przez element.style (CSSOM), co CSP strony dopuszcza; atrybutu style w HTML nie używamy.
 // Spis: 1 kaskada odsłaniania segmentów, 2 stopka-kurtyna, 3 zmiana słów w H1 (27 S1), 4 oś procesu (27 S7),
-//       5 liczniki lejka (30 S6), 6 bloki zmieniane przewijaniem (29 S4). Przycisk „Wysyłanie… → Wysłano!” jest w strona.ts (punkt 6).
+//       6 bloki zmieniane przewijaniem (29 S4), 9 kroki w przypiętym segmencie (30 S3, S6), 10 nagłówek wzdłuż treści (30 S4). Przycisk „Wysyłanie… → Wysłano!” jest w strona.ts (punkt 6).
 
 const html = document.documentElement;
 const ograniczRuch = () => html.classList.contains('bez-ruchu') || matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -51,7 +51,7 @@ const PLAN: Record<string, Kaskada[]> = {
   '/automatyzacje': [{ kody: 'reszta' }],
   '/analiza-seo-geo': [
     { kody: ['S2'], kierunek: 'gora', krok: 80 },
-    { kody: ['S3'], kierunek: 'lewo', krok: 80 },
+    // S3, S4, S6 mają własny ruch (data-ruch-wlasny): krokiPrzypiete i naglowekWzdluz niżej.
     { kody: 'reszta' },
   ],
   '/realizacje': [{ kody: 'reszta' }],
@@ -134,7 +134,7 @@ function kaskady() {
   const pasuje = (s: HTMLElement, kody: string[]) => kody.some((k) => s.dataset.segment!.startsWith(`${k} `));
   plan.forEach((p) => {
     const segmenty = p.kody === 'reszta'
-      ? wszystkie.filter((s) => !pasuje(s, POMIN) && !pasuje(s, nazwane))
+      ? wszystkie.filter((s) => !pasuje(s, POMIN) && !pasuje(s, nazwane) && !s.hasAttribute('data-ruch-wlasny'))
       : p.kody.map(segment).filter(Boolean) as HTMLElement[];
     segmenty.forEach((seg) => {
       if (p.sekwencja && komputer.matches && sekwencja(seg, p.sekwencja, p.czas ?? 500)) return;
@@ -334,35 +334,6 @@ function osProcesu() {
   licz();
 }
 
-// ---------- 5. 30 S6: liczby lejka liczą w dół (900 ms) przy wejściu w widok ----------
-function lejek() {
-  const box = document.querySelector<HTMLElement>('[data-lejek]');
-  if (!box || ograniczRuch() || !('IntersectionObserver' in window)) return;
-  const liczby = [...box.querySelectorAll<HTMLElement>('[data-liczba]')];
-  if (!liczby.length) return;
-  const start = Math.max(...liczby.map((l) => Number(l.dataset.liczba)));
-  const fmt = (n: number, ulamek: boolean) => ulamek ? n.toLocaleString('pl-PL', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) : Math.round(n).toLocaleString('pl-PL');
-  const obs = new IntersectionObserver((w) => {
-    if (!w[0].isIntersecting) return;
-    obs.disconnect();
-    const t0 = performance.now();
-    const krok = (t: number) => {
-      const p = Math.min(1, (t - t0) / 900);
-      const e = 1 - Math.pow(1 - p, 3);
-      liczby.forEach((l) => {
-        const cel = Number(l.dataset.liczba);
-        const od = l.dataset.od ? Number(l.dataset.od) : start;
-        const ulamek = !Number.isInteger(cel);
-        const tekst = fmt(od + (cel - od) * e, ulamek);
-        const wart = l.querySelector('[data-wartosc]') ?? l;
-        wart.textContent = p < 1 ? tekst : l.dataset.koniec ?? tekst;
-      });
-      if (p < 1) requestAnimationFrame(krok);
-    };
-    requestAnimationFrame(krok);
-  }, { threshold: 0.3 });
-  obs.observe(box);
-}
 
 // ---------- 6. 29 S4: blok zmienia się przy przewijaniu (od 1024 px) ----------
 // Kacper 25.11 16:06: wcześniej blok zmieniał się zbyt łatwo. Teraz każdy blok ma 0,9 wysokości ekranu przewijania,
@@ -555,6 +526,103 @@ function stosProcesu() {
   komputer.addEventListener('change', () => (komputer.matches ? wlacz() : wylacz()));
 }
 
+// ---------- 9. 30 S3 i S6: segment przypięty, każdy odcinek przewijania pokazuje kolejny krok (Figma 513:934, 513:1038) ----------
+// Elementy z data-krok="n" są widoczne, gdy stan >= n (0 = od razu). Wygląd „czekania” i przejście opisuje CSS komponentu (klasa .czeka).
+// Stan rośnie co 0,6 wysokości ekranu przewijania; pierwszy krok, gdy góra segmentu minie 15% ekranu. Ruch w obie strony (przewijanie w górę cofa).
+// Tylko komputer i bez „ogranicz ruch”; telefon: wszystko widać od razu, bez przypinania.
+function krokiPrzypiete() {
+  document.querySelectorAll<HTMLElement>('[data-kroki-przypiete]').forEach((seg) => {
+    const kontener = seg.querySelector<HTMLElement>(':scope > .kontener');
+    const el = [...seg.querySelectorAll<HTMLElement>('[data-krok]')];
+    const ile = Math.max(0, ...el.map((e) => Number(e.dataset.krok)));
+    if (!kontener || ile < 1 || ograniczRuch()) return;
+    const NA_KROK = 0.6, PRZED = 0.15;
+    let wlaczony = false, ramka = 0, stan = -1;
+    const ustaw = (n: number) => {
+      if (n === stan) return;
+      stan = n;
+      el.forEach((e) => e.classList.toggle('czeka', Number(e.dataset.krok) > n));
+    };
+    const licz = () => {
+      ramka = 0;
+      const top = seg.getBoundingClientRect().top;
+      ustaw(Math.max(0, Math.min(ile, Math.ceil((innerHeight * PRZED - top) / (innerHeight * NA_KROK)))));
+    };
+    // Wysokość naturalna = treść + odstępy segmentu (klasa .przewijane ma w CSS 300vh, więc nie mierzymy samej sekcji).
+    const wymiary = () => {
+      const cs = getComputedStyle(seg);
+      const naturalna = kontener.offsetHeight + parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      seg.style.height = `${Math.round(naturalna + innerHeight * (NA_KROK * (ile - 1) + 0.4))}px`;
+    };
+    const naScroll = () => { if (!ramka) ramka = requestAnimationFrame(licz); };
+    const naResize = () => { wymiary(); licz(); };
+    const wlacz = () => {
+      if (wlaczony) return;
+      wlaczony = true;
+      seg.classList.add('przewijane');
+      wymiary(); stan = -1; licz();
+      addEventListener('scroll', naScroll, { passive: true });
+      addEventListener('resize', naResize);
+    };
+    const wylacz = () => {
+      if (!wlaczony) return;
+      wlaczony = false;
+      seg.classList.remove('przewijane');
+      seg.style.height = '';
+      el.forEach((e) => e.classList.remove('czeka'));
+      removeEventListener('scroll', naScroll);
+      removeEventListener('resize', naResize);
+    };
+    if (komputer.matches) wlacz();
+    document.fonts?.ready.then(() => { if (wlaczony) naResize(); });
+    komputer.addEventListener('change', () => (komputer.matches ? wlacz() : wylacz()));
+  });
+}
+
+// ---------- 10. 30 S4: nagłówek jedzie wzdłuż treści 1:1 z przewijaniem (Figma 513:992) ----------
+// Nagłówek stoi na wysokości linii czytania (45% ekranu), ale nie wychodzi poza górę i dół osi etapów; etap na tej linii dostaje klasę .czytany.
+// Bez JS / „ogranicz ruch”: nagłówek przyklejony (sticky w CSS). Telefon: nagłówek nad treścią, bez ruchu.
+function naglowekWzdluz() {
+  document.querySelectorAll<HTMLElement>('[data-naglowek-wzdluz]').forEach((seg) => {
+    const nagl = seg.querySelector<HTMLElement>('[data-wzdluz-naglowek]');
+    const tor = seg.querySelector<HTMLElement>('[data-wzdluz-tor]');
+    const kroki = [...seg.querySelectorAll<HTMLElement>('[data-wzdluz-krok]')];
+    if (!nagl || !tor || ograniczRuch()) return;
+    let wlaczony = false, ramka = 0;
+    const licz = () => {
+      ramka = 0;
+      const r = tor.getBoundingClientRect();
+      const h = nagl.offsetHeight;
+      const y = Math.max(0, Math.min(r.height - h, innerHeight * 0.45 - h / 2 - r.top));
+      nagl.style.transform = `translate3d(0, ${Math.round(y)}px, 0)`;
+      const linia = r.top + y + h / 2;
+      let czytany = 0;
+      kroki.forEach((k, i) => { if (k.getBoundingClientRect().top <= linia) czytany = i; });
+      kroki.forEach((k, i) => k.classList.toggle('czytany', i === czytany));
+    };
+    const naScroll = () => { if (!ramka) ramka = requestAnimationFrame(licz); };
+    const wlacz = () => {
+      if (wlaczony) return;
+      wlaczony = true;
+      seg.classList.add('wzdluz');
+      licz();
+      addEventListener('scroll', naScroll, { passive: true });
+      addEventListener('resize', naScroll);
+    };
+    const wylacz = () => {
+      if (!wlaczony) return;
+      wlaczony = false;
+      seg.classList.remove('wzdluz');
+      nagl.style.transform = '';
+      kroki.forEach((k) => k.classList.remove('czytany'));
+      removeEventListener('scroll', naScroll);
+      removeEventListener('resize', naScroll);
+    };
+    if (komputer.matches) wlacz();
+    komputer.addEventListener('change', () => (komputer.matches ? wlacz() : wylacz()));
+  });
+}
+
 // 29 S8: pas budujemy przed kaskadą, żeby kaskada odsłoniła cały pas naraz (kopie kart nie zostają z opacity 0).
 pasyRealizacji('#przyklad .karty', '.karta', 1, 540);
 kaskady();
@@ -562,7 +630,8 @@ kurtyna();
 zmianaSlow();
 terminale();
 osProcesu();
-lejek();
 blokiPrzewijane();
+krokiPrzypiete();
+naglowekWzdluz();
 pasyRealizacji();
 stosProcesu();

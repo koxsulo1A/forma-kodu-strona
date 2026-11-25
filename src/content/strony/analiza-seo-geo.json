@@ -87,7 +87,7 @@
   },
   "s6_lejek": {
     "naglowek": "Tak będziemy opisywać drogę klienta",
-    "etykieta": "Lejek z liczbami przykładowymi",
+    "etykieta": "Lejek: od wyświetlenia do zapytania",
     "etapy": [
       {
         "liczba": 12000,

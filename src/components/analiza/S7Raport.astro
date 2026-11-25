@@ -20,7 +20,7 @@ const { t } = Astro.props;
             <h3 class="t-h4 naglowkowy">{k.tytul}</h3>
             <p class="t-tresc">{k.opis}</p>
             {i === 3 && t.przyklad && (
-              <p class="przyklad t-maly"><span class="t-etykieta plak">przykład</span> {t.przyklad}</p>
+              <p class="przyklad t-maly">{t.przyklad}</p>
             )}
           </div>
         </li>

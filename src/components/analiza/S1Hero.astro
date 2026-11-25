@@ -11,7 +11,12 @@ const { t } = Astro.props;
       <div><a class="przycisk przycisk--glowny" href="#zakres">{t.cta}</a></div>
     </div>
     <ol role="list" class="os" data-odslon aria-label="Stan usługi">
-      {t.os.map((k: any, i: number) => <li data-n={i + 1}><span class="znacznik" aria-hidden="true"></span><p class="t-etykieta akcentowy">{k.etykieta}</p><p class="t-tresc">{k.opis}</p></li>)}
+      {t.os.map((k: any, i: number) => (
+        <li data-n={i + 1} aria-current={i === 0 ? 'step' : undefined}>
+          <span class="punkt-osi" aria-hidden="true"><span class="kropka"></span><span class="linia"></span></span>
+          <div class="opis"><p class="t-etykieta etykieta">{k.etykieta}</p><p class="tekst-kroku">{k.opis}</p></div>
+        </li>
+      ))}
     </ol>
   </div>
   {t.notka && <div class="kontener"><p class="notka t-maly">{t.notka}</p></div>}
@@ -19,20 +24,29 @@ const { t } = Astro.props;
 
 <style>
   .s1 { padding-block: clamp(24px, 3.5vw, 51px) 38px; }
-  .s1-wnetrze { display: grid; grid-template-columns: minmax(0, 640fr) minmax(0, 576fr); gap: 96px; align-items: center; }
+  .s1-wnetrze { display: grid; grid-template-columns: minmax(0, 640fr) minmax(0, 576fr); gap: 96px; align-items: start; }
   .tekst { display: grid; gap: 32px; }
-  .os { display: grid; gap: 0; }
-  .os li { position: relative; display: grid; gap: 4px; padding: 0 0 28px 40px; }
-  .os li:not(:last-child)::before { content: ''; position: absolute; left: 7px; top: 20px; bottom: 0; width: 2px; background: var(--fk-obrys-kontrolka); transform-origin: top; }
-  .znacznik { position: absolute; left: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--fk-akcent); background: var(--fk-tlo); }
-  .os li[data-n='1'] .znacznik { background: var(--fk-akcent); }
+  /* Oś stanu 1:1 z Figmą 512:873: krok 82 px (tekst + 32 px odstępu), kropka 16 px (obrys 1,5 px), linia 2 px pod kropką do następnego kroku. */
+  .os { display: grid; margin: 0; padding: 0; list-style: none; }
+  .os li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 20px; min-height: 82px; }
+  .punkt-osi { display: flex; flex-direction: column; align-items: center; }
+  .kropka { flex: none; box-sizing: border-box; width: 16px; height: 16px; border-radius: 50%; border: 1.5px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); }
+  .os li[data-n='1'] .kropka { background: var(--fk-akcent); border-color: var(--fk-akcent); }
+  .linia { flex: 1; width: 2px; background: var(--fk-obrys-kontrolka); transform-origin: top; }
+  .os li:last-child .linia { display: none; }
+  .opis { display: grid; gap: 4px; align-content: start; padding-bottom: 32px; }
+  .opis p { margin: 0; }
+  .etykieta { color: var(--fk-tekst-pomocniczy); line-height: 1.4; }
+  .os li[data-n='1'] .etykieta { color: var(--fk-akcent); }
+  .tekst-kroku { font-size: 19px; line-height: 1.55; color: var(--fk-tekst-naglowek); }
   @media (prefers-reduced-motion: no-preference) {
-    :global(html.js:not(.bez-ruchu)) .os:not(.widoczny) li::before { transform: scaleY(0); }
-    :global(html.js:not(.bez-ruchu)) .os li::before { transition: transform 600ms var(--fk-krzywa-wejscie); }
-    .os li[data-n='2']::before { transition-delay: 400ms; }
+    :global(html.js:not(.bez-ruchu)) .os:not(.widoczny) .linia { transform: scaleY(0); }
+    :global(html.js:not(.bez-ruchu)) .os .linia { transition: transform 600ms var(--fk-krzywa-wejscie); }
+    .os li[data-n='2'] .linia { transition-delay: 400ms; }
   }
   .notka { margin-top: 32px; padding: 16px 20px; border-radius: var(--radius-control); background: var(--fk-tlo-powierzchnia); border-left: 3px solid var(--fk-akcent); }
   @media (max-width: 1023.98px) {
+    .tekst-kroku { font-size: 17px; }
     .s1-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 32px; }
     .tekst .przycisk { width: 100%; justify-content: center; }
   }

@@ -1,24 +1,30 @@
 ---
-// 30 S4 Co da się zmierzyć (wariant G): nagłówek przyklejony po lewej jedzie wzdłuż treści, po prawej oś etapów drogi klienta (narzędzie, co mierzymy, czemu służy).
+// 30 S4 Co da się zmierzyć (Figma 257:268, wariant G): po lewej nagłówek, lead i plakietka „wkrótce”; po prawej jeden panel (powierzchnia,
+// cień) z osią etapów: zielona kropka, szara linia, etykieta etapu (mono), narzędzie, „Mierzymy” i „Służy Ci”.
+// Ruch (Figma 513:992): nagłówek jedzie wzdłuż treści 1:1 z przewijaniem i stoi obok czytanego etapu (ruch.ts, naglowekWzdluz).
+// Bez JS / „ogranicz ruch”: nagłówek przyklejony (sticky). Telefon: nagłówek nad panelem.
 interface Props { t: any }
 const { t } = Astro.props;
+const zMalej = (x: string) => (x ? x[0].toLowerCase() + x.slice(1) : x);
 ---
-<section class="s4 baza segment" id="mierzymy" data-segment="S4 Co da się zmierzyć" aria-labelledby="s4-h">
+<section class="s4 baza segment" id="mierzymy" data-segment="S4 Co da się zmierzyć" aria-labelledby="s4-h" data-naglowek-wzdluz data-ruch-wlasny>
   <div class="kontener s4-wnetrze">
-    <header class="naglowek">
-      <h2 id="s4-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
-      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
-      <p><span class="t-etykieta plak">wkrótce</span></p>
-    </header>
-    <ol role="list" class="os">
+    <div class="kolumna">
+      <header class="naglowek" data-wzdluz-naglowek>
+        <h2 id="s4-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+        {t.lead && <p class="t-tresc-l">{t.lead}</p>}
+        <p><span class="t-etykieta plak">wkrótce</span></p>
+      </header>
+    </div>
+    <ol role="list" class="os" data-wzdluz-tor>
       {t.etapy.map((e: any) => (
-        <li>
-          <span class="znacznik" aria-hidden="true"></span>
+        <li data-wzdluz-krok>
+          <span class="punkt-osi" aria-hidden="true"><span class="kropka"></span><span class="linia"></span></span>
           <div class="tresc">
-            <h3 class="t-h4 naglowkowy">{e.nazwa}</h3>
-            {e.narzedzie && <p class="t-etykieta akcentowy">{e.narzedzie}</p>}
-            <p class="t-tresc"><strong>Mierzymy:</strong> {e.mierzymy}</p>
-            <p class="t-tresc"><strong>Służy Ci:</strong> {e.sluzy}</p>
+            <p class="t-etykieta etap">{e.nazwa}</p>
+            <h3 class="narzedzie naglowkowy">{e.narzedzie || e.nazwa}</h3>
+            <p class="wiersz">Mierzymy: {zMalej(e.mierzymy)}</p>
+            <p class="wiersz sluzy">Służy Ci: {zMalej(e.sluzy)}</p>
           </div>
         </li>
       ))}
@@ -28,18 +34,35 @@ const { t } = Astro.props;
 
 <style>
   .s4 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
-  .s4-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 776fr); gap: 96px; align-items: start; }
-  .naglowek { display: grid; gap: 12px; position: sticky; top: calc(var(--fk-wys-paska) + 24px); }
-  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); }
-  .os li { position: relative; display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 24px; padding-bottom: 32px; }
-  .os li:not(:last-child)::before { content: ''; position: absolute; left: 11px; top: 28px; bottom: 0; width: 2px; background: var(--fk-obrys-kontrolka); }
-  .znacznik { width: 24px; height: 24px; margin-top: 2px; border-radius: 50%; background: var(--fk-tlo); border: 3px solid var(--fk-akcent); }
-  .tresc { display: grid; gap: 8px; padding: 24px 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
-  .tresc strong { color: var(--fk-tekst-naglowek); }
+  .s4-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 776fr); gap: 96px; align-items: stretch; }
+  .naglowek { display: grid; gap: 20px; align-content: start; position: sticky; top: calc(var(--fk-wys-paska) + 24px); }
+  .naglowek > * { margin: 0; }
+  .plak { padding: 5px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); }
+  /* Panel osi: Figma pad 32, promień 16, obrys 2 px biały, cień 0 4 16 rgba(0,0,0,.08). */
+  .os { margin: 0; padding: 32px; list-style: none; border-radius: 16px; background: var(--fk-tlo-powierzchnia); border: 2px solid var(--fk-tlo); box-shadow: 0 4px 16px rgb(0 0 0 / 0.08); }
+  .os li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 28px; border-radius: 12px; transition: background var(--fk-czas-szybki) var(--fk-krzywa-standard); }
+  .punkt-osi { display: flex; flex-direction: column; align-items: center; padding-top: 4px; }
+  .kropka { flex: none; width: 16px; height: 16px; border-radius: 50%; background: #18794e; }
+  .linia { flex: 1; width: 2px; background: var(--fk-obrys-kontrolka); }
+  .os li:last-child .linia { display: none; }
+  .tresc { display: grid; gap: 8px; padding-bottom: 44px; }
+  .os li:last-child .tresc { padding-bottom: 0; }
+  .tresc > * { margin: 0; }
+  .etap { color: var(--fk-tekst-pomocniczy); }
+  .narzedzie { font-size: 22px; font-weight: 600; line-height: 1.3; }
+  .wiersz { font-size: 17px; line-height: 1.55; color: var(--fk-tekst); }
+  .sluzy { color: var(--fk-tekst-naglowek); }
+  /* Ruch: nagłówek przesuwany transformem (JS), obok niego pionowy pasek akcentu wskazujący czytany etap. */
+  .s4:global(.wzdluz) .naglowek { position: relative; top: 0; will-change: transform; }
+  .s4:global(.wzdluz) .naglowek::after { content: ''; position: absolute; top: 0; bottom: 0; right: -48px; width: 2px; background: var(--fk-przelamanie); }
+  .s4:global(.wzdluz) .os li:global(.czytany) .kropka { box-shadow: 0 0 0 4px #93dfb0; }
   @media (max-width: 1023.98px) {
     .s4-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 28px; }
     .naglowek { position: static; }
-    .os li { gap: 12px; padding-bottom: 20px; }
-    .tresc { padding: 20px; }
+    .os { padding: 24px 20px; }
+    .os li { gap: 16px; }
+    .tresc { padding-bottom: 32px; }
+    .narzedzie { font-size: 20px; }
+    .wiersz { font-size: 16px; }
   }
 </style>
