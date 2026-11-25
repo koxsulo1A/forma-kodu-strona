@@ -3,6 +3,6 @@
 // Bez tego Cloudflare przekierowywał /realizacje/x na /realizacje/x/ (test 24.11), czyli inny adres niż canonical.
 // [Oficjalne] developers.cloudflare.com/workers/static-assets/routing/advanced/html-handling/
 {
-  "name": "centrumkodu",
+  "name": "forma-kodu-strona",
   "assets": { "html_handling": "drop-trailing-slash" }
 }
