@@ -18,7 +18,7 @@ const { linie, tytul = 'zsh' } = Astro.props;
     position: absolute; inset: 0; z-index: 3; display: none; flex-direction: column; overflow: hidden;
     background: #262c38; color: #f1f4f9; border-radius: var(--radius-card);
     box-shadow: 0 1px 2px rgb(28 36 48 / 0.12), 0 18px 40px -12px rgb(28 36 48 / 0.35);
-    transition: opacity 400ms var(--fk-krzywa-standard);
+    transition: opacity 280ms var(--fk-krzywa-standard); /* 400 ms × 0,7 (Kacper 25.11 17:36) */
   }
   :global(.terminal-gra) > .terminal, :global(.terminal-gra) .terminal { display: flex; }
   :global(.terminal-koniec) .terminal { opacity: 0; }

@@ -23,6 +23,7 @@ const pola = [['Usługa', 'Trening personalny'], ['Termin', 'wtorek i czwartek, 
         {t.cta_2 && <a class="przycisk przycisk--drugi" href="#jak-pracujemy">{t.cta_2}</a>}
       </div>
     </div>
+    <div class="okna-blok">
     <div class="okna" data-okna>
       <div class="okna-tor" data-okna-tor>
         <figure class="okno" data-okno data-czat-demo aria-labelledby="s1-czat-h">
@@ -60,6 +61,13 @@ const pola = [['Usługa', 'Trening personalny'], ['Termin', 'wtorek i czwartek, 
         </figure>
       </div>
     </div>
+    <!-- Kacper 25.11 17:36: mały przycisk do przełączania okien (poprzednie / następne). Widoczny tylko, gdy działa karuzela. -->
+    <div class="sterowanie" data-okna-sterowanie hidden>
+      <button type="button" class="strzalka" data-okna-krok="-1" aria-label="Poprzednie okno"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 12V4M4 8l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <span class="t-etykieta licznik" data-okna-licznik aria-live="polite">1 / 3</span>
+      <button type="button" class="strzalka" data-okna-krok="1" aria-label="Następne okno"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M8 4v8M4 8l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    </div>
   </div>
 </section>
 
@@ -69,6 +77,13 @@ const pola = [['Usługa', 'Trening personalny'], ['Termin', 'wtorek i czwartek, 
   .tekst { display: grid; gap: 24px; }
   .akcje { display: flex; flex-wrap: wrap; gap: 16px; }
   /* Okna: stała wysokość 460 px; w karuzeli widać jedno, tor przesuwa się w górę o jedno okno. */
+  .okna-blok { display: grid; gap: 12px; }
+  .sterowanie { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+  .sterowanie[hidden] { display: none; }
+  .strzalka { width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border-radius: 50%; border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo); color: var(--fk-tekst-naglowek); cursor: pointer; transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease; }
+  .strzalka:hover { background: var(--fk-akcent); border-color: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
+  .strzalka:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
+  .licznik { min-width: 44px; text-align: center; color: var(--fk-tekst-pomocniczy); }
   .okna { --wys-okna: 460px; }
   .okna-tor { display: grid; gap: 24px; }
   .okna.karuzela { height: var(--wys-okna); overflow: hidden; border-radius: 16px; }

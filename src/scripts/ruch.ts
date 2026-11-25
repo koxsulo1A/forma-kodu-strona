@@ -263,8 +263,9 @@ function zmianaSlow() {
 }
 
 // ---------- 3b. Terminal macOS przed ilustracją hero (28 plansza 461:1738; Kacper 25.11: także 27 S1) ----------
-// Polecenia pisane 30 ms na znak, linie wyniku od razu (przerwa 220 ms); potem terminal gaśnie 400 ms
-// i po kolei (co 150 ms) pojawiają się elementy [data-po-terminalu]. Raz na wejście. Bez ruchu: od razu stan końcowy.
+// Kacper 25.11 17:36: całość o 30% szybciej (TEMPO 0.7). Polecenia pisane 21 ms na znak, linie wyniku co 154 ms; potem terminal
+// gaśnie 280 ms i po kolei (co 105 ms) pojawiają się elementy [data-po-terminalu]. Raz na wejście. Bez ruchu: od razu stan końcowy.
+const TEMPO = 0.7;
 function terminale() {
   document.querySelectorAll<HTMLElement>('[data-terminal-scena]').forEach((scena) => {
     const term = scena.querySelector<HTMLElement>('[data-terminal]');
@@ -273,7 +274,7 @@ function terminale() {
     const elementy = [...scena.querySelectorAll<HTMLElement>('[data-po-terminalu]')];
     elementy.forEach((e) => { e.style.opacity = '0'; e.style.transform = 'translate3d(0, 16px, 0)'; });
     scena.classList.add('terminal-gra');
-    const czekaj = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    const czekaj = (ms: number) => new Promise((r) => setTimeout(r, ms * TEMPO));
     (async () => {
       await czekaj(450); // po wjeździe hero (fk-wejscie 200–400 ms)
       for (const l of linie) {
@@ -290,10 +291,10 @@ function terminale() {
       await czekaj(400);
       scena.classList.remove('terminal-gra', 'terminal-koniec');
       elementy.forEach((e, i) => {
-        e.style.transition = 'opacity 450ms var(--fk-krzywa-wejscie), transform 450ms var(--fk-krzywa-wejscie)';
-        e.style.transitionDelay = `${i * 150}ms`;
+        e.style.transition = `opacity ${450 * TEMPO}ms var(--fk-krzywa-wejscie), transform ${450 * TEMPO}ms var(--fk-krzywa-wejscie)`;
+        e.style.transitionDelay = `${i * 150 * TEMPO}ms`;
         requestAnimationFrame(() => { e.style.opacity = ''; e.style.transform = ''; });
-        setTimeout(() => { e.style.transition = ''; e.style.transitionDelay = ''; }, 500 + i * 150);
+        setTimeout(() => { e.style.transition = ''; e.style.transitionDelay = ''; }, (500 + i * 150) * TEMPO);
       });
     })();
   });

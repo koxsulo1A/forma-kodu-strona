@@ -509,12 +509,28 @@ document.querySelectorAll<HTMLElement>('[data-okna]').forEach((okna) => {
     lista.forEach((o, j) => { o.inert = j !== n % lista.length; });
   };
   ustaw(0, false);
-  setInterval(() => {
-    if (stop || najechane || document.hidden) return;
-    i += 1;
+  // Mały przycisk ↑/↓ pod oknami (Kacper 25.11 17:36): przełącza od razu i liczy 6 s od nowa; nie zatrzymuje zmiany na stałe.
+  const ster = okna.parentElement?.querySelector<HTMLElement>('[data-okna-sterowanie]');
+  const licznik = ster?.querySelector<HTMLElement>('[data-okna-licznik]');
+  const opisz = () => { if (licznik) licznik.textContent = `${(i % lista.length) + 1} / ${lista.length}`; };
+  let powrot = 0;
+  const idz = (d: number) => {
+    clearTimeout(powrot);
+    if (i >= lista.length) { i = 0; ustaw(0, false); void tor.offsetHeight; } // klik w trakcie powrotu z kopii na pierwsze okno
+    if (d < 0 && i === 0) { i = lista.length; ustaw(i, false); void tor.offsetHeight; } // z pierwszego na ostatnie: start z kopii
+    i += d;
     ustaw(i, true);
-    if (i === lista.length) setTimeout(() => { i = 0; ustaw(0, false); }, 720);
-  }, 6000);
+    if (i >= lista.length) { i = lista.length; powrot = window.setTimeout(() => { i = 0; ustaw(0, false); opisz(); }, 720); }
+    opisz();
+  };
+  let zegar = 0;
+  const startuj = () => { clearInterval(zegar); zegar = window.setInterval(() => { if (!stop && !najechane && !document.hidden) idz(1); }, 6000); };
+  startuj();
+  if (ster) {
+    ster.hidden = false;
+    opisz();
+    ster.querySelectorAll<HTMLButtonElement>('[data-okna-krok]').forEach((b) => b.addEventListener('click', () => { idz(Number(b.dataset.oknaKrok)); startuj(); }));
+  }
   okna.addEventListener('pointerenter', () => { najechane = true; });
   okna.addEventListener('pointerleave', () => { najechane = false; });
   okna.addEventListener('focusin', () => { najechane = true; });
