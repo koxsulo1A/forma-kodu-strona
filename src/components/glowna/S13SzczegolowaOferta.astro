@@ -1,0 +1,102 @@
+---
+// 27 S13 Szczegółowa oferta (wariant B: poziomy przełącznik grup). Zakładki role=tablist (strzałki ←/→, Home/End w strona.ts).
+// W panelu: pierwsza usługa jako ciemna karta główna, reszta jako lista z ceną po prawej.
+// Bez JS pasek zakładek jest ukryty, a wszystkie panele widać jeden pod drugim (każdy z własnym nagłówkiem).
+// Ceny z jednego cennika; makieta: „Przykład z rynku”, kod: „Cena Forma Kodu” (nasza_cena: true).
+import { cena, cenaTekst } from '../../lib/ceny.mjs';
+interface Props { t: any }
+const { t } = Astro.props;
+const ceny = (u: any) => {
+  const lista = (u.ceny ?? []).filter((c: any) => c.cena).map((c: any) => ({ c: cena(c.cena), za: c.za }));
+  if (!lista.length) return { etykieta: 'Cena', tekst: u.status || 'wycena po rozmowie' };
+  const nasza = lista.every((x: any) => x.c?.nasza_cena);
+  return { etykieta: nasza ? 'Cena Forma Kodu' : 'Przykład z rynku, nie nasz cennik', tekst: lista.map((x: any) => `${cenaTekst(x.c)} ${x.za}`).join(', ') };
+};
+---
+<section class="s13 baza segment" id="pelna-oferta" data-segment="S13 Szczegółowa oferta" aria-labelledby="s13-h">
+  <div class="kontener s13-wnetrze">
+    <header class="s13-naglowek">
+      <p class="t-etykieta naglowkowy">{t.etykieta}</p>
+      <h2 id="s13-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      <p class="t-tresc-l naglowkowy">{t.lead}</p>
+    </header>
+    <div class="przelacznik-cta">
+      <div class="zakladki" role="tablist" aria-label="Grupy usług" hidden>
+        {t.zakladki.map((z: any, i: number) => (
+          <button type="button" role="tab" id={`s13-z-${i}`} aria-controls={`s13-panel-${i}`} aria-selected={String(i === 0)} tabindex={i === 0 ? 0 : -1}>
+            <span class="t-przycisk">{z.etykieta}</span><span class="t-etykieta podpis">{z.podpis}</span>
+          </button>
+        ))}
+      </div>
+      <p class="cta"><span class="t-tresc naglowkowy">{t.cta_tekst}</span><a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta}</a></p>
+    </div>
+    {t.zakladki.map((z: any, i: number) => {
+      const [glowna, ...reszta] = z.uslugi;
+      const cg = glowna ? ceny(glowna) : null;
+      return (
+        <div class="panel" role="tabpanel" id={`s13-panel-${i}`} aria-labelledby={`s13-z-${i}`} tabindex="0">
+          <h3 class="t-h4 naglowkowy bez-js">{z.etykieta}</h3>
+          {glowna && (
+            <article class="glowna">
+              <div class="glowna-tekst">
+                <h4 class="t-h3">{glowna.nazwa}</h4>
+                <p class="t-tresc">{glowna.opis}</p>
+                {glowna.ograniczenie && <p class="t-maly">Ograniczenie: {glowna.ograniczenie}</p>}
+              </div>
+              <p class="glowna-cena"><span class="t-etykieta">{cg!.etykieta}</span><span class="t-przycisk">{cg!.tekst}</span></p>
+            </article>
+          )}
+          {reszta.length > 0 && (
+            <ul role="list" class="reszta">
+              {reszta.map((u: any) => {
+                const c = ceny(u);
+                return (
+                  <li>
+                    <div class="u-tekst">
+                      <h4 class="t-h4 naglowkowy">{u.nazwa}</h4>
+                      <p class="t-maly">{u.opis}</p>
+                      {u.ograniczenie && <p class="t-maly">Ograniczenie: {u.ograniczenie}</p>}
+                    </div>
+                    <p class="u-cena"><span class="t-etykieta">{c.etykieta}</span><span class="t-przycisk naglowkowy">{c.tekst}</span></p>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .s13 { padding-block: 32px; }
+  .s13-wnetrze { display: grid; gap: 24px; }
+  .s13-naglowek { display: grid; gap: 12px; max-width: 930px; }
+  .przelacznik-cta { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .zakladki { display: flex; gap: 4px; padding: 4px; border-radius: var(--radius-pill); background: var(--fk-tlo-podniesione); max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+  .zakladki[hidden] { display: none; }
+  .zakladki button { display: inline-flex; align-items: baseline; gap: 8px; padding: 12px 20px; border: 0; border-radius: var(--radius-pill); background: none; color: var(--fk-tekst-naglowek); cursor: pointer; white-space: nowrap; transition: background-color var(--fk-czas-szybki); }
+  .zakladki button:hover { background: var(--fk-tlo-powierzchnia); }
+  .zakladki [aria-selected='true'] { background: var(--fk-grad-zakladka); color: var(--fk-tekst-na-akcencie); box-shadow: var(--fk-cien-zakladka); }
+  .podpis { opacity: 0.8; }
+  .cta { display: flex; align-items: center; gap: 16px; }
+  .panel { display: grid; grid-template-columns: 520fr 768fr; gap: 24px; align-items: stretch; }
+  .panel[hidden] { display: none; }
+  .panel:focus-visible { outline-offset: 6px; }
+  .bez-js { grid-column: 1 / -1; }
+  :global(html.js) .bez-js { display: none; }
+  .glowna { display: flex; flex-direction: column; justify-content: space-between; gap: 24px; padding: 28px; border-radius: var(--radius-card); background: var(--fk-grad-czern); color: var(--fk-panel-czern-tekst); }
+  .glowna-tekst { display: grid; gap: 12px; }
+  .glowna-cena { display: grid; gap: 4px; padding: 12px 16px; border-radius: var(--radius-control); background: var(--fk-kafel-3-tlo); color: var(--fk-kafel-3-tekst); }
+  .reszta { display: grid; align-content: start; padding: 0 24px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .reszta li { display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 24px; padding: 16px 0; }
+  .reszta li + li { border-top: 1px solid var(--fk-obrys); }
+  .u-tekst, .u-cena { display: grid; gap: 4px; align-content: start; }
+  @media (max-width: 1023.98px) {
+    .panel { grid-template-columns: 1fr; }
+    .reszta { padding: 0 20px; }
+    .reszta li { grid-template-columns: 1fr; gap: 8px; }
+    .cta { flex-wrap: wrap; }
+  }
+</style>

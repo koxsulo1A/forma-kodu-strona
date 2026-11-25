@@ -1,0 +1,51 @@
+---
+// 30 S7 Od pomiaru do kroku: nagłówek przyklejony po lewej, oś pionowa 5 punktów (RAMY → KROK), przykładowy wpis pod punktem 04 (WNIOSEK).
+// Punkty podświetlają się po przejściu połowy ekranu (data-os-pionowa, strona.ts 9c).
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s7 baza segment" id="raport" data-segment="S7 Od pomiaru do kroku" aria-labelledby="s7-h">
+  <div class="kontener s7-wnetrze">
+    <header class="naglowek">
+      <p class="plakietki">{t.plakietki.map((p: string) => <span class="t-etykieta plak">{p}</span>)}</p>
+      <h2 id="s7-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
+    <ol role="list" class="os" data-os-pionowa>
+      {t.kroki.map((k: any, i: number) => (
+        <li data-krok-osi class:list={[{ przeszly: i === 0 }]}>
+          <span class="nr t-etykieta" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+          <div class="tresc">
+            <p class="t-etykieta akcentowy">{k.etap}</p>
+            <h3 class="t-h4 naglowkowy">{k.tytul}</h3>
+            <p class="t-tresc">{k.opis}</p>
+            {i === 3 && t.przyklad && (
+              <p class="przyklad t-maly"><span class="t-etykieta plak">przykład</span> {t.przyklad}</p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .s7 { padding-block: clamp(48px, 5vw, 72px); }
+  .s7-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 776fr); gap: 96px; align-items: start; }
+  .naglowek { display: grid; gap: 12px; position: sticky; top: calc(var(--fk-wys-paska) + 24px); }
+  .plakietki { display: flex; flex-wrap: wrap; gap: 8px; }
+  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); }
+  .os li { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 24px; padding-bottom: 36px; }
+  .os li:not(:last-child)::before { content: ''; position: absolute; left: 19px; top: 44px; bottom: 4px; width: 2px; background: var(--fk-obrys-kontrolka); transition: background var(--fk-czas-szybki); }
+  .nr { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-tlo-powierzchnia); border: 2px solid var(--fk-obrys-kontrolka); color: var(--fk-tekst-naglowek); transition: background var(--fk-czas-szybki), border-color var(--fk-czas-szybki); }
+  .os li:global(.przeszly) .nr { background: var(--fk-akcent); border-color: var(--fk-akcent); color: var(--fk-tlo); }
+  .os li:global(.przeszly)::before { background: var(--fk-akcent); }
+  .tresc { display: grid; gap: 6px; padding-top: 6px; }
+  .przyklad { margin-top: 8px; padding: 16px 20px; border-radius: var(--radius-control); background: var(--fk-tlo-podniesione); border: 1px dashed var(--fk-obrys-kontrolka); }
+  .przyklad .plak { margin-right: 6px; }
+  @media (max-width: 1023.98px) {
+    .s7-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .naglowek { position: static; }
+    .os li { gap: 14px; padding-bottom: 24px; }
+  }
+</style>

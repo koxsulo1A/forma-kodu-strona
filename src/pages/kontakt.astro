@@ -1,0 +1,23 @@
+---
+// /kontakt: formularz „Opisz projekt” jako zwykła strona. Działa bez JS (przyciski „Opisz projekt” prowadzą tu, gdy sheet się nie otworzy).
+import Uklad from '../layouts/Uklad.astro';
+import FormularzProjektu from '../components/wspolne/FormularzProjektu.astro';
+const okruszki = [{ nazwa: 'Strona główna', url: '/' }, { nazwa: 'Kontakt', url: '/kontakt' }];
+---
+<Uklad strona="kontakt" nazwaStrony="Opisz projekt" okruszki={okruszki}>
+  <section class="kontakt baza segment" data-segment="Kontakt" aria-labelledby="kontakt-h">
+    <div class="kontener-waski kontakt-wnetrze">
+      <header>
+        <h1 id="kontakt-h" class="t-h2 naglowkowy">Opisz swój projekt</h1>
+        <p class="t-tresc-l">Napisz w kilku zdaniach, czym zajmuje się Twoja firma i co chcesz zmienić. Odpowiemy na podany adres e-mail.</p>
+      </header>
+      <FormularzProjektu id="kontakt" poziom="h2" />
+    </div>
+  </section>
+</Uklad>
+
+<style>
+  .kontakt { padding-block: clamp(40px, 6vw, 90px); }
+  .kontakt-wnetrze { display: grid; gap: 32px; max-width: 640px; }
+  .kontakt-wnetrze header { display: grid; gap: 16px; }
+</style>

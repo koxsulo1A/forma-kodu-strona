@@ -1,0 +1,45 @@
+---
+// 28 S5 Zapytaj o stronę (wariant C): po lewej nagłówek i korzyści z ikoną ✓, po prawej karta z formularzem.
+// Formularz = wspólny „Opisz projekt” (ten sam co w sheecie i na /kontakt), pod nim klauzula informacyjna bez pola zgody (decyzja 1A).
+// Makieta ma formularz w 3 krokach (Kontakt / Godzina / Zgoda): kod ma jeden krok, różnica opisana w dokumencie zmian.
+import FormularzProjektu from '../wspolne/FormularzProjektu.astro';
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s5 baza segment" id="zapytaj" data-segment="S5 Zapytaj o stronę" aria-labelledby="s5-h">
+  <div class="kontener s5-wnetrze">
+    <div class="lewa">
+      <header class="naglowek">
+        <h2 id="s5-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+        {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+      </header>
+      {t.korzysci_naglowek && <h3 class="t-h4 naglowkowy">{t.korzysci_naglowek}</h3>}
+      <ul role="list" class="korzysci">
+        {t.korzysci.map((k: any) => (
+          <li><span class="znak" aria-hidden="true"><Ikona nazwa="check" rozmiar={20} /></span><div><p class="t-tresc-mocna naglowkowy">{k.tytul}</p><p class="t-tresc">{k.opis}</p></div></li>
+        ))}
+      </ul>
+    </div>
+    <div class="karta">
+      <FormularzProjektu id="s5-formularz" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .s5 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s5-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 808fr); gap: 64px; align-items: start; }
+  .lewa { display: grid; gap: 24px; }
+  .naglowek { display: grid; gap: 12px; }
+  .korzysci { display: grid; gap: 20px; }
+  .korzysci li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 12px; }
+  .korzysci li > div { display: grid; gap: 4px; }
+  .znak { color: var(--fk-sukces); padding-top: 3px; }
+  .karta { padding: 32px 40px 40px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  @media (max-width: 1023.98px) {
+    .s5-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+    .naglowek { text-align: center; }
+    .karta { padding: 24px 20px; }
+  }
+</style>

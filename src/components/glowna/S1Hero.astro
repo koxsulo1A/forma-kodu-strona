@@ -1,0 +1,132 @@
+---
+// 27 S1 Hero (93:35, wariant C: jedno okno i zakres; ilustracja B wybrana 24.11). Podział 60/40 + pas zakresu (wycięcie w bazie, widać kratkę W1).
+// Ilustracja to przykład (firma przykładowa, dane przykładowe, podpisane na ilustracji): dekoracja aria-hidden, bez wpływu na treść.
+interface Props { t: any }
+const { t } = Astro.props;
+const slupki = [12, 18, 17, 26, 31, 38];
+---
+<section class="s1 baza segment" id="start" data-segment="S1 Hero" aria-labelledby="s1-h">
+  <div class="kontener s1-podzial">
+    <div class="s1-tekst">
+      <h1 id="s1-h" class="t-display pojaw">{t.h1}</h1>
+      <p class="t-tresc-l">{t.lead}</p>
+      <div class="s1-akcje">
+        <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta_1}</a>
+        {t.cta_2 && <a class="przycisk przycisk--drugi" href="#oferta">{t.cta_2}</a>}
+      </div>
+    </div>
+    <div class="s1-ilustracja" aria-hidden="true">
+      <div class="okno">
+        <div class="okno-pasek">
+          <i class="k1"></i><i class="k2"></i><i class="k3"></i>
+          <span class="t-etykieta okno-adres">gabinet.przyklad</span>
+        </div>
+        <div class="okno-tresc">
+          <p class="t-maly pomocniczy">Gabinet fizjoterapii (firma przykładowa)</p>
+          <p class="t-h4 naglowkowy">Wolne terminy w tym tygodniu</p>
+          <div class="terminy t-maly"><span>czw 16:00</span><span>pt 9:30</span><span>sob 10:00</span></div>
+          <div class="okno-akcje"><span class="rezerwuj t-maly-mocny">Zarezerwuj termin</span><span class="t-nawigacja">Godziny i dojazd</span></div>
+        </div>
+      </div>
+      <div class="czat">
+        <div class="czat-gora"><p class="t-maly-mocny">Asystent na stronie</p><p class="t-etykieta">Przykładowa rozmowa</p></div>
+        <div class="czat-wiadomosci">
+          <p class="dymek klient"><small>Klient</small>Czy w sobotę są wolne terminy?</p>
+          <p class="dymek asystent"><small>Asystent</small>Wolne terminy są w kalendarzu rezerwacji. Podać link?</p>
+          <p class="dymek klient"><small>Klient</small>Tak, poproszę.</p>
+        </div>
+        <div class="podpowiedzi"><span>Ile to kosztuje?</span><span>Jak długo trwa?</span><span>Wolne terminy</span></div>
+      </div>
+      <div class="wykres">
+        <p class="t-maly-mocny naglowkowy">Widoczność SEO/GEO</p>
+        <p class="t-maly pomocniczy">Dane przykładowe, nie pomiar</p>
+        <p class="wykres-os t-etykieta">wejścia z wyszukiwarki</p>
+        <div class="slupki">
+          {slupki.map((v, i) => <span class:list={['slupek', v < 19 ? 'niski' : v < 30 ? 'sredni' : 'wysoki']} data-v={v} data-i={i + 1}></span>)}
+        </div>
+        <p class="wykres-x t-etykieta"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></p>
+        <p class="legenda"><span>niski wynik</span><i></i><span>→ wysoki wynik</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="kontener">
+    <div class="pas kratka">
+      <h2 class="t-h4 pas-naglowek">{t.pas_naglowek}</h2>
+      <ul role="list" class="pas-lista">
+        {t.pas_zakresu.map((p: any) => (
+          <li><h3 class="t-przycisk naglowkowy">{p.tytul}</h3><p class="t-maly pomocniczy">{p.opis}</p></li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s1 { padding-bottom: 38px; }
+  .s1-podzial { display: grid; grid-template-columns: minmax(0, 712fr) minmax(0, 512fr); gap: 88px; align-items: center; min-height: 643px; padding-block: 40px; }
+  .s1-tekst { display: grid; gap: 28px; }
+  .s1-akcje { display: flex; flex-wrap: wrap; gap: 16px; }
+  .pas {
+    margin-top: 48px; display: grid; grid-template-columns: 220px 1fr; gap: 32px; padding: 28px 32px;
+    border: 1px solid var(--fk-obrys); border-radius: var(--radius-card);
+  }
+  .pas-lista { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 32px; }
+  .pas-lista li { display: grid; gap: 8px; align-content: start; padding-left: 32px; border-left: 1px solid var(--fk-obrys); }
+
+  /* Ilustracja (40%) */
+  .s1-ilustracja { position: relative; display: grid; grid-template-columns: 273fr 224fr; gap: 15px; align-items: start; }
+  .okno { grid-column: 1 / -1; background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); overflow: hidden; }
+  .okno-pasek { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--fk-tlo-podniesione); }
+  .okno-pasek i { width: 10px; height: 10px; border-radius: 50%; }
+  .k1 { background: var(--fk-okno-kropka-1); } .k2 { background: var(--fk-okno-kropka-2); } .k3 { background: var(--fk-okno-kropka-3); }
+  .okno-adres { flex: 1; background: var(--fk-tlo); border-radius: var(--radius-pill); padding: 4px 12px; color: var(--fk-tekst-pomocniczy); }
+  .okno-tresc { display: grid; gap: 12px; padding: 24px 28px 28px; }
+  .terminy { display: flex; gap: 8px; flex-wrap: wrap; }
+  .terminy span { padding: 8px 16px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: var(--radius-control); }
+  .okno-akcje { display: flex; align-items: center; gap: 16px; padding-top: 8px; }
+  .rezerwuj { background: var(--fk-krok-koncowy); color: var(--fk-krok-koncowy-tekst); padding: 8px 16px; border-radius: var(--radius-control); }
+  .czat { background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: 20px; overflow: hidden; }
+  .czat-gora { background: var(--fk-kafel-2-tlo); color: var(--fk-kafel-2-tekst); padding: 12px 16px; display: grid; gap: 4px; }
+  .czat-wiadomosci { display: grid; gap: 8px; padding: 16px; }
+  .dymek { font-size: var(--fk-font-maly); line-height: 1.5; color: var(--fk-tekst-naglowek); padding: 8px 12px; border-radius: 12px; display: grid; gap: 4px; max-width: 90%; }
+  .dymek small { font-family: var(--fk-rodzina-mono); font-size: 11px; color: var(--fk-tekst-pomocniczy); }
+  .klient { background: var(--fk-tlo-podniesione); justify-self: end; }
+  .asystent { border: 1px solid var(--fk-obrys); }
+  .podpowiedzi { display: flex; gap: 6px; padding: 0 16px 14px; overflow: hidden; }
+  .podpowiedzi span { flex: none; font-size: 11px; color: var(--fk-akcent); border: 1px solid var(--fk-akcent); border-radius: var(--radius-pill); padding: 6px 10px; }
+  .wykres { background: var(--fk-tlo); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); padding: 16px; display: grid; gap: 8px; }
+  .wykres-os { color: var(--fk-tekst-pomocniczy); }
+  .slupki {
+    height: 110px; display: flex; align-items: flex-end; gap: 13px; padding-left: 8px;
+    border-bottom: 1px solid var(--fk-obrys-kontrolka);
+    background: linear-gradient(var(--fk-obrys) 1px, transparent 1px) 0 0 / 100% 50%;
+  }
+  .slupek { width: 14px; }
+  .slupek.niski { background: var(--fk-okno-kropka-1); }
+  .slupek.sredni { background: var(--fk-okno-kropka-2); }
+  .slupek.wysoki { background: var(--fk-krok-koncowy); }
+  .slupek[data-v='12'] { height: 31%; } .slupek[data-v='18'] { height: 47%; } .slupek[data-v='17'] { height: 44%; }
+  .slupek[data-v='26'] { height: 68%; } .slupek[data-v='31'] { height: 81%; } .slupek[data-v='38'] { height: 99%; }
+  .wykres-x { display: flex; gap: 13px; padding-left: 10px; color: var(--fk-tekst-pomocniczy); }
+  .wykres-x span { width: 14px; text-align: center; }
+  .legenda { display: flex; align-items: center; gap: 4px; font-size: 11px; color: var(--fk-tekst-pomocniczy); }
+  .legenda i { width: 40px; height: 8px; border-radius: 4px; background: var(--fk-grad-skala); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html:not(.bez-ruchu)) .slupek { animation: rosnij var(--fk-czas-odslona) var(--fk-krzywa-wejscie) both; transform-origin: bottom; }
+    :global(html:not(.bez-ruchu)) .slupek[data-i='2'] { animation-delay: 60ms; } :global(html:not(.bez-ruchu)) .slupek[data-i='3'] { animation-delay: 120ms; }
+    :global(html:not(.bez-ruchu)) .slupek[data-i='4'] { animation-delay: 180ms; } :global(html:not(.bez-ruchu)) .slupek[data-i='5'] { animation-delay: 240ms; }
+    :global(html:not(.bez-ruchu)) .slupek[data-i='6'] { animation-delay: 300ms; }
+  }
+  @keyframes rosnij { from { transform: scaleY(0); } }
+
+  @media (max-width: 1023.98px) {
+    .s1-podzial { grid-template-columns: 1fr; gap: 40px; min-height: 0; padding-block: 24px 16px; }
+    .s1-akcje .przycisk { flex: 1; }
+    .s1-ilustracja { max-width: 512px; grid-template-columns: 1fr; }
+    .pas { grid-template-columns: 1fr; gap: 0; padding: 28px 24px; margin-top: 32px; }
+    .pas-naglowek { padding-bottom: 28px; }
+    .pas-lista { grid-template-columns: 1fr; gap: 0; }
+    .pas-lista li { padding: 28px 0; border-left: 0; border-top: 1px solid var(--fk-obrys); }
+  }
+</style>

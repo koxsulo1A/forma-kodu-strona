@@ -1,0 +1,216 @@
+{
+  "s1_hero": {
+    "atuty": [
+      "Ograniczenia na piśmie",
+      "Twoje treści",
+      "Człowiek obsługuje wyjątki"
+    ],
+    "h1": "Znowu odpisujesz na to samo pytanie? Niech zrobi to bot.",
+    "lead": "Pokazujesz nam czynność, która co dzień zabiera Ci czas. Sprawdzamy, czy da się ją zautomatyzować, i mówimy wprost, czego rozwiązanie nie zrobi.",
+    "cta_1": "Opisz swój projekt",
+    "cta_2": "Zobacz, jak pracujemy"
+  },
+  "s2_dla_kogo": {
+    "naglowek": "Ile razy dziś odpisałeś: „Jesteśmy otwarci do 18”?",
+    "lead": "Większość takich czynności da się opisać krok po kroku. A to, co da się opisać, zwykle da się zautomatyzować.",
+    "sytuacje": [
+      {
+        "tytul": "Pytania o cennik i godziny",
+        "opis": "Te same odpowiedzi wysyłasz kilka razy dziennie."
+      },
+      {
+        "tytul": "Potwierdzenia wizyt",
+        "opis": "Znowu przypominasz klientowi o wizycie albo o tej samej fakturze?"
+      },
+      {
+        "tytul": "Przepisywanie zgłoszeń",
+        "opis": "Dane z wiadomości przepisujesz do arkusza lub kalendarza."
+      },
+      {
+        "tytul": "Pytania o dojazd i parking",
+        "opis": "Dojazd i parking opisujesz w każdej wiadomości od nowa."
+      },
+      {
+        "tytul": "Przesunięcia i odwołania",
+        "opis": "Zmiany terminów wpisujesz ręcznie do kalendarza i osobno odpisujesz klientowi."
+      },
+      {
+        "tytul": "Zbieranie danych od klientów",
+        "opis": "Imię, telefon i opis sprawy dostajesz w kilku wiadomościach i łączysz w jedną notatkę."
+      }
+    ]
+  },
+  "s3_zakres": {
+    "naglowek": "Cztery zakresy do wyboru",
+    "lead": "Wybierasz, od czego zaczynamy. Resztę ustalamy na piśmie.",
+    "zakresy": [
+      {
+        "nazwa": "Automatyzacja jednego procesu",
+        "opis": "Jedna powtarzalna czynność, opisana i sprawdzona na Twoich przykładach.",
+        "status": "dostępny",
+        "cta": "Opisz proces"
+      },
+      {
+        "nazwa": "Bot czatowy",
+        "opis": "Odpowiada na powtarzalne pytania na podstawie treści, które zatwierdzisz.",
+        "status": "dostępny",
+        "cta": "Opisz bota"
+      },
+      {
+        "nazwa": "Automatyzacja wielu procesów",
+        "opis": "Kilka powtarzalnych czynności połączonych w jeden przepływ. Każdą opisujemy i sprawdzamy osobno na Twoich przykładach.",
+        "status": "wkrótce",
+        "cta": ""
+      },
+      {
+        "nazwa": "Automatyczny recepcjonista",
+        "opis": "Przyjmuje zgłoszenia i pytania, przekazuje je do kalendarza lub do Ciebie. Terminy rezerwuje tylko po połączeniu z kalendarzem, wyjątki obsługuje człowiek.",
+        "status": "wkrótce",
+        "cta": ""
+      }
+    ]
+  },
+  "s4_boty": {
+    "naglowek": "Co potrafią, a czego nie",
+    "lead": "Bot czatowy, automatyczny recepcjonista i automatyzacja procesu. O ograniczeniach mówimy przed startem.",
+    "bloki": [
+      {
+        "nazwa": "Bot czatowy",
+        "tytul": "Bot czatowy: co potrafi, a czego nie",
+        "podtytul": "Usłyszysz to, zanim cokolwiek uruchomimy.",
+        "potrafi": [
+          "Odpowiada na powtarzalne pytania z Twoich treści",
+          "Przekazuje rozmowę człowiekowi, gdy nie zna odpowiedzi",
+          "Działa według listy, którą zatwierdzasz"
+        ],
+        "nie_potrafi": [
+          "Nie zastępuje kontaktu z klientem",
+          "Nie rezerwuje terminów bez połączenia z kalendarzem",
+          "Nie odpowiada na pytania spoza zatwierdzonych treści"
+        ]
+      },
+      {
+        "nazwa": "Automatyczny recepcjonista",
+        "tytul": "Automatyczny recepcjonista: co potrafi, a czego nie",
+        "podtytul": "Usłyszysz to, zanim cokolwiek uruchomimy.",
+        "potrafi": [
+          "Przyjmuje zgłoszenia i pytania",
+          "Przekazuje je do kalendarza lub do Ciebie"
+        ],
+        "nie_potrafi": [
+          "Nie rezerwuje terminów bez połączenia z kalendarzem",
+          "Nie obsługuje wyjątków: robi to człowiek"
+        ]
+      },
+      {
+        "nazwa": "Automatyzacja procesu",
+        "tytul": "Automatyzacja procesu: co potrafi, a czego nie",
+        "podtytul": "Usłyszysz to, zanim cokolwiek uruchomimy.",
+        "potrafi": [
+          "Wykonuje jedną powtarzalną czynność krok po kroku",
+          "Działa według opisu sprawdzonego na Twoich przykładach"
+        ],
+        "nie_potrafi": [
+          "Nie obsługuje wyjątków od reguł: robi to człowiek",
+          "Nie działa bez Twojej decyzji o uruchomieniu"
+        ]
+      }
+    ]
+  },
+  "s5_jak_pracujemy": {
+    "naglowek": "Cztery kroki od opisu do uruchomienia",
+    "lead": "Przy każdym kroku wiesz, co robimy my, a co Ty.",
+    "kroki": [
+      {
+        "tytul": "Spisujemy proces",
+        "opis": "Opisujemy czynność krok po kroku."
+      },
+      {
+        "tytul": "Sprawdzamy",
+        "opis": "Testujemy na Twoich przykładach."
+      },
+      {
+        "tytul": "Uruchamiamy",
+        "opis": "Włączamy po Twojej decyzji."
+      },
+      {
+        "tytul": "Pokazujemy obsługę",
+        "opis": "Dostajesz instrukcję, w tym wyłączenia."
+      }
+    ]
+  },
+  "s6_ograniczenia": {
+    "naglowek": "Co jeszcze warto wiedzieć",
+    "lead": "Koszty narzędzi i modeli AI są osobne.",
+    "kroki": [
+      "Koszty platform i modeli AI podajemy przed startem",
+      "Wyjątki od reguł obsługuje człowiek, nie bot.",
+      "Zasady dotyczące danych klientów spisujemy przed startem.",
+      "Dostajesz instrukcję, jak rozwiązanie wyłączyć i sprawdzić, co zrobiło."
+    ]
+  },
+  "s7_cena": {
+    "naglowek": "Ile to kosztuje",
+    "lead": "Cena zależy od procesu, narzędzi i tego, ile jest wyjątków.",
+    "zakresy": [
+      {
+        "nazwa": "Automatyzacja jednego procesu",
+        "opis": "Jedna powtarzalna czynność, opisana i sprawdzona na Twoich przykładach.",
+        "cena": "automatyzacje-jeden-proces"
+      },
+      {
+        "nazwa": "Automatyzacja wielu procesów",
+        "opis": "Wkrótce. Kilka powiązanych czynności w jednym przepływie. Każdy proces opisujemy i sprawdzamy osobno.",
+        "cena": null
+      },
+      {
+        "nazwa": "Bot czatowy",
+        "opis": "Odpowiada na powtarzalne pytania z treści, które zatwierdzasz. Gdy nie zna odpowiedzi, przekazuje rozmowę człowiekowi.",
+        "cena": "automatyzacje-bot-czatowy"
+      },
+      {
+        "nazwa": "Automatyczny recepcjonista",
+        "opis": "Wkrótce. Przyjmuje zgłoszenia i przekazuje je do kalendarza lub do Ciebie. Terminy rezerwuje tylko po połączeniu z kalendarzem.",
+        "cena": null
+      }
+    ],
+    "przypisy": [
+      "Kwoty „od” z naszego cennika. Cenę dla Ciebie podajemy na piśmie po rozmowie o procesie.",
+      "Koszty narzędzi i modeli AI są osobne, podajemy je przed startem. Wyjątki od reguł obsługuje człowiek, nie bot."
+    ]
+  },
+  "s8_przyklad": {
+    "naglowek": "Pokazujemy projekt własny, bo realizacji klientów jeszcze nie ma",
+    "lead": "Wolimy pusty kafel niż wymyśloną realizację.",
+    "realizacje": [
+      "zdjecia-sprzedazowe"
+    ],
+    "puste": [
+      {
+        "tytul": "Bot czatowy",
+        "opis": "Jeszcze bez realizacji. Pierwsza powstanie w pilotażu."
+      },
+      {
+        "tytul": "Automatyczny recepcjonista",
+        "opis": "Jeszcze bez realizacji. Pierwsza powstanie w pilotażu."
+      }
+    ],
+    "pilotaz": {
+      "tytul": "Pilotaż automatyzacji lub bota",
+      "opis": "Z opisem ograniczeń, na pisemnych warunkach.",
+      "cta": "Zapytaj o pilotaż"
+    }
+  },
+  "s9_faq": {
+    "naglowek": "Pytania, które warto zadać przed rozmową"
+  },
+  "s10_zamkniecie": {
+    "naglowek": "Którą czynność powtarzasz najczęściej? Napisz, sprawdzimy ją.",
+    "cta": "Opisz swój projekt",
+    "atuty": [
+      "Ograniczenia na piśmie",
+      "Twoje treści",
+      "Człowiek obsługuje wyjątki"
+    ]
+  }
+}

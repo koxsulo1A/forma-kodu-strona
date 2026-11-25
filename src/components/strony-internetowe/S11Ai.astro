@@ -1,0 +1,52 @@
+---
+// 28 S11 Wyszukiwarki i asystenci AI: pigułki dostawców, siatka 3×2 kart „co sprawdzisz na stronie”, ciemny blok „Nie robimy zbędnych rzeczy”.
+// Bez obietnic cytowań w odpowiedziach AI. Telefon: karty jako jedna karta swipe ze wskaźnikiem; ciemny blok 2×2 → jedna kolumna.
+interface Props { t: any }
+const { t } = Astro.props;
+const nr = t.nie_robimy;
+---
+<section class="s11 baza segment" id="ai" data-segment="S11 Wyszukiwarki i AI" aria-labelledby="s11-h">
+  <div class="kontener s11-wnetrze">
+    <header class="naglowek">
+      <h2 id="s11-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l">{t.lead}</p>}
+    </header>
+    {t.dostawcy.length > 0 && <ul role="list" class="dostawcy">{t.dostawcy.map((d: string) => <li class="t-maly naglowkowy">{d}</li>)}</ul>}
+    {t.uwaga && <p class="t-tresc uwaga">{t.uwaga}</p>}
+    <ul role="list" class="karty swipe" data-swipe="s11-wskaznik">
+      {t.karty.map((k: any) => <li><h3 class="t-h4 naglowkowy">{k.tytul}</h3><p class="t-tresc">{k.opis}</p></li>)}
+    </ul>
+    <div class="wskaznik-swipe" id="s11-wskaznik" aria-hidden="true">
+      <ol>{t.karty.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
+      <span data-licznik>1 z {t.karty.length}</span>
+    </div>
+    <div class="nie-robimy">
+      <h3 class="t-h3">{nr.naglowek}</h3>
+      <ul role="list" class="pozycje">
+        {nr.pozycje.map((p: any) => <li><h4 class="t-h4">{p.tytul}</h4><p class="t-maly">{p.opis}</p></li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s11 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s11-wnetrze { display: grid; gap: 32px; }
+  .naglowek { display: grid; gap: 16px; max-width: 980px; }
+  .dostawcy { display: flex; flex-wrap: wrap; gap: 12px; }
+  .dostawcy li { padding: 8px 16px; border-radius: var(--radius-pill); background: var(--fk-tlo-powierzchnia); }
+  .uwaga { max-width: 860px; }
+  .karty { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .karty li { display: grid; gap: 12px; align-content: start; padding: 28px; border-radius: var(--radius-card); border: 1px solid var(--fk-obrys); background: var(--fk-tlo); }
+  .nie-robimy { display: grid; gap: 20px; padding: 32px; border-radius: var(--radius-card); background: var(--fk-grad-czern); color: var(--fk-panel-czern-tekst); }
+  .nie-robimy :is(h3, h4) { color: inherit; }
+  .pozycje { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .pozycje li { display: grid; gap: 8px; align-content: start; }
+  @media (max-width: 1023.98px) {
+    .s11-wnetrze { gap: 24px; }
+    .dostawcy { gap: 8px; }
+    .karty li { padding: 24px 20px; }
+    .nie-robimy { padding: 24px 20px; }
+    .pozycje { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  }
+</style>

@@ -1,0 +1,162 @@
+---
+// 32 S6 Formularz zgłoszeniowy (wariant C): spis etapów po lewej (przyklejony), 4 etapy jako karty po prawej. Jedno wysłanie na końcu (POST /api/pilotaz).
+// Wybór „chipsami” = zwykłe pola radio/checkbox (działa klawiaturą i bez JS). Godziny telefonu widać tylko po wybraniu kontaktu telefonicznego.
+// Prawo (decyzja 1A): BEZ pola zgody, pod formularzem klauzula informacyjna. Makieta ma checkbox zgody: kod idzie za decyzją.
+// „Zapisz formularz w przeglądarce”: szkic w localStorage tej przeglądarki (strona.ts 6b), do nas trafia dopiero po wysłaniu.
+// Stany (błąd pola, wysyłanie, błąd wysyłki, sukces): te same co „Opisz projekt” (data-formularz, strona.ts 6).
+import KlauzulaInformacyjna from '../prawo/KlauzulaInformacyjna.astro';
+import Ikona from '../wspolne/Ikona.astro';
+import { getEntry } from 'astro:content';
+interface Props { t: any }
+const { t } = Astro.props;
+const firma = (await getEntry('firma', 'firma'))!.data;
+const slug = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+---
+<section class="s6 baza segment" id="zgloszenie" data-segment="S6 Formularz zgłoszeniowy" aria-labelledby="s6-h">
+  <div class="kontener s6-wnetrze">
+    <header class="naglowek">
+      <h2 id="s6-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l">{t.lead}</p>}
+    </header>
+    <div class="uklad">
+      <nav class="spis" aria-label="Etapy formularza">
+        <ol role="list">{t.etapy.map((e: string, i: number) => <li><a href={`#etap-${i + 1}`} class="t-maly"><span class="nr t-etykieta" aria-hidden="true">{i + 1}</span>{e}</a></li>)}</ol>
+      </nav>
+      <div>
+        <form class="formularz" action="/api/pilotaz" method="post" novalidate data-formularz data-szkic="fk-pilotaz-szkic" aria-describedby="s6-klauzula">
+          <fieldset class="etap" id="etap-1">
+            <legend><span class="t-etykieta pomocniczy">Etap 1 z 4</span> <span class="t-h4 naglowkowy">{t.etapy[0]}</span></legend>
+            <p class="t-maly naglowkowy etykieta-pola" id="p-rodzaj-tytul">Czego potrzebujesz? <span class="t-etykieta akcentowy">wymagane</span></p>
+            <div role="radiogroup" aria-labelledby="p-rodzaj-tytul" class="grupy">
+              <p class="t-etykieta pomocniczy">Strony</p>
+              <div class="chipsy">{t.opcje_strony.map((o: string, i: number) => <label class="chip t-maly" for={i === 0 ? 'p-rodzaj' : `p-rodzaj-s${i}`}><input type="radio" name="rodzaj" value={o} id={i === 0 ? 'p-rodzaj' : `p-rodzaj-s${i}`} required={i === 0} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>
+              <p class="t-etykieta pomocniczy">Pozostałe z naszej oferty</p>
+              <div class="chipsy">{t.opcje_pozostale.map((o: string, i: number) => <label class="chip t-maly" for={`p-rodzaj-p${i}`}><input type="radio" name="rodzaj" value={o} id={`p-rodzaj-p${i}`} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>
+            </div>
+            <p class="pole-blad t-maly" id="p-rodzaj-blad" hidden>Wybierz jedną opcję. Jeśli nie wiesz, zaznacz „Nie wiem”.</p>
+          </fieldset>
+
+          <fieldset class="etap" id="etap-2">
+            <legend><span class="t-etykieta pomocniczy">Etap 2 z 4</span> <span class="t-h4 naglowkowy">{t.etapy[1]}</span></legend>
+            <div class="pole">
+              <label class="t-maly naglowkowy" for="p-opis">Krótki opis, czego dotyczy projekt <span class="t-etykieta pomocniczy">opcjonalnie</span></label>
+              <textarea id="p-opis" name="opis" rows="3" maxlength="2000" placeholder="Np. prowadzę salon kosmetyczny, potrzebuję strony z cennikiem i zapisem na wizyty."></textarea>
+            </div>
+            {[['technologie', 'Technologia', t.podpowiedzi_technologie, 'Dopisz własną technologię'], ['wymagania', 'Wymagania', t.podpowiedzi_wymagania, 'Dopisz własne wymaganie']].map(([nazwa, tytul, opcje, dopisz]: any) => (
+              <fieldset class="pole">
+                <legend class="t-maly naglowkowy">{tytul} <span class="t-etykieta pomocniczy">opcjonalnie</span></legend>
+                {opcje.length > 0 && <div class="chipsy">{opcje.map((o: string, i: number) => <label class="chip t-maly" for={`p-${nazwa}-${i}`}><input type="checkbox" name={nazwa} value={o} id={`p-${nazwa}-${i}`} /><Ikona nazwa="check" rozmiar={12} class="znak" />{o}</label>)}</div>}
+                <label class="sr-only" for={`p-${nazwa}-inne`}>{dopisz}</label>
+                <input id={`p-${nazwa}-inne`} name={`${nazwa}_inne`} type="text" maxlength="200" placeholder={`${dopisz} (po przecinku)`} />
+              </fieldset>
+            ))}
+          </fieldset>
+
+          <fieldset class="etap" id="etap-3">
+            <legend><span class="t-etykieta pomocniczy">Etap 3 z 4</span> <span class="t-h4 naglowkowy">{t.etapy[2]}</span></legend>
+            <div class="trzy">
+              <div class="pole">
+                <label class="t-maly naglowkowy" for="p-imie">Imię <span class="t-etykieta akcentowy">wymagane</span></label>
+                <input id="p-imie" name="imie" type="text" autocomplete="given-name" placeholder="np. Anna" required maxlength="80" />
+                <p class="pole-blad t-maly" id="p-imie-blad" hidden>Wpisz imię, żebyśmy wiedzieli, jak się zwracać.</p>
+              </div>
+              <div class="pole">
+                <label class="t-maly naglowkowy" for="p-email">Adres e-mail <span class="t-etykieta akcentowy">wymagane</span></label>
+                <input id="p-email" name="email" type="email" autocomplete="email" placeholder="anna@twojafirma.pl" required maxlength="120" />
+                <p class="pole-blad t-maly" id="p-email-blad" hidden>Podaj adres e-mail w formacie nazwa@domena.pl.</p>
+              </div>
+              <div class="pole">
+                <label class="t-maly naglowkowy" for="p-telefon">Numer telefonu <span class="t-etykieta pomocniczy">opcjonalnie</span></label>
+                <input id="p-telefon" name="telefon" type="tel" autocomplete="tel" placeholder="np. 600 100 200" maxlength="20" />
+              </div>
+            </div>
+            <fieldset class="pole">
+              <legend class="t-maly naglowkowy">Jak wolisz, żebyśmy się odezwali? <span class="t-etykieta akcentowy">wymagane</span></legend>
+              <div class="radia">
+                <label class="t-maly" for="p-kontakt"><input type="radio" name="kontakt" value="e-mail" id="p-kontakt" required checked /> E-mailem</label>
+                <label class="t-maly" for="p-kontakt-tel"><input type="radio" name="kontakt" value="telefon" id="p-kontakt-tel" /> Telefonicznie</label>
+              </div>
+            </fieldset>
+            <fieldset class="pole godziny">
+              <legend class="t-maly naglowkowy">W jakich godzinach możemy zadzwonić?</legend>
+              <p class="t-maly pomocniczy">Możesz zaznaczyć kilka przedziałów.</p>
+              <div class="chipsy">{t.godziny.map((g: string, i: number) => <label class="chip t-maly" for={`p-godziny-${i}`}><input type="checkbox" name="godziny" value={g} id={`p-godziny-${i}`} /><Ikona nazwa="check" rozmiar={12} class="znak" />{g}</label>)}</div>
+            </fieldset>
+          </fieldset>
+
+          <fieldset class="etap" id="etap-4">
+            <legend><span class="t-etykieta pomocniczy">Etap 4 z 4</span> <span class="t-h4 naglowkowy">{t.etapy[3]}</span></legend>
+            <div class="t-maly klauzula-wrap"><KlauzulaInformacyjna id="s6-klauzula" /></div>
+            <div class="sr-only" aria-hidden="true"><label for="p-strona-www">Nie wypełniaj</label> <input id="p-strona-www" name="strona_www" type="text" tabindex="-1" autocomplete="off" /></div>
+            <p class="komunikat-blad t-maly" role="alert" data-blad-wysylki hidden>Nie udało się wysłać. Twoje dane zostały w formularzu. Spróbuj ponownie albo napisz na <a href={`mailto:${firma.email}`}>{firma.email}</a>.</p>
+            <div class="przyciski">
+              <button type="submit" class="przycisk przycisk--akcent" data-wyslij>{t.przycisk}</button>
+              <button type="button" class="przycisk przycisk--drugi" data-zapisz-szkic hidden>Zapisz formularz w przeglądarce</button>
+            </div>
+            <p class="t-maly pomocniczy" data-szkic-info hidden>Zapisany formularz zostaje tylko w tej przeglądarce, możesz do niego wrócić i dokończyć. Do nas trafia dopiero po kliknięciu „{t.przycisk}”.</p>
+            <p class="t-maly akcentowy" data-szkic-stan role="status"></p>
+          </fieldset>
+        </form>
+        <div class="sukces etap" data-sukces hidden>
+          <span class="ok" aria-hidden="true"><Ikona nazwa="check" rozmiar={20} /></span>
+          <h3 class="t-h3 naglowkowy" tabindex="-1" data-sukces-naglowek>Zgłoszenie dotarło</h3>
+          <p class="t-tresc">{t.komunikat_sukcesu} Adres: <strong data-sukces-email></strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s6 { padding-block: clamp(48px, 5vw, 72px); }
+  .s6-wnetrze { display: grid; gap: 28px; }
+  .naglowek { display: grid; gap: 12px; max-width: 760px; }
+  .uklad { display: grid; grid-template-columns: minmax(0, 300fr) minmax(0, 960fr); gap: 48px; align-items: start; }
+  .spis { position: sticky; top: calc(var(--fk-wys-paska) + 24px); }
+  .spis ol { display: grid; gap: 6px; }
+  .spis a { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--radius-control); color: var(--fk-tekst-naglowek); text-decoration: none; border: 1px solid transparent; }
+  .spis a:hover { background: var(--fk-tlo-powierzchnia); border-color: var(--fk-obrys); }
+  .spis .nr { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; border: 1px solid var(--fk-obrys-kontrolka); }
+  .formularz { display: grid; gap: 20px; }
+  .etap { display: grid; gap: 18px; padding: 24px 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); scroll-margin-top: calc(var(--fk-wys-paska) + 16px); min-width: 0; }
+  .etap > legend { float: left; width: 100%; display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+  .etap > legend + * { clear: both; }
+  .pole { display: grid; gap: 8px; border: 0; padding: 0; margin: 0; min-width: 0; }
+  .pole > legend { margin-bottom: 8px; }
+  .grupy { display: grid; gap: 10px; }
+  .chipsy { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { position: relative; display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 8px 14px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo); color: var(--fk-tekst-naglowek); cursor: pointer; }
+  .chip input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .chip :global(.znak) { display: none; }
+  .chip:has(input:checked) { background: var(--fk-akcent); border-color: var(--fk-akcent); color: var(--fk-tlo); }
+  .chip:has(input:checked) :global(.znak) { display: block; }
+  .chip:has(input:focus-visible) { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
+  .pole input[type='text'], .pole input[type='email'], .pole input[type='tel'], .pole textarea {
+    width: 100%; padding: 14px 16px; border-radius: var(--radius-control); border: 1px solid var(--fk-obrys-kontrolka);
+    background: var(--fk-tlo); color: var(--fk-tekst-naglowek); font-size: var(--fk-font-tresc);
+  }
+  .pole textarea { resize: vertical; min-height: 88px; }
+  .pole input::placeholder, .pole textarea::placeholder { color: var(--fk-tekst-pomocniczy); }
+  .pole input:focus-visible, .pole textarea:focus-visible { outline: none; border: 2px solid var(--fk-akcent); padding: 13px 15px; }
+  .pole [aria-invalid='true'] { border: 2px solid var(--fk-blad); padding: 13px 15px; }
+  .pole-blad { color: var(--fk-blad); }
+  .trzy { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .radia { display: flex; flex-wrap: wrap; gap: 20px; }
+  .radia label { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; cursor: pointer; }
+  .radia input { width: 18px; height: 18px; accent-color: var(--fk-akcent); }
+  .godziny { display: none; }
+  .formularz:has(#p-kontakt-tel:checked) .godziny { display: grid; }
+  .przyciski { display: flex; flex-wrap: wrap; gap: 12px; }
+  .klauzula-wrap { color: var(--fk-tekst); }
+  .komunikat-blad { padding: 10px 12px; border-radius: 6px; border-left: 3px solid var(--fk-blad); background: var(--fk-tlo); color: var(--fk-tekst); }
+  .formularz[aria-busy='true'] { opacity: 0.7; }
+  .sukces { justify-items: start; }
+  .ok { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-zielen-srednia); color: var(--fk-tlo); }
+  @media (max-width: 1023.98px) {
+    .uklad { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .spis { display: none; }
+    .etap { padding: 20px 16px; }
+    .trzy { grid-template-columns: minmax(0, 1fr); }
+    .przyciski .przycisk { width: 100%; justify-content: center; }
+  }
+</style>

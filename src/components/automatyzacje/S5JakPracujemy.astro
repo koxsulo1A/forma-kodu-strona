@@ -1,0 +1,42 @@
+---
+// 29 S5 Jak pracujemy (wariant E): nagłówek po lewej, po prawej stos czterech kart przesuniętych po skosie (01 na górze z lewej, 04 na dole z prawej).
+// Animacja z makiety („kroki po scrollu”): karty wjeżdżają po kolei, gdy segment wchodzi w ekran (klasa .widoczny z obserwatora [data-odslon] w strona.ts).
+// Telefon: karty jedna pod drugą, bez przesunięcia.
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s5 baza segment" id="jak-pracujemy" data-segment="S5 Jak pracujemy" aria-labelledby="s5-h">
+  <div class="kontener s5-wnetrze">
+    <header class="naglowek">
+      <h2 id="s5-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
+    <ol role="list" class="stos" data-odslon>
+      {t.kroki.map((k: any, i: number) => (
+        <li class="karta" data-n={i + 1}><span class="t-liczba akcentowy" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span><div><h3 class="t-h4 naglowkowy">{k.tytul}</h3><p class="t-tresc">{k.opis}</p></div></li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .s5 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s5-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 780fr); gap: 92px; align-items: center; }
+  .naglowek { display: grid; gap: 12px; }
+  .stos { display: grid; gap: 12px; }
+  .karta { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 20px; align-items: center; width: min(100%, 520px); padding: 20px 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); box-shadow: 0 8px 24px rgb(14 17 23 / 0.06); }
+  .karta > div { display: grid; gap: 4px; }
+  .karta[data-n='2'] { margin-left: 80px; }
+  .karta[data-n='3'] { margin-left: 160px; }
+  .karta[data-n='4'] { margin-left: 240px; background: var(--fk-grad-kafel-1); border-color: var(--fk-kafel-1-obrys); color: var(--fk-kafel-1-tekst); }
+  .karta[data-n='4'] :is(h3, .t-liczba) { color: inherit; }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js:not(.bez-ruchu)) .stos:not(.widoczny) .karta { opacity: 0; transform: translateY(16px); }
+    :global(html.js:not(.bez-ruchu)) .karta { transition: opacity var(--fk-czas-odslona) var(--fk-krzywa-wejscie), transform var(--fk-czas-odslona) var(--fk-krzywa-wejscie); }
+    .karta[data-n='2'] { transition-delay: 120ms; } .karta[data-n='3'] { transition-delay: 240ms; } .karta[data-n='4'] { transition-delay: 360ms; }
+  }
+  @media (max-width: 1023.98px) {
+    .s5-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+    .karta, .karta[data-n] { margin-left: 0; width: 100%; padding: 20px; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; }
+  }
+</style>

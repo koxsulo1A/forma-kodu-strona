@@ -1,0 +1,40 @@
+---
+// 31 S3 i 31b S7 (ten sam segment, treść z panelu „Strona 31” → S3 Pilotaże): nagłówek po lewej, po prawej 3 warunki z ✓ i przycisk do /pilotaze.
+// Makieta: elementy wjeżdżają z prawej po kolei. Kod: to samo przy wejściu w ekran (data-odslon), bez ruchu przy ograniczeniu animacji.
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any; nr: string }
+const { t, nr } = Astro.props;
+const id = `${nr.toLowerCase()}-pilotaze-h`;
+---
+<section class="pil baza segment" id="pilotaze" data-segment={`${nr} Pilotaże`} aria-labelledby={id}>
+  <div class="kontener pil-wnetrze">
+    <header class="naglowek">
+      <h2 id={id} class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc">{t.lead}</p>}
+    </header>
+    <div class="prawa" data-odslon>
+      <ul role="list" class="warunki">
+        {t.zalety.map((z: string) => <li class="t-tresc"><span class="ok" aria-hidden="true"><Ikona nazwa="check" rozmiar={18} /></span>{z}</li>)}
+      </ul>
+      <div><a class="przycisk przycisk--drugi" href="/pilotaze">{t.cta}</a></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pil { padding-block: clamp(48px, 5vw, 72px); overflow-x: clip; }
+  .pil-wnetrze { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+  .naglowek { display: grid; gap: 12px; }
+  .prawa { display: grid; gap: 24px; }
+  .warunki li { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--fk-obrys); color: var(--fk-tekst-naglowek); }
+  .ok { color: var(--fk-zielen-srednia); display: grid; }
+  @media (prefers-reduced-motion: no-preference) {
+    :global(html.js:not(.bez-ruchu)) .warunki li, :global(html.js:not(.bez-ruchu)) .prawa > div { transition: opacity 450ms var(--fk-krzywa-wejscie), transform 450ms var(--fk-krzywa-wejscie); }
+    :global(html.js:not(.bez-ruchu)) .prawa:not(.widoczny) .warunki li, :global(html.js:not(.bez-ruchu)) .prawa:not(.widoczny) > div { opacity: 0; transform: translateX(32px); }
+    .warunki li:nth-child(2) { transition-delay: 100ms; } .warunki li:nth-child(3) { transition-delay: 200ms; } .prawa > div { transition-delay: 300ms; }
+  }
+  @media (max-width: 1023.98px) {
+    .pil-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+    .prawa .przycisk { width: 100%; justify-content: center; }
+  }
+</style>

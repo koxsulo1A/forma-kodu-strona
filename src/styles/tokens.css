@@ -1,0 +1,211 @@
+/* Tokeny Forma Kodu: paleta Alt 6 v2 (Figma „Kolor / Alt 6”), typografia K11, odstępy, promienie, ruch.
+   Jedyne miejsce z surowymi wartościami kolorów. Tłumacz nazw Figma → kod: brama/mapa-tokenow-alt6v2.md.
+   Tryb Light = domyślny. Dark = przełącznik motywu (W12) lub ustawienie systemu; tabela kontrastu Dark do policzenia. */
+
+:root {
+  color-scheme: light;
+  /* 1. Role podstawowe */
+  --fk-tlo: #ffffff;
+  --fk-tlo-powierzchnia: #f3f5f8;
+  --fk-tlo-podniesione: #e4e8ee;
+  --fk-tekst-naglowek: #111827;
+  --fk-tekst: #1f2937;
+  --fk-tekst-pomocniczy: #4b5563;
+  --fk-tekst-na-akcencie: #ffffff;
+  --fk-akcent: #5638cc;
+  --fk-akcent-hover: #4e34be;
+  --fk-akcent-active: #432ca6;
+  --fk-przelamanie: #1e3a8a;
+  --fk-przelamanie-koniec: #382c9c;
+  --fk-przelamanie-tekst: #dce4ff;
+  --fk-akcent-na-ciemnym: #d4ccff;
+  --fk-akcent-na-ciemnym-tekst: #2a1a7a;
+  --fk-wyroznienie: #2447b8;
+  --fk-sukces: #1f7a50;
+  --fk-blad: #b42318;
+  --fk-obrys: #cbd2dc;
+  --fk-obrys-kontrolka: #68727f;
+  --fk-fokus: var(--fk-akcent);
+  --fk-fokus-na-ciemnym: #ffffff;
+  --fk-polysk: #ffffff;
+  --fk-wylaczone-tlo: #e5e7eb;
+  --fk-wylaczone-tekst: #6b7280;
+
+  /* 2. Role od odcienia */
+  --fk-krok-koncowy: #18794e;
+  --fk-krok-koncowy-tekst: #ffffff;
+  --fk-sukces-jasne-tlo: #93dfb0;
+  --fk-sukces-jasne-tekst: #0d3b24;
+  --fk-satyna-1: #f3f5f8;
+  --fk-satyna-2: #e4e8ee;
+  --fk-satyna-3: #cbd2dc;
+  --fk-panel-grafit: #262c38;
+  --fk-panel-grafit-tekst: #f1f4f9;
+  --fk-panel-czern: #0e1117;
+  --fk-panel-czern-polysk: #1e232c;
+  --fk-panel-czern-tekst: #f1f4f9;
+  --fk-okno-kropka-1: #a8141c;
+  --fk-okno-kropka-2: #e8730c;
+  --fk-okno-kropka-3: #93dfb0;
+  --fk-akcent-gleboki: #3a2a86;
+  /* Zieleń głęboka: blok „Co robimy my” (28 S10) i główny przycisk formularza (makieta 28 S5) */
+  --fk-zielen-gleboka: #164f30;
+  --fk-zielen-srednia: #2a6e45;
+
+  /* Kafle mozaiki: 1 zieleń, 2 niebieski, 3 biały, 4 fiolet, 5 khaki, 6 satyna */
+  --fk-kafel-1-tlo: #93dfb0;
+  --fk-kafel-1-koniec: #83dabf;
+  --fk-kafel-1-tekst: #0d3b24;
+  --fk-kafel-1-obrys: #6cc992;
+  --fk-kafel-2-tlo: #1e3a8a;
+  --fk-kafel-2-koniec: #2c2092;
+  --fk-kafel-2-tekst: #ffffff;
+  --fk-kafel-2-obrys: #1e3a8a;
+  --fk-kafel-3-tlo: #ffffff;
+  --fk-kafel-3-tekst: #111827;
+  --fk-kafel-3-obrys: #cbd2dc;
+  --fk-kafel-4-tlo: #5638cc;
+  --fk-kafel-4-koniec: #7d33c7;
+  --fk-kafel-4-tekst: #ffffff;
+  --fk-kafel-4-obrys: #5638cc;
+  --fk-kafel-5-tlo: #cec6a4;
+  --fk-kafel-5-koniec: #c3ae90;
+  --fk-kafel-5-tekst: #2e2a16;
+  --fk-kafel-5-obrys: #b3aa84;
+  --fk-kafel-6-tlo: #262c38;
+  --fk-kafel-6-koniec: #2e2f44;
+  --fk-kafel-6-tekst: #f1f4f9;
+  --fk-kafel-6-obrys: #262c38;
+
+  /* Gradienty z makiety 27 (kolejne przystanki = tokeny powyżej) */
+  --fk-grad-przelamanie: linear-gradient(135deg, var(--fk-przelamanie), var(--fk-przelamanie-koniec));
+  --fk-grad-kafel-1: linear-gradient(135deg, var(--fk-kafel-1-tlo), var(--fk-kafel-1-koniec));
+  --fk-grad-kafel-2: linear-gradient(135deg, var(--fk-kafel-2-tlo), var(--fk-kafel-2-koniec));
+  --fk-grad-kafel-4: linear-gradient(135deg, var(--fk-kafel-4-tlo), var(--fk-kafel-4-koniec));
+  --fk-grad-kafel-5: linear-gradient(135deg, var(--fk-kafel-5-tlo), var(--fk-kafel-5-koniec));
+  --fk-grad-kafel-6: linear-gradient(135deg, var(--fk-kafel-6-tlo), var(--fk-kafel-6-koniec));
+  --fk-grad-czern: linear-gradient(160deg, var(--fk-panel-czern-polysk), var(--fk-panel-czern) 55%, var(--fk-panel-czern));
+  --fk-grad-s9: linear-gradient(160deg, var(--fk-panel-czern), var(--fk-przelamanie) 55%, var(--fk-krok-koncowy));
+  --fk-grad-zakladka: linear-gradient(135deg, var(--fk-akcent-gleboki), var(--fk-panel-czern));
+  --fk-grad-zielen: linear-gradient(120deg, var(--fk-zielen-gleboka), var(--fk-zielen-srednia), var(--fk-zielen-gleboka));
+  --fk-grad-skala: linear-gradient(90deg, var(--fk-okno-kropka-1) 0 33%, var(--fk-okno-kropka-2) 33% 66%, var(--fk-krok-koncowy) 66%);
+
+  /* 3. Typografia K11 (komputer → telefon płynnie, 375 → 1440) */
+  --fk-rodzina: 'Schibsted Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --fk-rodzina-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --fk-font-display: clamp(2.25rem, 1.634rem + 2.629vw, 4rem);
+  --fk-font-h2: clamp(1.875rem, 1.567rem + 1.315vw, 2.75rem);
+  --fk-font-h3: clamp(1.5rem, 1.368rem + 0.563vw, 1.875rem);
+  --fk-font-h4: clamp(1.1875rem, 1.121rem + 0.282vw, 1.375rem);
+  --fk-font-tresc-l: clamp(1.0625rem, 1.018rem + 0.188vw, 1.1875rem);
+  --fk-font-tresc: clamp(1rem, 0.978rem + 0.094vw, 1.0625rem);
+  --fk-font-maly: 0.875rem;
+  --fk-font-etykieta: 0.75rem;
+  --fk-font-liczba: clamp(1.75rem, 1.486rem + 1.127vw, 2.5rem);
+  --fk-font-liczba-m: clamp(1.375rem, 1.243rem + 0.563vw, 1.75rem);
+  --fk-font-przycisk: 1rem;
+  --fk-font-nawigacja: 0.875rem;
+
+  /* 6. Odstępy i promienie */
+  --space-section: 112px;
+  --space-block: 64px;
+  --space-group: 32px;
+  --space-item: 16px;
+  --space-micro: 8px;
+  --space-4: 4px;
+  --space-12: 12px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-28: 28px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --radius-control: 10px;
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --radius-4: 4px;
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-24: 24px;
+  --radius-28: 28px;
+  --fk-margines: clamp(20px, 4.5vw, 64px); /* 20 px na telefonie, 64 px od 1440 */
+  --fk-szerokosc: 1312px;
+  --fk-wys-paska: 72px;
+
+  /* 5. Ruch (tryb „Pełny”) */
+  --fk-czas-mikro: 160ms;
+  --fk-czas-nacisk: 120ms;
+  --fk-czas-ikona: 180ms;
+  --fk-czas-szybki: 200ms;
+  --fk-czas-wyjscie: 220ms;
+  --fk-czas-standard: 240ms;
+  --fk-czas-pokazanie: 260ms;
+  --fk-czas-rozwiniecie: 280ms;
+  --fk-czas-wymiana: 320ms;
+  --fk-czas-odslona-krok: 450ms;
+  --fk-czas-odslona: 500ms;
+  --fk-opoznienie-kaskada-sekcji: 60ms;
+  --fk-odleglosc-wejscie: 24px;
+  --fk-krzywa-wejscie: cubic-bezier(0.16, 1, 0.3, 1);
+  --fk-krzywa-standard: cubic-bezier(0.2, 0, 0.2, 1);
+  --fk-krzywa-wyjscie: cubic-bezier(0.4, 0, 1, 1);
+  --fk-krycie-zaslona: 0.56;
+  --fk-cien-zakladka: 0 1px 2px rgb(14 17 23 / 0.2), 0 8px 24px rgb(14 17 23 / 0.18), 0 16px 48px rgb(14 17 23 / 0.12);
+  --fk-cien-przycisk: 0 2px 6px rgb(14 17 23 / 0.12), 0 12px 32px rgb(14 17 23 / 0.18);
+}
+
+@media (min-width: 1024px) {
+  :root { --space-section: 160px; }
+}
+
+/* Ograniczony ruch: z systemu albo z sheetu dostępności (W10, klasa na <html>) */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --fk-czas-mikro: 0ms; --fk-czas-nacisk: 0ms; --fk-czas-ikona: 0ms; --fk-czas-szybki: 0ms; --fk-czas-wyjscie: 160ms;
+    --fk-czas-standard: 0ms; --fk-czas-pokazanie: 0ms; --fk-czas-rozwiniecie: 0ms; --fk-czas-wymiana: 0ms;
+    --fk-czas-odslona-krok: 0ms; --fk-czas-odslona: 160ms; --fk-opoznienie-kaskada-sekcji: 0ms; --fk-odleglosc-wejscie: 0px;
+  }
+}
+:root.bez-ruchu {
+  --fk-czas-mikro: 0ms; --fk-czas-nacisk: 0ms; --fk-czas-ikona: 0ms; --fk-czas-szybki: 0ms; --fk-czas-wyjscie: 0ms;
+  --fk-czas-standard: 0ms; --fk-czas-pokazanie: 0ms; --fk-czas-rozwiniecie: 0ms; --fk-czas-wymiana: 0ms;
+  --fk-czas-odslona-krok: 0ms; --fk-czas-odslona: 0ms; --fk-opoznienie-kaskada-sekcji: 0ms; --fk-odleglosc-wejscie: 0px;
+}
+
+/* Mocniejszy kontrast (W10) */
+:root.kontrast {
+  --fk-tekst: #111827;
+  --fk-tekst-pomocniczy: #1f2937;
+  --fk-obrys: #68727f;
+}
+
+/* Ciemny motyw (Alt 6 „Dark”) */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --fk-tlo: #0b1020;
+  --fk-tlo-powierzchnia: #131a2e;
+  --fk-tlo-podniesione: #1b2440;
+  --fk-tekst-naglowek: #f1f4f9;
+  --fk-tekst: #d3d9e4;
+  --fk-tekst-pomocniczy: #9aa4b8;
+  --fk-tekst-na-akcencie: #15103f;
+  --fk-akcent: #a898ff;
+  --fk-akcent-hover: #b7aaff;
+  --fk-akcent-active: #9886f5;
+  --fk-wyroznienie: #93b1ff;
+  --fk-sukces: #6fcf97;
+  --fk-blad: #f28b82;
+  --fk-obrys: #263050;
+  --fk-obrys-kontrolka: #76839f;
+  --fk-fokus: #ffffff;
+  --fk-wylaczone-tlo: #1f2638;
+  --fk-satyna-1: #4a5366;
+  --fk-satyna-2: #3a4252;
+  --fk-satyna-3: #2b3240;
+  --fk-kafel-1-obrys: #93dfb0;
+  --fk-kafel-2-obrys: #4a68c9;
+  --fk-kafel-3-tlo: #f1f4f9;
+  --fk-kafel-3-obrys: #f1f4f9;
+  --fk-kafel-4-obrys: #8a74ee;
+  --fk-kafel-5-obrys: #cec6a4;
+  --fk-kafel-6-obrys: #4a5366;
+}

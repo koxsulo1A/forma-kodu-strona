@@ -1,0 +1,28 @@
+{
+  "s1_hero": {
+    "h1": "Realizacje: pokazujemy tylko projekty, które istnieją",
+    "lead": "Masz dość portfolio pełnego ładnych obrazków, za którymi nic nie stoi? U nas każdy projekt ma prawdziwy status. Realizacji klientów jeszcze nie ma i tak to piszemy.",
+    "cta_1": "Opisz swój projekt",
+    "cta_2": "Zobacz, jak pracujemy",
+    "wyrozniony_projekt": "beddieyes",
+    "brak_realizacji": {
+      "tytul": "Realizacji klientów jeszcze nie ma",
+      "opis": "Pierwsze powstaną w pilotażach, za zgodą klienta."
+    }
+  },
+  "s2_projekty": {
+    "naglowek": "Nad czym pracujemy",
+    "lead": "Każdy projekt ma prawdziwy status. Pole „wynik” zostaje puste, dopóki nie ma wyniku. Karty „Przykład” pokazują tylko układ listy, to nie są realizacje."
+  },
+  "s3_pilotaze": {
+    "naglowek": "Twoja firma może być naszą pierwszą realizacją",
+    "lead": "Pierwsze realizacje klientów zrobimy w pilotażach. Za naszą pracę nie płacisz.",
+    "zalety": ["Bezpłatny", "Na pisemnych warunkach", "Ze zgodą na pokazanie realizacji"],
+    "cta": "Zobacz darmowe pilotaże"
+  },
+  "s4_faq": {
+    "etykieta": "",
+    "naglowek": "Pytania, które warto zadać przed rozmową",
+    "lead": ""
+  }
+}

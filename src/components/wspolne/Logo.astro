@@ -1,0 +1,18 @@
+---
+// Logo Forma Kodu (K11, komponent Figmy 353:1272). Gotowe SVG z Figmy (mapa tokenów: logo nie idzie przez tokeny).
+// Dwie wersje: jasne tło i ciemne; przy ciemnym motywie i w ciemnej stopce pokazujemy wersję „Ciemne”.
+interface Props { tlo?: 'jasne' | 'ciemne' }
+const { tlo = 'jasne' } = Astro.props;
+---
+{tlo === 'ciemne'
+  ? <img class="logo" src="/logo/forma-kodu-ciemne.svg" width="162" height="34" alt="Forma Kodu" />
+  : <>
+      <img class="logo logo--jasne" src="/logo/forma-kodu-jasne.svg" width="162" height="34" alt="Forma Kodu" />
+      <img class="logo logo--ciemne" src="/logo/forma-kodu-ciemne.svg" width="162" height="34" alt="Forma Kodu" />
+    </>}
+<style>
+  .logo { width: 162px; height: 34px; }
+  .logo--ciemne { display: none; }
+  :global(:root[data-theme='dark']) .logo--jasne { display: none; }
+  :global(:root[data-theme='dark']) .logo--ciemne { display: block; }
+</style>

@@ -1,0 +1,90 @@
+---
+// S14 Stopka (makieta 27, 93:1131; telefon 487:2649 „zmieszczona” 2×2). Panel satynowa czerń, cztery kolumny, pasek marki z misją i CTA.
+// Dane firmy z jednego źródła (Dane firmy w panelu): art. 206 KSH / art. 5 UŚUDE. Zaślepki [..] blokują publikację (sprawdz-zaslepki).
+import { getEntry } from 'astro:content';
+import Logo from './Logo.astro';
+const firma = (await getEntry('firma', 'firma'))!.data;
+const adres = firma.adres_publiczny ? `${firma.adres.ulica}, ${firma.adres.kod} ${firma.adres.miasto}` : firma.adres.miasto;
+const godziny = firma.godziny_otwarcia.map((g) => g.replace('Mo-Fr', 'pn–pt').replace(/(\d\d):00/g, (_, h) => String(Number(h)))).join(', ');
+const rok = new Date().getFullYear();
+---
+<footer class="stopka segment" data-segment="S14 Stopka" id="stopka">
+  <div class="stopka-panel ciemne">
+    <div class="kolumny">
+      <nav class="kolumna" aria-labelledby="stopka-oferta">
+        <h2 class="t-etykieta" id="stopka-oferta">Oferta</h2>
+        <ul role="list">
+          <li><a href="/strony-internetowe">Strony internetowe</a></li>
+          <li><a href="/automatyzacje">Automatyzacje i boty czatowe</a></li>
+          <li class="wkrotce"><span>Analiza ruchu i reklam</span> <span class="znacznik">wkrótce</span></li>
+        </ul>
+      </nav>
+      <nav class="kolumna" aria-labelledby="stopka-strona">
+        <h2 class="t-etykieta" id="stopka-strona">Strona</h2>
+        <ul role="list">
+          <li><a href="/#realizacje">Realizacje</a></li>
+          <li><a href="/#proces">Proces</a></li>
+          <li><a href="/#cennik">Cennik</a></li>
+          <li><a href="/pilotaze">Pilotaże</a></li>
+        </ul>
+      </nav>
+      <div class="kolumna">
+        <h2 class="t-etykieta">Kontakt</h2>
+        <ul role="list">
+          <li><a href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">Opisz projekt (formularz)</a></li>
+          <li>E-mail: <a href={`mailto:${firma.email}`}>{firma.email}</a></li>
+          <li>Telefon: <a href={`tel:${firma.telefon.replace(/\s/g, '')}`}>{firma.telefon}</a></li>
+          <li>Biuro: {godziny}</li>
+        </ul>
+      </div>
+      <div class="kolumna">
+        <h2 class="t-etykieta">Informacje prawne</h2>
+        <ul role="list">
+          <li><a href="/dostepnosc">Deklaracja dostępności</a></li>
+          <li><a href="/polityka-prywatnosci">Polityka prywatności</a></li>
+          <li>
+            <address>
+              {firma.nazwa_prawna}<br />{adres}<br />NIP {firma.nip}
+              {firma.krs && <><br />KRS {firma.krs}, {firma.sad_rejestrowy}</>}
+            </address>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr />
+    <div class="marka">
+      <div class="marka-misja">
+        <Logo tlo="ciemne" />
+        <p class="t-maly">Tłumaczymy, co wdrażamy, pokazujemy ograniczenia i nie obiecujemy wyników, których nie da się zmierzyć.</p>
+      </div>
+      <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">Opisz projekt</a>
+    </div>
+  </div>
+  <p class="t-maly pomocniczy prawa">© {rok} {firma.nazwa_marki}. {firma.nazwa_prawna}.</p>
+</footer>
+
+<style>
+  .stopka { background: var(--fk-tlo); padding: 51px var(--fk-margines) 24px; }
+  .stopka-panel {
+    max-width: 1280px; margin-inline: auto; padding: 40px 40px 32px; border-radius: var(--radius-card);
+    background: var(--fk-grad-czern); border: 1px solid var(--fk-panel-czern-polysk); color: var(--fk-panel-czern-tekst);
+    display: grid; gap: 32px;
+  }
+  .kolumny { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
+  .kolumna h2 { color: var(--fk-panel-czern-tekst); font-weight: 400; margin-bottom: 12px; }
+  .kolumna ul { display: grid; gap: 12px; padding-top: 4px; font-size: var(--fk-font-maly); line-height: 1.5; }
+  .kolumna a { color: var(--fk-akcent-na-ciemnym); text-decoration: underline; }
+  .kolumna address { font-style: normal; }
+  .wkrotce { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .wkrotce .znacznik { background: var(--fk-panel-czern-polysk); color: var(--fk-panel-czern-tekst); padding: 4px 8px; }
+  hr { border: 0; border-top: 1px solid var(--fk-obrys-kontrolka); }
+  .marka { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+  .marka-misja { display: grid; gap: 8px; max-width: 620px; }
+  .prawa { max-width: 1280px; margin: 20px auto 0; }
+  @media (max-width: 1023.98px) {
+    .stopka { padding: 48px 20px; }
+    .stopka-panel { padding: 40px 20px 32px; }
+    .kolumny { grid-template-columns: 1fr 1fr; gap: 32px 16px; }
+    .marka { flex-direction: column; align-items: flex-start; }
+  }
+</style>

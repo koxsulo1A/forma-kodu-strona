@@ -1,0 +1,40 @@
+---
+// W5 Wskaźnik przewijania boczny (makieta 27, 502:2082). Widoczny tylko od 1024 px i tylko wtedy, gdy górny pasek jest schowany.
+// Szyna 0–100% z kreskami co 10%, zakres każdego segmentu (na przemian przełamanie / akcent) i nazwa segmentu.
+// Segmenty to elementy strony z atrybutem data-segment="S1 HERO" (kolejność jak na stronie); położenie liczy skrypt strona.ts.
+// Element dekoracyjny dla myszy: dla czytnika ekranu jest lista „Na tej stronie” z linkami do segmentów.
+---
+<nav class="wskaznik" aria-label="Na tej stronie" data-wskaznik hidden>
+  <div class="wskaznik-szyna" aria-hidden="true">
+    {Array.from({ length: 11 }, (_, i) => <span class:list={['wskaznik-kreska', { duza: i % 5 === 0 }]} data-proc={i * 10}>{i % 5 === 0 && <b class="t-etykieta">{i * 10}%</b>}</span>)}
+    <span class="wskaznik-pozycja" data-wskaznik-pozycja></span>
+  </div>
+  <ol role="list" class="wskaznik-lista" data-wskaznik-lista></ol>
+</nav>
+
+<style>
+  .wskaznik {
+    position: fixed; right: 4px; top: 24px; bottom: 24px; width: 168px; z-index: 40;
+    opacity: 0; pointer-events: none; transition: opacity var(--fk-czas-szybki) var(--fk-krzywa-standard);
+  }
+  :global(html.pasek-schowany) .wskaznik { opacity: 0.75; pointer-events: auto; }
+  .wskaznik:hover, .wskaznik:focus-within { opacity: 1 !important; }
+  @media (max-width: 1023.98px) { .wskaznik { display: none; } }
+  .wskaznik-szyna { position: absolute; right: 60px; top: 0; bottom: 0; width: 2px; background: var(--fk-obrys); }
+  .wskaznik-kreska { position: absolute; right: 2px; width: 6px; height: 1px; background: var(--fk-tekst-pomocniczy); }
+  .wskaznik-kreska.duza { width: 14px; }
+  .wskaznik-kreska b { position: absolute; right: 20px; top: -9px; font-weight: 400; color: var(--fk-tekst-pomocniczy); }
+  .wskaznik-pozycja { position: absolute; left: -5px; width: 12px; height: 12px; border-radius: 50%; background: var(--fk-akcent); margin-top: -6px; border: 2px solid var(--fk-tlo); }
+  .wskaznik-lista { position: absolute; inset: 0; }
+  .wskaznik-lista :global(li) { position: absolute; right: 0; width: 58px; }
+  .wskaznik-lista :global(li)::before {
+    content: ''; position: absolute; left: 2px; top: 0; bottom: 0; width: 4px; border-radius: 2px; background: var(--fk-przelamanie);
+  }
+  .wskaznik-lista :global(li:nth-child(even))::before { background: var(--fk-akcent); }
+  .wskaznik-lista :global(a) {
+    position: absolute; right: 64px; top: 0; width: max-content; max-width: 150px;
+    font-family: var(--fk-rodzina-mono); font-size: 10px; line-height: 1.3; text-transform: uppercase;
+    color: var(--fk-tekst); text-decoration: none; background: var(--fk-tlo); padding: 1px 4px; border-radius: 4px;
+  }
+  .wskaznik-lista :global(a[aria-current='true']) { color: var(--fk-akcent); font-weight: 500; }
+</style>

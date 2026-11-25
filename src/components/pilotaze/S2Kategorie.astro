@@ -1,0 +1,62 @@
+---
+// 32 S2 Wybierz kategorię: 6 kart w 2 rzędach po 3. Pierścień = wolne miejsca (zielony łuk), „?” = kategoria wkrótce (karta z przerywaną ramką).
+// Przycisk zależy od statusu: nabór → „Zapytaj o pilotaż” (do formularza), komplet → „Zapisz się na listę”, wkrótce → „Powiadom mnie” (oba: sheet „Powiadom mnie”).
+// Liczby miejsc to PRZYKŁAD (plakietka „przykładowy stan miejsc” z panelu). Telefon: jedna karta swipe ze wskaźnikiem od 01.
+interface Props { t: any }
+const { t } = Astro.props;
+const luk = (k: any) => { const p = k.miejsca ? k.wolne / k.miejsca : 0; return [0, 33, 67, 100].reduce((a, b) => (Math.abs(b - p * 100) < Math.abs(a - p * 100) ? b : a)); };
+const tekst = (k: any) => k.status === 'wkrótce' ? `Wkrótce. ${k.notka_wkrotce}`.trim()
+  : k.status === 'komplet' || k.wolne === 0 ? `Komplet: 0 z ${k.miejsca}. Możesz zapisać się na listę oczekujących.`
+  : `${k.wolne === 1 ? 'Wolne miejsce' : 'Wolne miejsca'}: ${k.wolne} z ${k.miejsca}`;
+---
+<section class="s2 baza segment" id="kategorie" data-segment="S2 Wybierz kategorię" aria-labelledby="s2-h">
+  <div class="kontener s2-wnetrze">
+    <header class="naglowek">
+      {t.etykieta && <p class="t-etykieta pomocniczy">{t.etykieta}</p>}
+      <h2 id="s2-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l">{t.lead}</p>}
+      {t.plakietka && <p><span class="t-etykieta plak">{t.plakietka}</span></p>}
+    </header>
+    <ul role="list" class="siatka swipe" data-swipe="s2-wskaznik">
+      {t.kategorie.map((k: any) => {
+        const wkrotce = k.status === 'wkrótce';
+        const komplet = !wkrotce && (k.status === 'komplet' || k.wolne === 0);
+        return (
+          <li class:list={['karta', { wkrotce }]}>
+            <div class="gora">
+              <span class:list={['pierscien', `p${wkrotce ? 0 : luk(k)}`]} aria-hidden="true"><span class="t-h4">{wkrotce ? '?' : k.wolne}</span></span>
+              <h3 class="t-h4 naglowkowy">{k.nazwa}</h3>
+            </div>
+            <p class="t-tresc">{k.opis}</p>
+            <p class:list={['t-etykieta', 'stan', wkrotce ? 'akcentowy' : komplet ? 'pomocniczy' : 'zielony']}>{tekst(k)}</p>
+            <div class="dol">
+              {wkrotce || komplet
+                ? <button type="button" class="przycisk przycisk--drugi" data-otworz-sheet="sheet-powiadom" aria-haspopup="dialog" data-usluga={komplet ? `lista oczekujących: pilotaż ${k.nazwa}` : `pilotaż ${k.nazwa}`}>{komplet ? 'Zapisz się na listę' : 'Powiadom mnie'}<span class="sr-only">: {k.nazwa}</span></button>
+                : <a class="przycisk przycisk--drugi" href="#zgloszenie">Zapytaj o pilotaż<span class="sr-only"> w kategorii {k.nazwa}</span></a>}
+            </div>
+          </li>
+        );
+      })}
+    </ul>
+    <div class="wskaznik-swipe" id="s2-wskaznik" aria-hidden="true"><ol>{t.kategorie.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol><span data-licznik>1 z {t.kategorie.length}</span></div>
+  </div>
+</section>
+
+<style>
+  .s2 { padding-block: clamp(48px, 5vw, 72px); }
+  .s2-wnetrze { display: grid; gap: 28px; }
+  .naglowek { display: grid; gap: 12px; max-width: 760px; }
+  .plak { display: inline-block; padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); }
+  .siatka { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .karta { position: relative; display: flex; flex-direction: column; gap: 14px; padding: 24px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .wkrotce { background: var(--fk-tlo-podniesione); border: 1px dashed var(--fk-obrys-kontrolka); }
+  .gora { display: flex; align-items: center; gap: 16px; }
+  .pierscien { flex: none; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--fk-zielen-srednia) var(--luk), var(--fk-obrys) 0); }
+  .pierscien > span { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); }
+  .p0 { --luk: 0%; } .p33 { --luk: 33%; } .p67 { --luk: 67%; } .p100 { --luk: 100%; }
+  .zielony { color: var(--fk-zielen-srednia); }
+  .dol { margin-top: auto; }
+  @media (max-width: 1023.98px) {
+    .dol .przycisk { width: 100%; justify-content: center; }
+  }
+</style>

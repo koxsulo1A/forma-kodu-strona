@@ -1,0 +1,82 @@
+---
+// 28 S3 Trzy warianty (wariant I): bloki „opis + schemat strony”, schemat na zmianę po prawej i po lewej.
+// Schematy to dekoracja (aria-hidden): landing (jeden cel), firmowa (podstrony i kafle), WordPress (panel treści i edycja).
+// „Opisz ten zakres” otwiera sheet „Opisz projekt” z wpisaną nazwą wariantu. Telefon: bloki jeden pod drugim, schemat pod opisem.
+interface Props { t: any }
+const { t } = Astro.props;
+const dwa = (i: number) => String(i).padStart(2, '0');
+---
+<section class="s3 baza segment" id="warianty" data-segment="S3 Trzy warianty" aria-labelledby="s3-h">
+  <div class="kontener s3-wnetrze">
+    <h2 id="s3-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+    <ul role="list" class="bloki">
+      {t.warianty.map((w: any, i: number) => (
+        <li class:list={['blok', { odwrocony: i % 2 === 1 }]}>
+          <div class="opis">
+            <p class="numer"><span class="t-liczba akcentowy" aria-hidden="true">{dwa(i + 1)}</span><span class:list={['t-etykieta status', w.status === 'dostępne' ? 'dostepne' : 'inne']}>{w.status === 'dostępne' ? 'Dostępne' : w.status === 'wkrótce' ? 'Wkrótce' : 'Na zapytanie'}</span></p>
+            <h3 class="t-h2 naglowkowy">{w.nazwa}</h3>
+            <p class="t-tresc-l">{w.opis}</p>
+            {w.uwaga && <p class="t-tresc pomocniczy">{w.uwaga}</p>}
+            <div><a class="przycisk przycisk--drugi" href="/kontakt" data-otworz-sheet="sheet-projekt" data-opis={`Interesuje mnie wariant: ${w.nazwa}.`} aria-haspopup="dialog">{w.cta} <span class="sr-only">: {w.nazwa}</span></a></div>
+          </div>
+          <div class="podglad" aria-hidden="true">
+            <div class:list={['schemat', w.schemat]}>
+              <div class="pasek"><i></i><i></i><i></i></div>
+              {w.schemat === 'landing' && (
+                <div class="uklad"><b class="baner"></b><b class="linia l300"></b><b class="linia l220"></b><b class="cta"></b><b class="pas"></b><b class="pas"></b></div>
+              )}
+              {w.schemat === 'firmowa' && (
+                <div class="uklad"><span class="menu"><b class="on"></b><b></b><b></b><b></b></span><b class="baner niski"></b><span class="kafle"><b></b><b></b><b></b></span><b class="linia l260"></b></div>
+              )}
+              {w.schemat === 'wordpress' && (
+                <div class="uklad poziomy"><span class="panel"><b></b><b class="on"></b><b></b><b></b><b></b></span><span class="edycja"><b class="pole"></b><b class="obszar"></b><b class="linia l200"></b><b class="cta maly"></b></span></div>
+              )}
+            </div>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .s3 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s3-wnetrze { display: grid; gap: 24px; }
+  .bloki { display: grid; gap: 24px; }
+  .blok { display: grid; grid-template-columns: minmax(0, 734fr) minmax(0, 576fr); border-radius: 24px; background: var(--fk-tlo-powierzchnia); overflow: hidden; }
+  .blok.odwrocony { grid-template-columns: minmax(0, 576fr) minmax(0, 734fr); }
+  .blok.odwrocony .podglad { order: -1; }
+  .opis { display: grid; gap: 16px; align-content: center; justify-items: start; padding: 48px; }
+  .numer { display: flex; align-items: center; gap: 16px; }
+  .status { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid currentColor; }
+  .dostepne { color: var(--fk-sukces); }
+  .inne { color: var(--fk-tekst); }
+  .podglad { display: grid; place-items: center; padding: 40px 48px 32px; background: var(--fk-tlo-podniesione); }
+  .schemat { width: min(100%, 480px); border-radius: 12px; background: var(--fk-tlo-powierzchnia); overflow: hidden; }
+  .pasek { display: flex; gap: 8px; padding: 12px 16px; background: var(--fk-tlo-podniesione); }
+  .pasek i { width: 8px; height: 8px; border-radius: 50%; background: var(--fk-obrys-kontrolka); }
+  .uklad { display: grid; gap: 12px; padding: 16px; }
+  .uklad.poziomy { grid-template-columns: 120px 1fr; align-items: start; }
+  .uklad b { display: block; height: 10px; border-radius: 4px; background: var(--fk-obrys-kontrolka); }
+  .uklad .baner { height: 72px; background: var(--fk-akcent); }
+  .uklad .baner.niski { height: 56px; }
+  .uklad .cta { height: 28px; width: 120px; background: var(--fk-akcent); }
+  .uklad .cta.maly { height: 24px; width: 80px; }
+  .uklad .pas { height: 40px; background: var(--fk-obrys); }
+  .l300 { width: 66%; } .l220 { width: 48%; } .l260 { width: 58%; } .l200 { width: 62%; }
+  .menu { display: flex; gap: 8px; }
+  .menu b { width: 64px; height: 14px; }
+  .uklad b.on { background: var(--fk-akcent); }
+  .kafle { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .kafle b { height: 64px; background: var(--fk-obrys); }
+  .panel { display: grid; gap: 8px; padding: 12px; border-radius: 8px; background: var(--fk-tlo-podniesione); }
+  .edycja { display: grid; gap: 8px; }
+  .edycja .pole { height: 24px; }
+  .edycja .obszar { height: 96px; background: var(--fk-obrys); }
+  @media (max-width: 1023.98px) {
+    .blok, .blok.odwrocony { grid-template-columns: minmax(0, 1fr); border-radius: var(--radius-card); }
+    .blok.odwrocony .podglad { order: 0; }
+    .opis { padding: 28px 20px; }
+    .podglad { padding: 24px 20px; }
+  }
+</style>

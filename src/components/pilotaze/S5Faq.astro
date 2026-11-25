@@ -1,0 +1,55 @@
+---
+// 32 S5 FAQ (wariant D, wycięcie W1 = kratka): spis pytań po lewej (zakładki pionowe), panel odpowiedzi po prawej. Strona.ts 9: klik, strzałki ←/→, Home/End.
+// Pytania z kolekcji FAQ (strony: pilotaze). Bez JS: spis ukryty, wszystkie odpowiedzi widoczne pod pytaniami. Telefon: spis nad panelem.
+import { getCollection, render } from 'astro:content';
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+const faq = (await getCollection('faq', (f) => f.data.strony.includes('pilotaze'))).sort((a, b) => a.data.kolejnosc - b.data.kolejnosc);
+const pytania = await Promise.all(faq.map(async (f) => ({ pytanie: f.data.pytanie, Tresc: (await render(f)).Content })));
+const start = Math.min(2, pytania.length - 1); // makieta: otwarte „Kto wykonuje pracę?”
+---
+<section class="s5 kratka segment" id="pytania" data-segment="S5 FAQ" aria-labelledby="s5-h">
+  <div class="kontener s5-wnetrze">
+    <h2 id="s5-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+    <div class="uklad">
+      <div role="tablist" aria-label="Pytania" aria-orientation="vertical" class="spis" hidden>
+        {pytania.map((p, i) => (
+          <button type="button" role="tab" id={`s5-z-${i}`} aria-controls={`s5-o-${i}`} aria-selected={String(i === start)} tabindex={i === start ? 0 : -1} class="t-maly">
+            <span>{p.pytanie}</span><Ikona nazwa="caret" rozmiar={14} class="strzalka" />
+          </button>
+        ))}
+      </div>
+      <div class="panele">
+        {pytania.map((p, i) => (
+          <div role="tabpanel" id={`s5-o-${i}`} aria-labelledby={`s5-z-${i}`} class="panel" tabindex="0">
+            <h3 class="t-h3 naglowkowy">{p.pytanie}</h3>
+            <div class="t-tresc odp"><p.Tresc /></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s5 { padding-block: clamp(48px, 5vw, 72px); }
+  .s5-wnetrze { display: grid; gap: 28px; }
+  .s5-wnetrze > h2 { max-width: 760px; }
+  .uklad { display: grid; grid-template-columns: minmax(0, 480fr) minmax(0, 792fr); gap: 40px; align-items: start; }
+  .spis { display: grid; gap: 4px; }
+  .spis[hidden] { display: none; }
+  .spis button { display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 48px; padding: 10px 14px; text-align: left; font: inherit; color: var(--fk-tekst-naglowek); background: none; border: 1px solid transparent; border-radius: var(--radius-control); cursor: pointer; }
+  .spis button[aria-selected='true'] { background: var(--fk-tlo-powierzchnia); border-color: var(--fk-obrys-kontrolka); color: var(--fk-akcent); }
+  .spis button:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
+  .spis :global(.strzalka) { flex: none; transform: rotate(-90deg); }
+  .panele { display: grid; gap: 16px; }
+  .panel { display: grid; gap: 12px; padding: 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys-kontrolka); }
+  .panel[hidden] { display: none; }
+  .panel:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 3px; }
+  :global(html:not(.js)) .uklad { grid-template-columns: minmax(0, 1fr); }
+  @media (max-width: 1023.98px) {
+    .uklad { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+    .panel { padding: 20px; }
+  }
+</style>

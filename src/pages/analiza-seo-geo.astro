@@ -1,0 +1,30 @@
+---
+// /analiza-seo-geo (makieta 30, komputer 1440 i telefon 375). Treść: panel Keystatic → „Strona 30: Analiza SEO/GEO” (src/content/strony/analiza-seo-geo.json).
+// Usługa w przygotowaniu: bez cen i terminów, formularz „Powiadom mnie”. S9 = FAQ z kolekcji (strony: analiza-seo-geo).
+import Uklad from '../layouts/Uklad.astro';
+import { trescStrony } from '../lib/tresc';
+import S1Hero from '../components/analiza/S1Hero.astro';
+import S2Status from '../components/analiza/S2Status.astro';
+import S3Zakres from '../components/analiza/S3Zakres.astro';
+import S4Mierzymy from '../components/analiza/S4Mierzymy.astro';
+import S5NieObiecamy from '../components/analiza/S5NieObiecamy.astro';
+import S6Lejek from '../components/analiza/S6Lejek.astro';
+import S7Raport from '../components/analiza/S7Raport.astro';
+import S8Powiadomienie from '../components/analiza/S8Powiadomienie.astro';
+import FaqKolumny from '../components/sekcje/FaqKolumny.astro';
+
+const t = await trescStrony('strona-analiza-seo-geo');
+if (!t) throw new Error('Brak treści strony: src/content/strony/analiza-seo-geo.json');
+const okruszki = [{ nazwa: 'Strona główna', url: '/' }, { nazwa: 'Analiza', url: '/analiza-seo-geo' }];
+---
+<Uklad strona="analiza-seo-geo" nazwaStrony="Analiza SEO/GEO" okruszki={okruszki}>
+  <S1Hero t={t.s1_hero} />
+  {t.s2_status.widoczny && <S2Status t={t.s2_status} />}
+  <S3Zakres t={t.s3_zakres} />
+  <S4Mierzymy t={t.s4_mierzymy} />
+  <S5NieObiecamy t={t.s5_nie_obiecamy} />
+  <S6Lejek t={t.s6_lejek} />
+  <S7Raport t={t.s7_raport} />
+  <S8Powiadomienie t={t.s8_powiadomienie} />
+  <FaqKolumny strona="analiza-seo-geo" naglowek={t.s9_faq.naglowek} nr="S9" uklad="lista" />
+</Uklad>

@@ -1,0 +1,39 @@
+---
+// Formularz „Powiadom mnie” (usługi „wkrótce”: 29 S3, 30 S8, 32): e-mail + osobna, niezaznaczona zgoda (ZgodaMarketingowa, decyzja 6B).
+// Wysyłka: POST /api/powiadom (Worker Cloudflare → Brevo, moduł src/lib/wysylka.ts). Te same stany co „Opisz projekt” (data-formularz w strona.ts).
+import ZgodaMarketingowa from '../prawo/ZgodaMarketingowa.astro';
+interface Props { id: string; usluga: string; poziom?: 'h2' | 'h3'; przycisk?: string }
+const { id, usluga, poziom = 'h3', przycisk = 'Powiadom mnie' } = Astro.props;
+const H = poziom;
+---
+<form class="formularz" action="/api/powiadom" method="post" novalidate data-formularz>
+  <input type="hidden" name="usluga" value={usluga} />
+  <div class="pole">
+    <label class="t-maly naglowkowy" for={`${id}-email`}>Adres e-mail</label>
+    <input id={`${id}-email`} name="email" type="email" autocomplete="email" placeholder="nazwa@firma.pl" required maxlength="120" />
+    <p class="pole-blad t-maly" id={`${id}-email-blad`} hidden>Wpisz adres w formacie nazwa@firma.pl.</p>
+  </div>
+  <div class="t-maly zgoda-wrap"><ZgodaMarketingowa id={`${id}-zgoda`} usluga={usluga} /></div>
+  <div class="sr-only" aria-hidden="true"><label for={`${id}-strona-www`}>Nie wypełniaj</label> <input id={`${id}-strona-www`} name="strona_www" type="text" tabindex="-1" autocomplete="off" /></div>
+  <p class="komunikat-blad t-maly" role="alert" data-blad-wysylki hidden>Nie udało się zapisać. Twój adres został w formularzu. Spróbuj ponownie za chwilę.</p>
+  <div><button type="submit" class="przycisk przycisk--akcent" data-wyslij>{przycisk}</button></div>
+</form>
+<div class="sukces" data-sukces hidden>
+  <H class="t-h3" tabindex="-1" data-sukces-naglowek>Zapisane</H>
+  <p class="t-tresc">Wyślemy jedną wiadomość na adres <strong data-sukces-email></strong>, gdy usługa ruszy.</p>
+</div>
+
+<style>
+  .formularz { display: grid; gap: 20px; }
+  .pole { display: grid; gap: 8px; }
+  .pole input { width: 100%; padding: 14px 16px; border-radius: var(--radius-control); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); font-size: var(--fk-font-tresc); }
+  .pole input:focus-visible { outline: none; border: 2px solid var(--fk-akcent); padding: 13px 15px; }
+  .pole [aria-invalid='true'] { border: 2px solid var(--fk-blad); padding: 13px 15px; }
+  .pole-blad, .zgoda-wrap :global(.pole-blad) { color: var(--fk-blad); }
+  .zgoda-wrap :global(.zgoda) { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px 12px; align-items: start; }
+  .zgoda-wrap :global(.zgoda input[type='checkbox']) { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--fk-akcent); }
+  .zgoda-wrap :global(.zgoda .klauzula), .zgoda-wrap :global(.zgoda .pole-blad) { grid-column: 2; }
+  .zgoda-wrap :global(.zgoda [aria-invalid='true']) { outline: 2px solid var(--fk-blad); outline-offset: 2px; }
+  .komunikat-blad { padding: 10px 12px; border-radius: 6px; border-left: 3px solid var(--fk-blad); background: var(--fk-tlo-powierzchnia); }
+  .sukces { display: grid; gap: 12px; }
+</style>

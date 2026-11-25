@@ -1,0 +1,31 @@
+---
+// 30 S5 Czego nie obiecamy: duży cytat-pytanie i pigułki z ikoną ✗ (rzeczy, których nie gwarantujemy). Telefon: pigułki jedna pod drugą.
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s5 baza segment" id="nie-obiecamy" data-segment="S5 Czego nie obiecamy" aria-labelledby="s5-h">
+  <div class="kontener s5-wnetrze">
+    {t.etykieta && <p class="t-etykieta akcentowy">{t.etykieta}</p>}
+    <h2 id="s5-h" class="t-h2 naglowkowy cytat">{t.naglowek}</h2>
+    <p class="sr-only">Nie obiecujemy:</p>
+    <ul role="list" class="pigulki">
+      {t.punkty.map((p: string) => (
+        <li class="t-maly"><span class="x" aria-hidden="true"><Ikona nazwa="zamknij" rozmiar={14} /></span>{p}</li>
+      ))}
+    </ul>
+    {t.podpis && <p class="t-tresc pomocniczy">{t.podpis}</p>}
+  </div>
+</section>
+
+<style>
+  .s5 { padding-block: clamp(48px, 5vw, 72px); }
+  .s5-wnetrze { display: grid; gap: 20px; justify-items: start; }
+  .cytat { max-width: 880px; }
+  .pigulki { display: flex; flex-wrap: wrap; gap: 12px; padding-top: 8px; }
+  .pigulki li { display: inline-flex; align-items: center; gap: 10px; padding: 10px 18px 10px 12px; border-radius: var(--radius-pill); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys-kontrolka); color: var(--fk-tekst-naglowek); }
+  .x { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-tlo-podniesione); color: var(--fk-akcent); }
+  @media (max-width: 1023.98px) {
+    .pigulki { flex-direction: column; align-items: stretch; width: 100%; }
+  }
+</style>

@@ -1,0 +1,476 @@
+{
+  "s1_hero": {
+    "h1": "Klient szuka Cię wieczorem w telefonie. Czy znajdzie cenę i wolny termin?",
+    "lead": "Robimy strony dla salonów, gabinetów i studiów treningowych: landing page, stronę firmową albo stronę na WordPressie. Zaczynamy od pytań Twoich klientów, a postęp oglądasz etap po etapie.",
+    "cta_1": "Opisz swój projekt",
+    "cta_2": "Zobacz pakiety",
+    "notka": "Szukasz sklepu internetowego? To osobna oferta.",
+    "atuty": [
+      "Zakres na piśmie",
+      "Adres testowy",
+      "Panel treści"
+    ]
+  },
+  "s2_dla_kogo": {
+    "naglowek": "Twoi klienci pytają o co innego niż klienci konkurencji",
+    "lead": "Zanim cokolwiek narysujemy, pytamy, kto do Ciebie przychodzi i o co pyta najczęściej.",
+    "branze": [
+      {
+        "branza": "Salon",
+        "opis": "Ile kosztuje zabieg, ile trwa i jak się zapisać? Te odpowiedzi stawiamy na początku strony."
+      },
+      {
+        "branza": "Gabinet",
+        "opis": "Czym się zajmujesz, jak przygotować się do wizyty i jak dojechać. Treść zatwierdzasz Ty."
+      },
+      {
+        "branza": "Studio treningowe",
+        "opis": "Grafik, cennik i pierwszy krok dla nowej osoby. Sprawdzamy, czy widać je na telefonie bez przewijania."
+      }
+    ]
+  },
+  "s3_warianty": {
+    "naglowek": "3 warianty strony dla Ciebie",
+    "warianty": [
+      {
+        "nazwa": "Landing page",
+        "status": "dostępne",
+        "opis": "Dla Ciebie, jeśli strona ma mieć jeden cel: zapis, telefon albo zapytanie.",
+        "uwaga": "",
+        "cta": "Opisz ten zakres",
+        "schemat": "landing"
+      },
+      {
+        "nazwa": "Strona firmowa",
+        "status": "dostępne",
+        "opis": "Dla Ciebie, jeśli potrzebujesz kilku podstron: oferta, cennik, o firmie, kontakt.",
+        "uwaga": "",
+        "cta": "Opisz ten zakres",
+        "schemat": "firmowa"
+      },
+      {
+        "nazwa": "Strona na WordPressie",
+        "status": "na zapytanie",
+        "opis": "Dla Ciebie, jeśli chcesz mieć panel treści w WordPressie.",
+        "uwaga": "Realizacji do pokazania jeszcze nie mamy.",
+        "cta": "Opisz ten zakres",
+        "schemat": "wordpress"
+      }
+    ]
+  },
+  "s4_dlaczego": {
+    "naglowek": "Sześć rzeczy, które sprawdzisz u nas sam",
+    "lead": "Generator zrobi stronę w kilka minut. Trudniej dostać jasną odpowiedź, co w niej jest i co będzie potem. Oto nasze odpowiedzi.",
+    "punkty": [
+      {
+        "tytul": "Cała uwaga na Twoim projekcie",
+        "opis": "Prowadzimy kilka projektów naraz, nie kilkadziesiąt. Jedna osoba rozmawia z Tobą, buduje i sprawdza pracę. Nie dzwonisz na infolinię."
+      },
+      {
+        "tytul": "SEO: podstawy dla Twojej strony",
+        "opis": "Tytuły, opisy podstron i dane firmy zapisane tak, żeby wyszukiwarka je zrozumiała. Pozycji nie obiecujemy."
+      },
+      {
+        "tytul": "Firma w wyszukiwarkach AI",
+        "opis": "Jasny opis firmy i odpowiedzi na pytania klientów w treści strony. Google nie wymaga osobnych plików „dla AI”, więc nie obiecujemy cytowań."
+      },
+      {
+        "tytul": "Według standardu WCAG 2.2",
+        "opis": "Budujemy stronę według standardu WCAG 2.2, poziom AA. Wynik kontroli dostajesz na piśmie."
+      },
+      {
+        "tytul": "Pomiar szybkości z datą",
+        "opis": "Dostajesz wynik automatycznego pomiaru z nazwą narzędzia i datą. Wynik zależy też od łącza."
+      },
+      {
+        "tytul": "A jeśli firma urośnie?",
+        "opis": "Zapisujemy w zakresie, co da się później rozbudować i ile to będzie kosztować pracy."
+      }
+    ]
+  },
+  "s5_zapytaj": {
+    "naglowek": "Napisz, co Ci przeszkadza w obecnej stronie",
+    "lead": "Zostaw kontakt i kilka zdań. Odpowiemy pytaniami o Twoich klientów i razem dobierzemy zakres.",
+    "korzysci_naglowek": "Co dostajesz ze stroną",
+    "korzysci": [
+      {
+        "tytul": "Zakres na piśmie",
+        "opis": "Ustalenia przed startem, z listą rzeczy poza zakresem."
+      },
+      {
+        "tytul": "Adres testowy",
+        "opis": "Oglądasz kolejne wersje, zanim strona trafi do publikacji."
+      },
+      {
+        "tytul": "Panel treści",
+        "opis": "Ceny, godziny i opisy zmieniasz sam, w zakresie uzgodnionym przed startem."
+      },
+      {
+        "tytul": "Instrukcja",
+        "opis": "Opis obsługi panelu na piśmie."
+      }
+    ]
+  },
+  "s6_pakiety": {
+    "naglowek": "Ile strony potrzebuje Twoja firma?",
+    "pakiety": [
+      {
+        "nazwa": "Strona podstawowa",
+        "opis": "Strona na podstawie szablonu dobranego do Twojej firmy.",
+        "zawiera": [
+          "Szablon dobrany do branży i treści",
+          "Podstawowe SEO: tytuły, opisy, dane firmy",
+          "Informacja o danych osobowych",
+          "Według standardu WCAG 2.2"
+        ]
+      },
+      {
+        "nazwa": "Strona dedykowana",
+        "opis": "Układ i wygląd projektujemy od zera z komponentów.",
+        "zawiera": [
+          "Wszystko ze strony podstawowej",
+          "Projekt pokazany przed kodowaniem",
+          "Sekcje pod Twoje treści",
+          "Lista gotowych elementów"
+        ]
+      },
+      {
+        "nazwa": "Strona prywatna",
+        "opis": "Projekt UI i UX od zera, kod z myślą o lekkości i prywatności.",
+        "zawiera": [
+          "Wszystko ze strony dedykowanej",
+          "Projekt UI i UX całej strony",
+          "Pomiar szybkości z datą",
+          "Lista zewnętrznych usług"
+        ]
+      }
+    ]
+  },
+  "s7_koszta": {
+    "naglowek": "Koszta po stronie klienta",
+    "etykieta": "Kwoty z rynku, nie nasz cennik",
+    "pozycje": [
+      {
+        "nazwa": "Domena",
+        "zakres": "ok. 100-200 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Hosting",
+        "zakres": "ok. 300-500 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Certyfikat SSL",
+        "zakres": "0-150 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Opieka",
+        "zakres": "175-1 090 zł",
+        "okres": "miesięcznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      }
+    ]
+  },
+  "s8_standard": {
+    "naglowek": "Standard strony:",
+    "cechy": [
+      "Według standardu WCAG 2.2",
+      "Kontrola automatyczna i klawiaturą",
+      "Natywne elementy HTML",
+      "Pomiar szybkości z datą",
+      "Dane opisane wprost"
+    ]
+  },
+  "s9_wcag": {
+    "naglowek": "Dostępność powstaje w projekcie, kodzie i treści",
+    "lead": "Nie instalujemy nakładki, która ma „naprawić” stronę jednym skryptem. O dostępność dbamy na każdym etapie, a przed oddaniem sprawdzamy stronę i opisujemy wynik.",
+    "kroki": [
+      {
+        "tytul": "Na etapie projektu",
+        "opis": "Sprawdzamy kontrast, wielkość tekstu i rozmiar przycisków na ekranie telefonu."
+      },
+      {
+        "tytul": "W kodzie strony",
+        "opis": "Używamy standardowych elementów HTML: przycisk jest przyciskiem, a nagłówek nagłówkiem."
+      },
+      {
+        "tytul": "W Twoich treściach",
+        "opis": "Pomagamy pisać krótkie akapity, jasne nazwy linków i opisy zdjęć."
+      },
+      {
+        "tytul": "Przed oddaniem strony",
+        "opis": "Test automatyczny każdej podstrony i przejście całej strony klawiaturą."
+      },
+      {
+        "tytul": "Raport z kontroli",
+        "opis": "Lista sprawdzonych elementów i tego, czego nie sprawdziliśmy."
+      }
+    ]
+  },
+  "s10_obowiazek": {
+    "naglowek": "Masz salon, gabinet albo studio. Czy WCAG to Twój obowiązek?",
+    "lead": "Najczęściej nie. Zależy to od wielkości firmy i od tego, co klient może zrobić na Twojej stronie.",
+    "start": {
+      "tytul": "Od czego zacząć",
+      "opis": "Najpierw sprawdź, czy Twoja firma jest mikroprzedsiębiorcą: mniej niż 10 pracowników i obrót do 2 mln euro rocznie. Ustawa z 26 kwietnia 2024 r. nie stosuje się do usług mikroprzedsiębiorców."
+    },
+    "galezie": [
+      {
+        "etykieta": "mikroprzedsiębiorca",
+        "tytul": "Po co, skoro nie trzeba",
+        "opis": "W Polsce żyje 5,4 mln osób z niepełnosprawnościami, czyli 14,3% ludności (GUS, 2021). Część z nich szuka fryzjera, fizjoterapeuty i trenera tak samo jak inni. Czytelna strona jest też wygodniejsza na telefonie."
+      },
+      {
+        "etykieta": "10 lub więcej osób",
+        "tytul": "Gdy firma jest większa",
+        "opis": "Jeśli zatrudniasz 10 lub więcej osób, a klient może przez stronę zarezerwować wizytę, kupić karnet albo zamówić usługę, ustawa może Cię obejmować. Obowiązuje od 28 czerwca 2025 r."
+      }
+    ],
+    "my": {
+      "tytul": "Co robimy my",
+      "opis": "Budujemy według standardu WCAG 2.2, poziom AA, i pokazujemy wynik kontroli na piśmie. Nie wystawiamy zaświadczeń o zgodności z prawem ani nie piszemy, że strona jest „w pełni dostępna”."
+    }
+  },
+  "s11_ai": {
+    "naglowek": "Klient pyta ChatGPT o fizjoterapeutę w okolicy. Co zobaczy o Tobie?",
+    "lead": "Przygotowujemy stronę tak, żeby mogli ją odczytać i zrozumieć m.in.:",
+    "dostawcy": [
+      "Google (w tym AI Overviews)",
+      "ChatGPT",
+      "Perplexity",
+      "Gemini",
+      "Bing i Copilot",
+      "Meta AI",
+      "Grok",
+      "Claude",
+      "DuckDuckGo"
+    ],
+    "uwaga": "Każdy z tych dostawców ma własne roboty i zasady, a odpowiedzi AI zmieniają się z pytania na pytanie. Dlatego robimy to, co da się sprawdzić na stronie.",
+    "karty": [
+      {
+        "tytul": "Indeksacja i mapa witryny",
+        "opis": "Strona jest odczytywalna, a mapa zgłoszona w narzędziach wyszukiwarek."
+      },
+      {
+        "tytul": "Plik robots.txt",
+        "opis": "Ustalamy z Tobą, które roboty mają wstęp."
+      },
+      {
+        "tytul": "Fakty tekstem",
+        "opis": "Usługi, ceny, godziny i adres są tekstem, nie obrazkiem."
+      },
+      {
+        "tytul": "Jasne tytuły i opisy",
+        "opis": "Każda podstrona mówi, czego dotyczy i dla kogo jest."
+      },
+      {
+        "tytul": "Odpowiedzi na pytania klientów",
+        "opis": "FAQ i krótkie, konkretne odpowiedzi w treści."
+      },
+      {
+        "tytul": "Spójne dane firmy",
+        "opis": "Nazwa, adres i godziny zgodne z Profilem Firmy w Google."
+      }
+    ],
+    "nie_robimy": {
+      "naglowek": "Nie robimy zbędnych rzeczy",
+      "pozycje": [
+        {
+          "tytul": "Pliku llms.txt jako sposobu na widoczność",
+          "opis": "Google z tego pliku nie korzysta."
+        },
+        {
+          "tytul": "Upychania słów kluczowych i ukrytego tekstu",
+          "opis": "Polityka spamu Google wymienia to jako nadużycie."
+        },
+        {
+          "tytul": "Masowych podstron „usługa + miasto”",
+          "opis": "Według polityki Google to strony doorway."
+        },
+        {
+          "tytul": "Nakładek „naprawiających” dostępność jednym skryptem",
+          "opis": "Nie zastępują poprawnego kodu."
+        }
+      ]
+    }
+  },
+  "s12_realizacje": {
+    "naglowek": "Tak może wyglądać nasza wspólna praca",
+    "lead": "Każdy projekt zaczynamy od rozmowy o Twojej firmie i Twoich klientach. Twój projekt może być kolejną kartą.",
+    "realizacje": [
+      "beddieyes",
+      "legit-check",
+      "zdjecia-sprzedazowe"
+    ]
+  },
+  "s13_proces": {
+    "naglowek": "Sześć etapów, sześć Twoich decyzji",
+    "etapy": [
+      {
+        "tytul": "Poznanie firmy",
+        "my_robimy": "Pytamy, co dziś zabiera Ci czas albo klientów.",
+        "ty_robisz": "Opowiadasz i decydujesz, od którego problemu zaczynamy.",
+        "ty_dostajesz": "Zapis problemu własnymi słowami, do poprawienia."
+      },
+      {
+        "tytul": "Zakres i cena",
+        "my_robimy": "[co robimy na tym etapie]",
+        "ty_robisz": "Wybierasz wariant.",
+        "ty_dostajesz": "[co dostajesz na tym etapie]"
+      },
+      {
+        "tytul": "Szkic",
+        "my_robimy": "[co robimy na tym etapie]",
+        "ty_robisz": "Akceptujesz kolejność informacji albo ją zmieniasz.",
+        "ty_dostajesz": "[co dostajesz na tym etapie]"
+      },
+      {
+        "tytul": "Budowa",
+        "my_robimy": "[co robimy na tym etapie]",
+        "ty_robisz": "Zgłaszasz uwagi w trakcie i zatwierdzasz etap.",
+        "ty_dostajesz": "[co dostajesz na tym etapie]"
+      },
+      {
+        "tytul": "Kontrola i start",
+        "my_robimy": "[co robimy na tym etapie]",
+        "ty_robisz": "Decydujesz o publikacji.",
+        "ty_dostajesz": "[co dostajesz na tym etapie]"
+      },
+      {
+        "tytul": "Po starcie",
+        "my_robimy": "[co robimy na tym etapie]",
+        "ty_robisz": "Wybierasz, czy i w jakim zakresie z nich korzystasz.",
+        "ty_dostajesz": "[co dostajesz na tym etapie]"
+      }
+    ]
+  },
+  "s14_kalkulator": {
+    "naglowek": "Wybierz pakiet na start",
+    "pakiety": [
+      {
+        "etykieta": "Strona podstawowa",
+        "nazwa": "Landing Page podstawowy",
+        "opis": "Jedna strona na szablonie, który dobieramy do Twojej firmy.",
+        "cena": "strony-internetowe-landing",
+        "podpis_ceny": "",
+        "polecany": false,
+        "zawiera": [
+          "oferta, kontakt i dojazd na jednej stronie",
+          "wersja na telefon",
+          "SEO techniczne i mapa strony",
+          "testy przed oddaniem"
+        ],
+        "nie_zawiera": [
+          "panelu do samodzielnej zmiany treści",
+          "własnego projektu graficznego",
+          "domeny, hostingu i licencji (niżej)"
+        ],
+        "cta": "Zapytaj o ten pakiet"
+      },
+      {
+        "etykieta": "Strona dedykowana",
+        "nazwa": "Wariant dedykowany",
+        "opis": "Układ i wygląd projektujemy od zera, z gotowych komponentów.",
+        "cena": "strony-internetowe-dedykowana",
+        "podpis_ceny": "",
+        "polecany": true,
+        "zawiera": [
+          "projekt układu pod Twoich klientów",
+          "kilka podstron, np. usługi, cennik, kontakt",
+          "panel do zmiany treści bez programisty",
+          "SEO techniczne i testy"
+        ],
+        "nie_zawiera": [
+          "sklepu i płatności online",
+          "integracji z systemami firmy",
+          "domeny, hostingu i licencji (niżej)"
+        ],
+        "cta": "Zapytaj o ten pakiet"
+      },
+      {
+        "etykieta": "Najwyższy pakiet w ofercie",
+        "nazwa": "Prywatna strona stworzona od A do Z",
+        "opis": "Projekt UI i UX od zera, kod pisany pod szybkość i prywatność.",
+        "cena": null,
+        "podpis_ceny": "po rozmowie o zakresie; zakresy są zbyt różne, by podać jedną kwotę z rynku",
+        "polecany": false,
+        "zawiera": [
+          "wszystko z wariantu dedykowanego",
+          "projekt ekranów przed pierwszą linią kodu",
+          "pomiar wydajności przy każdej zmianie",
+          "zakres spisany na piśmie przed startem"
+        ],
+        "nie_zawiera": [
+          "sklepu, aplikacji i automatyzacji (osobne pozycje)",
+          "obietnicy ruchu ani liczby zapytań",
+          "domeny, hostingu i licencji (niżej)"
+        ],
+        "cta": "Zapytaj o ten pakiet"
+      }
+    ],
+    "koszty_naglowek": "Koszty stałe po Twojej stronie",
+    "koszty_stale": [
+      {
+        "nazwa": "Domena",
+        "zakres": "100-200 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Hosting",
+        "zakres": "300-500 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "SSL",
+        "zakres": "0-150 zł",
+        "okres": "rocznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Licencje",
+        "zakres": "zmienne",
+        "okres": "rocznie",
+        "zrodlo": "[źródło do uzupełnienia]",
+        "data": "[data]"
+      },
+      {
+        "nazwa": "Opieka i prowadzenie (opcjonalnie)",
+        "zakres": "175-1 090 zł",
+        "okres": "miesięcznie",
+        "zrodlo": "[źródło kwoty do uzupełnienia]",
+        "data": "[data]"
+      }
+    ],
+    "zrodla": ""
+  },
+  "s15_opinie": {
+    "naglowek": "Nie wierz nam na słowo. Sprawdź u źródła."
+  },
+  "s16_faq": {
+    "naglowek": "Pytania, które warto zadać przed rozmową"
+  },
+  "s17_zamkniecie": {
+    "naglowek": "Co klient ma zrozumieć po wejściu na Twoją stronę?",
+    "punkty": [
+      "Zakres na piśmie",
+      "Adres testowy",
+      "Panel treści"
+    ],
+    "cta": "Opisz swój projekt",
+    "podpis": ""
+  }
+}

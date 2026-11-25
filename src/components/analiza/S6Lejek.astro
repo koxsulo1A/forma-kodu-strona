@@ -1,0 +1,52 @@
+---
+// 30 S6 Lejek: schodkowe słupki z liczbami PRZYKŁADOWYMI (etykieta w panelu), wskaźnik 7,5% i jedna obserwacja.
+// Wysokość słupków orientacyjna (malejące schodki), nie w skali: 12 000 i 12 w skali dałyby niewidoczny słupek.
+// Wysokości w klasach w0–w3 (CSP blokuje atrybut style). Telefon: słupki poziome jeden pod drugim.
+interface Props { t: any }
+const { t } = Astro.props;
+const fmt = (n: number) => n.toLocaleString('pl-PL');
+---
+<section class="s6 baza segment" id="lejek" data-segment="S6 Lejek" aria-labelledby="s6-h">
+  <div class="kontener s6-wnetrze">
+    <header class="naglowek">
+      <h2 id="s6-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.etykieta && <p><span class="t-etykieta plak">{t.etykieta}</span></p>}
+    </header>
+    <div class="karta">
+      <ol role="list" class="slupki">
+        {t.etapy.map((e: any, i: number) => (
+          <li class={`w${Math.min(i, 3)}`}>
+            <span class="slupek" aria-hidden="true"></span>
+            <span class="t-h3 naglowkowy liczba">{fmt(e.liczba)}</span>
+            <span class="t-maly">{e.nazwa}</span>
+          </li>
+        ))}
+      </ol>
+      <div class="wniosek">
+        <p class="t-h2 akcentowy wskaznik">{t.wskaznik}</p>
+        <p class="t-tresc">{t.obserwacja}</p>
+      </div>
+    </div>
+    <p class="t-maly pomocniczy">{t.uwaga}{t.zrodlo && ` Źródło: ${t.zrodlo}${t.data ? `, ${t.data}` : ''}.`}</p>
+  </div>
+</section>
+
+<style>
+  .s6 { padding-block: clamp(48px, 5vw, 72px); }
+  .s6-wnetrze { display: grid; gap: 24px; }
+  .naglowek { display: grid; gap: 12px; }
+  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); }
+  .karta { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 1fr); gap: 40px; align-items: end; padding: 32px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .slupki { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; align-items: end; height: 340px; }
+  .w0 { --wys: 100%; } .w1 { --wys: 72%; } .w2 { --wys: 50%; } .w3 { --wys: 30%; }
+  .slupki li { display: grid; grid-template-rows: 1fr auto auto; gap: 6px; height: 100%; }
+  .slupek { align-self: end; height: var(--wys); border-radius: var(--radius-control) var(--radius-control) 0 0; background: var(--fk-grad-przelamanie); }
+  .wniosek { display: grid; gap: 8px; padding-left: 24px; border-left: 2px solid var(--fk-akcent); }
+  @media (max-width: 1023.98px) {
+    .karta { grid-template-columns: minmax(0, 1fr); padding: 20px; gap: 24px; }
+    .slupki { grid-template-columns: minmax(0, 1fr); height: auto; gap: 12px; }
+    .slupki li { grid-template-rows: auto; grid-template-columns: auto minmax(0, 1fr); align-items: center; column-gap: 12px; height: auto; }
+    .slupek { grid-column: 1 / -1; height: 12px; width: var(--wys); border-radius: var(--radius-pill); }
+    .wniosek { padding-left: 16px; }
+  }
+</style>

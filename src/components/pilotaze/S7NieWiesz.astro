@@ -1,0 +1,26 @@
+---
+// 32 S7 Nie wiesz, czy pilotaż jest dla Ciebie? (wariant D): pytanie po lewej, odpowiedź i przycisk po prawej, rozdzielone pionową linią.
+// Przycisk otwiera sheet „Opisz projekt” (bez JS: /kontakt).
+interface Props { t: any }
+const { t } = Astro.props;
+---
+<section class="s7 baza segment" id="nie-wiesz" data-segment="S7 Nie wiesz" aria-labelledby="s7-h">
+  <div class="kontener s7-wnetrze">
+    <h2 id="s7-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+    <div class="prawa">
+      {t.opis && <p class="t-tresc-l">{t.opis}</p>}
+      <div><a class="przycisk przycisk--akcent" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta}</a></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s7 { padding-block: clamp(48px, 5vw, 72px); }
+  .s7-wnetrze { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; }
+  .prawa { display: grid; gap: 20px; padding-left: 48px; border-left: 2px solid var(--fk-obrys-kontrolka); }
+  @media (max-width: 1023.98px) {
+    .s7-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .prawa { padding-left: 0; padding-top: 20px; border-left: 0; border-top: 2px solid var(--fk-obrys-kontrolka); }
+    .prawa .przycisk { width: 100%; justify-content: center; }
+  }
+</style>

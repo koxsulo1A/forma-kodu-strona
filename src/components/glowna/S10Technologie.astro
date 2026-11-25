@@ -1,0 +1,90 @@
+---
+// 27 S10 Technologie: trzy kolumny, w każdej stos kart warstw (animacja „rozłożenie stosu kart w dół”).
+// Złożony: pod spodem pierwsza warstwa, na wierzchu ostatnia, między nimi przycisk „+N warstwy” z nazwami ról środkowych warstw.
+// Bez JS (i po kliknięciu) stos jest zwykłą listą wszystkich warstw. Makieta: „WordPress (headless)”, kod: Keystatic (decyzja CMS 24.11).
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+const warstwy = (n: number) => (n === 1 ? 'warstwa' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'warstwy' : 'warstw');
+---
+<section class="s10 baza segment" id="technologie" data-segment="S10 Technologie" aria-labelledby="s10-h">
+  <div class="kontener s10-wnetrze">
+    <header class="s10-naglowek">
+      <p class="t-etykieta akcentowy">{t.etykieta}</p>
+      <h2 id="s10-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+    </header>
+    <div class="kolumny">
+      {t.pakiety.map((p: any, k: number) => {
+        const w = p.warstwy;
+        const srodek = w.slice(1, -1);
+        return (
+          <article class="kolumna" aria-labelledby={`s10-p${k}`}>
+            <div class="kol-naglowek">
+              <div class="kol-tytul">
+                <h3 id={`s10-p${k}`} class="t-h4 naglowkowy">{p.nazwa}</h3>
+                {p.znacznik && <p class:list={['t-etykieta', 'znacznik-pakietu', { pelny: k === 2 }]}>{p.znacznik}</p>}
+              </div>
+              <p class="licznik"><span class="t-liczba akcentowy">{w.length}</span> <span class="t-maly pomocniczy">{warstwy(w.length)}</span></p>
+            </div>
+            <p class="t-maly pomocniczy">{p.opis}</p>
+            <div class="stos" data-stos>
+              <ul role="list" class="karty">
+                {w.map((x: any, i: number) => (
+                  <li class:list={['karta', { pierwsza: i === 0, ostatnia: i === w.length - 1, srodkowa: i > 0 && i < w.length - 1 }]}>
+                    <p class="karta-gora"><span class="t-przycisk naglowkowy">{x.narzedzie}</span><span class="t-etykieta pomocniczy">{x.rola}</span></p>
+                    <p class="t-maly">Ograniczenie: {x.ograniczenie}</p>
+                  </li>
+                ))}
+              </ul>
+              {srodek.length > 0 && (
+                <button type="button" class="stos-przycisk" data-stos-przycisk>
+                  <span class="t-przycisk naglowkowy" data-stos-etykieta>+{srodek.length} {warstwy(srodek.length)}</span>
+                  <span class="t-maly pomocniczy" data-stos-podpis>{srodek.map((x: any) => x.rola).join(', ')}</span>
+                  <Ikona nazwa="caret" class="caret" />
+                </button>
+              )}
+            </div>
+          </article>
+        );
+      })}
+    </div>
+    <p class="t-maly pomocniczy">{t.podpis}</p>
+  </div>
+</section>
+
+<style>
+  .s10 { padding-block: clamp(40px, 3vw, 38px) 29px; }
+  .s10-wnetrze { display: grid; gap: 32px; }
+  .s10-naglowek { display: grid; gap: 12px; max-width: 794px; }
+  .kolumny { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; align-items: start; }
+  .kolumna { display: grid; gap: 16px; padding: 20px; border-radius: var(--radius-card); border: 1px solid var(--fk-obrys); }
+  .kol-naglowek { display: flex; justify-content: space-between; gap: 12px; align-items: start; }
+  .kol-tytul { display: grid; gap: 8px; justify-items: start; }
+  .znacznik-pakietu { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); }
+  .znacznik-pakietu.pelny { background: var(--fk-akcent); border-color: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
+  .licznik { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+
+  .stos { display: grid; gap: 8px; }
+  .karty { display: grid; gap: 8px; }
+  .karta { display: grid; gap: 8px; padding: 11px 16px 14px; border-radius: var(--radius-12); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .karta-gora { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  .stos-przycisk { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; text-align: left; padding: 12px 16px; border-radius: var(--radius-12); background: var(--fk-tlo); border: 1px solid var(--fk-obrys-kontrolka); cursor: pointer; color: var(--fk-tekst); }
+  .stos-przycisk :global(.caret) { grid-column: 2; grid-row: 1 / span 2; align-self: center; transition: transform var(--fk-czas-standard) var(--fk-krzywa-standard); }
+  .stos-przycisk[aria-expanded='true'] :global(.caret) { transform: rotate(180deg); }
+  .stos-przycisk:hover { background: var(--fk-tlo-podniesione); }
+
+  /* Złożony stos (z JS): pierwsza warstwa schowana pod przyciskiem, ostatnia na wierzchu. */
+  .stos:global(.zlozony) { position: relative; padding-top: 0; }
+  .stos:global(.zlozony) .karty { display: grid; grid-template-areas: 'stos'; }
+  .stos:global(.zlozony) .srodkowa { display: none; }
+  .stos:global(.zlozony) .karta { grid-area: stos; }
+  .stos:global(.zlozony) .pierwsza { margin-inline: 12px; background: var(--fk-tlo-podniesione); }
+  .stos:global(.zlozony) .ostatnia { margin-top: 96px; position: relative; z-index: 2; box-shadow: 0 -6px 16px rgb(14 17 23 / 0.06); }
+  .stos:global(.zlozony) .stos-przycisk { position: absolute; left: 6px; right: 6px; top: 40px; z-index: 1; padding-bottom: 28px; }
+  .stos:global(.zlozony) .karty { padding-bottom: 0; }
+  .stos:global(.w-ruchu) .karta { animation: rozloz var(--fk-czas-rozwiniecie) var(--fk-krzywa-wejscie) both; }
+  @keyframes rozloz { from { opacity: 0; transform: translateY(-16px); } }
+  @media (max-width: 1023.98px) {
+    .kolumny { grid-template-columns: 1fr; }
+  }
+</style>

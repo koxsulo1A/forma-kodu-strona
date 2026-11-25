@@ -1,0 +1,50 @@
+---
+// 31 S2 Nad czym pracujemy: wszystkie wpisy kolekcji „Realizacje” (najpierw prawdziwe, potem przykłady układu; w grupie najnowsze pierwsze).
+// Filtr kategorii: przyciski z licznikami (aria-pressed) i zdanie „Pokazano X z Y: …” (strona.ts 7b). Bez JS widać wszystkie karty, przyciski są ukryte.
+// Komputer: siatka 4 kolumny. Telefon: jedna karuzela swipe ze wskaźnikiem od 01 (makieta: 2 rzędy po 4; przy filtrze rzędy tracą sens).
+import KartaRealizacji from './KartaRealizacji.astro';
+import { opisListy } from '../../lib/odmiana';
+interface Props { t: any; lista: any[] }
+const { t, lista } = Astro.props;
+const kategorie = ['Strony', 'Automatyzacje', 'Aplikacje'].map((k) => ({ k, n: lista.filter((r) => r.data.kategoria === k).length })).filter((x) => x.n);
+---
+<section class="s2 baza segment" id="projekty" data-segment="S2 Nad czym pracujemy" aria-labelledby="s2-h" data-filtr>
+  <div class="kontener s2-wnetrze">
+    <header class="naglowek">
+      <h2 id="s2-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l pomocniczy">{t.lead}</p>}
+    </header>
+    <div class="filtr">
+      <div class="przyciski" role="group" aria-label="Pokaż kategorię">
+        <button type="button" class="t-maly" data-kategoria="wszystkie" aria-pressed="true">Wszystkie <span class="t-etykieta ile">{lista.length}</span></button>
+        {kategorie.map(({ k, n }) => <button type="button" class="t-maly" data-kategoria={k} aria-pressed="false">{k} <span class="t-etykieta ile">{n}</span></button>)}
+      </div>
+      <p class="t-etykieta pomocniczy" data-filtr-status aria-live="polite">{opisListy(lista.map((r) => r.data.typ), lista.length)}</p>
+    </div>
+    <ul role="list" class="siatka swipe" data-swipe="s2-wskaznik">
+      {lista.map((r) => <li data-karta data-kategoria={r.data.kategoria} data-typ={r.data.typ}><KartaRealizacji r={r} /></li>)}
+    </ul>
+    <div class="wskaznik-swipe" id="s2-wskaznik" aria-hidden="true">
+      <ol>{lista.map((_, i) => <li aria-current={String(i === 0)}></li>)}</ol>
+      <span data-licznik>1 z {lista.length}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s2 { padding-block: clamp(48px, 5vw, 72px); }
+  .s2-wnetrze { display: grid; gap: 28px; }
+  .naglowek { display: grid; gap: 12px; max-width: 760px; }
+  .filtr { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 24px; }
+  .przyciski { display: flex; flex-wrap: wrap; gap: 8px; }
+  :global(html:not(.js)) .przyciski { display: none; }
+  .przyciski button { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 18px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); font: inherit; cursor: pointer; }
+  .przyciski button[aria-pressed='true'] { background: var(--fk-grad-przelamanie); border-color: transparent; color: var(--fk-przelamanie-tekst); }
+  .przyciski button:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
+  .ile { opacity: 0.8; }
+  .siatka { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
+  .siatka > li[hidden] { display: none; }
+  @media (max-width: 1023.98px) {
+    .przyciski button { flex: 1 1 auto; justify-content: center; }
+  }
+</style>

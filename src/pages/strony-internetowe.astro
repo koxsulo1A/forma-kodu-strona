@@ -1,0 +1,46 @@
+---
+// /strony-internetowe (makieta 28, komputer 1440 i telefon 375). Treść: panel Keystatic → „Strona 28: Strony internetowe” (src/content/strony/strony-internetowe.json).
+// Kolejność segmentów jak na makiecie: S1–S17, stopka w Uklad.astro. S14 = ten sam cennik co 27 S8, S15 = widżety opinii, S16 = FAQ z kolekcji.
+import Uklad from '../layouts/Uklad.astro';
+import { trescStrony } from '../lib/tresc';
+import S1Hero from '../components/strony-internetowe/S1Hero.astro';
+import S2DlaKogo from '../components/strony-internetowe/S2DlaKogo.astro';
+import S3Warianty from '../components/strony-internetowe/S3Warianty.astro';
+import S4Dlaczego from '../components/strony-internetowe/S4Dlaczego.astro';
+import S5Zapytaj from '../components/strony-internetowe/S5Zapytaj.astro';
+import S6Pakiety from '../components/strony-internetowe/S6Pakiety.astro';
+import S7Koszta from '../components/strony-internetowe/S7Koszta.astro';
+import S8Standard from '../components/strony-internetowe/S8Standard.astro';
+import S9Wcag from '../components/strony-internetowe/S9Wcag.astro';
+import S10Obowiazek from '../components/strony-internetowe/S10Obowiazek.astro';
+import S11Ai from '../components/strony-internetowe/S11Ai.astro';
+import S12Realizacje from '../components/strony-internetowe/S12Realizacje.astro';
+import ProcesPoziomy from '../components/sekcje/ProcesPoziomy.astro';
+import S8Cennik from '../components/glowna/S8Cennik.astro';
+import OpinieWidzety from '../components/opinie/OpinieWidzety.astro';
+import FaqKolumny from '../components/sekcje/FaqKolumny.astro';
+import Zamkniecie from '../components/sekcje/Zamkniecie.astro';
+
+const t = await trescStrony('strona-strony-internetowe');
+if (!t) throw new Error('Brak treści strony: src/content/strony/strony-internetowe.json');
+const okruszki = [{ nazwa: 'Strona główna', url: '/' }, { nazwa: 'Strony internetowe', url: '/strony-internetowe' }];
+---
+<Uklad strona="strony-internetowe" nazwaStrony="Strony internetowe" okruszki={okruszki}>
+  <S1Hero t={t.s1_hero} />
+  <S2DlaKogo t={t.s2_dla_kogo} />
+  <S3Warianty t={t.s3_warianty} />
+  <S4Dlaczego t={t.s4_dlaczego} />
+  <S5Zapytaj t={t.s5_zapytaj} />
+  <S6Pakiety t={t.s6_pakiety} />
+  <S7Koszta t={t.s7_koszta} />
+  <S8Standard t={t.s8_standard} />
+  <S9Wcag t={t.s9_wcag} />
+  <S10Obowiazek t={t.s10_obowiazek} />
+  <S11Ai t={t.s11_ai} />
+  <S12Realizacje t={t.s12_realizacje} />
+  <ProcesPoziomy t={t.s13_proces} nr="S13" />
+  <S8Cennik t={t.s14_kalkulator} nr="S14" nazwa="Kalkulator zakresu" />
+  <OpinieWidzety naglowek={t.s15_opinie.naglowek} id="opinie" />
+  <FaqKolumny strona="strony-internetowe" naglowek={t.s16_faq.naglowek} nr="S16" />
+  <Zamkniecie t={t.s17_zamkniecie} nr="S17" />
+</Uklad>

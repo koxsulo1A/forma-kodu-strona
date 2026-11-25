@@ -1,0 +1,93 @@
+---
+// 27 S8 Cennik (wariant E zmodyfikowany: małe bloki, wspólna dolna krawędź). Ceny z jednego cennika (kolekcja „Ceny”, relacja w panelu).
+// Klik w „Co zawiera i czego nie zawiera” w dowolnym pakiecie rozwija listy we wszystkich trzech (animacja 27 S8).
+// „Zapytaj o ten pakiet” otwiera sheet „Opisz projekt” z wpisaną nazwą pakietu (data-opis).
+// Makieta: etykieta „Przykład z rynku, nie nasz cennik”. Kod: „Cena Forma Kodu”, bo cennik ma nasza_cena: true (decyzja Kacpra 24.11).
+import { cena, cenaTekst } from '../../lib/ceny.mjs';
+interface Props { t: any; nr?: string; nazwa?: string }
+const { t, nr = 'S8', nazwa = 'Cennik' } = Astro.props;
+const pakiety = t.pakiety.map((p: any, i: number) => {
+  const c = cena(p.cena);
+  return { ...p, nr: i + 1, cenaTxt: cenaTekst(c), etykietaCeny: c ? (c.nasza_cena ? 'Cena Forma Kodu' : 'Przykład z rynku, nie nasz cennik') : 'Cena' };
+});
+---
+<section class="s8 baza segment" id="cennik" data-segment={`${nr} ${nazwa}`} aria-labelledby="s8-h">
+  <div class="kontener s8-wnetrze">
+    <h2 id="s8-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+    <div class="pakiety-ramka" data-rozwin-grupa>
+      <ul role="list" class="pakiety swipe" data-swipe="s8-wskaznik">
+        {pakiety.map((p: any) => (
+          <li class:list={['pakiet', { polecany: p.polecany, najwyzszy: p.nr === 3 }]}>
+            {p.polecany && <p class="znacznik-polecany t-etykieta">Polecany pakiet</p>}
+            <p class="pakiet-gora"><span class="nr t-liczba-m" aria-hidden="true">{p.nr}</span><span class="t-etykieta pomocniczy">{p.etykieta}</span></p>
+            <h3 class="t-h4 naglowkowy">{p.nazwa}</h3>
+            <p class="t-maly">{p.opis}</p>
+            <div class="cena">
+              <p class="t-etykieta pomocniczy">{p.etykietaCeny}</p>
+              <p class="t-h3 naglowkowy">{p.cenaTxt}</p>
+              {p.podpis_ceny && <p class="t-maly pomocniczy">{p.podpis_ceny}</p>}
+            </div>
+            <div class="listy" id={`s8-lista-${p.nr}`}>
+              <div><p class="t-maly-mocny naglowkowy">Zawiera</p><ul class="t-maly">{p.zawiera.map((z: string) => <li class="tak">{z}</li>)}</ul></div>
+              <div><p class="t-maly-mocny naglowkowy">Nie zawiera</p><ul class="t-maly">{p.nie_zawiera.map((z: string) => <li class="nie">{z}</li>)}</ul></div>
+            </div>
+            <div class="akcje">
+              <button type="button" class="rozwin t-nawigacja" data-rozwin={`s8-lista-${p.nr}`}>Co zawiera i czego nie zawiera <span class="caret" aria-hidden="true">▾</span></button>
+              <a class:list={['przycisk', p.polecany ? 'przycisk--akcent' : 'przycisk--glowny']} href="/kontakt" data-otworz-sheet="sheet-projekt" data-opis={`Pytam o pakiet: ${p.nazwa}.`} aria-haspopup="dialog">{p.cta}<span class="sr-only">: {p.nazwa}</span></a>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div class="wskaznik-swipe" id="s8-wskaznik" aria-hidden="true">
+        <ol>{pakiety.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
+        <span data-licznik>1 z {pakiety.length}</span>
+      </div>
+    </div>
+    <div class="koszty">
+      <h3 class="t-h4 naglowkowy">{t.koszty_naglowek}</h3>
+      <dl class="kwoty">
+        {t.koszty_stale.map((k: any) => (
+          <div>
+            <dt class="t-maly">{k.nazwa}</dt>
+            <dd class="t-h3 naglowkowy">{k.zakres}</dd>
+            <dd class="t-etykieta pomocniczy">{k.okres} · {k.zrodlo}, {k.data}</dd>
+          </div>
+        ))}
+      </dl>
+      {t.zrodla && <p class="t-maly pomocniczy">{t.zrodla}</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .s8 { padding-block: clamp(48px, 6.5vw, 90px) 46px; }
+  .s8-wnetrze { display: grid; gap: 48px; }
+  .pakiety { display: grid; grid-template-columns: 408fr 448fr 408fr; gap: 24px; align-items: end; }
+  .pakiet { position: relative; display: grid; gap: 12px; align-content: start; padding: 28px; border-radius: var(--radius-card); border: 1.5px solid var(--fk-obrys); background: var(--fk-tlo); }
+  .pakiet.polecany { border: 2px solid var(--fk-obrys-kontrolka); padding-block: 40px 32px; }
+  .pakiet.najwyzszy { background: var(--fk-tlo-powierzchnia); }
+  .znacznik-polecany { position: absolute; top: -14px; left: 28px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
+  .pakiet-gora { display: flex; align-items: center; gap: 12px; }
+  .nr { color: var(--fk-akcent); }
+  .cena { display: grid; gap: 4px; padding-block: 12px; border-block: 1px solid var(--fk-obrys); }
+  .listy { display: grid; gap: 16px; }
+  .listy[hidden] { display: none; }
+  .listy ul { display: grid; gap: 6px; margin-top: 8px; padding: 0; list-style: none; }
+  .listy li { padding-left: 22px; position: relative; }
+  .listy li::before { position: absolute; left: 0; font-weight: 700; }
+  .tak::before { content: '✓'; color: var(--fk-sukces); }
+  .nie::before { content: '–'; color: var(--fk-tekst-pomocniczy); }
+  .akcje { display: grid; gap: 12px; justify-items: start; padding-top: 4px; }
+  .rozwin { display: inline-flex; align-items: center; gap: 6px; padding: 10px 0; border: 0; background: none; color: var(--fk-akcent); cursor: pointer; text-align: left; }
+  .rozwin:hover { text-decoration: underline; }
+  .caret { transition: transform var(--fk-czas-standard) var(--fk-krzywa-standard); }
+  :global(.rozwiniete) .caret { transform: rotate(180deg); }
+  .koszty { display: grid; gap: 28px; padding: 24px; border-radius: var(--radius-card); border: 1px solid var(--fk-obrys); }
+  .kwoty { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
+  .kwoty div { display: grid; gap: 4px; align-content: start; }
+  @media (max-width: 1023.98px) {
+    .pakiety { align-items: stretch; padding-top: 16px; }
+    .pakiet { padding: 24px 20px; }
+    .kwoty { grid-template-columns: 1fr 1fr; }
+  }
+</style>

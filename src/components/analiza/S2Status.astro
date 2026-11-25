@@ -1,0 +1,32 @@
+---
+// 30 S2 Status (wariant E): duże zdanie stanu pośrodku, plakietka „wkrótce”, ramka „Co możesz zrobić dziś”. Gdy usługa ruszy: w panelu odznacz „widoczny”.
+interface Props { t: any }
+const { t } = Astro.props;
+---
+{t.widoczny && (
+  <section class="s2 baza segment" id="status" data-segment="S2 Status" aria-labelledby="s2-h">
+    <div class="kontener-waski s2-wnetrze">
+      <p class="t-etykieta plak">wkrótce</p>
+      <h2 id="s2-h" class="t-display naglowkowy">{t.naglowek}</h2>
+      <p class="t-tresc-l">{t.opis}</p>
+      {t.dzis_tytul && (
+        <div class="dzis">
+          <div><h3 class="t-h4 naglowkowy">{t.dzis_tytul}</h3><p class="t-tresc">{t.dzis_opis}</p></div>
+          {t.cta && <a class="przycisk przycisk--drugi" href="#zakres">{t.cta}</a>}
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
+<style>
+  .s2 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  .s2-wnetrze { display: grid; gap: 20px; justify-items: center; text-align: center; max-width: 900px; }
+  .plak { padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--fk-akcent); color: var(--fk-akcent); }
+  .dzis { display: flex; align-items: center; justify-content: space-between; gap: 24px; width: 100%; margin-top: 12px; padding: 24px 28px; text-align: left; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
+  .dzis > div { display: grid; gap: 4px; }
+  @media (max-width: 1023.98px) {
+    .dzis { flex-direction: column; align-items: stretch; padding: 20px; }
+    .dzis .przycisk { justify-content: center; }
+  }
+</style>

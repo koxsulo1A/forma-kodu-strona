@@ -1,0 +1,93 @@
+---
+// 27 S5 Realizacje (wariant B: kafle z panelem). Projekty wskazane ręcznie w panelu (pole „realizacje”), dane z kolekcji Realizacje.
+// Wyróżniona realizacja ma panel rozwinięty pod pierwszym rzędem. Ostatni kafel to puste miejsce (bez wymyślonych realizacji).
+// Telefon: jedna karta swipe ze wskaźnikiem od 01, panel ukryty (kafel prowadzi do podstrony).
+// Telefon: pętla bez końca (data-petla, zasada mobile 28): kopie kafli dokłada strona.ts.
+import { realizacjeWybrane } from '../../lib/tresc';
+import Ikona from '../wspolne/Ikona.astro';
+interface Props { t: any }
+const { t } = Astro.props;
+const lista = await realizacjeWybrane(t.realizacje);
+const wyrozniona = lista.find((r) => r.entry.wyrozniona) ?? null;
+const status = (e: any) =>
+  `${e.typ === 'projekt własny' ? 'Projekt własny' : e.typ === 'klient' ? 'Projekt klienta' : 'Przykład układu'}, ${e.status === 'w toku' ? 'w przygotowaniu' : 'zakończony'}`;
+const link = (r: any) => (r.entry.typ === 'przykład układu' ? null : `/realizacje/${r.slug}`);
+const kafle = lista.length + 1;
+---
+<section class="s5 baza segment" id="realizacje" data-segment="S5 Realizacje" aria-labelledby="s5-h">
+  <div class="kontener s5-wnetrze">
+    <h2 id="s5-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+    <ul role="list" class="kafle swipe" data-swipe="s5-wskaznik" data-petla>
+      {lista.map((r, i) => (
+        <>
+          <li class:list={['kafel', { aktywny: r === wyrozniona }]}>
+            <p class="kafel-gora">
+              <span class="t-etykieta pomocniczy">{r.entry.kategoria}</span>
+              {r.entry.typ === 'klient' && <span class="t-etykieta oznaczenie">strona klienta</span>}
+            </p>
+            <h3 class="t-h4 naglowkowy">{link(r) ? <a href={link(r)}>{r.entry.naglowek}</a> : r.entry.naglowek}</h3>
+            <p class:list={['t-maly', { akcentowy: r === wyrozniona }]}>{r === wyrozniona ? 'Rozwinięte niżej' : status(r.entry)}</p>
+          </li>
+          {i === 2 && wyrozniona && (
+            <li class="panel" aria-labelledby="s5-panel-h">
+              <div class="zrzut">
+                <p class="t-etykieta">Miejsce na prawdziwy zrzut ekranu</p>
+                <p class="t-maly pomocniczy">Zrzut pokażemy, gdy powstanie działający prototyp. Do tego czasu nie rysujemy ekranu na niby.</p>
+              </div>
+              <div class="panel-tresc">
+                <div class="panel-tytul">
+                  <h3 id="s5-panel-h" class="t-h3 naglowkowy">{wyrozniona.entry.naglowek}</h3>
+                  {link(wyrozniona) && <a class="przycisk przycisk--drugi" href={link(wyrozniona)}>Zobacz <span class="sr-only">realizację {wyrozniona.entry.naglowek}</span></a>}
+                </div>
+                <p class="t-tresc">{wyrozniona.entry.opis}</p>
+                <dl class="fakty">
+                  <div><dt class="t-etykieta pomocniczy">Rodzaj</dt><dd class="t-maly">{wyrozniona.entry.kategoria}</dd></div>
+                  <div><dt class="t-etykieta pomocniczy">Status</dt><dd class="t-maly">{status(wyrozniona.entry)}</dd></div>
+                  {wyrozniona.entry.zakres.map((z: any) => <div><dt class="t-etykieta pomocniczy">{z.tytul}</dt><dd class="t-maly">{z.opis}</dd></div>)}
+                  <div><dt class="t-etykieta pomocniczy">Wyniki</dt><dd class="t-maly">brak danych: strona przed startem</dd></div>
+                </dl>
+              </div>
+            </li>
+          )}
+        </>
+      ))}
+      <li class="kafel pusty">
+        <h3 class="t-h4 naglowkowy">Miejsce na kolejną realizację</h3>
+        <p class="t-maly">Pusto do pierwszego pilotażu. Pokażemy ją tylko za pisemną zgodą klienta.</p>
+      </li>
+    </ul>
+    <div class="wskaznik-swipe" id="s5-wskaznik" aria-hidden="true">
+      <ol>{Array.from({ length: kafle }, (_, i) => <li aria-current={String(i === 0)}></li>)}</ol>
+      <span data-licznik>1 z {kafle}</span>
+    </div>
+    <a class="t-maly akcentowy wszystkie" href="/realizacje">{t.link_wszystkie} <Ikona nazwa="strzalka" rozmiar={16} /></a>
+  </div>
+</section>
+
+<style>
+  .s5 { padding-block: clamp(48px, 5.5vw, 77px) clamp(40px, 4vw, 58px); }
+  .s5-wnetrze { display: grid; gap: 20px; }
+  .s5-wnetrze > h2 { margin-bottom: 20px; }
+  .kafle { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .kafel { position: relative; display: grid; gap: 8px; align-content: start; padding: 24px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); min-height: 133px; transition: border-color var(--fk-czas-szybki); }
+  .kafel:hover { border-color: var(--fk-obrys-kontrolka); }
+  .kafel.aktywny { border: 2px solid var(--fk-akcent); }
+  .kafel a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  .kafel a { color: inherit; text-decoration: none; }
+  .kafel:focus-within { outline: 3px solid var(--fk-fokus); outline-offset: 3px; }
+  .kafel a:focus-visible { outline: none; }
+  .kafel-gora { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .oznaczenie { padding: 4px 12px; border-radius: var(--radius-pill); background: var(--fk-tlo-podniesione); color: var(--fk-akcent); }
+  .pusty { background: transparent; border-color: var(--fk-obrys-kontrolka); }
+  .panel { grid-column: 1 / -1; display: grid; grid-template-columns: 560fr 654fr; gap: 40px; padding: 28px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys-kontrolka); }
+  .zrzut { min-height: 320px; display: grid; align-content: center; justify-items: center; gap: 8px; padding: 0 24px; text-align: center; border-radius: var(--radius-control); background: var(--fk-tlo-podniesione); border: 1px solid var(--fk-obrys-kontrolka); }
+  .panel-tresc { display: grid; gap: 12px; align-content: start; }
+  .panel-tytul { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .fakty { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 48px; padding-top: 8px; max-width: 520px; }
+  .fakty div { display: grid; gap: 4px; }
+  .wszystkie { display: inline-flex; align-items: center; gap: 6px; justify-self: start; }
+  @media (max-width: 1023.98px) {
+    .panel { display: none; }
+    .s5-wnetrze > h2 { margin-bottom: 4px; }
+  }
+</style>

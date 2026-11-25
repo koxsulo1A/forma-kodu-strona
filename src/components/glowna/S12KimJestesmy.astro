@@ -1,0 +1,93 @@
+---
+// 27 S12 Kim jesteśmy: ciemny pasek „osoba i misja” + siatka 5:7 (dla kogo i cel | co zyskujesz).
+// Zdjęcie właściciela: dopóki nie ma pliku w panelu, widać ramkę „miejsce na zdjęcie” (portret 4:5), jak na makiecie.
+interface Props { t: any }
+const { t } = Astro.props;
+const osoba = t.osoby?.[0];
+const zaslepka = (s: string | undefined) => !s || /^\[.*\]$/.test(s);
+---
+<section class="s12 baza segment" id="o-nas" data-segment="S12 Kim jesteśmy" aria-labelledby="s12-h">
+  <div class="kontener-waski s12-wnetrze">
+    <div class="pasek-osoba">
+      {osoba?.zdjecie?.plik ? (
+        <img class="zdjecie" src={osoba.zdjecie.plik} alt={osoba.zdjecie.dekoracja ? '' : osoba.zdjecie.alt} width="256" height="320" loading="lazy" decoding="async" />
+      ) : (
+        <div class="zdjecie miejsce" aria-hidden="true"><span class="t-etykieta">miejsce na zdjęcie: właściciel</span><span class="t-etykieta">portret 4:5</span></div>
+      )}
+      <div class="kto">
+        <p class="t-etykieta">Kto wykonuje pracę</p>
+        <p class="t-tresc">{t.kto_opis}</p>
+        {osoba && (
+          <p class="t-maly">
+            {zaslepka(osoba.imie) ? 'Imię i nazwisko: do uzupełnienia.' : osoba.imie}
+            {' '}{zaslepka(osoba.rola) ? 'Rola: do uzupełnienia.' : osoba.rola}
+          </p>
+        )}
+      </div>
+      <i class="linia" aria-hidden="true"></i>
+      <div class="misja">
+        <p class="t-etykieta">Misja</p>
+        <p class="t-h4">{t.misja}</p>
+      </div>
+    </div>
+
+    <div class="siatka">
+      <div class="lewa">
+        <h2 id="s12-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
+        <p class="t-tresc-l">{t.lead}</p>
+        <div class="cel">
+          <p class="t-etykieta akcentowy">Cel</p>
+          <p class="t-tresc">{t.cel}</p>
+        </div>
+      </div>
+      <div class="prawa">
+        <h3 class="t-h4 naglowkowy">{t.zyski_naglowek}</h3>
+        <div class="wyrozniony">
+          <div>
+            <p class="t-h4 niebieski">{t.wyrozniony.tytul}</p>
+            <p class="t-maly">{t.wyrozniony.opis}</p>
+          </div>
+          <p class="t-h3 niebieski">{t.wyrozniony.cytat}</p>
+        </div>
+        <ul role="list" class="benefity">
+          {t.benefity.map((b: any) => <li><p class="t-tresc-mocna niebieski">{b.tytul}</p><p class="t-maly">{b.opis}</p></li>)}
+        </ul>
+        <div class="ograniczenia">
+          <p class="t-tresc-mocna niebieski">{t.ograniczenia.tytul}</p>
+          <p class="t-maly">{t.ograniczenia.opis}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .s12 { padding-block: clamp(48px, 5.5vw, 77px) clamp(48px, 4.5vw, 67px); }
+  .s12-wnetrze { display: grid; gap: clamp(40px, 4.5vw, 64px); }
+  .pasek-osoba { display: grid; grid-template-columns: 128px minmax(0, 380px) 1px minmax(0, 1fr); gap: 40px; align-items: center; padding: 32px 48px 32px 32px; border-radius: var(--radius-card); background: var(--fk-grad-czern); color: var(--fk-panel-czern-tekst); }
+  .zdjecie { width: 128px; height: 160px; border-radius: var(--radius-12); object-fit: cover; }
+  .miejsce { display: grid; align-content: center; gap: 8px; padding: 0 12px; text-align: center; background: var(--fk-panel-czern-polysk); border: 1.5px dashed var(--fk-panel-czern-tekst); }
+  .kto, .misja { display: grid; gap: 12px; }
+  .linia { width: 1px; height: 120px; background: var(--fk-panel-czern-tekst); opacity: 0.4; }
+  .siatka { display: grid; grid-template-columns: 440fr 680fr; gap: 80px; align-items: start; }
+  .lewa { display: grid; gap: 24px; }
+  .cel { display: grid; gap: 8px; padding-top: 20px; border-top: 2px solid var(--fk-akcent); }
+  .prawa { display: grid; gap: 24px; }
+  .niebieski { color: var(--fk-akcent-gleboki); }
+  :global(:root[data-theme='dark']) .niebieski { color: var(--fk-akcent); }
+  .wyrozniony { display: grid; grid-template-columns: 300px 1fr; gap: 32px; align-items: center; padding: 28px; border-radius: var(--radius-card); border: 1px solid var(--fk-kafel-3-obrys); }
+  .wyrozniony > div { display: grid; gap: 8px; }
+  .benefity { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px; }
+  .benefity li { display: grid; gap: 8px; align-content: start; padding: 20px; border-radius: var(--radius-12); border: 1px solid var(--fk-kafel-3-obrys); }
+  .ograniczenia { display: flex; gap: 24px; align-items: baseline; padding: 20px 24px; border-radius: var(--radius-card); border: 1px dashed var(--fk-kafel-3-obrys); }
+  @media (max-width: 1023.98px) {
+    .pasek-osoba { grid-template-columns: 96px 1fr; gap: 20px; padding: 24px 20px; }
+    .zdjecie { width: 96px; height: 120px; }
+    .linia { display: none; }
+    .misja { grid-column: 1 / -1; padding-top: 16px; border-top: 1px solid rgb(241 244 249 / 0.3); }
+    .siatka { grid-template-columns: 1fr; gap: 40px; }
+    .wyrozniony { grid-template-columns: 1fr; gap: 16px; padding: 24px 20px; }
+    .benefity { grid-template-columns: 1fr; gap: 12px; }
+    .ograniczenia { display: grid; gap: 8px; }
+  }
+</style>

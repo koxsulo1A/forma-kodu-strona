@@ -1,8 +1,8 @@
 ---
-// Karta realizacji (31 S2, 27 S5, 28 S12, 31b S6; przyciski 31-4 i 31b-5). Wzór: karta z designsolutions.pl.
-// Kolejność: zdjęcie 2:1 → kategoria → nagłówek → opis → tagi technologii → „Miasto · data” → plakietka typu → „Zobacz realizację →”.
+// Karta realizacji (31 S2, 31b S6; przyciski 31-4 i 31b-5). Wzór: karta z designsolutions.pl, wygląd z makiety 31.
+// Kolejność: zdjęcie 2:1 → etykieta (podkategoria) → nagłówek → opis → tagi technologii → „Miasto · data” → plakietka typu i statusu → „Zobacz realizację →”.
 // Cała karta klikalna przez JEDEN link na nagłówku rozciągnięty na kartę (::after), bez zagnieżdżonych linków.
-// „Przykład układu” nie ma podstrony: karta bez linku, z etykietą „przykład, nie realizacja” (zasada stała 12).
+// „Przykład układu” nie ma podstrony: karta bez linku, z przerywaną ramką i plakietką „Przykład: układ, nie realizacja” (zasada stała 12).
 // data-vt łączy zdjęcie karty ze zdjęciem w hero podstrony 31b (View Transitions między stronami; nazwy w /przejscia-realizacji.css).
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
@@ -10,27 +10,39 @@ interface Props { r: CollectionEntry<'realizacje'>; poziom?: 'h2' | 'h3' }
 const { r, poziom = 'h3' } = Astro.props;
 const d = r.data;
 const H = poziom;
-const link = d.typ === 'przykład układu' ? null : `/realizacje/${r.id}`;
-const miesiac = (rm: string) => new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(new Date(`${rm}-01`));
-const plakietka = d.typ === 'przykład układu' ? 'przykład, nie realizacja' : d.typ === 'projekt własny' ? 'projekt własny' : d.status === 'w toku' ? 'w toku' : '';
+const przyklad = d.typ === 'przykład układu';
+const link = przyklad ? null : `/realizacje/${r.id}`;
+const plakietka = przyklad
+  ? 'Przykład: układ, nie realizacja'
+  : `${d.typ === 'klient' ? 'Projekt klienta' : 'Projekt własny'} · ${d.status === 'w toku' ? 'w przygotowaniu' : 'zakończony'}`;
 ---
-<article class:list={['karta-realizacji', { klikalna: link }]}>
-  <Image src={d.zdjecie_glowne} alt={d.zdjecie_alt} widths={[400, 800, 1200]} sizes="(min-width: 1024px) 33vw, 100vw" data-vt={r.id} />
-  <p class="kategoria">{d.kategoria}</p>
-  <H>{link ? <a href={link}>{d.naglowek}</a> : d.naglowek}</H>
-  <p>{d.opis}</p>
-  {d.technologie.length > 0 && <ul class="tagi" aria-label="Technologie">{d.technologie.map((t) => <li>{t}</li>)}</ul>}
-  <p class="meta">{[d.miasto, miesiac(d.data)].filter(Boolean).join(' · ')}</p>
-  {plakietka && <p class="plakietka">{plakietka}</p>}
-  {link && <p class="wiecej" aria-hidden="true">Zobacz realizację →</p>}
+<article class:list={['karta-realizacji', { klikalna: link, przyklad }]}>
+  <div class="zdjecie">
+    <Image src={d.zdjecie_glowne} alt={d.zdjecie_alt} widths={[400, 800]} sizes="(min-width: 1024px) 25vw, 80vw" data-vt={link ? r.id : undefined} />
+  </div>
+  <p class="t-etykieta pomocniczy">{d.podkategoria || d.kategoria}</p>
+  <H class="t-h4 naglowkowy">{link ? <a href={link}>{d.naglowek}</a> : d.naglowek}</H>
+  <p class="t-maly opis">{d.opis}</p>
+  {d.technologie.length > 0 && <ul class="tagi" aria-label="Technologie">{d.technologie.map((t) => <li class="t-etykieta">{t}</li>)}</ul>}
+  <p class="t-etykieta pomocniczy">{[d.miasto, d.data].filter(Boolean).join(' · ')}</p>
+  <p><span class="t-etykieta plakietka">{plakietka}</span></p>
+  {link && <p class="t-etykieta akcentowy wiecej" aria-hidden="true">Zobacz realizację →</p>}
 </article>
 
 <style>
-  .karta-realizacji { position: relative; display: grid; gap: 0.5rem; }
-  .karta-realizacji img { width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; border-radius: 0.75rem; }
-  .klikalna a::after { content: ''; position: absolute; inset: 0; } /* cała karta = jeden link */
-  .klikalna:focus-within { outline: 3px solid var(--fokus, #7c3aed); outline-offset: 4px; border-radius: 0.75rem; }
+  .karta-realizacji { position: relative; height: 100%; display: flex; flex-direction: column; gap: 10px; padding: 16px 16px 20px; border-radius: var(--radius-card); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); transition: border-color var(--fk-czas-szybki); }
+  .karta-realizacji.klikalna:hover { border-color: var(--fk-obrys-kontrolka); }
+  .przyklad { border: 1px dashed var(--fk-obrys-kontrolka); background: transparent; }
+  .zdjecie { margin-bottom: 6px; border-radius: var(--radius-control); overflow: hidden; background: var(--fk-tlo-podniesione); }
+  .zdjecie img { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; object-fit: cover; }
+  .przyklad .zdjecie img { opacity: 0.6; }
+  .opis { color: var(--fk-tekst); }
+  .klikalna a { color: inherit; text-decoration: none; }
+  .klikalna a::after { content: ''; position: absolute; inset: 0; border-radius: inherit; } /* cała karta = jeden link */
+  .klikalna:focus-within { outline: 3px solid var(--fk-fokus); outline-offset: 3px; }
   .klikalna a:focus-visible { outline: none; }
-  .tagi { display: flex; flex-wrap: wrap; gap: 0.25rem; list-style: none; padding: 0; margin: 0; }
-  .tagi li { padding: 0.125rem 0.5rem; border-radius: 999px; border: 1px solid currentColor; font-size: 0.875rem; }
+  .tagi { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tagi li { padding: 3px 10px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); }
+  .plakietka { display: inline-block; padding: 4px 10px; border-radius: var(--radius-control); border: 1px solid var(--fk-tekst-naglowek); color: var(--fk-tekst-naglowek); }
+  .wiecej { margin-top: auto; }
 </style>
