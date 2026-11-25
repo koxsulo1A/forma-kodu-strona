@@ -4,4 +4,4 @@ strony: ["pilotaze"]
 kolejnosc: 2
 aktualizacja: "[data]"
 ---
-Zależy od rozwiązania: [przykładowe kwoty hostingu i usług do uzupełnienia]. Dokładną kwotę podamy na piśmie przed startem, a płacisz ją bezpośrednio dostawcom.
+Płacisz je Ty, bezpośrednio dostawcom: domena 100–200 zł rocznie, hosting 300–500 zł rocznie, certyfikat SSL 0–150 zł rocznie, do tego ewentualne licencje. Pełne zestawienie jest w [cenniku](/#cennik). Dokładne kwoty dla Twojego projektu podamy na piśmie przed startem.
