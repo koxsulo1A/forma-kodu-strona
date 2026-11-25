@@ -63,7 +63,7 @@
         "cta": ""
       },
       {
-        "nazwa": "Automatyczny recepcjonista",
+        "nazwa": "Automatyczna recepcjonistka",
         "opis": "Przyjmuje zgłoszenia i pytania, przekazuje je do kalendarza lub do Ciebie. Terminy rezerwuje tylko po połączeniu z kalendarzem, wyjątki obsługuje człowiek.",
         "status": "wkrótce",
         "cta": ""
@@ -72,7 +72,7 @@
   },
   "s4_boty": {
     "naglowek": "Co potrafią, a czego nie",
-    "lead": "Bot czatowy, automatyczny recepcjonista i automatyzacja procesu. O ograniczeniach mówimy przed startem.",
+    "lead": "Bot czatowy, automatyczna recepcjonistka i automatyzacja procesu. O ograniczeniach mówimy przed startem.",
     "bloki": [
       {
         "nazwa": "Bot czatowy",
@@ -90,8 +90,8 @@
         ]
       },
       {
-        "nazwa": "Automatyczny recepcjonista",
-        "tytul": "Automatyczny recepcjonista: co potrafi, a czego nie",
+        "nazwa": "Automatyczna recepcjonistka",
+        "tytul": "Automatyczna recepcjonistka: co potrafi, a czego nie",
         "podtytul": "Usłyszysz to, zanim cokolwiek uruchomimy.",
         "potrafi": [
           "Przyjmuje zgłoszenia i pytania",
@@ -190,7 +190,7 @@
         "opis": "Jeszcze bez realizacji. Pierwsza powstanie w pilotażu."
       },
       {
-        "tytul": "Automatyczny recepcjonista",
+        "tytul": "Automatyczna recepcjonistka",
         "opis": "Jeszcze bez realizacji. Pierwsza powstanie w pilotażu."
       }
     ],
