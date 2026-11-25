@@ -1,13 +1,14 @@
 ---
 // 29 S5 Jak pracujemy (wariant E, Figma 228:470): nagłówek po lewej przy górnej krawędzi, po prawej cztery karty nachodzące
 // na siebie po skosie (01 na górze z lewej, 04 na dole z prawej), tła na przemian jasne i szare, małe numery w mono.
-// Kacper 25.11 16:06: gdy nagłówek wejdzie w ekran, karty powoli układają się w stos jedna po drugiej (jak 27 S7):
-// każda zjeżdża z góry i opada na poprzednią, 800 ms, co 450 ms. Klasa .widoczny z obserwatora [data-odslon] (strona.ts 9e).
+// Kacper 25.11 16:06 i 17:31: gdy nagłówek wejdzie w ekran, sama rusza powolna animacja jak 27 S7: karty po kolei wjeżdżają
+// od dołu i kładą się na poprzednią (1000 ms każda, co 700 ms). Klasa .widoczny z obserwatora [data-odslon] (strona.ts 9e).
+// data-ruch-wlasny: segment poza ogólną kaskadą (ruch.ts), bo jej szybkie odsłanianie nadpisywało tę animację.
 // Telefon: karty jedna pod drugą, bez przesunięcia.
 interface Props { t: any }
 const { t } = Astro.props;
 ---
-<section class="s5 baza segment" id="jak-pracujemy" data-segment="S5 Jak pracujemy" aria-labelledby="s5-h">
+<section class="s5 baza segment" id="jak-pracujemy" data-segment="S5 Jak pracujemy" aria-labelledby="s5-h" data-ruch-wlasny>
   <div class="kontener s5-wnetrze">
     <header class="naglowek" data-odslon>
       <h2 id="s5-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
@@ -38,9 +39,12 @@ const { t } = Astro.props;
   .tytul { display: flex; align-items: baseline; gap: 14px; font-size: 20px; font-weight: 600; line-height: 1.3; }
   .nr { flex: none; }
   @media (prefers-reduced-motion: no-preference) {
-    :global(html.js:not(.bez-ruchu)) .naglowek:not(.widoczny) + .stos .karta { opacity: 0; transform: translate3d(0, -48px, 0) scale(0.97); }
-    :global(html.js:not(.bez-ruchu)) .karta { transition: opacity 800ms var(--fk-krzywa-wejscie), transform 800ms cubic-bezier(0.22, 1, 0.36, 1); }
-    .karta[data-n='2'] { transition-delay: 450ms; } .karta[data-n='3'] { transition-delay: 900ms; } .karta[data-n='4'] { transition-delay: 1350ms; }
+    :global(html.js:not(.bez-ruchu)) .naglowek:not(.widoczny) + .stos .karta { opacity: 0; transform: translate3d(0, 160px, 0); }
+    :global(html.js:not(.bez-ruchu)) .karta { transition: opacity 700ms var(--fk-krzywa-wejscie), transform 1000ms cubic-bezier(0.22, 1, 0.36, 1); }
+    :global(html.js:not(.bez-ruchu)) .karta[data-n='1'] { transition-delay: 150ms; }
+    :global(html.js:not(.bez-ruchu)) .karta[data-n='2'] { transition-delay: 850ms; }
+    :global(html.js:not(.bez-ruchu)) .karta[data-n='3'] { transition-delay: 1550ms; }
+    :global(html.js:not(.bez-ruchu)) .karta[data-n='4'] { transition-delay: 2250ms; }
   }
   @media (max-width: 1023.98px) {
     .s5-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 28px; }

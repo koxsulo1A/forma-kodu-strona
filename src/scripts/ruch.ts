@@ -536,17 +536,27 @@ function krokiPrzypiete() {
     const el = [...seg.querySelectorAll<HTMLElement>('[data-krok]')];
     const ile = Math.max(0, ...el.map((e) => Number(e.dataset.krok)));
     if (!kontener || ile < 1 || ograniczRuch()) return;
-    const NA_KROK = 0.6, PRZED = 0.15;
-    let wlaczony = false, ramka = 0, stan = -1;
+    // Kacper 25.11 17:31: gdy użytkownik dojdzie do segmentu (pierwszy blok na ekranie), kolejne bloki wchodzą same
+    // co AUTO ms; przewijanie nadal może je pokazać szybciej. Widać max(stan z przewijania, stan automatyczny).
+    const NA_KROK = 0.6, PRZED = 0.15, AUTO = 1100;
+    let wlaczony = false, ramka = 0, stan = -1, auto = 0, przewiniety = 0, zegar = 0;
     const ustaw = (n: number) => {
       if (n === stan) return;
       stan = n;
       el.forEach((e) => e.classList.toggle('czeka', Number(e.dataset.krok) > n));
     };
+    const pokaz = () => ustaw(Math.max(przewiniety, auto));
+    const tik = () => {
+      auto = Math.min(ile, Math.max(auto, przewiniety) + 1);
+      pokaz();
+      if (auto >= ile) { clearInterval(zegar); zegar = -1; }
+    };
     const licz = () => {
       ramka = 0;
       const top = seg.getBoundingClientRect().top;
-      ustaw(Math.max(0, Math.min(ile, Math.ceil((innerHeight * PRZED - top) / (innerHeight * NA_KROK)))));
+      przewiniety = Math.max(0, Math.min(ile, Math.ceil((innerHeight * PRZED - top) / (innerHeight * NA_KROK))));
+      if (przewiniety >= 1 && zegar === 0) zegar = window.setInterval(tik, AUTO);
+      pokaz();
     };
     // Wysokość naturalna = treść + odstępy segmentu (klasa .przewijane ma w CSS 300vh, więc nie mierzymy samej sekcji).
     const wymiary = () => {
@@ -569,6 +579,8 @@ function krokiPrzypiete() {
       wlaczony = false;
       seg.classList.remove('przewijane');
       seg.style.height = '';
+      if (zegar > 0) clearInterval(zegar);
+      zegar = 0; auto = 0;
       el.forEach((e) => e.classList.remove('czeka'));
       removeEventListener('scroll', naScroll);
       removeEventListener('resize', naResize);
