@@ -177,12 +177,19 @@ document.querySelectorAll<HTMLFormElement>('[data-formularz]').forEach((f) => {
     f.setAttribute('aria-busy', 'true');
     pola.forEach((p) => (p.readOnly = true));
     wyslij.setAttribute('aria-busy', 'true');
-    wyslij.textContent = 'Wysyłam…';
+    // Tabela ruchu: „Wysyłanie” + 4 kropki, potem „Wysłano!” (ok. 1,2 s). Bez ruchu: sama zmiana tekstu.
+    const etykieta = wyslij.textContent;
+    const ruch = !ograniczRuch();
+    wyslij.innerHTML = ruch ? 'Wysyłanie<span class="kropki" aria-hidden="true"><span>.</span><span>.</span><span>.</span><span>.</span></span>' : 'Wysyłanie…';
     try {
       const odp = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } });
       if (!odp.ok) throw new Error(String(odp.status));
       const email = (f.querySelector('input[type=email]') as HTMLInputElement).value;
       if (f.dataset.szkic) { try { localStorage.removeItem(f.dataset.szkic); } catch { /* tryb prywatny */ } }
+      wyslij.removeAttribute('aria-busy');
+      wyslij.textContent = 'Wysłano!';
+      if (ruch) await new Promise((r) => setTimeout(r, 600));
+      wyslij.textContent = etykieta;
       f.hidden = true;
       sukces.hidden = false;
       sukces.querySelector('[data-sukces-email]')!.textContent = email;

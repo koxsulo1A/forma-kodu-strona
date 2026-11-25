@@ -5,6 +5,8 @@
 interface Props { t: any }
 const { t } = Astro.props;
 const fmt = (n: number) => n.toLocaleString('pl-PL');
+// Wskaźnik (np. „7,5%”): liczba w osobnym elemencie, żeby ruch mógł ją liczyć w dół (tabela ruchu: 900 ms).
+const wsk = String(t.wskaznik ?? '').match(/^(.*?)(\d+(?:,\d+)?)(.*)$/s);
 ---
 <section class="s6 baza segment" id="lejek" data-segment="S6 Lejek" aria-labelledby="s6-h">
   <div class="kontener s6-wnetrze">
@@ -12,18 +14,18 @@ const fmt = (n: number) => n.toLocaleString('pl-PL');
       <h2 id="s6-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
       {t.etykieta && <p><span class="t-etykieta plak">{t.etykieta}</span></p>}
     </header>
-    <div class="karta">
+    <div class="karta" data-lejek>
       <ol role="list" class="slupki">
         {t.etapy.map((e: any, i: number) => (
           <li class={`w${Math.min(i, 3)}`}>
             <span class="slupek" aria-hidden="true"></span>
-            <span class="t-h3 naglowkowy liczba">{fmt(e.liczba)}</span>
+            <span class="t-h3 naglowkowy liczba" data-liczba={e.liczba}>{fmt(e.liczba)}</span>
             <span class="t-maly">{e.nazwa}</span>
           </li>
         ))}
       </ol>
       <div class="wniosek">
-        <p class="t-h2 akcentowy wskaznik">{t.wskaznik}</p>
+        <p class="t-h2 akcentowy wskaznik">{wsk ? <>{wsk[1]}<span data-liczba={wsk[2].replace(',', '.')} data-od="100" data-koniec={wsk[2]}>{wsk[2]}</span>{wsk[3]}</> : t.wskaznik}</p>
         <p class="t-tresc">{t.obserwacja}</p>
       </div>
     </div>

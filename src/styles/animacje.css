@@ -31,3 +31,44 @@
 @media (prefers-reduced-motion: no-preference) {
   @view-transition { navigation: auto; }
 }
+
+/* ---------- Ruch z tabeli 390:2 (ruch.ts). Klasy dokładane skryptem, więc style globalne. ---------- */
+
+/* 27 S1: zmiana słów w H1. Szerokość = najdłuższe słowo (warstwa .slowa-miara), więc reszta zdania nie skacze. */
+.slowa-ze-znakiem { white-space: nowrap; }
+.slowa { display: inline-grid; vertical-align: top; max-width: 100%; white-space: normal; }
+.slowa > *, .slowa-widok > .slowo { grid-area: 1 / 1; }
+.slowa-miara { visibility: hidden; }
+.slowa-widok { display: grid; }
+.slowo .litera { display: inline-block; transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1), opacity 400ms cubic-bezier(0.16, 1, 0.3, 1); }
+.slowo.wchodzi .litera { transform: translateY(0.55em); opacity: 0; }
+.slowo.wychodzi .litera { transform: translateY(-0.55em); opacity: 0; }
+
+/* Stopka: kurtyna. Panel przesuwany skryptem; stopka przycina to, co wystaje. */
+.kurtyna { overflow: clip; }
+.kurtyna .stopka-panel { will-change: transform; }
+
+/* Przycisk wysyłki: 4 kropki pojawiają się po kolei (ok. 1,2 s). */
+.kropki span { opacity: 0; animation: fk-kropka 1200ms steps(1, end) infinite; }
+.kropki span:nth-child(2) { animation-delay: 300ms; }
+.kropki span:nth-child(3) { animation-delay: 600ms; }
+.kropki span:nth-child(4) { animation-delay: 900ms; }
+@keyframes fk-kropka { 0% { opacity: 0; } 25%, 100% { opacity: 1; } }
+
+/* Przycisk: naciśnięcie (tabela: scale 0.98, y +1 px, 120 ms). */
+@media (prefers-reduced-motion: no-preference) {
+  html:not(.bez-ruchu) .przycisk:active { transform: translateY(1px) scale(0.98); }
+}
+
+/* 29 S4 od 1024 px: sekcja ma wysokość 3 ekranów, treść przyklejona; blok zmienia się przewijaniem. */
+@media (min-width: 1024px) {
+  .przewijane { height: 300vh; }
+  .przewijane > .kontener { position: sticky; top: 0; min-height: 100vh; align-content: center; }
+}
+html:not(.bez-ruchu) .przewijane [role=tabpanel]:not([hidden]) { animation: fk-wymiana 320ms cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes fk-wymiana { from { opacity: 0; transform: translateY(16px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .slowo .litera, .kropki span { transition: none; animation: none; opacity: 1; }
+  .przewijane { height: auto; }
+}

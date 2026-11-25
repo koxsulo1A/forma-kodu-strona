@@ -1,7 +1,7 @@
 ---
 // 31 S1 Hero: tekst i 2 przyciski po lewej; po prawej karta wyróżnionego projektu (wybór w panelu) i blok „Realizacji klientów jeszcze nie ma”.
 // Blok znika sam, gdy w kolekcji jest realizacja klienta ze statusem „gotowe”.
-// Makieta: karta obraca się o 180° przy wejściu. Kod: karta wjeżdża łagodnie (bez obrotu: obrót utrudnia czytanie i jest ciężki dla osób wrażliwych na ruch).
+// Makieta: karta obraca się o 180° przy wejściu (500 ms, krzywa wejścia). Kod: to samo; przy „ogranicz ruch” karta stoi od razu w stanie końcowym.
 interface Props { t: any; wyrozniony: any; slug: string | null; sakKlienta: boolean }
 const { t, wyrozniony, slug, sakKlienta } = Astro.props;
 const status = (e: any) => `${e.typ === 'klient' ? 'Projekt klienta' : e.typ === 'projekt własny' ? 'Projekt własny' : 'Przykład układu'} · ${e.status === 'w toku' ? 'w przygotowaniu' : 'zakończony'}`;
@@ -49,9 +49,10 @@ const status = (e: any) => `${e.typ === 'klient' ? 'Projekt klienta' : e.typ ===
   .plak { display: inline-block; padding: 4px 10px; border-radius: var(--radius-control); border: 1px solid var(--fk-tekst-naglowek); color: var(--fk-tekst-naglowek); }
   .brak { display: grid; gap: 6px; padding: 24px; border-radius: var(--radius-card); background: var(--fk-tlo-podniesione); border: 1px dashed var(--fk-akcent); }
   @media (prefers-reduced-motion: no-preference) {
-    :global(html.js:not(.bez-ruchu)) .karty > * { transition: opacity 500ms var(--fk-krzywa-wejscie), transform 500ms var(--fk-krzywa-wejscie); }
-    :global(html.js:not(.bez-ruchu)) .karty:not(.widoczny) > * { opacity: 0; transform: translateY(16px); }
-    .karty > :nth-child(2) { transition-delay: 150ms; }
+    :global(html.js:not(.bez-ruchu)) .karty { perspective: 1200px; }
+    :global(html.js:not(.bez-ruchu)) .karty > * { transition: opacity 300ms var(--fk-krzywa-wejscie), transform 500ms var(--fk-krzywa-wejscie); backface-visibility: hidden; }
+    :global(html.js:not(.bez-ruchu)) .karty:not(.widoczny) > * { opacity: 0; transform: rotateY(180deg); }
+    .karty > :nth-child(2) { transition-delay: 80ms; }
   }
   @media (max-width: 1023.98px) {
     .s1-wnetrze { grid-template-columns: minmax(0, 1fr); gap: 32px; }

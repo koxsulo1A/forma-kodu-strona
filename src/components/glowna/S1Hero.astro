@@ -4,11 +4,20 @@
 interface Props { t: any }
 const { t } = Astro.props;
 const slupki = [12, 18, 17, 26, 31, 38];
+// Zmiana słów w H1 (plansza 529:2269): część H1 równa pierwszemu słowu z listy wymienia się litera po literze (ruch.ts, punkt 3).
+// Czytnik ekranu i wyszukiwarki dostają pełne H1 z HTML; zmienna część jest dekoracją (aria-hidden), obok tekst sr-only.
+const slowa: string[] = (t.h1_slowa ?? []).filter(Boolean);
+const poz = slowa.length > 1 ? t.h1.indexOf(slowa[0]) : -1;
+const reszta = poz < 0 ? '' : t.h1.slice(poz + slowa[0].length);
+const znak = reszta.match(/^[,.;:!?]/)?.[0] ?? ''; // znak po słowie trzymamy przy nim, żeby nie spadał do nowej linii
+const najdluzsze = slowa.reduce((a: string, b: string) => (b.length > a.length ? b : a), '');
 ---
 <section class="s1 baza segment" id="start" data-segment="S1 Hero" aria-labelledby="s1-h">
   <div class="kontener s1-podzial">
     <div class="s1-tekst">
-      <h1 id="s1-h" class="t-display pojaw">{t.h1}</h1>
+      <h1 id="s1-h" class="t-display pojaw">{poz < 0 ? t.h1 : (
+        <>{t.h1.slice(0, poz)}<span class="sr-only">{slowa[0]}</span><span class="slowa-ze-znakiem"><span class="slowa" data-slowa={JSON.stringify(slowa)} aria-hidden="true"><span class="slowa-miara">{najdluzsze}</span><span class="slowa-widok" data-slowa-widok><span class="slowo jest">{slowa[0]}</span></span></span>{znak}</span>{reszta.slice(znak.length)}</>
+      )}</h1>
       <p class="t-tresc-l">{t.lead}</p>
       <div class="s1-akcje">
         <a class="przycisk przycisk--glowny" href="/kontakt" data-otworz-sheet="sheet-projekt" aria-haspopup="dialog">{t.cta_1}</a>

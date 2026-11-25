@@ -82,7 +82,9 @@ export const strony = {
   // (zamiast benefitów z realizacji: wybrane realizacje nie mają jeszcze benefitów), S7 trzy szczegóły kroku, S8 pakiety z listami, S12 pasek osoby i misji.
   'strona-glowna': strona('glowna', 'Strona 27: główna', {
     s1_hero: seg('S1 Hero', {
-      h1: t('H1 = obietnica / pytanie klienta', 80, true), lead: a('Lead', 220), cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi (do oferty)', 24),
+      h1: t('H1 = obietnica / pytanie klienta', 80, true),
+      h1_slowa: lista('H1: zmieniające się słowa (pierwsze musi występować w H1; puste = bez zmiany słów)', t('Słowo', 30), 0, 6),
+      lead: a('Lead', 220), cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi (do oferty)', 24),
       pas_naglowek: t('Pas zakresu: nagłówek', 40),
       pas_zakresu: lista('Pas zakresu', fields.object({ tytul: t('Tytuł', 40, true), opis: a('Opis', 90) }), 3, 5, 'tytul'),
     }),

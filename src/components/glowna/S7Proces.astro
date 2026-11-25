@@ -1,6 +1,7 @@
 ---
 // 27 S7 Proces (wariant G: pionowa oś z węzłami). Krok 1 rozwinięty (My robimy / Ty robisz / Ty dostajesz),
 // kroki 2–5 zwinięte do „Ty robisz”, krok 6 w kolorze przełamania, krok 7 „Start” z przyciskiem (otwiera sheet „Opisz projekt”).
+// Ruch (tabela 390:2): linia osi rośnie ze scrollem, węzły zapalają się, gdy linia je dosięgnie; klik w tytuł rozwija krok (jeden naraz). Kod: ruch.ts, punkt 4.
 // Puste pola „my_robimy”/„ty_dostajesz” w panelu = kolumna się nie pokazuje (bez wymyślania treści).
 interface Props { t: any }
 const { t } = Astro.props;
@@ -12,7 +13,7 @@ const n = t.etapy.length;
       <h2 id="s7-h" class="t-h2 naglowkowy">{t.naglowek}</h2>
       <p class="t-tresc-l">{t.lead}</p>
     </header>
-    <ol class="os" role="list">
+    <ol class="os" role="list" data-os-procesu>
       {t.etapy.map((e: any, i: number) => {
         const szczegoly = [
           ['My robimy', e.my_robimy],
@@ -22,12 +23,12 @@ const n = t.etapy.length;
         const pierwszy = i === 0;
         const ostatni = i === n - 1;
         return (
-          <li class:list={['krok', { rozwiniety: pierwszy, przelamanie: ostatni }]}>
+          <li class:list={['krok', { rozwiniety: pierwszy, przelamanie: ostatni }]} data-krok-procesu>
             <span class="wezel t-h4" aria-hidden="true">{i + 1}</span>
             <div class="tresc">
-              <h3 class="t-h4"><span class="sr-only">Etap {i + 1}: </span>{e.tytul}</h3>
-              <dl class="szczegoly">
-                {szczegoly.map(([k, v]) => <div><dt class="t-maly-mocny">{k}</dt><dd class="t-maly">{v}</dd></div>)}
+              <h3 class="t-h4"><button type="button" class="krok-przycisk" data-krok-przycisk aria-expanded={String(pierwszy)} aria-controls={`s7-krok-${i}`}><span class="sr-only">Etap {i + 1}: </span>{e.tytul}</button></h3>
+              <dl class="szczegoly" id={`s7-krok-${i}`}>
+                {szczegoly.map(([k, v]) => <div class:list={{ zwiniete: k !== 'Ty robisz' }}><dt class="t-maly-mocny">{k}</dt><dd class="t-maly">{v}</dd></div>)}
               </dl>
             </div>
           </li>
@@ -64,10 +65,22 @@ const n = t.etapy.length;
   .przelamanie .tresc h3, .przelamanie dt { color: var(--fk-przelamanie-tekst); }
   .start .wezel { background: var(--fk-krok-koncowy); border: 0; }
   .start .tresc { display: grid; justify-items: start; gap: 16px; padding: 24px 28px; background: var(--fk-tlo-powierzchnia); border-color: var(--fk-krok-koncowy); }
+  /* Ruch: linia akcentu rośnie ze scrollem (--postep-osi z ruch.ts), węzeł aktywny 200 ms, rozwinięcie 280 ms. */
+  .os::after { content: ''; position: absolute; left: 27px; top: 28px; bottom: 120px; width: 2px; background: var(--fk-akcent); transform-origin: top; transform: scaleY(var(--postep-osi, 1)); }
+  .wezel { transition: background-color 200ms cubic-bezier(0.2, 0, 0.2, 1), color 200ms cubic-bezier(0.2, 0, 0.2, 1), border-color 200ms cubic-bezier(0.2, 0, 0.2, 1); position: relative; z-index: 1; }
+  .krok.aktywny:not(.rozwiniety):not(.start) .wezel { background: var(--fk-akcent); border-color: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
+  .tresc { transition: background-color 160ms, border-color 160ms; }
+  .krok:not(.rozwiniety) .szczegoly .zwiniete { display: none; }
+  .krok-przycisk { all: unset; cursor: pointer; display: inline; border-radius: 4px; }
+  .krok-przycisk:focus-visible { outline: 3px solid var(--fk-fokus, var(--fk-akcent)); outline-offset: 4px; }
+  .krok:not(.rozwiniety):not(.start) .tresc:hover { border-color: var(--fk-akcent); }
+  :global(html:not(.bez-ruchu)) .rozwiniety .szczegoly { animation: krok-rozwin 280ms cubic-bezier(0.16, 1, 0.3, 1); }
+  @keyframes krok-rozwin { from { opacity: 0; transform: translateY(-6px); } }
+  @media (prefers-reduced-motion: reduce) { .wezel, .tresc { transition: none; } .rozwiniety .szczegoly { animation: none !important; } }
   @media (max-width: 1023.98px) {
     .krok { grid-template-columns: 40px minmax(0, 1fr); gap: 12px; }
     .wezel { width: 40px; height: 40px; }
-    .os::before { left: 19px; top: 20px; }
+    .os::before, .os::after { left: 19px; top: 20px; }
     .tresc, .rozwiniety .tresc { display: grid; gap: 12px; padding: 16px 20px; }
     .szczegoly { display: grid; gap: 12px; }
   }

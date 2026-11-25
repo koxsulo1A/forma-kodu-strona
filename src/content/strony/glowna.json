@@ -1,6 +1,12 @@
 {
   "s1_hero": {
     "h1": "Profesjonalne strony internetowe, które pracują, kiedy Ty pracujesz.",
+    "h1_slowa": [
+      "strony internetowe",
+      "sklepy internetowe",
+      "boty czatowe",
+      "automatyzacje"
+    ],
     "lead": "Znowu nie odebrałeś telefonu, bo byłeś z klientem? Zrobimy stronę, na której klient sam sprawdzi cenę, wolny termin i dojazd. Powiemy też wprost, czego ta strona nie zrobi.",
     "cta_1": "Opisz projekt",
     "cta_2": "Zobacz ofertę",
