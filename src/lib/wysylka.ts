@@ -13,7 +13,7 @@ export const USTAWIENIA = {
   listaPowiadom: 0,
   // ID szablonu potwierdzenia (double opt-in). 0 = zapis na listę od razu, bez linku potwierdzającego.
   szablonDoi: 0,
-  adresPoPotwierdzeniu: 'https://centrumkodu.pl/',
+  adresPoPotwierdzeniu: 'https://formakodu.pl/',
 };
 
 const API = 'https://api.brevo.com/v3';

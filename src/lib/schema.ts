@@ -35,7 +35,7 @@ export async function grafStrony(strona: Strona, opts: { url: URL; nazwaStrony: 
     telephone: firma.telefon || undefined,
     taxID: firma.nip || undefined,
     vatID: firma.nip ? `PL${firma.nip}` : undefined,
-    foundingDate: firma.rok_zalozenia,
+    foundingDate: firma.rok_zalozenia || undefined,
     // Decyzja 9B: adres biura publiczny i identyczny jak w Profilu Firmy w Google (nazwa, adres, telefon co do znaku).
     address: firma.adres_publiczny
       ? { '@type': 'PostalAddress', streetAddress: firma.adres.ulica, postalCode: firma.adres.kod, addressLocality: firma.adres.miasto, addressCountry: firma.adres.kraj }

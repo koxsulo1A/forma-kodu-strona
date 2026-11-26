@@ -11,7 +11,6 @@ Obowiązuje od: [data].
 
 ## 1. Kto jest administratorem
 Kacper Przychodzień Centrum usług (jednoosobowa działalność gospodarcza), ul. Prądzyńskiego 3, 50-434 Wrocław,
-NIP [numer].
 Kontakt w sprawach danych: kontakt@formakodu.pl, ul. Prądzyńskiego 3, 50-434 Wrocław.
 [Jeśli wyznaczono inspektora ochrony danych: imię, nazwisko, e-mail. Jeśli nie: usuń.]
 
@@ -23,7 +22,7 @@ Kontakt w sprawach danych: kontakt@formakodu.pl, ul. Prądzyńskiego 3, 50-434 W
 | Zapisujesz się na „Powiadom mnie” | e-mail, data i treść zgody | wysłanie jednej wiadomości o starcie usługi (zasady w §10) | art. 6 ust. 1 lit. a RODO (zgoda) | do 30 dni po wysłaniu wiadomości albo do wycofania zgody, jeśli nastąpi wcześniej |
 | Zawieramy umowę | dane z umowy i faktur | wykonanie umowy, rozliczenia | art. 6 ust. 1 lit. b i c RODO | przez czas umowy, a dokumenty księgowe 5 lat od końca roku, w którym minął termin płatności podatku |
 | Możliwe roszczenia | dane z korespondencji i umowy | ustalenie, dochodzenie i obrona roszczeń | art. 6 ust. 1 lit. f RODO (nasz interes: ochrona praw) | do przedawnienia roszczeń |
-| Odwiedzasz stronę | adres IP, data, typ przeglądarki w logach serwera | bezpieczeństwo i diagnostyka | art. 6 ust. 1 lit. f RODO (nasz interes: bezpieczna strona) | [okres przechowywania logów u dostawcy hostingu] |
+| Odwiedzasz stronę | adres IP, data, typ przeglądarki w logach serwera | bezpieczeństwo i diagnostyka | art. 6 ust. 1 lit. f RODO (nasz interes: bezpieczna strona) | do 3 dni (logi Cloudflare Workers, plan bezpłatny) |
 | Zgadzasz się na analitykę w okienku cookies | identyfikator cookies, odwiedzone podstrony, przybliżona lokalizacja (kraj, miasto), typ urządzenia i przeglądarki, źródło wejścia | statystyki odwiedzin, żeby poprawiać stronę | art. 6 ust. 1 lit. a RODO (zgoda) i art. 399 Prawa komunikacji elektronicznej | [2 / 14] miesiące w Google Analytics; cookies do 2 lat albo do wycofania zgody |
 | Zgadzasz się na treści zewnętrzne i oglądasz opinie | adres IP, dane przeglądarki, cookies serwisu z opiniami | wyświetlenie opinii klientów z Trustpilot i Google | art. 6 ust. 1 lit. a RODO (zgoda) i art. 399 Prawa komunikacji elektronicznej | według zasad Trustpilot i [dostawcy widżetu Google]; zgodę wycofasz w „Ustawieniach cookies” |
 
@@ -73,8 +72,9 @@ Fonty wczytujemy z naszego serwera.
 | Nazwa | Kto zapisuje | Po co | Jak długo | Czy pytamy o zgodę |
 |--|--|--|--|--|
 | `fk-zgody` (pamięć przeglądarki) | my | zapamiętanie Twojego wyboru w okienku | 180 dni, potem pytamy ponownie | nie: konieczne do działania okienka |
-| [klucz, np. fk-motyw] (pamięć przeglądarki) | my | wybrany motyw | do usunięcia przez Ciebie | nie: zapisuje się, gdy sam zmienisz ustawienie |
-| [klucz, np. fk-a11y] (pamięć przeglądarki) | my | ustawienia dostępności | do usunięcia przez Ciebie | nie: jak wyżej |
+| `fk-motyw` (pamięć przeglądarki) | my | wybrany motyw | do usunięcia przez Ciebie | nie: zapisuje się, gdy sam zmienisz ustawienie |
+| `fk-dostepnosc` (pamięć przeglądarki) | my | ustawienia dostępności | do usunięcia przez Ciebie | nie: jak wyżej |
+| `fk-pilotaz-szkic` (pamięć przeglądarki) | my | szkic formularza pilotażu, gdy klikniesz „Zapisz formularz w przeglądarce”; do nas nic nie trafia | do wysłania formularza albo usunięcia przez Ciebie | nie: jak wyżej |
 | `_ga` (cookie) | Google Analytics | rozróżnienie odwiedzających | 2 lata | tak |
 | `_ga_[identyfikator]` (cookie) | Google Analytics | zapamiętanie stanu sesji | 2 lata | tak |
 | [cookies widżetu Trustpilot: nazwy i czas, sprawdzić po wdrożeniu w narzędziach przeglądarki] | Trustpilot | wyświetlenie widżetu opinii | [czas] | tak (treści zewnętrzne) |
