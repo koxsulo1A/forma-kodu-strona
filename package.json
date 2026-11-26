@@ -22,7 +22,9 @@
     "verify": "npm run build && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki:test",
     "release": "npm run build && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki",
     "przeglad": "node scripts/przeglad-tresci.mjs src/content 90 180",
-    "indexnow": "node scripts/indexnow.mjs ${SITE_URL:-https://centrumkodu.pl} $INDEXNOW_KEY dist/client"
+    "indexnow": "node scripts/indexnow.mjs ${SITE_URL:-https://centrumkodu.pl} $INDEXNOW_KEY dist/client",
+    "audyt": "unlighthouse",
+    "audyt:ci": "unlighthouse-ci"
   },
   "dependencies": {
     "astro": "7.4.13",
@@ -39,6 +41,7 @@
   "devDependencies": {
     "turndown": "7.2.0",
     "tsx": "latest",
+    "unlighthouse": "0.20.0",
     "wrangler": "4.168.0"
   }
 }

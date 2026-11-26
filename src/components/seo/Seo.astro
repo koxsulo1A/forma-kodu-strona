@@ -20,7 +20,8 @@ const domena = (firma.domena.includes('[') ? Astro.site!.origin : firma.domena).
 const canonical = (!podstrona && seo.canonical) || new URL(Astro.url.pathname, domena).href;
 const tytul = podstrona ? seoG.szablon_tytulu.replace('%s', podstrona.tytul) : strona === 'glowna' ? `${seo.seo_tytul} | ${firma.nazwa_marki}` : seoG.szablon_tytulu.replace('%s', seo.seo_tytul);
 const og = new URL(podstrona?.obraz || seo.og_obraz || seoG.og_obraz_domyslny, domena).href;
-const opis = podstrona?.opis ?? seo.seo_opis;
+// Kaskada: podstrona → SEO strony → SEO globalne (jak kirby-seo). Opis domyślny łapie przyszłe strony bez własnego opisu.
+const opis = podstrona?.opis || seo.seo_opis || seoG.opis_domyslny;
 const ogTytul = podstrona?.tytul ?? seo.seo_tytul;
 const mdAlt = new URL(strona === 'glowna' ? '/index.md' : `${podstrona ? Astro.url.pathname.replace(/\/$/, '') : seo.adres}.md`, domena).href;
 const graf = await grafStrony(strona, { url: new URL(canonical), nazwaStrony, okruszki, podstrona });
@@ -28,7 +29,8 @@ const robots = seo.noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-
 ---
 <title>{tytul}</title>
 <meta name="description" content={opis} />
-<link rel="canonical" href={canonical} />
+{/* Przy noindex bez canonical: nie wysyłamy Google sprzecznych sygnałów „nie indeksuj” i „to wersja główna”. */}
+{!seo.noindex && <link rel="canonical" href={canonical} />}
 <meta name="robots" content={robots} />
 <meta property="og:type" content={strona === 'glowna' ? 'website' : 'article'} />
 <meta property="og:locale" content="pl_PL" />

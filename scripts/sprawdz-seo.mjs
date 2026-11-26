@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 // Kontrola SEO/GEO gotowej strony (katalog dist po `astro build`). Bez zależności.
 // Sprawdza każdy plik .html: jeden <h1>, kolejność nagłówków, title/description/canonical/og, lang, JSON-LD (poprawny JSON),
-// alt obrazów, dateModified = widoczna data, treść w HTML (nie tylko w JS), linki do .md i llms.txt.
+// alt obrazów, dateModified = widoczna data, treść w HTML (nie tylko w JS), linki do .md i llms.txt,
+// powielone tytuły i opisy między stronami oraz martwe linki wewnętrzne (testy wzorowane na @jdevalk/astro-seo-graph, zestaw 2 SEO, Kacper 26.11).
 // Użycie: node scripts/sprawdz-seo.mjs [dist]   Kod wyjścia 1 = błędy.
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
-import { join } from 'node:path';
+import { join, relative, sep } from 'node:path';
 
 const root = process.argv[2] || 'dist';
 const bledy = [];
@@ -18,6 +19,13 @@ const pliki = [];
   }
 })(root);
 
+// Adres strony z ścieżki pliku: index.html → /, oferta/index.html → /oferta (trailingSlash: 'never').
+const adresPliku = (f) => '/' + relative(root, f).split(sep).join('/').replace(/(^|\/)index\.html$/, '').replace(/\.html$/, '');
+const tytuly = new Map(); // tekst → [adresy]
+const opisy = new Map();
+const linki = []; // [adres strony, href]
+const dodaj = (mapa, klucz, adres) => mapa.set(klucz, [...(mapa.get(klucz) || []), adres]);
+
 const tekst = (s) => s.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 const meta = (h, attr, val) => (h.match(new RegExp(`<meta[^>]*${attr}=["']${val}["'][^>]*>`, 'i')) || [''])[0].match(/content=["']([^"']*)["']/i)?.[1];
 
@@ -28,6 +36,8 @@ for (const f of pliki) {
   const noindex = /<meta[^>]*name=["']robots["'][^>]*noindex/i.test(h);
   const jest404 = /404/.test(f);
 
+  const adres = adresPliku(f);
+  for (const m of h.matchAll(/<a\b[^>]*\shref=["']([^"']+)["']/gi)) linki.push([adres, m[1]]);
   if (!/<html[^>]*\slang=["']pl/i.test(h)) blad('brak <html lang="pl">');
   const h1 = h.match(/<h1[\s>]/gi) || [];
   if (h1.length !== 1) blad(`liczba <h1> = ${h1.length} (ma być 1, zasada stała 8)`);
@@ -39,6 +49,8 @@ for (const f of pliki) {
   const desc = meta(h, 'name', 'description');
   if (!desc) blad('brak meta description'); else if (desc.length < 70 || desc.length > 160) uwaga(`description ma ${desc.length} znaków (70–160)`);
   if (!noindex && !jest404) {
+    if (title) dodaj(tytuly, title.trim(), adres);
+    if (desc) dodaj(opisy, desc.trim(), adres);
     if (!/<link[^>]*rel=["']canonical["']/i.test(h)) blad('brak canonical');
     for (const p of ['og:title', 'og:description', 'og:image', 'og:url']) if (!meta(h, 'property', p)) blad(`brak ${p}`);
     if (!/type=["']text\/markdown["']/i.test(h)) uwaga('brak <link rel="alternate" type="text/markdown">');
@@ -83,6 +95,27 @@ for (const f of pliki) {
 
   const slowa = tekst(h.replace(/<header[\s\S]*?<\/header>|<footer[\s\S]*?<\/footer>|<nav[\s\S]*?<\/nav>/gi, '')).split(' ').length;
   if (!noindex && !jest404 && slowa < 150) uwaga(`mało treści w HTML (${slowa} słów): czy treść nie ładuje się dopiero z JS?`);
+}
+
+// Powielone tytuły i opisy: Google nie wie, którą stronę pokazać na dane zapytanie (strony konkurują ze sobą).
+for (const [nazwa, mapa] of [['<title>', tytuly], ['meta description', opisy]])
+  for (const [t, adresy] of mapa) if (adresy.length > 1) bledy.push(`ten sam ${nazwa} na ${adresy.length} stronach (${adresy.join(', ')}): „${t.slice(0, 70)}”`);
+
+// Martwe linki wewnętrzne: href prowadzi do adresu, którego nie ma w buildzie. Link z „/” na końcu = zbędne przekierowanie.
+// Pomijamy trasy serwera (/api, /keystatic), linki zewnętrzne, mailto/tel i same kotwice.
+const istniejace = new Set(pliki.map(adresPliku));
+const plikIstnieje = (a) => { try { return statSync(join(root, decodeURIComponent(a))).isFile(); } catch { return false; } };
+const zgloszone = new Set();
+for (const [skad, href] of linki) {
+  if (!href.startsWith('/') || href.startsWith('//')) continue;
+  const a = href.split(/[?#]/)[0] || '/';
+  if (/^\/(api|keystatic)(\/|$)/.test(a)) continue;
+  const bezUkosnika = a.length > 1 ? a.replace(/\/$/, '') : a;
+  const klucz = `${skad} → ${href}`;
+  if (zgloszone.has(klucz)) continue;
+  zgloszone.add(klucz);
+  if (!istniejace.has(bezUkosnika) && !plikIstnieje(a)) bledy.push(`martwy link wewnętrzny na ${skad}: ${href}`);
+  else if (a !== bezUkosnika && istniejace.has(bezUkosnika)) ostrzezenia.push(`link z ukośnikiem na końcu na ${skad}: ${href} (przekierowanie; użyj ${bezUkosnika})`);
 }
 
 for (const plik of ['robots.txt', 'llms.txt', 'sitemap-index.xml']) if (!existsSync(join(root, plik))) bledy.push(`brak ${plik} w ${root}`);
