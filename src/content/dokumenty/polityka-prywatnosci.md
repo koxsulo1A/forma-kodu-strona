@@ -10,7 +10,7 @@ zatwierdzone_przez_prawnika: false
 Obowiązuje od: [data].
 
 ## 1. Kto jest administratorem
-Kacper Przychodzień Centrum usług (jednoosobowa działalność gospodarcza), ul. Prądzyńskiego 3, 50-434 Wrocław,
+Kacper Przychodzień Centrum usług (jednoosobowa działalność gospodarcza), ul. Prądzyńskiego 3, 50-434 Wrocław.
 Kontakt w sprawach danych: kontakt@formakodu.pl, ul. Prądzyńskiego 3, 50-434 Wrocław.
 [Jeśli wyznaczono inspektora ochrony danych: imię, nazwisko, e-mail. Jeśli nie: usuń.]
 

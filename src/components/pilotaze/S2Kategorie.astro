@@ -55,6 +55,8 @@ const tekst = (k: any) => k.status === 'wkrótce' ? `Wkrótce. ${k.notka_wkrotce
   .pierscien > span { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--fk-tlo-powierzchnia); color: var(--fk-tekst-naglowek); }
   .p0 { --luk: 0%; } .p33 { --luk: 33%; } .p67 { --luk: 67%; } .p100 { --luk: 100%; }
   .zielony { color: var(--fk-zielen-srednia); }
+  /* Ciemny motyw: #2a6e45 na #0e0e10 ma kontrast 3,1:1 (axe 26.11), jaśniejsza zieleń sukcesu spełnia 4,5:1. */
+  :global(:root[data-theme='dark']) .zielony { color: var(--fk-sukces); }
   .dol { margin-top: auto; }
   @media (max-width: 1023.98px) {
     .dol .przycisk { width: 100%; justify-content: center; }
