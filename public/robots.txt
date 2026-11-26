@@ -2,7 +2,7 @@
 # Zasada: maksymalna widoczność w wyszukiwarkach i w wyszukiwarkach z AI.
 # Wpuszczamy wszystkie boty wyszukiwania, asystentów AI i treningu modeli.
 # Blokujemy tylko panel CMS i strony techniczne bez wartości w wynikach.
-# Domena: centrumkodu.pl (Kacper, 24.11).
+# Domena: formakodu.pl (Kacper, 26.11; centrumkodu.pl przekierowuje tutaj).
 
 # --- Wszyscy pozostali ---
 User-agent: *
@@ -46,4 +46,4 @@ Allow: /
 Disallow: /keystatic/
 Disallow: /api/
 
-Sitemap: https://centrumkodu.pl/sitemap-index.xml
+Sitemap: https://formakodu.pl/sitemap-index.xml

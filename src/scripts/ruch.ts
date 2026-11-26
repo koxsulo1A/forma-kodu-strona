@@ -206,8 +206,9 @@ function zmianaSlow() {
   try { slowa = JSON.parse(el.dataset.slowa!); } catch { return; }
   if (slowa.length < 2 || ograniczRuch()) return;
   const h1 = el.closest('h1') as HTMLElement;
-  // Kacper 25.11 16:06: zmiana słów ciągła (bez końca); gdy nagłówek zmienia liczbę wierszy, podnagłówek płynnie jedzie razem z nim
-  // (wysokość H1 przechodzi do wysokości nowego słowa w czasie rozsypywania liter, zamiast stałej rezerwy na najdłuższe słowo).
+  // Kacper 25.11 16:06: zmiana słów ciągła (bez końca); gdy nagłówek zmienia liczbę wierszy, podnagłówek płynnie jedzie razem z nim.
+  // 26.11 (Lighthouse: CLS 0,21 przez animację height): H1 ma stałą wysokość najwyższego wariantu, a podnagłówek i przyciski
+  // jadą przez transform (translateY). Wygląd ten sam, ale transform nie przesuwa układu, więc nie liczy się do CLS.
   const wysokoscDla = (w: string) => {
     const teraz = el.textContent; const h = h1.style.height;
     h1.style.height = ''; el.textContent = w;
@@ -215,12 +216,26 @@ function zmianaSlow() {
     el.textContent = teraz; h1.style.height = h;
     return wynik;
   };
-  // Wysokość nigdy nie jest mniejsza niż tekst, który akurat widać: rośnie na początku zmiany (gdy nowe słowo
-  // jest dłuższe), a maleje dopiero po ułożeniu liter — dzięki temu nagłówek nie nachodzi na podnagłówek.
   const CZAS_WYS = 700;
-  const przejscie = `height ${CZAS_WYS}ms cubic-bezier(0.45, 0, 0.55, 1)`;
-  h1.style.transition = przejscie;
-  const ustawWysokosc = () => { h1.style.transition = 'none'; h1.style.height = `${wysokoscDla(el.textContent ?? '')}px`; void h1.offsetHeight; h1.style.transition = przejscie; };
+  const ponizej = [] as HTMLElement[];
+  for (let n = h1.nextElementSibling; n; n = n.nextElementSibling) ponizej.push(n as HTMLElement);
+  let maks = 0;
+  let obecna = 0;
+  // Treść pod nagłówkiem nigdy nie nachodzi na tekst, który akurat widać: jedzie w dół na początku zmiany (gdy nowe słowo
+  // jest dłuższe), a w górę dopiero po ułożeniu liter.
+  const przesun = (wys: number, plynnie = true) => {
+    obecna = wys;
+    ponizej.forEach((e) => {
+      e.style.transition = plynnie ? `transform ${CZAS_WYS}ms cubic-bezier(0.45, 0, 0.55, 1)` : 'none';
+      e.style.transform = `translateY(${wys - maks}px)`;
+    });
+  };
+  const ustawWysokosc = () => {
+    h1.style.height = '';
+    maks = Math.max(...slowa.map(wysokoscDla));
+    h1.style.height = `${maks}px`;
+    przesun(wysokoscDla(el.textContent ?? ''), false);
+  };
   ustawWysokosc();
   document.fonts?.ready.then(ustawWysokosc);
   addEventListener('resize', ustawWysokosc);
@@ -241,8 +256,9 @@ function zmianaSlow() {
         let tekst = na.slice(0, odsl);
         for (let i = odsl; i < dl; i++) tekst += na[i] === ' ' || (i >= na.length && z[i] === ' ') ? ' ' : los();
         el.textContent = t === 1 ? na : tekst;
-        // losowe litery bywają szersze i mogą na chwilę dodać wiersz — wtedy wysokość od razu go obejmuje
-        if (h1.scrollHeight > h1.clientHeight + 1) h1.style.height = `${h1.scrollHeight}px`;
+        // losowe litery bywają szersze i mogą na chwilę dodać wiersz: treść pod spodem od razu robi mu miejsce
+        const widac = Math.min(maks, wysokoscDla(el.textContent ?? ''));
+        if (widac > obecna) przesun(widac);
       }
       if (t < 1) requestAnimationFrame(klatka); else gotowe();
     };
@@ -253,9 +269,9 @@ function zmianaSlow() {
     const z = slowa[i];
     i = (i + 1) % slowa.length;
     const nowa = wysokoscDla(slowa[i]);
-    if (nowa > h1.offsetHeight) h1.style.height = `${nowa}px`; // podnagłówek jedzie w dół razem z nagłówkiem
+    if (nowa > obecna) przesun(nowa); // podnagłówek jedzie w dół razem z nagłówkiem
     rozsyp(z, slowa[i], () => {
-      h1.style.height = `${wysokoscDla(slowa[i])}px`; // …a w górę dopiero po ułożeniu słowa
+      przesun(wysokoscDla(slowa[i])); // …a w górę dopiero po ułożeniu słowa
       setTimeout(dalej, 2500);
     });
   };

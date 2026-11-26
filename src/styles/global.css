@@ -229,3 +229,20 @@ h1, h2, h3, h4 { color: var(--fk-tekst-naglowek); text-wrap: balance; }
 @keyframes sheet-bok { from { transform: translateX(32px); opacity: 0; } }
 @keyframes sheet-dol { from { transform: translateY(32px); opacity: 0; } }
 body:has(dialog[open]) { overflow: hidden; }
+
+/* Strony dokumentów (polityka prywatności, dostępność): czytelna kolumna na karcie, tabele przewijane w poziomie na telefonie (test 26.11: przy 390 px tabela wychodziła o 185 px). */
+.dokument {
+  width: min(100% - 2 * var(--fk-margines), 880px); margin: 24px auto 64px; padding: clamp(20px, 4vw, 48px);
+  background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); border-radius: var(--radius-card); color: var(--fk-tekst);
+}
+.dokument h1 { margin-bottom: 8px; }
+.dokument h2 { margin: 40px 0 12px; }
+.dokument h3 { margin: 24px 0 8px; }
+.dokument p, .dokument ul, .dokument ol { margin: 0 0 12px; }
+.dokument ul, .dokument ol { padding-left: 1.25em; }
+.dokument li + li { margin-top: 4px; }
+.dokument a { text-decoration: underline; text-underline-offset: 3px; }
+.dokument table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 0 0 16px; font-size: 0.9375em; }
+.dokument th, .dokument td { padding: 10px 12px; border: 1px solid var(--fk-obrys); text-align: left; vertical-align: top; min-width: 140px; }
+.dokument th { background: var(--fk-tlo-podniesione); color: var(--fk-tekst-naglowek); }
+.dokument .aktualizacja { color: var(--fk-tekst-pomocniczy); margin-bottom: 24px; }

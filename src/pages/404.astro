@@ -1,0 +1,30 @@
+---
+// Własna strona 404 (checklista 18). Cloudflare serwuje ją dla nieistniejących adresów (assets.not_found_handling = 404-page).
+// noindex: wyszukiwarki jej nie indeksują; sitemap pomija /404 (astro.config.mjs).
+import Uklad from '../layouts/Uklad.astro';
+const podstrona = { tytul: 'Nie ma takiej strony', opis: 'Ten adres nie istnieje albo został przeniesiony. Wróć na stronę główną lub opisz swój projekt.', aktualizacja: '' };
+---
+<Uklad strona="glowna" nazwaStrony="Nie ma takiej strony" podstrona={podstrona} noindex>
+  <section class="nie-ma baza segment" data-segment="Nie ma strony" aria-labelledby="nie-ma-h">
+    <div class="kontener-waski nie-ma-wnetrze">
+      <p class="t-tresc-l kod" aria-hidden="true">404</p>
+      <h1 id="nie-ma-h" class="t-h2 naglowkowy">Nie ma takiej strony</h1>
+      <p class="t-tresc-l">Ten adres nie istnieje albo został przeniesiony. Sprawdź, czy nie ma w nim literówki, albo przejdź dalej:</p>
+      <ul class="nie-ma-linki">
+        <li><a href="/">Strona główna</a></li>
+        <li><a href="/strony-internetowe">Strony internetowe</a></li>
+        <li><a href="/automatyzacje">Automatyzacje</a></li>
+        <li><a href="/realizacje">Realizacje</a></li>
+        <li><a href="/kontakt">Opisz projekt</a></li>
+      </ul>
+    </div>
+  </section>
+</Uklad>
+
+<style>
+  .nie-ma { padding-block: clamp(56px, 10vw, 140px); }
+  .nie-ma-wnetrze { display: grid; gap: 20px; max-width: 640px; }
+  .kod { font-family: var(--fk-rodzina-mono); color: var(--fk-akcent); font-size: clamp(48px, 10vw, 96px); line-height: 1; margin: 0; }
+  .nie-ma-linki { display: flex; flex-wrap: wrap; gap: 12px; padding: 0; margin: 0; list-style: none; }
+  .nie-ma-linki a { display: inline-flex; min-height: 44px; align-items: center; padding: 0 18px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: 999px; }
+</style>

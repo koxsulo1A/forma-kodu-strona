@@ -21,8 +21,9 @@ interface Props {
   nazwaStrony: string;
   okruszki?: { nazwa: string; url: string }[];
   podstrona?: Podstrona;
+  noindex?: boolean; // strona 404: meta robots noindex
 }
-const { strona, nazwaStrony, okruszki, podstrona } = Astro.props;
+const { strona, nazwaStrony, okruszki, podstrona, noindex } = Astro.props;
 ---
 <!doctype html>
 <html lang="pl">
@@ -44,7 +45,7 @@ const { strona, nazwaStrony, okruszki, podstrona } = Astro.props;
     </script>
     <link rel="preload" href="/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/przejscia-realizacji.css" /> <!-- nazwy View Transitions realizacji (31b) -->
-    <Seo strona={strona} nazwaStrony={nazwaStrony} okruszki={okruszki} podstrona={podstrona} />
+    <Seo strona={strona} nazwaStrony={nazwaStrony} okruszki={okruszki} podstrona={podstrona} noindex={noindex} />
   </head>
   <body class="kratka">
     <a class="pomin" href="#tresc">Przejdź do treści</a>

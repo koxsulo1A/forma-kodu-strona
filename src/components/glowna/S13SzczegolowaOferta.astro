@@ -39,7 +39,7 @@ const ceny = (u: any) => {
           {glowna && (
             <article class="glowna">
               <div class="glowna-tekst">
-                <h4 class="t-h3">{glowna.nazwa}</h4>
+                <h3 class="t-h3">{glowna.nazwa}</h3>
                 <p class="t-tresc">{glowna.opis}</p>
                 {glowna.ograniczenie && <p class="t-maly">Ograniczenie: {glowna.ograniczenie}</p>}
               </div>
@@ -53,7 +53,7 @@ const ceny = (u: any) => {
                 return (
                   <li>
                     <div class="u-tekst">
-                      <h4 class="t-h4 naglowkowy">{u.nazwa}</h4>
+                      <h3 class="t-h4 naglowkowy">{u.nazwa}</h3>
                       <p class="t-maly">{u.opis}</p>
                       {u.ograniczenie && <p class="t-maly">Ograniczenie: {u.ograniczenie}</p>}
                     </div>

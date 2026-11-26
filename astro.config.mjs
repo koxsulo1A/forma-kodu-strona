@@ -18,7 +18,7 @@ const lastmod = Object.fromEntries(
 // Dwa budowania z tego samego repozytorium:
 // Decyzja Kacpra 24.11: wszystko na Cloudflare.
 // 1) PANEL=1 (`npm run build`): strona statyczna + panel Keystatic jako Worker (/keystatic, /api/keystatic, /api/* formularzy).
-// 2) bez PANEL (`npm run build:statyczna`): sama strona, bez panelu (awaryjnie).
+// 2) bez PANEL: sama strona, bez panelu. Nie działa od dodania tras /api/* (wymagają adaptera), więc skrypt build:statyczna usunięty 26.11.
 // SERWER=node: ten sam panel na Node (wariant VPS, nieużywany).
 // Lokalnie (`astro dev`) panel działa zawsze i zapisuje do plików.
 const PANEL = process.env.PANEL === '1';
@@ -35,6 +35,9 @@ export default defineConfig({
   site: firma.domena.includes('[') ? 'https://example.invalid' : firma.domena, // zaślepka blokuje publikację osobno
   trailingSlash: 'never',
   build: { format: 'directory' },
+  // Sesje Astro wyłączone: strona ich nie używa, a adapter Cloudflare dodawał wtedy wiązanie KV „SESSION” bez namespace_id,
+  // przez co `wrangler preview` (buildy gałęzi PR w Workers Builds) kończył się błędem 10021 (log z 26.11).
+  session: false,
   output: 'static', // cała strona prerenderowana: treść w HTML, bez zależności od JS (boty AI nie uruchamiają JS)
   // Panel Keystatic potrzebuje kodu serwera [Oficjalne: keystatic.com/docs/installation-astro]. Dlatego adapter Node tylko w budowaniu na VPS.
   // Test 24.11: na Cloudflare (wrangler) i na Node logowanie przekierowuje do GitHub, gdy są ustawione zmienne

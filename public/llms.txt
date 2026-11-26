@@ -5,7 +5,7 @@
 Najważniejsze fakty:
 
 - Usługi: strony internetowe, automatyzacje i boty czatowe, analiza SEO/GEO (status: wkrótce, usługa w przygotowaniu), darmowe pilotaże.
-- Ceny: landing {{cena:strony-internetowe-landing}}, strona dedykowana {{cena:strony-internetowe-dedykowana}}, prosty sklep {{cena:sklepy-internetowe-prosty-sklep}}, automatyzacja jednego procesu {{cena:automatyzacje-jeden-proces}}, bot czatowy {{cena:automatyzacje-bot-czatowy}}. Aktualny cennik: https://centrumkodu.pl/strony-internetowe
+- Ceny: landing {{cena:strony-internetowe-landing}}, strona dedykowana {{cena:strony-internetowe-dedykowana}}, prosty sklep {{cena:sklepy-internetowe-prosty-sklep}}, automatyzacja jednego procesu {{cena:automatyzacje-jeden-proces}}, bot czatowy {{cena:automatyzacje-bot-czatowy}}. Aktualny cennik: https://formakodu.pl/strony-internetowe
 - Czas realizacji: strona podstawowa 1–2 tygodnie, strona dedykowana 2–4 tygodnie, strona od zera ponad 4 tygodnie.
 - Standard techniczny: strony statyczne (Astro), dostępność według WCAG 2.2 AA, Core Web Vitals w progach „dobrych” Google (LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,1), analityka (Google Analytics 4) tylko po zgodzie odwiedzającego.
 - Obszar działania: Polska. Język: polski.
@@ -14,21 +14,21 @@ Najważniejsze fakty:
 
 ## Usługi
 
-- [Strony internetowe](https://centrumkodu.pl/strony-internetowe.md): ile kosztuje strona firmowa, trzy warianty, proces w 6 etapach, kalkulator kosztów stałych, FAQ.
-- [Automatyzacje i boty czatowe](https://centrumkodu.pl/automatyzacje.md): jak zautomatyzować pracę firmy, jak wdrożyć bota na czat, co bot potrafi, a czego nie, koszty.
-- [Analiza SEO/GEO](https://centrumkodu.pl/analiza-seo-geo.md): czy firma pojawia się w wynikach Google i w odpowiedziach ChatGPT, Perplexity, Gemini i Claude; co da się zmierzyć, czego nie obiecujemy.
-- [Darmowe pilotaże](https://centrumkodu.pl/pilotaze.md): darmowy pilotaż strony internetowej i SEO; jak działa, warunki, formularz.
+- [Strony internetowe](https://formakodu.pl/strony-internetowe.md): ile kosztuje strona firmowa, trzy warianty, proces w 6 etapach, kalkulator kosztów stałych, FAQ.
+- [Automatyzacje i boty czatowe](https://formakodu.pl/automatyzacje.md): jak zautomatyzować pracę firmy, jak wdrożyć bota na czat, co bot potrafi, a czego nie, koszty.
+- [Analiza SEO/GEO](https://formakodu.pl/analiza-seo-geo.md): czy firma pojawia się w wynikach Google i w odpowiedziach ChatGPT, Perplexity, Gemini i Claude; co da się zmierzyć, czego nie obiecujemy.
+- [Darmowe pilotaże](https://formakodu.pl/pilotaze.md): darmowy pilotaż strony internetowej i SEO; jak działa, warunki, formularz.
 
 ## Dowody
 
-- [Realizacje](https://centrumkodu.pl/realizacje.md): projekty własne i realizacje klientów, każda z opisem typu (klient / projekt własny / przykład układu).
-- [Strona główna](https://centrumkodu.pl/index.md): kim jesteśmy, proces, technologie, z ich ograniczeniami.
+- [Realizacje](https://formakodu.pl/realizacje.md): projekty własne i realizacje klientów, każda z opisem typu (klient / projekt własny / przykład układu).
+- [Strona główna](https://formakodu.pl/index.md): kim jesteśmy, proces, technologie, z ich ograniczeniami.
 
 ## Dokumenty
 
-- [Polityka prywatności](https://centrumkodu.pl/polityka-prywatnosci.md)
-- [Dostępność](https://centrumkodu.pl/dostepnosc.md)
+- [Polityka prywatności](https://formakodu.pl/polityka-prywatnosci.md)
+- [Dostępność](https://formakodu.pl/dostepnosc.md)
 
 ## Optional
 
-- [Pełna treść strony w jednym pliku](https://centrumkodu.pl/llms-full.txt)
+- [Pełna treść strony w jednym pliku](https://formakodu.pl/llms-full.txt)

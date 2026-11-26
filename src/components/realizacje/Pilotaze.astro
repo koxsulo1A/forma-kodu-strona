@@ -28,6 +28,7 @@ const id = `${nr.toLowerCase()}-pilotaze-h`;
   .prawa { display: grid; gap: 24px; }
   .warunki li { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--fk-obrys); color: var(--fk-tekst-naglowek); }
   .ok { color: var(--fk-zielen-srednia); display: grid; }
+  :global(:root[data-theme='dark']) .ok { color: var(--fk-sukces); }
   @media (prefers-reduced-motion: no-preference) {
     :global(html.js:not(.bez-ruchu)) .warunki li, :global(html.js:not(.bez-ruchu)) .prawa > div { transition: opacity 450ms var(--fk-krzywa-wejscie), transform 450ms var(--fk-krzywa-wejscie); }
     :global(html.js:not(.bez-ruchu)) .prawa:not(.widoczny) .warunki li, :global(html.js:not(.bez-ruchu)) .prawa:not(.widoczny) > div { opacity: 0; transform: translateX(32px); }
