@@ -9,7 +9,6 @@
   "scripts": {
     "dev": "astro dev",
     "build": "PANEL=1 astro build && node scripts/generuj-markdown.mjs dist/client ${SITE_URL:-https://formakodu.pl}",
-    "build:statyczna": "astro build && node scripts/generuj-markdown.mjs dist ${SITE_URL:-https://formakodu.pl}",
     "build:panel:node": "PANEL=1 SERWER=node astro build && node scripts/generuj-markdown.mjs dist/client ${SITE_URL:-https://formakodu.pl}",
     "start:panel": "HOST=127.0.0.1 PORT=4321 node dist/server/entry.mjs",
     "preview": "astro preview",
