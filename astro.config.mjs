@@ -35,6 +35,9 @@ export default defineConfig({
   site: firma.domena.includes('[') ? 'https://example.invalid' : firma.domena, // zaślepka blokuje publikację osobno
   trailingSlash: 'never',
   build: { format: 'directory' },
+  // Sesje Astro wyłączone: strona ich nie używa, a adapter Cloudflare dodawał wtedy wiązanie KV „SESSION” bez namespace_id,
+  // przez co `wrangler preview` (buildy gałęzi PR w Workers Builds) kończył się błędem 10021 (log z 26.11).
+  session: false,
   output: 'static', // cała strona prerenderowana: treść w HTML, bez zależności od JS (boty AI nie uruchamiają JS)
   // Panel Keystatic potrzebuje kodu serwera [Oficjalne: keystatic.com/docs/installation-astro]. Dlatego adapter Node tylko w budowaniu na VPS.
   // Test 24.11: na Cloudflare (wrangler) i na Node logowanie przekierowuje do GitHub, gdy są ustawione zmienne
