@@ -10,10 +10,10 @@ export const USTAWIENIA = {
   // Nadawca musi być dodany i zweryfikowany w Brevo (Senders), a domena formakodu.pl uwierzytelniona (DNS).
   nadawca: { name: 'Forma Kodu – formularz strony', email: 'kontakt@formakodu.pl' },
   // ID listy „Powiadom mnie” z Brevo (Contacts → Lists). 0 = lista jeszcze nie ustawiona: zapis trafia tylko mailem do nas.
-  listaPowiadom: 0,
+  listaPowiadom: 3,
   // ID szablonu potwierdzenia (double opt-in). 0 = zapis na listę od razu, bez linku potwierdzającego.
   szablonDoi: 0,
-  adresPoPotwierdzeniu: 'https://centrumkodu.pl/',
+  adresPoPotwierdzeniu: 'https://formakodu.pl/',
 };
 
 const API = 'https://api.brevo.com/v3';

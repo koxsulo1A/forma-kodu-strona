@@ -7,7 +7,7 @@ zatwierdzone_przez_prawnika: false
 ---
 
 
-Kacper Przychodzień Centrum usług chce, żeby strona centrumkodu.pl była wygodna dla wszystkich,
+Kacper Przychodzień Centrum usług chce, żeby strona formakodu.pl była wygodna dla wszystkich,
 także dla osób korzystających z czytnika ekranu, samej klawiatury albo powiększenia.
 
 ## Standard
@@ -24,9 +24,11 @@ ustawy z 4 kwietnia 2019 r., która dotyczy podmiotów publicznych.
 
 ## Co działa
 - Pełna obsługa klawiaturą i widoczny fokus.
-- Ustawienia dostępności pod przyciskiem w prawym dolnym rogu: [lista opcji z sheetu WCAG].
+- Ustawienia dostępności pod przyciskiem przy lewej krawędzi ekranu (na telefonie w lewym dolnym rogu): większy tekst, mocniejszy kontrast, bez animacji. Wybór zapamiętuje ta przeglądarka.
 - Animacje wyłączają się przy systemowym ustawieniu „ogranicz ruch”.
-- [inne]
+- Link „Przejdź do treści” na początku każdej strony.
+- Ciemny i jasny motyw do wyboru.
+- Formularze działają także bez JavaScriptu, a błędy są opisane tekstem przy polu.
 
 ## Znane ograniczenia
 - [element, na czym polega problem, planowany termin poprawy]

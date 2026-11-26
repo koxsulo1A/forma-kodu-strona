@@ -28,24 +28,24 @@
 /*.md
   Content-Type: text/markdown; charset=utf-8
 /index.md
-  Link: <https://centrumkodu.pl/>; rel="canonical"
+  Link: <https://formakodu.pl/>; rel="canonical"
 /strony-internetowe.md
-  Link: <https://centrumkodu.pl/strony-internetowe>; rel="canonical"
+  Link: <https://formakodu.pl/strony-internetowe>; rel="canonical"
 /automatyzacje.md
-  Link: <https://centrumkodu.pl/automatyzacje>; rel="canonical"
+  Link: <https://formakodu.pl/automatyzacje>; rel="canonical"
 /analiza-seo-geo.md
-  Link: <https://centrumkodu.pl/analiza-seo-geo>; rel="canonical"
+  Link: <https://formakodu.pl/analiza-seo-geo>; rel="canonical"
 /realizacje.md
-  Link: <https://centrumkodu.pl/realizacje>; rel="canonical"
+  Link: <https://formakodu.pl/realizacje>; rel="canonical"
 /pilotaze.md
-  Link: <https://centrumkodu.pl/pilotaze>; rel="canonical"
+  Link: <https://formakodu.pl/pilotaze>; rel="canonical"
 /polityka-prywatnosci.md
-  Link: <https://centrumkodu.pl/polityka-prywatnosci>; rel="canonical"
+  Link: <https://formakodu.pl/polityka-prywatnosci>; rel="canonical"
 /dostepnosc.md
-  Link: <https://centrumkodu.pl/dostepnosc>; rel="canonical"
+  Link: <https://formakodu.pl/dostepnosc>; rel="canonical"
 # Podstrony realizacji 31b (placeholder :slug; [sprawdź] składnię w dokumentacji Cloudflare _headers dla Workers static assets)
 /realizacje/:slug.md
-  Link: <https://centrumkodu.pl/realizacje/:slug>; rel="canonical"
+  Link: <https://formakodu.pl/realizacje/:slug>; rel="canonical"
 
 # Zasoby z hashem w nazwie: cache na rok.
 /_astro/*

@@ -1,4 +1,4 @@
 Contact: mailto:kontakt@formakodu.pl
 Expires: 2027-11-24T00:00:00.000Z
 Preferred-Languages: pl, en
-Canonical: https://centrumkodu.pl/.well-known/security.txt
+Canonical: https://formakodu.pl/.well-known/security.txt

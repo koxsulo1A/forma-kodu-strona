@@ -18,7 +18,7 @@ const lastmod = Object.fromEntries(
 // Dwa budowania z tego samego repozytorium:
 // Decyzja Kacpra 24.11: wszystko na Cloudflare.
 // 1) PANEL=1 (`npm run build`): strona statyczna + panel Keystatic jako Worker (/keystatic, /api/keystatic, /api/* formularzy).
-// 2) bez PANEL (`npm run build:statyczna`): sama strona, bez panelu (awaryjnie).
+// 2) bez PANEL: sama strona, bez panelu. Nie działa od dodania tras /api/* (wymagają adaptera), więc skrypt build:statyczna usunięty 26.11.
 // SERWER=node: ten sam panel na Node (wariant VPS, nieużywany).
 // Lokalnie (`astro dev`) panel działa zawsze i zapisuje do plików.
 const PANEL = process.env.PANEL === '1';

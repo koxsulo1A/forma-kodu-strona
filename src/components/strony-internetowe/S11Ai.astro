@@ -99,7 +99,7 @@ const kartyDostawcy = (d: any) => (d.karty ?? []).map((n: string) => t.karty[Num
   }
   .dostawcy button { min-height: 44px; cursor: pointer; transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease; }
   .dostawcy button:hover { border-color: var(--fk-akcent); }
-  .dostawcy button[aria-selected='true'] { background: var(--fk-akcent); border-color: var(--fk-akcent); color: #fff; font-weight: 600; }
+  .dostawcy button[aria-selected='true'] { background: var(--fk-akcent); border-color: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); font-weight: 600; }
   .dostawcy button:focus-visible { outline: 3px solid var(--fk-fokus); outline-offset: 2px; }
   .uwaga { max-width: 1312px; margin: 0; }
 

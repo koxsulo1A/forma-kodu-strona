@@ -9,8 +9,9 @@ interface Props {
   nazwaStrony: string;
   okruszki?: { nazwa: string; url: string }[];
   podstrona?: Podstrona;
+  noindex?: boolean;
 }
-const { strona, nazwaStrony, okruszki, podstrona } = Astro.props;
+const { strona, nazwaStrony, okruszki, podstrona, noindex } = Astro.props;
 const seo = (await getEntry('seo', strona))!.data; // znaczniki cen {{…}} podmienia scripts/generuj-markdown.mjs po budowaniu
 const seoG = (await getEntry('seoGlobalne', 'seo'))!.data;
 const firma = (await getEntry('firma', 'firma'))!.data;
@@ -25,7 +26,7 @@ const opis = podstrona?.opis || seo.seo_opis || seoG.opis_domyslny;
 const ogTytul = podstrona?.tytul ?? seo.seo_tytul;
 const mdAlt = new URL(strona === 'glowna' ? '/index.md' : `${podstrona ? Astro.url.pathname.replace(/\/$/, '') : seo.adres}.md`, domena).href;
 const graf = await grafStrony(strona, { url: new URL(canonical), nazwaStrony, okruszki, podstrona });
-const robots = seo.noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
+const robots = noindex || seo.noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1';
 ---
 <title>{tytul}</title>
 <meta name="description" content={opis} />

@@ -8,9 +8,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "PANEL=1 astro build && node scripts/generuj-markdown.mjs dist/client ${SITE_URL:-https://centrumkodu.pl}",
-    "build:statyczna": "astro build && node scripts/generuj-markdown.mjs dist ${SITE_URL:-https://centrumkodu.pl}",
-    "build:panel:node": "PANEL=1 SERWER=node astro build && node scripts/generuj-markdown.mjs dist/client ${SITE_URL:-https://centrumkodu.pl}",
+    "build": "PANEL=1 astro build && node scripts/generuj-markdown.mjs dist/client ${SITE_URL:-https://formakodu.pl}",
+    "build:panel:node": "PANEL=1 SERWER=node astro build && node scripts/generuj-markdown.mjs dist/client ${SITE_URL:-https://formakodu.pl}",
     "start:panel": "HOST=127.0.0.1 PORT=4321 node dist/server/entry.mjs",
     "preview": "astro preview",
     "check": "astro check",
@@ -22,7 +21,8 @@
     "verify": "npm run build && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki:test",
     "release": "npm run build && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki",
     "przeglad": "node scripts/przeglad-tresci.mjs src/content 90 180",
-    "indexnow": "node scripts/indexnow.mjs ${SITE_URL:-https://centrumkodu.pl} $INDEXNOW_KEY dist/client",
+    "indexnow": "node scripts/indexnow.mjs ${SITE_URL:-https://formakodu.pl} $INDEXNOW_KEY dist/client",
+    "ustaw-date": "node scripts/ustaw-date.mjs",
     "audyt": "unlighthouse",
     "audyt:ci": "unlighthouse-ci"
   },

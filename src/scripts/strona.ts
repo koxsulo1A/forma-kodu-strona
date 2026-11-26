@@ -295,6 +295,19 @@ document.querySelectorAll<HTMLFormElement>('form[data-szkic]').forEach((f) => {
 // data-petla: nieskończona pętla (zasada mobile 28, listy realizacji i opinii). Przed i za kartami dokładamy kopie
 // (aria-hidden + inert, bez fokusu), a po zatrzymaniu przewijania przeskakujemy niewidocznie do oryginału.
 const mobile = matchMedia('(max-width: 1023.98px)');
+// Tor swipe przewija się w poziomie tylko na telefonie: wtedy musi przyjmować fokus, żeby dało się go przewinąć strzałkami
+// (WCAG 2.1.1, axe scrollable-region-focusable, test 26.11). Na komputerze tor się nie przewija, więc nie zabiera tabulatora.
+const torFokus = () => document.querySelectorAll<HTMLElement>('.swipe').forEach((t) => {
+  if (mobile.matches && t.scrollWidth > t.clientWidth + 1) t.tabIndex = 0; else t.removeAttribute('tabindex');
+});
+torFokus();
+mobile.addEventListener('change', torFokus);
+// Tabele w polityce i deklaracji przewijają się w poziomie na wąskim ekranie: ten sam powód co wyżej.
+const tabeleFokus = () => document.querySelectorAll<HTMLElement>('.dokument table').forEach((t) => {
+  if (t.scrollWidth > t.clientWidth + 1) { t.tabIndex = 0; t.setAttribute('aria-label', 'Tabela, przewiń w bok'); } else { t.removeAttribute('tabindex'); t.removeAttribute('aria-label'); }
+});
+tabeleFokus();
+addEventListener('resize', () => requestAnimationFrame(tabeleFokus), { passive: true });
 document.querySelectorAll<HTMLElement>('[data-swipe]').forEach((tor) => {
   // Kropki czytane na bieżąco: filtr (31 S2) może zmienić ich liczbę po ukryciu kart.
   const wsk = document.getElementById(tor.dataset.swipe!);
