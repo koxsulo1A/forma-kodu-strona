@@ -29,16 +29,6 @@
       "klucz": "koszt_opieka_zakres",
       "opis": "kwota: opieka",
       "wartosc": "175-1 090 zł"
-    },
-    {
-      "klucz": "narzedzie_testow",
-      "opis": "narzędzie do testów",
-      "wartosc": ""
-    },
-    {
-      "klucz": "narzedzie_testow_ograniczenie",
-      "opis": "ograniczenie narzędzia do testów",
-      "wartosc": ""
     }
   ]
 }

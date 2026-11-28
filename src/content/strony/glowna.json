@@ -456,101 +456,101 @@
   "s10_technologie": {
     "etykieta": "Technologie",
     "naglowek": "Co pracuje pod spodem każdej strony",
-    "podpis": "Każde z tych twierdzeń możesz sprawdzić: pokażemy testy, ich wyniki i to, czego nie obejmują.",
+    "podpis": "Przy każdej technologii piszemy też, czego nie robi, żebyś wiedział, za co płacisz.",
     "pakiety": [
       {
         "nazwa": "Strona podstawowa",
         "znacznik": "",
-        "opis": "Na podstawie szablonu, który dobieramy do Twojej firmy.",
+        "opis": "Sprawdzony układ dobrany do Twojej branży. Teksty i zdjęcia zmieniasz sam w prostym panelu, bez programisty.",
         "warstwy": [
           {
-            "narzedzie": "Cloudflare Workers",
-            "rola": "back end",
-            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+            "narzedzie": "Domena i SSL",
+            "rola": "adres i HTTPS",
+            "ograniczenie": "Domenę trzeba odnawiać co roku, inaczej strona przestaje działać pod swoim adresem."
           },
           {
-            "narzedzie": "Astro",
-            "rola": "front end",
-            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
+            "narzedzie": "Hosting z PHP 8.3+",
+            "rola": "hosting",
+            "ograniczenie": "WordPress potrzebuje serwera z PHP i bazą danych, więc hosting to osobna, stała opłata."
           },
           {
-            "narzedzie": "{{narzedzie_testow}}",
-            "rola": "testy",
-            "ograniczenie": "{{narzedzie_testow_ograniczenie}}"
+            "narzedzie": "WordPress",
+            "rola": "panel treści",
+            "ograniczenie": "Rdzeń trzeba regularnie aktualizować, inaczej strona z czasem staje się mniej bezpieczna."
           },
           {
-            "narzedzie": "@astrojs/sitemap",
-            "rola": "SEO techniczne",
-            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
+            "narzedzie": "Wtyczki WordPress",
+            "rola": "SEO, cache, kopie",
+            "ograniczenie": "Każda wtyczka to osobny kod do aktualizacji, a część funkcji jest płatna w wersjach Pro."
+          },
+          {
+            "narzedzie": "Motyw dobrany do branży",
+            "rola": "wygląd strony",
+            "ograniczenie": "Większe zmiany układu robi programista, bo panel zmienia treść, a nie budowę strony."
           }
         ]
       },
       {
-        "nazwa": "Strona dedykowana",
+        "nazwa": "Strona szyta na miarę",
         "znacznik": "Polecany pakiet",
-        "opis": "Układ i wygląd projektujemy od zera z komponentów.",
+        "opis": "Projekt graficzny tylko dla Twojej firmy, publikowany prosto z Figmy. Teksty i wpisy zmieniasz sam w panelu.",
         "warstwy": [
           {
-            "narzedzie": "Cloudflare Workers",
-            "rola": "back end",
-            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+            "narzedzie": "Domena i SSL",
+            "rola": "adres i HTTPS",
+            "ograniczenie": "Własna domena w Figma Sites wymaga planu Professional lub wyższego."
           },
           {
-            "narzedzie": "Astro",
-            "rola": "front end",
-            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
+            "narzedzie": "Hosting Figmy (AWS)",
+            "rola": "hosting",
+            "ograniczenie": "Figma podaje serwery AWS w USA i nie opisuje wyboru serwerów w UE."
           },
           {
-            "narzedzie": "@astrojs/sitemap",
-            "rola": "SEO techniczne",
-            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
+            "narzedzie": "Formularz zewnętrzny",
+            "rola": "formularze",
+            "ograniczenie": "Figma Sites nie ma opisanych własnych formularzy, więc osadzamy formularz z zewnętrznej usługi."
           },
           {
-            "narzedzie": "{{narzedzie_testow}}",
-            "rola": "testy",
-            "ograniczenie": "{{narzedzie_testow_ograniczenie}}"
-          },
-          {
-            "narzedzie": "Keystatic",
+            "narzedzie": "Figma Sites CMS",
             "rola": "panel treści",
-            "ograniczenie": "Zmiana treści pojawia się na stronie dopiero po ponownym zbudowaniu."
+            "ograniczenie": "Zmiana treści wymaga dostępu do edycji pliku, czyli płatnego miejsca w planie Figmy."
+          },
+          {
+            "narzedzie": "Figma Sites",
+            "rola": "projekt i strona",
+            "ograniczenie": "Narzędzie jest w otwartej becie, a kodu strony nie da się przenieść na inny hosting."
           }
         ]
       },
       {
-        "nazwa": "Strona prywatna",
+        "nazwa": "Strona od A do Z",
         "znacznik": "Najwyższy pakiet",
-        "opis": "Projekt UI i UX od zera, kod pisany pod szybkość i prywatność.",
+        "opis": "Strona pisana w kodzie pod Twoją firmę: Next.js z Sanity albo Astro ze Storyblok. Treści zmieniasz w panelu z podglądem na żywo.",
         "warstwy": [
           {
-            "narzedzie": "Cloudflare Workers",
-            "rola": "back end",
-            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+            "narzedzie": "Vercel lub Cloudflare",
+            "rola": "hosting",
+            "ograniczenie": "Strona firmy na Vercel wymaga planu Pro (20 USD/mies.), Cloudflare jest darmowy do 100 000 zapytań dziennie."
           },
           {
-            "narzedzie": "Astro",
-            "rola": "front end",
-            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
+            "narzedzie": "Resend",
+            "rola": "e-maile z formularzy",
+            "ograniczenie": "Plan darmowy wysyła 100 e-maili dziennie, a dane konta Resend są w USA nawet przy wysyłce z UE."
           },
           {
-            "narzedzie": "@astrojs/sitemap",
-            "rola": "SEO techniczne",
-            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
+            "narzedzie": "Plausible Analytics",
+            "rola": "statystyki",
+            "ograniczenie": "Liczy odwiedziny bez cookies, ale ma mniej raportów niż Google Analytics i jest płatny po 30 dniach próby."
           },
           {
-            "narzedzie": "{{narzedzie_testow}}",
-            "rola": "testy",
-            "ograniczenie": "{{narzedzie_testow_ograniczenie}}"
-          },
-          {
-            "narzedzie": "Keystatic",
+            "narzedzie": "Sanity lub Storyblok",
             "rola": "panel treści",
-            "ograniczenie": "Zmiana treści pojawia się na stronie dopiero po ponownym zbudowaniu."
+            "ograniczenie": "Rola redaktora i planowanie publikacji są płatne: Sanity 15 USD za osobę, Storyblok od 99 USD/mies."
           },
           {
-            "narzedzie": "Lighthouse CI",
-            "rola": "wydajność",
-            "ograniczenie": "Mierzy w warunkach testowych, a nie na wizytach Twoich klientów."
+            "narzedzie": "Next.js lub Astro",
+            "rola": "front end",
+            "ograniczenie": "To nie kreator: zmiana układu wymaga programisty, a framework regularnych aktualizacji."
           }
         ]
       }
