@@ -493,49 +493,54 @@
       {
         "nazwa": "Strona szyta na miarę",
         "znacznik": "Polecany pakiet",
-        "opis": "Projekt graficzny tylko dla Twojej firmy, publikowany prosto z Figmy. Teksty i wpisy zmieniasz sam w panelu.",
+        "opis": "Projekt graficzny tylko dla Twojej firmy powstaje w Figmie, a potem staje się własnym motywem strony. Teksty i wpisy zmieniasz sam w panelu.",
         "warstwy": [
           {
             "narzedzie": "Domena i SSL",
             "rola": "adres i HTTPS",
-            "ograniczenie": "Własna domena w Figma Sites wymaga planu Professional lub wyższego."
+            "ograniczenie": "Domenę trzeba odnawiać co roku, inaczej strona przestaje działać pod swoim adresem."
           },
           {
-            "narzedzie": "Hosting Figmy (AWS)",
+            "narzedzie": "Hosting z PHP 8.3+",
             "rola": "hosting",
-            "ograniczenie": "Figma podaje serwery AWS w USA i nie opisuje wyboru serwerów w UE."
+            "ograniczenie": "WordPress potrzebuje serwera z PHP i bazą danych, więc hosting to osobna, stała opłata."
           },
           {
-            "narzedzie": "Formularz zewnętrzny",
-            "rola": "formularze",
-            "ograniczenie": "Figma Sites nie ma opisanych własnych formularzy, więc osadzamy formularz z zewnętrznej usługi."
-          },
-          {
-            "narzedzie": "Figma Sites CMS",
+            "narzedzie": "WordPress",
             "rola": "panel treści",
-            "ograniczenie": "Zmiana treści wymaga dostępu do edycji pliku, czyli płatnego miejsca w planie Figmy."
+            "ograniczenie": "Rdzeń trzeba regularnie aktualizować, inaczej strona z czasem staje się mniej bezpieczna."
           },
           {
-            "narzedzie": "Figma Sites",
-            "rola": "projekt i strona",
-            "ograniczenie": "Narzędzie jest w otwartej becie, a kodu strony nie da się przenieść na inny hosting."
+            "narzedzie": "Wtyczki WordPress",
+            "rola": "SEO, cache, kopie",
+            "ograniczenie": "Każda wtyczka to osobny kod do aktualizacji, a część funkcji jest płatna w wersjach Pro."
+          },
+          {
+            "narzedzie": "Figma",
+            "rola": "projekt graficzny",
+            "ograniczenie": "Projekt w Figmie to plan strony, a nie działająca strona: każdą zmianę przenosimy do motywu."
+          },
+          {
+            "narzedzie": "Własny motyw z Figmy",
+            "rola": "wygląd strony",
+            "ograniczenie": "Motyw powstaje tylko dla Twojej firmy, więc większe zmiany układu robi programista, a nie kreator."
           }
         ]
       },
       {
         "nazwa": "Strona od A do Z",
         "znacznik": "Najwyższy pakiet",
-        "opis": "Strona pisana w kodzie pod Twoją firmę: Next.js z Sanity albo Astro ze Storyblok. Treści zmieniasz w panelu z podglądem na żywo.",
+        "opis": "Strona pisana w kodzie: Next.js lub Astro, z panelem Sanity, Storyblok, Keystatic albo WordPress headless.",
         "warstwy": [
           {
-            "narzedzie": "Vercel lub Cloudflare",
-            "rola": "hosting",
-            "ograniczenie": "Strona firmy na Vercel wymaga planu Pro (20 USD/mies.), Cloudflare jest darmowy do 100 000 zapytań dziennie."
+            "narzedzie": "Cloudflare i domena",
+            "rola": "hosting i SSL",
+            "ograniczenie": "SSL jest w cenie, plan darmowy ma 100 000 zapytań dziennie, a domenę trzeba odnawiać co roku."
           },
           {
-            "narzedzie": "Resend",
+            "narzedzie": "Cloudflare Email lub Resend",
             "rola": "e-maile z formularzy",
-            "ograniczenie": "Plan darmowy wysyła 100 e-maili dziennie, a dane konta Resend są w USA nawet przy wysyłce z UE."
+            "ograniczenie": "Cloudflare za darmo wysyła tylko na zweryfikowane adresy, a Resend Pro to 20 USD/mies. za 50 000 e-maili."
           },
           {
             "narzedzie": "Plausible Analytics",
@@ -543,9 +548,14 @@
             "ograniczenie": "Liczy odwiedziny bez cookies, ale ma mniej raportów niż Google Analytics i jest płatny po 30 dniach próby."
           },
           {
-            "narzedzie": "Sanity lub Storyblok",
+            "narzedzie": "WordPress headless",
+            "rola": "panel z Gutenbergiem",
+            "ograniczenie": "Wymaga osobnego serwera z PHP, a podgląd na żywo i część wtyczek trzeba dorobić po stronie strony."
+          },
+          {
+            "narzedzie": "Sanity / Storyblok / Keystatic",
             "rola": "panel treści",
-            "ograniczenie": "Rola redaktora i planowanie publikacji są płatne: Sanity 15 USD za osobę, Storyblok od 99 USD/mies."
+            "ograniczenie": "Keystatic jest darmowy, a rola redaktora kosztuje w Sanity 15 USD za osobę, w Storyblok od 99 USD/mies."
           },
           {
             "narzedzie": "Next.js lub Astro",
