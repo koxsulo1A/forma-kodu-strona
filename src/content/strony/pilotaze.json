@@ -65,7 +65,7 @@
     "podpowiedzi_wymagania": ["Łatwe dodawanie zdjęć", "Blog", "Bramka płatności", "Samodzielna edycja treści", "Konta klientów", "Punkty lojalnościowe", "Rezerwacje online", "Formularz kontaktowy", "Wersje językowe"],
     "godziny": ["8:00-10:00", "10:00-12:00", "12:00-15:00", "15:00-18:00", "18:00-20:00", "Dowolna pora"],
     "przycisk": "Postaw kolejny krok",
-    "komunikat_sukcesu": "Zgłoszenie dotarło. Odezwiemy się wybranym przez Ciebie sposobem i umówimy rozmowę."
+    "komunikat_sukcesu": "Zgłoszenie dotarło. Odezwiemy się w ciągu 14 dni wybranym przez Ciebie sposobem i umówimy rozmowę. Potwierdzenie wysłaliśmy na Twój e-mail."
   },
   "s7_nie_wiesz": {
     "naglowek": "Nie wiesz, czy pilotaż jest dla Ciebie?",

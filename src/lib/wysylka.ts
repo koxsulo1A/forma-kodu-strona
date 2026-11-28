@@ -42,6 +42,38 @@ export async function wyslijDoNas(klucz: string, w: { temat: string; tekst: stri
   });
 }
 
+/** Termin odpowiedzi podawany klientowi w potwierdzeniu (Kacper 28.11.2026). */
+export const TERMIN_ODPOWIEDZI = 'w ciągu 14 dni';
+
+/**
+ * Automatyczne potwierdzenie dla klienta (Kacper 28.11.2026). Celowo bez treści wpisanych w formularz
+ * (ani imienia, ani opisu): ktoś mógłby wpisać cudzy adres i użyć naszego formularza do wysyłki własnego tekstu.
+ * Błąd potwierdzenia nie psuje zgłoszenia: wiadomość do nas już poszła, więc tylko go pomijamy.
+ */
+export async function potwierdzKlientowi(klucz: string, w: { email: string; temat: string; co: string }) {
+  try {
+    await zapytanie(klucz, '/smtp/email', {
+      sender: { name: 'Forma Kodu', email: USTAWIENIA.nadawca.email },
+      to: [{ email: w.email }],
+      replyTo: { email: USTAWIENIA.odbiorca, name: 'Forma Kodu' },
+      subject: w.temat,
+      textContent: [
+        'Dzień dobry,',
+        '',
+        `dostaliśmy ${w.co} ze strony formakodu.pl. Odezwiemy się ${TERMIN_ODPOWIEDZI}.`,
+        '',
+        'Jeśli chcesz coś dodać, po prostu odpowiedz na tę wiadomość.',
+        '',
+        'Kacper',
+        'Forma Kodu',
+        USTAWIENIA.odbiorca,
+        '',
+        'Ta wiadomość została wysłana automatycznie, bo ktoś podał ten adres w formularzu na stronie formakodu.pl. Jeśli to nie Ty, zignoruj ją.',
+      ].join('\n'),
+    });
+  } catch { /* zgłoszenie dotarło do nas; brak potwierdzenia nie jest błędem dla klienta */ }
+}
+
 /** Zapis na listę „Powiadom mnie”. Bez ustawionej listy nic nie robi (zgłoszenie i tak przychodzi mailem). */
 export async function zapiszNaListe(klucz: string, email: string) {
   if (!USTAWIENIA.listaPowiadom) return;

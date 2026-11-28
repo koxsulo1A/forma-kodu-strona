@@ -1,7 +1,7 @@
 // POST /api/kontakt: formularz „Opisz projekt” (FormularzProjektu.astro). Zgłoszenie trafia mailem na kontakt@formakodu.pl.
 import type { APIRoute } from 'astro';
 import { obsluz, pole, opis, EMAIL, telefonOk } from '../../lib/formularz';
-import { wyslijDoNas } from '../../lib/wysylka';
+import { wyslijDoNas, potwierdzKlientowi } from '../../lib/wysylka';
 
 export const prerender = false;
 
@@ -17,10 +17,13 @@ export const POST: APIRoute = ({ request }) =>
     const skad = request.headers.get('referer') ?? '';
     return {
       bledy,
-      wyslij: (klucz) => wyslijDoNas(klucz, {
+      wyslij: async (klucz) => {
+        await wyslijDoNas(klucz, {
         temat: `Nowy projekt: ${d.imie}`,
         tekst: opis([['Imię', d.imie], ['E-mail', d.email], ['Telefon', d.telefon], ['Opis projektu', d.opis], ['Wysłano ze strony', skad]]),
         odpowiedzDo: { email: d.email, imie: d.imie },
-      }),
+        });
+        await potwierdzKlientowi(klucz, { email: d.email, temat: 'Dostaliśmy Twoją wiadomość – Forma Kodu', co: 'Twoją wiadomość' });
+      },
     };
-  }, 'Dostaliśmy Twoją wiadomość. Odpowiemy na podany adres e-mail.');
+  }, 'Dostaliśmy Twoją wiadomość. Odezwiemy się w ciągu 14 dni na podany adres e-mail.');

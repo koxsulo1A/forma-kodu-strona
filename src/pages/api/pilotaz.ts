@@ -1,7 +1,7 @@
 // POST /api/pilotaz: zgłoszenie na pilotaż (pilotaze/S6Formularz.astro). Zgłoszenie trafia mailem na kontakt@formakodu.pl.
 import type { APIRoute } from 'astro';
 import { obsluz, pole, wiele, opis, EMAIL, telefonOk } from '../../lib/formularz';
-import { wyslijDoNas } from '../../lib/wysylka';
+import { wyslijDoNas, potwierdzKlientowi } from '../../lib/wysylka';
 
 export const prerender = false;
 
@@ -27,13 +27,16 @@ export const POST: APIRoute = ({ request }) =>
     ].filter(Boolean) as string[];
     return {
       bledy,
-      wyslij: (klucz) => wyslijDoNas(klucz, {
+      wyslij: async (klucz) => {
+        await wyslijDoNas(klucz, {
         temat: `Zgłoszenie na pilotaż: ${d.rodzaj} (${d.imie})`,
         tekst: opis([
           ['Rodzaj projektu', d.rodzaj], ['Opis', d.opis], ['Technologie', d.technologie], ['Wymagania', d.wymagania],
           ['Imię', d.imie], ['E-mail', d.email], ['Telefon', d.telefon], ['Preferowany kontakt', d.kontakt], ['Godziny telefonu', d.godziny],
         ]),
         odpowiedzDo: { email: d.email, imie: d.imie },
-      }),
+        });
+        await potwierdzKlientowi(klucz, { email: d.email, temat: 'Dostaliśmy Twoje zgłoszenie na pilotaż – Forma Kodu', co: 'Twoje zgłoszenie na pilotaż' });
+      },
     };
-  }, 'Dostaliśmy Twoje zgłoszenie na pilotaż. Odezwiemy się w sposób, który wybrałeś.');
+  }, 'Dostaliśmy Twoje zgłoszenie na pilotaż. Odezwiemy się w ciągu 14 dni w sposób, który wybrałeś.');

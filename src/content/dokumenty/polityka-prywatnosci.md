@@ -28,8 +28,8 @@ Kontakt w sprawach danych: kontakt@formakodu.pl, ul. Prądzyńskiego 3, 50-434 W
 
 ## 3. Komu przekazujemy dane
 - Cloudflare, Inc., USA: hosting strony, odbiór formularzy i ochrona przed atakami;
-- Brevo SAS, Francja: przekazanie zgłoszeń z formularzy na naszą skrzynkę e-mail, lista „Powiadom mnie” i wysyłka wiadomości o starcie usługi;
-- [dostawca skrzynki e-mail, na którą trafiają zgłoszenia z formularzy: nazwa, kraj];
+- Brevo SAS, Francja: przekazanie zgłoszeń z formularzy na naszą skrzynkę e-mail, automatyczne potwierdzenie przyjęcia zgłoszenia, lista „Powiadom mnie” i wysyłka wiadomości o starcie usługi;
+- Apple Distribution International Ltd., Irlandia (iCloud+): skrzynka e-mail kontakt@formakodu.pl, na którą trafiają zgłoszenia z formularzy;
 - Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irlandia: Google Analytics 4, tylko jeśli zgodzisz się na analitykę;
 - Trustpilot A/S, Dania: widżet opinii, tylko jeśli zgodzisz się na treści zewnętrzne (Trustpilot przetwarza te dane jako osobny administrator, według własnej polityki prywatności);
 - [dostawca widżetu opinii Google: nazwa, kraj]: tylko jeśli zgodzisz się na treści zewnętrzne;
