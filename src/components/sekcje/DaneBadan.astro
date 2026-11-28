@@ -12,7 +12,7 @@ const wsk = `${id}-wskaznik`;
       <h2 id={`${id}-h`} class="t-h2 naglowkowy">{t.naglowek}</h2>
       {t.lead && <p class="t-tresc-l">{t.lead}</p>}
     </header>
-    <ul role="list" class="liczby swipe" data-swipe={wsk} style={`--kolumny: ${t.liczby.length}`}>
+    <ul role="list" class="liczby swipe" data-swipe={wsk} data-kolumny={t.liczby.length}>
       {t.liczby.map((l: any) => (
         <li class="w1 wyciecie">
           <p class="t-liczba wartosc">{l.wartosc}</p>
@@ -43,7 +43,10 @@ const wsk = `${id}-wskaznik`;
   .badania { padding-block: clamp(48px, 5vw, 70px); }
   .badania-wnetrze { display: grid; gap: 32px; }
   .naglowek { display: grid; gap: 12px; max-width: 760px; }
-  .liczby { display: grid; grid-template-columns: repeat(var(--kolumny, 3), minmax(0, 1fr)); gap: 24px; }
+  /* Liczba kolumn przez data-kolumny, nie inline style: CSP strony blokuje atrybut style (na podglądzie wychodziło 3 + 1). */
+  .liczby { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; }
+  .liczby[data-kolumny='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .liczby[data-kolumny='4'] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   /* position: relative: ukryty tekst linku (.sr-only, absolute) zostaje w karcie, inaczej wychodzi poza tor swipe i daje przewijanie w bok */
   .liczby li, .wnioski li { position: relative; }
   .liczby li { display: grid; gap: 10px; align-content: start; padding: 28px; }
