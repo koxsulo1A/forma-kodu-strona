@@ -10,8 +10,8 @@ zatwierdzone_przez_prawnika: false
 Obowiązuje od: {{data_publikacji|slownie}}.
 
 ## 1. Kto jest administratorem
-Kacper Przychodzień Centrum usług (jednoosobowa działalność gospodarcza), ul. Prądzyńskiego 3, 50-434 Wrocław.
-Kontakt w sprawach danych: kontakt@formakodu.pl, ul. Prądzyńskiego 3, 50-434 Wrocław.
+{{nazwa_prawna}} (jednoosobowa działalność gospodarcza), {{adres}}.
+Kontakt w sprawach danych: {{email_dane_osobowe}}, {{adres}}.
 [Jeśli wyznaczono inspektora ochrony danych: imię, nazwisko, e-mail. Jeśli nie: usuń.]
 
 ## 2. Jakie dane zbieramy i po co
@@ -29,7 +29,7 @@ Kontakt w sprawach danych: kontakt@formakodu.pl, ul. Prądzyńskiego 3, 50-434 W
 ## 3. Komu przekazujemy dane
 - Cloudflare, Inc., USA: hosting strony, odbiór formularzy i ochrona przed atakami;
 - Brevo SAS, Francja: przekazanie zgłoszeń z formularzy na naszą skrzynkę e-mail, automatyczne potwierdzenie przyjęcia zgłoszenia, lista „Powiadom mnie” i wysyłka wiadomości o starcie usługi;
-- Apple Distribution International Ltd., Irlandia (iCloud+): skrzynka e-mail kontakt@formakodu.pl, na którą trafiają zgłoszenia z formularzy;
+- Apple Distribution International Ltd., Irlandia (iCloud+): skrzynka e-mail {{email}}, na którą trafiają zgłoszenia z formularzy;
 - Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irlandia: Google Analytics 4, tylko jeśli zgodzisz się na analitykę;
 - Trustpilot A/S, Dania: widżet opinii, tylko jeśli zgodzisz się na treści zewnętrzne (Trustpilot przetwarza te dane jako osobny administrator, według własnej polityki prywatności);
 - [dostawca widżetu opinii Google: nazwa, kraj]: tylko jeśli zgodzisz się na treści zewnętrzne;
@@ -43,7 +43,7 @@ Jeśli zgodzisz się na analitykę, dane z Google Analytics mogą trafić do Goo
 Podstawa: decyzja Komisji Europejskiej o adekwatności ochrony dla firm z listy
 EU-US Data Privacy Framework (Google LLC jest na tej liście) oraz standardowe klauzule umowne Google.
 Cloudflare, Inc. (USA) obsługuje ruch na stronie i formularze na tej samej podstawie: lista EU-US Data Privacy Framework i standardowe klauzule umowne.
-Kopię zabezpieczeń dostaniesz, pisząc na kontakt@formakodu.pl.
+Kopię zabezpieczeń dostaniesz, pisząc na {{email}}.
 
 ## 5. Twoje prawa
 Możesz żądać: dostępu do danych i ich kopii, sprostowania, usunięcia, ograniczenia
@@ -51,7 +51,7 @@ przetwarzania, przeniesienia danych (gdy podstawą jest zgoda albo umowa).
 Możesz wnieść sprzeciw, gdy podstawą jest nasz prawnie uzasadniony interes.
 Zgodę możesz cofnąć w każdej chwili; nie wpływa to na wcześniejsze przetwarzanie.
 Zgodę na analitykę cofniesz przyciskiem „Ustawienia cookies” na dole każdej strony.
-Napisz: kontakt@formakodu.pl. Odpowiadamy w ciągu miesiąca.
+Napisz: {{email}}. Odpowiadamy w ciągu miesiąca.
 Możesz też złożyć skargę do Prezesa Urzędu Ochrony Danych Osobowych,
 ul. Stawki 2, 00-193 Warszawa, uodo.gov.pl.
 
@@ -76,7 +76,7 @@ Fonty wczytujemy z naszego serwera.
 | `fk-dostepnosc` (pamięć przeglądarki) | my | ustawienia dostępności | do usunięcia przez Ciebie | nie: jak wyżej |
 | `fk-pilotaz-szkic` (pamięć przeglądarki) | my | szkic formularza pilotażu, gdy klikniesz „Zapisz formularz w przeglądarce”; do nas nic nie trafia | do wysłania formularza albo usunięcia przez Ciebie | nie: jak wyżej |
 | `_ga` (cookie) | Google Analytics | rozróżnienie odwiedzających | 2 lata | tak |
-| `_ga_[identyfikator]` (cookie) | Google Analytics | zapamiętanie stanu sesji | 2 lata | tak |
+| `_ga_` + ID usługi GA4 (cookie) | Google Analytics | zapamiętanie stanu sesji | 2 lata | tak |
 | [cookies widżetu Trustpilot: nazwy i czas, sprawdzić po wdrożeniu w narzędziach przeglądarki] | Trustpilot | wyświetlenie widżetu opinii | [czas] | tak (treści zewnętrzne) |
 | [cookies widżetu opinii Google: nazwy i czas] | [dostawca] | wyświetlenie widżetu opinii | [czas] | tak (treści zewnętrzne) |
 
@@ -85,7 +85,7 @@ Prawa komunikacji elektronicznej). Cookies Google Analytics i widżetów opinii 
 po jej wycofaniu usuwamy je z przeglądarki. Wszystko usuniesz też w ustawieniach przeglądarki.
 
 ## 9. Zmiany
-O istotnych zmianach poinformujemy na tej stronie. Poprzednie wersje prześlemy na prośbę wysłaną na kontakt@formakodu.pl.
+O istotnych zmianach poinformujemy na tej stronie. Poprzednie wersje prześlemy na prośbę wysłaną na {{email}}.
 Wersja 1.1: dodano Google Analytics, okienko zgód i zasady usługi „Powiadom mnie”.
 Wersja 1.2: dodano widżety opinii Trustpilot i Google (kategoria „treści zewnętrzne”).
 
@@ -93,7 +93,7 @@ Wersja 1.2: dodano widżety opinii Trustpilot i Google (kategoria „treści zew
 1. Usługodawca: administrator z §1.
 2. Usługa polega na wysłaniu jednej wiadomości e-mail z informacją o uruchomieniu wybranej usługi Forma Kodu. Jest bezpłatna.
 3. Do skorzystania potrzebny jest adres e-mail oraz urządzenie z przeglądarką i pocztą elektroniczną.
-4. Umowa zostaje zawarta po wysłaniu formularza z zaznaczoną zgodą i kończy się po wysłaniu wiadomości. Możesz zrezygnować w każdej chwili, pisząc na kontakt@formakodu.pl albo klikając link w wiadomości.
+4. Umowa zostaje zawarta po wysłaniu formularza z zaznaczoną zgodą i kończy się po wysłaniu wiadomości. Możesz zrezygnować w każdej chwili, pisząc na {{email}} albo klikając link w wiadomości.
 5. Nie wolno podawać cudzego adresu e-mail ani treści bezprawnych.
-6. Reklamacje: kontakt@formakodu.pl. Odpowiadamy w ciągu 14 dni.
+6. Reklamacje: {{email}}. Odpowiadamy w ciągu 14 dni.
 7. Dane osobowe przetwarzamy zgodnie z tą polityką (§2, wiersz „Powiadom mnie”).

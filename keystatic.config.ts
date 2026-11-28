@@ -100,7 +100,7 @@ export default config({
           fields.object({
             klucz: fields.text({
               label: 'Klucz',
-              description: 'W treści wpisz {{klucz}}, a dla daty słownie {{klucz|slownie}}. Wbudowane z „Dane firmy”: {{email}}, {{telefon}}, {{nazwa_marki}}, {{nazwa_prawna}}, {{adres}}.',
+              description: 'W treści wpisz {{klucz}}, a dla daty słownie {{klucz|slownie}}. Wbudowane z „Dane firmy”: {{email}}, {{email_dane_osobowe}}, {{telefon}}, {{nazwa_marki}}, {{nazwa_prawna}}, {{adres}}, {{czas_odpowiedzi_dni}}, {{metoda_oceny}}.',
               validation: { pattern: { regex: /^[a-z0-9_]+$/, message: 'Małe litery, cyfry i _' } },
             }),
             opis: fields.text({ label: 'Co to jest', description: 'Gdy wartość jest pusta, na stronie stoi zaślepka [opis], która blokuje publikację.' }),

@@ -3,7 +3,8 @@
 // W treści (panel, JSON, Markdown) wpisujesz znacznik:
 //   {{data_publikacji}}          → 2026-12-01
 //   {{data_publikacji|slownie}}  → 1 grudnia 2026 (tylko dla dat RRRR-MM-DD)
-//   {{email}}, {{telefon}}, {{nazwa_marki}}, {{nazwa_prawna}}, {{adres}} → z „Dane firmy” (wbudowane, bez wpisu w Zmiennych)
+//   {{email}}, {{email_dane_osobowe}}, {{telefon}}, {{nazwa_marki}}, {{nazwa_prawna}}, {{adres}},
+//   {{czas_odpowiedzi_dni}}, {{metoda_oceny}} → z „Dane firmy” (wbudowane, bez wpisu w Zmiennych)
 // Pusta wartość = zaślepka „[opis zmiennej]”: strona się buduje, a sprawdz-zaslepki blokuje publikację, dopóki jej nie uzupełnisz.
 // Nieznany klucz zatrzymuje budowanie (literówka w znaczniku nie może trafić na stronę).
 // Gdzie działa podmiana:
@@ -13,20 +14,25 @@
 import { readFileSync, existsSync } from 'node:fs';
 
 const PLIK = 'src/content/ustawienia/zmienne.json';
+// Pole „Dane firmy” z zaślepką [..] traktujemy jak puste (pokaże się opis zmiennej).
+const pusteGdyZaslepka = (/** @type {unknown} */ w) => { const t = String(w ?? '').trim(); return /^\[.*\]$/.test(t) ? '' : t; };
 const WZOR = /\{\{([a-z0-9_]+)(\|slownie)?\}\}/g;
 
 /** @returns {Map<string, { wartosc: string; opis: string }>} */
 export function zmienne() {
   const mapa = new Map();
   const f = JSON.parse(readFileSync('src/content/ustawienia/firma.json', 'utf8'));
-  const adres = f.adres?.ulica ? `${f.adres.ulica}, ${f.adres.kod} ${f.adres.miasto}` : '';
+  const adres = f.adres?.ulica ? `ul. ${f.adres.ulica}, ${f.adres.kod} ${f.adres.miasto}` : '';
   for (const [klucz, wartosc, opis] of [
     ['email', f.email, 'e-mail firmy'],
     ['telefon', f.telefon, 'telefon firmy'],
     ['nazwa_marki', f.nazwa_marki, 'nazwa marki'],
     ['nazwa_prawna', f.nazwa_prawna, 'pełna nazwa firmy'],
     ['adres', adres, 'adres biura'],
-  ]) mapa.set(klucz, { wartosc: String(wartosc ?? '').trim(), opis });
+    ['email_dane_osobowe', f.email_dane_osobowe, 'e-mail w sprawach danych osobowych'],
+    ['czas_odpowiedzi_dni', f.dostepnosc?.czas_odpowiedzi_dni, 'liczba dni roboczych na odpowiedź w sprawie dostępności'],
+    ['metoda_oceny', f.dostepnosc?.metoda_oceny, 'sposób oceny dostępności: samoocena (klawiatura, czytnik ekranu, axe, powiększenie 200%, szerokość 320 px) albo audyt zewnętrzny: nazwa, data'],
+  ]) mapa.set(klucz, { wartosc: pusteGdyZaslepka(wartosc), opis });
   const lista = existsSync(PLIK) ? JSON.parse(readFileSync(PLIK, 'utf8')).zmienne ?? [] : [];
   for (const z of lista) {
     if (mapa.has(z.klucz)) throw new Error(`Zmienne: klucz „${z.klucz}” jest podwójny albo zajęty przez Dane firmy`);

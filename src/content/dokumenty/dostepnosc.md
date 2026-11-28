@@ -7,7 +7,7 @@ zatwierdzone_przez_prawnika: false
 ---
 
 
-Kacper Przychodzień Centrum usług chce, żeby strona formakodu.pl była wygodna dla wszystkich,
+{{nazwa_prawna}} chce, żeby strona formakodu.pl była wygodna dla wszystkich,
 także dla osób korzystających z czytnika ekranu, samej klawiatury albo powiększenia.
 
 ## Standard
@@ -19,8 +19,7 @@ ustawy z 4 kwietnia 2019 r., która dotyczy podmiotów publicznych.
 - Data publikacji strony: {{data_publikacji|slownie}}.
 - Data ostatniej istotnej aktualizacji: {{data_publikacji|slownie}}.
 - Data sporządzenia oświadczenia: {{data_publikacji|slownie}}. Ostatni przegląd: {{data_publikacji|slownie}}.
-- Sposób oceny: [samoocena: testy klawiaturą, czytnik NVDA/VoiceOver, axe,
-  powiększenie 200%, szerokość 320 px / audyt zewnętrzny: nazwa, data].
+- Sposób oceny: {{metoda_oceny}}.
 
 ## Co działa
 - Pełna obsługa klawiaturą i widoczny fokus.
@@ -38,5 +37,5 @@ ustawy z 4 kwietnia 2019 r., która dotyczy podmiotów publicznych.
 [lista albo: „Strona nie używa własnych skrótów klawiszowych.”]
 
 ## Zgłoś problem
-Napisz: kontakt@formakodu.pl. Odpowiadamy w ciągu [liczba] dni roboczych.
+Napisz: {{email}}. Odpowiadamy w ciągu {{czas_odpowiedzi_dni}} dni roboczych.
 Podaj adres podstrony i opisz, co nie działa.
