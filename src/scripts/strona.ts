@@ -613,6 +613,29 @@ document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) =>
   });
 }
 
+// ---------- 10c. Warianty pakietu w S10 (np. od A do Z: WordPress / Kod od zera) ----------
+// Bez JS widać oba warianty jeden pod drugim. Z JS: przełącznik, widoczny jeden wariant, licznik warstw z aktywnego.
+{
+  document.querySelectorAll<HTMLElement>('[data-pakiet-warianty]').forEach((pakiet) => {
+    const grupa = pakiet.querySelector<HTMLElement>('[data-warianty-przelacznik]');
+    const przyciski = [...pakiet.querySelectorAll<HTMLButtonElement>('[data-wariant-przycisk]')];
+    const warianty = [...pakiet.querySelectorAll<HTMLElement>('[data-wariant]')];
+    const liczba = pakiet.querySelector('[data-licznik-warstw]');
+    const slowo = pakiet.querySelector('[data-licznik-slowo]');
+    if (!grupa || przyciski.length < 2) return;
+    grupa.hidden = false;
+    pakiet.classList.add('z-przelacznikiem');
+    const pokaz = (i: number) => {
+      przyciski.forEach((b, j) => b.setAttribute('aria-pressed', String(i === j)));
+      warianty.forEach((w, j) => { w.hidden = i !== j; });
+      if (liczba) liczba.textContent = przyciski[i].dataset.liczba ?? '';
+      if (slowo) slowo.textContent = przyciski[i].dataset.slowo ?? '';
+    };
+    przyciski.forEach((b, i) => b.addEventListener('click', () => pokaz(i)));
+    pokaz(0);
+  });
+}
+
 // ---------- 9f. 27 S1: klikalne okno strony i czat w ilustracji (plansze 450:1815 i 450:1947, dane przykładowe) ----------
 {
   document.querySelectorAll<HTMLElement>('[data-okno-demo]').forEach((okno) => {

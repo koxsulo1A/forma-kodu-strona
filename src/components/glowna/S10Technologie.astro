@@ -1,8 +1,8 @@
 ---
 // 27 S10 Technologie: trzy kolumny, w każdej stos kart warstw (animacja „rozłożenie stosu kart w dół”).
 // Złożony: pod spodem pierwsza warstwa, na wierzchu ostatnia, między nimi przycisk „+N warstwy” z nazwami ról środkowych warstw.
-// Bez JS (i po kliknięciu) stos jest zwykłą listą wszystkich warstw. Makieta: „WordPress (headless)”, kod: Keystatic (decyzja CMS 24.11).
-import Ikona from '../wspolne/Ikona.astro';
+// Bez JS (i po kliknięciu) stos jest zwykłą listą wszystkich warstw. Pakiet może mieć 2 warianty (Kacper 28.11: od A do Z = WordPress / Kod od zera) z przełącznikiem; bez JS widać oba. Makieta: „WordPress (headless)”, kod: Keystatic (decyzja CMS 24.11).
+import S10Stos from './S10Stos.astro';
 interface Props { t: any }
 const { t } = Astro.props;
 const warstwy = (n: number) => (n === 1 ? 'warstwa' : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 'warstwy' : 'warstw');
@@ -15,35 +15,34 @@ const warstwy = (n: number) => (n === 1 ? 'warstwa' : n % 10 >= 2 && n % 10 <= 4
     </header>
     <div class="kolumny">
       {t.pakiety.map((p: any, k: number) => {
-        const w = p.warstwy;
-        const srodek = w.slice(1, -1);
+        const war = (p.warianty ?? []).filter((v: any) => v.warstwy?.length);
+        const n = war.length ? war[0].warstwy.length : p.warstwy.length;
         return (
-          <article class="kolumna w1" aria-labelledby={`s10-p${k}`}>
+          <article class="kolumna w1" aria-labelledby={`s10-p${k}`} data-pakiet-warianty={war.length > 1 ? '' : undefined}>
             <div class="kol-naglowek">
               <div class="kol-tytul">
                 <h3 id={`s10-p${k}`} class="t-h4 naglowkowy">{p.nazwa}</h3>
                 {p.znacznik && <p class:list={['t-etykieta', 'znacznik-pakietu', { pelny: k === 2 }]}>{p.znacznik}</p>}
               </div>
-              <p class="licznik"><span class="t-liczba akcentowy">{w.length}</span> <span class="t-maly pomocniczy">{warstwy(w.length)}</span></p>
+              <p class="licznik"><span class="t-liczba akcentowy" data-licznik-warstw>{n}</span> <span class="t-maly pomocniczy" data-licznik-slowo>{warstwy(n)}</span></p>
             </div>
-            <p class="t-maly pomocniczy">{p.opis}</p>
-            <div class="stos" data-stos>
-              <ul role="list" class="karty">
-                {w.map((x: any, i: number) => (
-                  <li class:list={['karta', { pierwsza: i === 0, ostatnia: i === w.length - 1, srodkowa: i > 0 && i < w.length - 1 }]}>
-                    <p class="karta-gora"><span class="t-przycisk naglowkowy">{x.narzedzie}</span><span class="t-etykieta pomocniczy">{x.rola}</span></p>
-                    <p class="t-maly">Ograniczenie: {x.ograniczenie}</p>
-                  </li>
+            {p.opis && <p class="t-maly pomocniczy">{p.opis}</p>}
+            {war.length > 1 && (
+              <div class="przelacznik" role="group" aria-label={`Wersja pakietu ${p.nazwa}`} data-warianty-przelacznik hidden>
+                {war.map((v: any, i: number) => (
+                  <button type="button" class="t-maly" aria-pressed={i === 0 ? 'true' : 'false'} data-wariant-przycisk={i} data-liczba={v.warstwy.length} data-slowo={warstwy(v.warstwy.length)}>{v.etykieta}</button>
                 ))}
-              </ul>
-              {srodek.length > 0 && (
-                <button type="button" class="stos-przycisk" data-stos-przycisk>
-                  <span class="t-przycisk naglowkowy" data-stos-etykieta>+{srodek.length} {warstwy(srodek.length)}</span>
-                  <span class="t-maly pomocniczy" data-stos-podpis>{srodek.map((x: any) => x.rola).join(', ')}</span>
-                  <Ikona nazwa="caret" class="caret" />
-                </button>
-              )}
-            </div>
+              </div>
+            )}
+            {war.length
+              ? war.map((v: any, i: number) => (
+                  <div class="wariant" data-wariant={i}>
+                    <p class="t-przycisk naglowkowy wariant-tytul">{v.etykieta}</p>
+                    {v.opis && <p class="t-maly pomocniczy">{v.opis}</p>}
+                    <S10Stos w={v.warstwy} />
+                  </div>
+                ))
+              : <S10Stos w={p.warstwy} />}
           </article>
         );
       })}
@@ -64,26 +63,12 @@ const warstwy = (n: number) => (n === 1 ? 'warstwa' : n % 10 >= 2 && n % 10 <= 4
   .znacznik-pakietu.pelny { background: var(--fk-akcent); border-color: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
   .licznik { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
 
-  .stos { display: grid; gap: 8px; }
-  .karty { display: grid; gap: 8px; }
-  .karta { display: grid; gap: 8px; padding: 11px 16px 14px; border-radius: var(--radius-12); background: var(--fk-tlo-powierzchnia); border: 1px solid var(--fk-obrys); }
-  .karta-gora { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
-  .stos-przycisk { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; text-align: left; padding: 12px 16px; border-radius: var(--radius-12); background: var(--fk-tlo); border: 1px solid var(--fk-obrys-kontrolka); cursor: pointer; color: var(--fk-tekst); }
-  .stos-przycisk :global(.caret) { grid-column: 2; grid-row: 1 / span 2; align-self: center; transition: transform var(--fk-czas-standard) var(--fk-krzywa-standard); }
-  .stos-przycisk[aria-expanded='true'] :global(.caret) { transform: rotate(180deg); }
-  .stos-przycisk:hover { background: var(--fk-tlo-podniesione); }
-
-  /* Złożony stos (z JS): pierwsza warstwa schowana pod przyciskiem, ostatnia na wierzchu. */
-  .stos:global(.zlozony) { position: relative; padding-top: 0; }
-  .stos:global(.zlozony) .karty { display: grid; grid-template-areas: 'stos'; }
-  .stos:global(.zlozony) .srodkowa { display: none; }
-  .stos:global(.zlozony) .karta { grid-area: stos; }
-  .stos:global(.zlozony) .pierwsza { margin-inline: 12px; background: var(--fk-tlo-podniesione); }
-  .stos:global(.zlozony) .ostatnia { margin-top: 96px; position: relative; z-index: 2; box-shadow: 0 -6px 16px rgb(14 17 23 / 0.06); }
-  .stos:global(.zlozony) .stos-przycisk { position: absolute; left: 6px; right: 6px; top: 40px; z-index: 1; padding-bottom: 28px; }
-  .stos:global(.zlozony) .karty { padding-bottom: 0; }
-  .stos:global(.w-ruchu) .karta { animation: rozloz var(--fk-czas-rozwiniecie) var(--fk-krzywa-wejscie) both; }
-  @keyframes rozloz { from { opacity: 0; transform: translateY(-16px); } }
+  .przelacznik { display: inline-flex; justify-self: start; gap: 4px; padding: 4px; border-radius: var(--radius-pill); border: 1px solid var(--fk-obrys-kontrolka); background: var(--fk-tlo-powierzchnia); }
+  .przelacznik button { padding: 6px 14px; border-radius: var(--radius-pill); border: 0; background: transparent; color: var(--fk-tekst); cursor: pointer; }
+  .przelacznik button[aria-pressed='true'] { background: var(--fk-akcent); color: var(--fk-tekst-na-akcencie); }
+  .przelacznik button:hover:not([aria-pressed='true']) { background: var(--fk-tlo-podniesione); }
+  .wariant { display: grid; gap: 12px; }
+  [data-pakiet-warianty].z-przelacznikiem .wariant-tytul { display: none; }
   @media (max-width: 1023.98px) {
     .kolumny { grid-template-columns: 1fr; }
   }

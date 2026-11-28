@@ -488,7 +488,8 @@
             "rola": "wygląd strony",
             "ograniczenie": "Większe zmiany układu robi programista, bo panel zmienia treść, a nie budowę strony."
           }
-        ]
+        ],
+        "warianty": []
       },
       {
         "nazwa": "Strona szyta na miarę",
@@ -525,42 +526,91 @@
             "rola": "wygląd strony",
             "ograniczenie": "Motyw powstaje tylko dla Twojej firmy, więc większe zmiany układu robi programista, a nie kreator."
           }
-        ]
+        ],
+        "warianty": []
       },
       {
         "nazwa": "Strona od A do Z",
         "znacznik": "Najwyższy pakiet",
-        "opis": "Strona pisana w kodzie: Next.js lub Astro, z panelem Sanity, Storyblok, Keystatic albo WordPress headless.",
-        "warstwy": [
+        "opis": "Dwie drogi do tej samej jakości: WordPress z motywem napisanym od zera albo strona w całości pisana w kodzie.",
+        "warstwy": [],
+        "warianty": [
           {
-            "narzedzie": "Cloudflare i domena",
-            "rola": "hosting i SSL",
-            "ograniczenie": "SSL jest w cenie, plan darmowy ma 100 000 zapytań dziennie, a domenę trzeba odnawiać co roku."
+            "etykieta": "WordPress",
+            "opis": "Nowy motyw WordPress napisany od zera z projektu w Figmie. Treści zmieniasz w znanym panelu z blokami Gutenberga.",
+            "warstwy": [
+              {
+                "narzedzie": "Domena i SSL",
+                "rola": "adres i HTTPS",
+                "ograniczenie": "Domenę trzeba odnawiać co roku, inaczej strona przestaje działać pod swoim adresem."
+              },
+              {
+                "narzedzie": "Hosting PHP + Cloudflare",
+                "rola": "hosting i CDN",
+                "ograniczenie": "WordPress potrzebuje serwera z PHP i bazą danych, a Cloudflare przyspiesza go, ale go nie zastępuje."
+              },
+              {
+                "narzedzie": "Cloudflare Email lub Resend",
+                "rola": "e-maile z formularzy",
+                "ograniczenie": "Cloudflare za darmo wysyła tylko na zweryfikowane adresy, a Resend Pro to 20 USD/mies. za 50 000 e-maili."
+              },
+              {
+                "narzedzie": "Plausible Analytics",
+                "rola": "statystyki",
+                "ograniczenie": "Liczy odwiedziny bez cookies, ale ma mniej raportów niż Google Analytics i jest płatny po 30 dniach próby."
+              },
+              {
+                "narzedzie": "Wtyczki WordPress",
+                "rola": "SEO, cache, kopie",
+                "ograniczenie": "Tylko sprawdzone i niezbędne, bo każda wtyczka to osobny kod do aktualizacji."
+              },
+              {
+                "narzedzie": "WordPress + Gutenberg",
+                "rola": "panel treści",
+                "ograniczenie": "Rdzeń trzeba regularnie aktualizować, a nowy rodzaj bloku dodaje programista."
+              },
+              {
+                "narzedzie": "Motyw blokowy od zera",
+                "rola": "wygląd strony",
+                "ograniczenie": "Motyw jest tylko Twój, więc nie ma gotowego wsparcia autora: zmiany układu robi programista."
+              }
+            ]
           },
           {
-            "narzedzie": "Cloudflare Email lub Resend",
-            "rola": "e-maile z formularzy",
-            "ograniczenie": "Cloudflare za darmo wysyła tylko na zweryfikowane adresy, a Resend Pro to 20 USD/mies. za 50 000 e-maili."
-          },
-          {
-            "narzedzie": "Plausible Analytics",
-            "rola": "statystyki",
-            "ograniczenie": "Liczy odwiedziny bez cookies, ale ma mniej raportów niż Google Analytics i jest płatny po 30 dniach próby."
-          },
-          {
-            "narzedzie": "WordPress headless",
-            "rola": "panel z Gutenbergiem",
-            "ograniczenie": "Wymaga osobnego serwera z PHP, a podgląd na żywo i część wtyczek trzeba dorobić po stronie strony."
-          },
-          {
-            "narzedzie": "Sanity / Storyblok / Keystatic",
-            "rola": "panel treści",
-            "ograniczenie": "Keystatic jest darmowy, a rola redaktora kosztuje w Sanity 15 USD za osobę, w Storyblok od 99 USD/mies."
-          },
-          {
-            "narzedzie": "Next.js lub Astro",
-            "rola": "front end",
-            "ograniczenie": "To nie kreator: zmiana układu wymaga programisty, a framework regularnych aktualizacji."
+            "etykieta": "Kod od zera",
+            "opis": "Strona w całości pisana w kodzie: Next.js lub Astro. Treści zmieniasz w panelu Sanity, Storyblok albo Keystatic.",
+            "warstwy": [
+              {
+                "narzedzie": "Cloudflare",
+                "rola": "hosting i SSL",
+                "ograniczenie": "SSL jest w cenie, plan darmowy ma 100 000 zapytań dziennie, a domenę kupujesz osobno i odnawiasz co roku."
+              },
+              {
+                "narzedzie": "Cloudflare Email lub Resend",
+                "rola": "e-maile z formularzy",
+                "ograniczenie": "Cloudflare za darmo wysyła tylko na zweryfikowane adresy, a Resend Pro to 20 USD/mies. za 50 000 e-maili."
+              },
+              {
+                "narzedzie": "Plausible Analytics",
+                "rola": "statystyki",
+                "ograniczenie": "Liczy odwiedziny bez cookies, ale ma mniej raportów niż Google Analytics i jest płatny po 30 dniach próby."
+              },
+              {
+                "narzedzie": "Figma",
+                "rola": "projekt UI i UX",
+                "ograniczenie": "Projekt w Figmie to plan strony, a nie działająca strona: każdą zmianę przenosimy do kodu."
+              },
+              {
+                "narzedzie": "Sanity / Storyblok / Keystatic",
+                "rola": "panel treści",
+                "ograniczenie": "Keystatic jest darmowy, a rola redaktora kosztuje w Sanity 15 USD za osobę, w Storyblok od 99 USD/mies."
+              },
+              {
+                "narzedzie": "Next.js lub Astro",
+                "rola": "front end",
+                "ograniczenie": "To nie kreator: zmiana układu wymaga programisty, a framework regularnych aktualizacji."
+              }
+            ]
           }
         ]
       }

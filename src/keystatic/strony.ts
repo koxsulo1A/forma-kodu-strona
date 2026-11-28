@@ -15,6 +15,7 @@ const a = (label: string, max: number, wymagane = false) =>
 // „rt” z makiet: akapit z **pogrubieniem** i [linkiem](/adres) w składni Markdown (renderuje src/lib/tresc.ts).
 const rt = (label: string, max: number, wymagane = false) =>
   fields.text({ label: `${label} (≤ ${max}; **pogrubienie**, [link](/adres))`, multiline: true, validation: { length: { min: wymagane ? 1 : 0, max } } });
+const warstwa = () => fields.object({ narzedzie: t('Narzędzie', 30, true), rola: t('Rola', 20), ograniczenie: a('Czego nie robi (wymagane)', 120, true) });
 const lista = <T extends Parameters<typeof fields.array>[0]>(label: string, el: T, min: number, max: number, pole?: string) =>
   fields.array(el, {
     label: `${label} (${min === max ? min : `${min}–${max}`})`,
@@ -138,7 +139,11 @@ export const strony = {
       etykieta: t('Etykieta', 24), naglowek: t('Nagłówek H2', 70, true), podpis: a('Podpis pod siatką', 160),
       pakiety: lista('Pakiety', fields.object({
         nazwa: t('Nazwa', 40, true), znacznik: t('Znacznik (np. Polecany pakiet)', 24), opis: a('Opis', 160),
-        warstwy: lista('Warstwy (od spodu stosu; ostatnia = karta z wierzchu)', fields.object({ narzedzie: t('Narzędzie', 30, true), rola: t('Rola', 20), ograniczenie: a('Czego nie robi (wymagane)', 120, true) }), 2, 8, 'narzedzie'),
+        warstwy: lista('Warstwy (od spodu stosu; ostatnia = karta z wierzchu; puste, gdy pakiet ma warianty)', warstwa(), 0, 8, 'narzedzie'),
+        warianty: lista('Warianty pakietu (przełącznik w karcie, np. WordPress / Kod od zera; zastępują warstwy)', fields.object({
+          etykieta: t('Etykieta przełącznika', 20, true), opis: a('Opis wariantu', 160),
+          warstwy: lista('Warstwy wariantu', warstwa(), 2, 8, 'narzedzie'),
+        }), 0, 2, 'etykieta'),
       }), 3, 3, 'nazwa'),
     }),
     s11_a_co_jesli: faqInfo('S11 A co jeśli…?'),
