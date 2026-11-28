@@ -1,0 +1,57 @@
+---
+// S2b Dane z badań (Kacper 28.11): liczby z oficjalnych badań, każda ze źródłem i linkiem, pod nimi wnioski.
+// Używane na stronie głównej (strony, wyszukiwarka, AI) i na /automatyzacje (AI w firmach).
+// Komputer: liczby w jednym rzędzie (2–4 kolumny). Telefon: jedna karta swipe ze wskaźnikiem od 01 (zasada mobile 28).
+interface Props { t: any; id: string }
+const { t, id } = Astro.props;
+const wsk = `${id}-wskaznik`;
+---
+<section class="badania baza segment" id={id} data-segment="Dane z badań" aria-labelledby={`${id}-h`}>
+  <div class="kontener badania-wnetrze">
+    <header class="naglowek">
+      <h2 id={`${id}-h`} class="t-h2 naglowkowy">{t.naglowek}</h2>
+      {t.lead && <p class="t-tresc-l">{t.lead}</p>}
+    </header>
+    <ul role="list" class="liczby swipe" data-swipe={wsk} style={`--kolumny: ${t.liczby.length}`}>
+      {t.liczby.map((l: any) => (
+        <li class="w1 wyciecie">
+          <p class="t-liczba wartosc">{l.wartosc}</p>
+          <p class="t-tresc">{l.opis}</p>
+          {l.porownanie && <p class="t-maly-mocny porownanie">{l.porownanie}</p>}
+          <p class="t-maly zrodlo">Źródło: <a href={l.url} rel="noopener" target="_blank">{l.zrodlo}<span class="sr-only"> (otwiera się w nowej karcie)</span></a></p>
+        </li>
+      ))}
+    </ul>
+    <div class="wskaznik-swipe" id={wsk} aria-hidden="true">
+      <ol>{t.liczby.map((_: any, i: number) => <li aria-current={String(i === 0)}></li>)}</ol>
+      <span data-licznik>1 z {t.liczby.length}</span>
+    </div>
+    {t.wnioski?.length > 0 && (
+      <ul role="list" class="wnioski">
+        {t.wnioski.map((w: any) => (
+          <li>
+            <p class="t-tresc">{w.tekst}</p>
+            <p class="t-maly zrodlo">Źródło: <a href={w.url} rel="noopener" target="_blank">{w.zrodlo}<span class="sr-only"> (otwiera się w nowej karcie)</span></a></p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</section>
+
+<style>
+  .badania { padding-block: clamp(48px, 5vw, 70px); }
+  .badania-wnetrze { display: grid; gap: 32px; }
+  .naglowek { display: grid; gap: 12px; max-width: 760px; }
+  .liczby { display: grid; grid-template-columns: repeat(var(--kolumny, 3), minmax(0, 1fr)); gap: 24px; }
+  /* position: relative: ukryty tekst linku (.sr-only, absolute) zostaje w karcie, inaczej wychodzi poza tor swipe i daje przewijanie w bok */
+  .liczby li, .wnioski li { position: relative; }
+  .liczby li { display: grid; gap: 10px; align-content: start; padding: 28px; }
+  .wartosc { color: var(--fk-akcent); margin: 0; }
+  .porownanie { color: var(--fk-tekst-naglowek); }
+  .zrodlo { color: var(--fk-tekst-pomocniczy); margin-top: auto; }
+  .zrodlo a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .wnioski { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px 32px; padding: 0; margin: 0; list-style: none; }
+  .wnioski li { display: grid; gap: 6px; align-content: start; padding-left: 16px; border-left: 3px solid var(--fk-akcent); }
+  @media (max-width: 1023.98px) { .liczby li { padding: 24px 20px; } }
+</style>

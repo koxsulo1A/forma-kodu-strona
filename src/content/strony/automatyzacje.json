@@ -40,6 +40,45 @@
       }
     ]
   },
+  "s2b_badania": {
+    "naglowek": "Twoja konkurencja już to robi?",
+    "lead": "W Polsce AI używa mniej firm niż w większości krajów Unii. Kto wdroży automatyzację wcześniej, zaczyna z przewagą.",
+    "liczby": [
+      {
+        "wartosc": "88%",
+        "opis": "organizacji na świecie używa AI w co najmniej jednym dziale firmy.",
+        "porownanie": "Rok wcześniej: 78%",
+        "zrodlo": "McKinsey, State of AI 2025",
+        "url": "https://www.mckinsey.com/capabilities/quantumblack/our-insights/the-state-of-ai-2025"
+      },
+      {
+        "wartosc": "20 na 100",
+        "opis": "firm w Unii Europejskiej (od 10 osób) używa AI.",
+        "porownanie": "Rok wcześniej: 13,5 na 100",
+        "zrodlo": "Eurostat, 2025",
+        "url": "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251211-2"
+      },
+      {
+        "wartosc": "8 na 100",
+        "opis": "firm w Polsce używa AI. Większość wciąż czeka, więc wcześniejsze wdrożenie daje przewagę.",
+        "porownanie": "Średnia UE: 20 na 100",
+        "zrodlo": "Eurostat, 2025",
+        "url": "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251211-2"
+      }
+    ],
+    "wnioski": [
+      {
+        "tekst": "Branże, które najszybciej wdrażają AI, notują 3 razy szybszy wzrost przychodu na pracownika (27% wobec 9%). To zależność, a nie gwarancja wyniku, dlatego przed startem mierzymy, co da się poprawić.",
+        "zrodlo": "PwC, AI Jobs Barometer 2025",
+        "url": "https://www.pwc.com/gx/en/news-room/press-releases/2025/ai-linked-to-a-fourfold-increase-in-productivity-growth.html"
+      },
+      {
+        "tekst": "InPost obsługuje infolinię agentem AI, który sam przekierowuje paczki, zmienia termin doręczenia i otwiera skrytkę Paczkomatu w trakcie rozmowy.",
+        "zrodlo": "Wiadomości Handlowe, 2026",
+        "url": "https://www.wiadomoscihandlowe.pl/retailtech-i-nowe-technologie/big-data-i-sztuczna-inteligencja/ponad-miliard-przesylek-a-obsluge-przejmuje-ai-inpost-stworzyl-agenta-ktory-otwiera-paczkomat-2538513"
+      }
+    ]
+  },
   "s3_zakres": {
     "naglowek": "Cztery zakresy do wyboru",
     "lead": "Wybierasz, od czego zaczynamy. Resztę ustalamy na piśmie.",
