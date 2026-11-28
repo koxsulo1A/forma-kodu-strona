@@ -14,12 +14,13 @@
     "preview": "astro preview",
     "check": "astro check",
     "check:tresc": "tsx scripts/sprawdz-tresc.ts",
+    "check:typy": "astro sync && tsc -p tsconfig.typy.json",
     "check:seo": "node scripts/sprawdz-seo.mjs dist/client",
     "check:budzet": "node scripts/sprawdz-budzet.mjs dist/client 50 150",
     "check:zaslepki": "node scripts/sprawdz-zaslepki.mjs src/content dist/client public",
     "check:zaslepki:test": "node scripts/sprawdz-zaslepki.mjs src/content dist/client public --tylko-raport",
-    "verify": "npm run build && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki:test",
-    "release": "npm run build && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki",
+    "verify": "npm run build && npm run check:typy && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki:test",
+    "release": "npm run build && npm run check:typy && npm run check:tresc && npm run check:seo && npm run check:budzet && npm run check:zaslepki",
     "przeglad": "node scripts/przeglad-tresci.mjs src/content 90 180",
     "indexnow": "node scripts/indexnow.mjs ${SITE_URL:-https://formakodu.pl} $INDEXNOW_KEY dist/client",
     "ustaw-date": "node scripts/ustaw-date.mjs",
@@ -39,8 +40,10 @@
     "@keystatic/astro": "6.0.0"
   },
   "devDependencies": {
+    "schema-dts": "2.1.0",
     "turndown": "7.2.0",
     "tsx": "latest",
+    "typescript": "5.9.3",
     "unlighthouse": "0.20.0",
     "wrangler": "4.168.0"
   }
