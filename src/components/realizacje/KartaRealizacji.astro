@@ -6,6 +6,7 @@
 // data-vt łączy zdjęcie karty ze zdjęciem w hero podstrony 31b (View Transitions między stronami; nazwy w /przejscia-realizacji.css).
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import { okresRealizacji } from '../../lib/okres';
 interface Props { r: CollectionEntry<'realizacje'>; poziom?: 'h2' | 'h3' }
 const { r, poziom = 'h3' } = Astro.props;
 const d = r.data;
@@ -16,7 +17,7 @@ const link = przyklad ? null : `/realizacje/${r.id}`;
 const brakZdjecia = String(d.zdjecie_glowne?.src ?? '').includes('miejsce-na-zrzut');
 // Wartości zastępcze z panelu w nawiasach („[RRRR-MM]”) nie trafiają na stronę.
 const wypelnione = (x: string) => Boolean(x) && !/^\[.*\]$/.test(x.trim());
-const miejsceData = [d.miasto, d.data].filter(wypelnione).join(' · ');
+const miejsceData = [d.miasto ?? '', okresRealizacji(d)].filter(wypelnione).join(' · ');
 const plakietka = przyklad
   ? 'Przykład: układ, nie realizacja'
   : `${d.typ === 'klient' ? 'Projekt klienta' : 'Projekt własny'} · ${d.status === 'w toku' ? 'w przygotowaniu' : 'zakończony'}`;

@@ -392,37 +392,27 @@
       {
         "nazwa": "Domena",
         "zakres": "{{koszt_domena_zakres}}",
-        "okres": "rocznie",
-        "zrodlo": "{{koszt_domena_zrodlo}}",
-        "data": "{{koszt_domena_data}}"
+        "okres": "rocznie"
       },
       {
         "nazwa": "Hosting",
         "zakres": "{{koszt_hosting_zakres}}",
-        "okres": "rocznie",
-        "zrodlo": "{{koszt_hosting_zrodlo}}",
-        "data": "{{koszt_hosting_data}}"
+        "okres": "rocznie"
       },
       {
         "nazwa": "SSL",
         "zakres": "{{koszt_ssl_zakres}}",
-        "okres": "rocznie",
-        "zrodlo": "{{koszt_ssl_zrodlo}}",
-        "data": "{{koszt_ssl_data}}"
+        "okres": "rocznie"
       },
       {
         "nazwa": "Licencje",
         "zakres": "{{koszt_licencje_zakres}}",
-        "okres": "rocznie",
-        "zrodlo": "{{koszt_licencje_zrodlo}}",
-        "data": "{{koszt_licencje_data}}"
+        "okres": "rocznie"
       },
       {
         "nazwa": "Opieka i prowadzenie (opcjonalnie)",
         "zakres": "{{koszt_opieka_zakres}}",
-        "okres": "miesięcznie",
-        "zrodlo": "{{koszt_opieka_zrodlo}}",
-        "data": "{{koszt_opieka_data}}"
+        "okres": "miesięcznie"
       }
     ],
     "zrodla": ""

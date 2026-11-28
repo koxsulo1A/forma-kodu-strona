@@ -11,29 +11,9 @@
       "wartosc": "100-200 zł"
     },
     {
-      "klucz": "koszt_domena_zrodlo",
-      "opis": "źródło kwoty: domena",
-      "wartosc": ""
-    },
-    {
-      "klucz": "koszt_domena_data",
-      "opis": "data odczytu kwoty: domena (RRRR-MM-DD)",
-      "wartosc": ""
-    },
-    {
       "klucz": "koszt_hosting_zakres",
       "opis": "kwota: hosting",
       "wartosc": "300-500 zł"
-    },
-    {
-      "klucz": "koszt_hosting_zrodlo",
-      "opis": "źródło kwoty: hosting",
-      "wartosc": ""
-    },
-    {
-      "klucz": "koszt_hosting_data",
-      "opis": "data odczytu kwoty: hosting (RRRR-MM-DD)",
-      "wartosc": ""
     },
     {
       "klucz": "koszt_ssl_zakres",
@@ -41,44 +21,14 @@
       "wartosc": "0-150 zł"
     },
     {
-      "klucz": "koszt_ssl_zrodlo",
-      "opis": "źródło kwoty: ssl",
-      "wartosc": ""
-    },
-    {
-      "klucz": "koszt_ssl_data",
-      "opis": "data odczytu kwoty: ssl (RRRR-MM-DD)",
-      "wartosc": ""
-    },
-    {
       "klucz": "koszt_licencje_zakres",
       "opis": "kwota: licencje",
       "wartosc": "zmienne"
     },
     {
-      "klucz": "koszt_licencje_zrodlo",
-      "opis": "źródło kwoty: licencje",
-      "wartosc": ""
-    },
-    {
-      "klucz": "koszt_licencje_data",
-      "opis": "data odczytu kwoty: licencje (RRRR-MM-DD)",
-      "wartosc": ""
-    },
-    {
       "klucz": "koszt_opieka_zakres",
       "opis": "kwota: opieka",
       "wartosc": "175-1 090 zł"
-    },
-    {
-      "klucz": "koszt_opieka_zrodlo",
-      "opis": "źródło kwoty: opieka",
-      "wartosc": ""
-    },
-    {
-      "klucz": "koszt_opieka_data",
-      "opis": "data odczytu kwoty: opieka (RRRR-MM-DD)",
-      "wartosc": ""
     },
     {
       "klucz": "narzedzie_testow",

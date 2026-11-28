@@ -29,11 +29,9 @@ const obraz = (label: string) =>
   }, { label });
 const wybor = (label: string, opcje: string[]) =>
   fields.select({ label, options: opcje.map((o) => ({ label: o, value: o })), defaultValue: opcje[0] });
-// Kwota zawsze ze źródłem i datą (walidacja nr 1): pola wymagane.
-const zrodlo = () => fields.text({ label: 'Źródło kwoty (wymagane)', validation: { length: { min: 1 } } });
+// Koszty stałe po stronie klienta: bez pól źródła i daty (Kacper 28.11). Kwoty są zmiennymi koszt_*_zakres (panel „Zmienne”).
 // Ceny: tylko relacja do kolekcji „Ceny” (jedno źródło, Kacper 24.11). Puste = „wycena indywidualna”.
 const cenaRel = (label = 'Cena z cennika (puste = „wycena indywidualna”)') => fields.relationship({ label, collection: 'ceny' });
-const dataOdczytu = () => fields.text({ label: 'Data odczytu RRRR-MM-DD (wymagana)', validation: { pattern: { regex: /^\d{4}-\d{2}-\d{2}$|^\[data\]$|^\{\{[a-z0-9_]+\}\}$/, message: 'RRRR-MM-DD' } } });
 
 // Pola wspólne każdego segmentu (etykieta, H2, lead, CTA).
 const wspolne = (cta = false) => ({
@@ -79,7 +77,7 @@ const cennik = (label: string) => seg(label, {
       cta: t('Przycisk', 30),
     }), 3, 3, 'nazwa'),
     koszty_naglowek: t('Nagłówek kosztów stałych', 60),
-    koszty_stale: lista('Koszty stałe', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Zakres kwot', 40), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 0, 10, 'nazwa'),
+    koszty_stale: lista('Koszty stałe', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Zakres kwot', 40), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']) }), 0, 10, 'nazwa'),
     zrodla: rt('Źródła (opis)', 400),
   });
 const strona = (id: string, label: string, schema: Record<string, any>) =>
@@ -188,7 +186,7 @@ export const strony = {
     s6_pakiety: seg('S6 Pakiety: „Ile strony potrzebuje Twoja firma?”', { naglowek: t('Nagłówek H2', 70, true), pakiety: lista('Pakiety', fields.object({ nazwa: t('Nazwa (H3)', 40, true), opis: a('Opis', 160), zawiera: lista('Zawiera', t('Pozycja', 60), 2, 6) }), 3, 3, 'nazwa') }),
     s7_koszta: seg('S7 Koszta po stronie klienta', {
       naglowek: t('Nagłówek H2', 60, true), etykieta: t('Etykieta przy nagłówku', 40),
-      pozycje: lista('Pozycje', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Kwota od–do', 30, true), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']), zrodlo: zrodlo(), data: dataOdczytu() }), 2, 6, 'nazwa'),
+      pozycje: lista('Pozycje', fields.object({ nazwa: t('Nazwa', 40, true), zakres: t('Kwota od–do', 30, true), okres: wybor('Okres', ['rocznie', 'miesięcznie', 'jednorazowo']) }), 2, 6, 'nazwa'),
     }),
     s8_standard: seg('S8 Standard strony (blok z nagłówkiem po lewej, lista cech po prawej)', { naglowek: t('Nagłówek', 30, true), lead: a('Podnagłówek (opcjonalnie)', 200), cechy: lista('Cechy', t('Cecha', 40), 3, 6) }),
     s9_wcag: seg('S9 Jak wdrażamy WCAG (oś pionowa; bez obietnic „zgodność gwarantowana”)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 220), kroki: lista('Kroki', tytulOpis(40, 160), 3, 6, 'tytul') }),

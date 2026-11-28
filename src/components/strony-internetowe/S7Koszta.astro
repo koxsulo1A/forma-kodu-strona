@@ -1,9 +1,8 @@
 ---
-// 28 S7 Koszta po stronie klienta (wariant A): cztery kolumny z pionową linią. Kwoty z rynku: każda ma źródło i datę w panelu (walidacja nr 1),
-// pokazane w podpisie pod kwotą. Telefon: siatka 2×2 (sekcja informacyjna, bez swipe).
+// 28 S7 Koszta po stronie klienta (wariant A): cztery kolumny z pionową linią. Kwoty z panelu „Zmienne” (koszt_*_zakres),
+// bez źródła i daty (Kacper 28.11). Telefon: siatka 2×2 (sekcja informacyjna, bez swipe).
 interface Props { t: any }
 const { t } = Astro.props;
-const zaslepka = (s: string) => /^\[.*\]$/.test(s);
 ---
 <section class="s7 baza segment" id="koszta" data-segment="S7 Koszta klienta" aria-labelledby="s7-h">
   <div class="kontener s7-wnetrze">
@@ -17,7 +16,6 @@ const zaslepka = (s: string) => /^\[.*\]$/.test(s);
           <dt class="t-h4 naglowkowy">{p.nazwa}</dt>
           <dd class="t-h3 akcentowy">{p.zakres}</dd>
           <dd class="t-maly pomocniczy">{p.okres}</dd>
-          <dd class="t-etykieta pomocniczy zrodlo">Źródło: {zaslepka(p.zrodlo) ? 'do uzupełnienia' : p.zrodlo}{zaslepka(p.data) ? '' : `, ${p.data}`}</dd>
         </div>
       ))}
     </dl>
@@ -33,7 +31,6 @@ const zaslepka = (s: string) => /^\[.*\]$/.test(s);
   .kwoty > div { display: grid; gap: 4px; align-content: start; padding-inline: 28px; }
   .kwoty > div:first-child { padding-left: 0; }
   .kwoty > div + div { border-left: 1px solid var(--fk-obrys); }
-  .zrodlo { padding-top: 4px; }
   @media (max-width: 1023.98px) {
     .kwoty { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 0; padding-block: 8px; }
     .kwoty > div { padding-inline: 16px; }

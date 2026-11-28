@@ -100,7 +100,7 @@ export default config({
           fields.object({
             klucz: fields.text({
               label: 'Klucz',
-              description: 'W treści wpisz {{klucz}}, a dla daty słownie {{klucz|slownie}}. Wbudowane z „Dane firmy”: {{email}}, {{email_dane_osobowe}}, {{telefon}}, {{nazwa_marki}}, {{nazwa_prawna}}, {{adres}}, {{czas_odpowiedzi_dni}}, {{metoda_oceny}}.',
+              description: 'W treści wpisz {{klucz}}, a dla daty słownie {{klucz|slownie}}. Wbudowane z „Dane firmy”: {{email}}, {{email_dane_osobowe}}, {{telefon}}, {{nazwa_marki}}, {{nazwa_prawna}}, {{adres}}, {{czas_odpowiedzi}}, {{metoda_oceny}}.',
               validation: { pattern: { regex: /^[a-z0-9_]+$/, message: 'Małe litery, cyfry i _' } },
             }),
             opis: fields.text({ label: 'Co to jest', description: 'Gdy wartość jest pusta, na stronie stoi zaślepka [opis], która blokuje publikację.' }),
@@ -150,7 +150,7 @@ export default config({
         dostepnosc: fields.object({
           osoba_kontaktowa: fields.text({ label: 'Osoba kontaktowa' }),
           metoda_oceny: fields.text({ label: 'Metoda oceny' }),
-          czas_odpowiedzi_dni: fields.text({ label: 'Czas odpowiedzi (dni)' }),
+          czas_odpowiedzi_dni: fields.text({ label: 'Czas odpowiedzi', description: 'Dopełnia zdanie „Odpowiadamy w ciągu …”, np. „24 godzin” albo „7 dni roboczych”. Znacznik: {{czas_odpowiedzi}}.' }),
         }, { label: 'Dostępność' }),
         przetwarzanie: fields.object({
           hosting: fields.text({ label: 'Hosting (nazwa, kraj)' }),
@@ -236,6 +236,8 @@ export default config({
         technologie: fields.array(fields.text({ label: 'Technologia', validation: { length: { min: 1, max: 30 } } }), { label: 'Technologie (tagi)', itemLabel: (p) => p.value }),
         miasto: fields.text({ label: 'Miasto', validation: { length: { max: 40 } } }),
         data: fields.text({ label: 'Data (RRRR-MM)', validation: { pattern: { regex: /^\d{4}-(0[1-9]|1[0-2])$|^\[RRRR-MM\]$/, message: 'Format RRRR-MM, np. 2026-11 (zaślepka [RRRR-MM] blokuje publikację)' } } }),
+        data_od: fields.text({ label: 'Okres: od (RRRR-MM-DD, opcjonalnie)', validation: { pattern: { regex: /^$|^\d{4}-\d{2}-\d{2}$/, message: 'RRRR-MM-DD' } } }),
+        data_do: fields.text({ label: 'Okres: do (RRRR-MM-DD, opcjonalnie)', validation: { pattern: { regex: /^$|^\d{4}-\d{2}-\d{2}$/, message: 'RRRR-MM-DD' } } }),
         link: fields.url({ label: 'Link po kliknięciu karty (strona realizacji)' }),
         kategoria: fields.select({ label: 'Kategoria', options: ['Strony', 'Automatyzacje', 'Aplikacje'].map((v) => ({ label: v, value: v })), defaultValue: 'Strony' }),
         podkategoria: fields.text({ label: 'Etykieta na karcie (≤ 40), np. „Strona · rezerwacje”; puste = kategoria', validation: { length: { max: 40 } } }),

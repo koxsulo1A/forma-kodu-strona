@@ -37,5 +37,5 @@ ustawy z 4 kwietnia 2019 r., która dotyczy podmiotów publicznych.
 [lista albo: „Strona nie używa własnych skrótów klawiszowych.”]
 
 ## Zgłoś problem
-Napisz: {{email}}. Odpowiadamy w ciągu {{czas_odpowiedzi_dni}} dni roboczych.
+Napisz: {{email}}. Odpowiadamy w ciągu {{czas_odpowiedzi}}.
 Podaj adres podstrony i opisz, co nie działa.

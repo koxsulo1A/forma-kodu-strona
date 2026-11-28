@@ -585,7 +585,7 @@ document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) =>
 });
 
 // ---------- 10b. Stos kart (S10): „+N warstwy” rozkłada stos w listę, „Zwiń warstwy” składa ----------
-// Kacper 25.11: rozwinięty jest najwyżej jeden stos naraz; otwarcie kolejnego zwija poprzedni.
+// Kacper 28.11 (zastępuje 25.11): rozwinięcie jednego stosu rozwija wszystkie, zwinięcie zwija wszystkie (porównanie pakietów obok siebie).
 {
   const stosy: ((wl: boolean) => void)[] = [];
   document.querySelectorAll<HTMLElement>('[data-stos]').forEach((stos) => {
@@ -608,8 +608,7 @@ document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) =>
     stosy.push(ustaw);
     b.addEventListener('click', () => {
       const wl = b.getAttribute('aria-expanded') !== 'true';
-      if (wl) stosy.forEach((f) => f !== ustaw && f(false));
-      ustaw(wl);
+      stosy.forEach((f) => f(wl));
     });
   });
 }

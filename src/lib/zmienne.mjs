@@ -4,7 +4,7 @@
 //   {{data_publikacji}}          → 2026-12-01
 //   {{data_publikacji|slownie}}  → 1 grudnia 2026 (tylko dla dat RRRR-MM-DD)
 //   {{email}}, {{email_dane_osobowe}}, {{telefon}}, {{nazwa_marki}}, {{nazwa_prawna}}, {{adres}},
-//   {{czas_odpowiedzi_dni}}, {{metoda_oceny}} → z „Dane firmy” (wbudowane, bez wpisu w Zmiennych)
+//   {{czas_odpowiedzi}}, {{metoda_oceny}} → z „Dane firmy” (wbudowane, bez wpisu w Zmiennych)
 // Pusta wartość = zaślepka „[opis zmiennej]”: strona się buduje, a sprawdz-zaslepki blokuje publikację, dopóki jej nie uzupełnisz.
 // Nieznany klucz zatrzymuje budowanie (literówka w znaczniku nie może trafić na stronę).
 // Gdzie działa podmiana:
@@ -30,7 +30,7 @@ export function zmienne() {
     ['nazwa_prawna', f.nazwa_prawna, 'pełna nazwa firmy'],
     ['adres', adres, 'adres biura'],
     ['email_dane_osobowe', f.email_dane_osobowe, 'e-mail w sprawach danych osobowych'],
-    ['czas_odpowiedzi_dni', f.dostepnosc?.czas_odpowiedzi_dni, 'liczba dni roboczych na odpowiedź w sprawie dostępności'],
+    ['czas_odpowiedzi', f.dostepnosc?.czas_odpowiedzi_dni, 'czas odpowiedzi w sprawie dostępności, np. 24 godzin'],
     ['metoda_oceny', f.dostepnosc?.metoda_oceny, 'sposób oceny dostępności: samoocena (klawiatura, czytnik ekranu, axe, powiększenie 200%, szerokość 320 px) albo audyt zewnętrzny: nazwa, data'],
   ]) mapa.set(klucz, { wartosc: pusteGdyZaslepka(wartosc), opis });
   const lista = existsSync(PLIK) ? JSON.parse(readFileSync(PLIK, 'utf8')).zmienne ?? [] : [];

@@ -106,6 +106,8 @@ const realizacje = defineCollection({
       technologie: z.array(z.string().max(30)).default([]),
       miasto: z.string().max(40).optional(),
       data: z.string().regex(/^\d{4}-(0[1-9]|1[0-2])$|^\[RRRR-MM\]$/, 'Data RRRR-MM (zaślepka [RRRR-MM] blokuje publikację)'),
+      data_od: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(), // okres realizacji (Kacper 28.11), opcjonalny
+      data_do: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
       link: z.string().url().optional(),
       kategoria: z.enum(['Strony', 'Automatyzacje', 'Aplikacje']),
       podkategoria: z.string().max(40).optional(), // etykieta na karcie, np. „Strona · rezerwacje” (makieta 31); puste = kategoria

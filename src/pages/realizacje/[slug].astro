@@ -8,6 +8,7 @@
 import { getCollection, render, type CollectionEntry } from 'astro:content';
 import { Image, getImage } from 'astro:assets';
 import Uklad from '../../layouts/Uklad.astro';
+import { okresRealizacji } from '../../lib/okres';
 import Aktualizacja from '../../components/seo/Aktualizacja.astro';
 import KartaRealizacji from '../../components/realizacje/KartaRealizacji.astro';
 import Pilotaze from '../../components/realizacje/Pilotaze.astro';
@@ -21,7 +22,7 @@ interface Props { r: CollectionEntry<'realizacje'>; wszystkie: CollectionEntry<'
 const { r, wszystkie } = Astro.props;
 const d = r.data;
 const { Content } = await render(r);
-const miesiac = /^\d{4}-\d{2}$/.test(d.data) ? new Intl.DateTimeFormat('pl-PL', { month: 'long', year: 'numeric' }).format(new Date(`${d.data}-01`)) : d.data; // zaślepka [RRRR-MM] zostaje widoczna
+const miesiac = okresRealizacji(d); // zakres dat albo miesiąc; zaślepka [RRRR-MM] zostaje widoczna
 const status = `${d.typ === 'klient' ? 'Projekt klienta' : 'Projekt własny'} · ${d.status === 'w toku' ? 'w przygotowaniu' : 'zakończony'}`;
 // S6: najpierw ta sama kategoria, potem pozostałe (makieta pokazuje 3 karty, także przykład układu); bez bieżącej.
 const inne = wszystkie.filter((x) => x.id !== r.id);
@@ -67,7 +68,7 @@ const wsk = (id: string, n: number) => ({ id, n });
           <div><dt class="t-etykieta pomocniczy">Kategoria</dt><dd class="t-maly">{d.podkategoria || d.kategoria}</dd></div>
           {d.technologie.length > 0 && <div><dt class="t-etykieta pomocniczy">Technologie</dt><dd><ul role="list" class="tagi">{d.technologie.map((x) => <li class="t-etykieta">{x}</li>)}</ul></dd></div>}
           {d.miasto && <div><dt class="t-etykieta pomocniczy">Miasto</dt><dd class="t-maly">{d.miasto}</dd></div>}
-          <div><dt class="t-etykieta pomocniczy">Data</dt><dd class="t-maly"><time datetime={/^\d{4}-\d{2}$/.test(d.data) ? d.data : undefined}>{miesiac}</time></dd></div>
+          <div><dt class="t-etykieta pomocniczy">{d.data_od ? 'Okres' : 'Data'}</dt><dd class="t-maly"><time datetime={/^\d{4}-\d{2}$/.test(d.data) ? d.data : undefined}>{miesiac}</time></dd></div>
           <div><dt class="t-etykieta pomocniczy">Status</dt><dd class="t-maly">{status}</dd></div>
         </dl>
       </div>
