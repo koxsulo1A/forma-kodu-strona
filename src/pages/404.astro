@@ -1,7 +1,19 @@
 ---
-// Własna strona 404 (checklista 18). Cloudflare serwuje ją dla nieistniejących adresów (assets.not_found_handling = 404-page).
+// Własna strona 404 (checklista 18). Worker Astro podaje ją z kodem 404 dla nieistniejących adresów (sprawdzone w wrangler dev 28.11.2026).
 // noindex: wyszukiwarki jej nie indeksują; sitemap pomija /404 (astro.config.mjs).
+import { getCollection } from 'astro:content';
 import Uklad from '../layouts/Uklad.astro';
+// Podpowiedź „Czy chodziło o…?” (plan F3, 28.11.2026): lista adresów strony wpisana w HTML przy budowaniu,
+// porównanie w przeglądarce (src/lib/podpowiedz-adres.ts). Nic nie jest wysyłane.
+const nazwy: Record<string, string> = {
+  '/strony-internetowe': 'Strony internetowe', '/automatyzacje': 'Automatyzacje', '/analiza-seo-geo': 'Analiza SEO/GEO',
+  '/realizacje': 'Realizacje', '/pilotaze': 'Pilotaże', '/kontakt': 'Kontakt', '/polityka-prywatnosci': 'Polityka prywatności',
+  '/dostepnosc': 'Deklaracja dostępności',
+};
+const strony = (await getCollection('seo')).filter((s) => !s.data.noindex).map((s) => ({ url: s.data.adres, nazwa: nazwy[s.data.adres] ?? s.data.seo_tytul }));
+const realizacje = (await getCollection('realizacje')).filter((r) => r.data.typ !== 'przykład układu')
+  .map((r) => ({ url: `/realizacje/${r.id}`, nazwa: `Realizacja: ${r.data.naglowek}` }));
+const adresy = JSON.stringify([...strony, ...realizacje]);
 const podstrona = { tytul: 'Nie ma takiej strony', opis: 'Ten adres nie istnieje albo został przeniesiony. Wróć na stronę główną lub opisz swój projekt.', aktualizacja: '' };
 ---
 <Uklad strona="glowna" nazwaStrony="Nie ma takiej strony" podstrona={podstrona} noindex>
@@ -10,6 +22,10 @@ const podstrona = { tytul: 'Nie ma takiej strony', opis: 'Ten adres nie istnieje
       <p class="t-tresc-l kod" aria-hidden="true">404</p>
       <h1 id="nie-ma-h" class="t-h2 naglowkowy">Nie ma takiej strony</h1>
       <p class="t-tresc-l">Ten adres nie istnieje albo został przeniesiony. Sprawdź, czy nie ma w nim literówki, albo przejdź dalej:</p>
+      <div class="podpowiedz" data-podpowiedz data-adresy={adresy} hidden>
+        <p class="t-tresc-l" role="status" data-podpowiedz-tekst></p>
+        <ul class="nie-ma-linki" data-podpowiedz-lista></ul>
+      </div>
       <ul class="nie-ma-linki">
         <li><a href="/">Strona główna</a></li>
         <li><a href="/strony-internetowe">Strony internetowe</a></li>
@@ -21,10 +37,42 @@ const podstrona = { tytul: 'Nie ma takiej strony', opis: 'Ten adres nie istnieje
   </section>
 </Uklad>
 
+<script>
+  import { dopasuj, type Adres } from '../lib/podpowiedz-adres';
+  const blok = document.querySelector<HTMLElement>('[data-podpowiedz]');
+  if (blok) {
+    const adresy: Adres[] = JSON.parse(blok.dataset.adresy ?? '[]');
+    const wynik = dopasuj(location.pathname, adresy);
+    const tekst = blok.querySelector<HTMLElement>('[data-podpowiedz-tekst]')!;
+    const lista = blok.querySelector<HTMLElement>('[data-podpowiedz-lista]')!;
+    const link = (a: Adres) => {
+      const li = document.createElement('li');
+      const el = document.createElement('a');
+      el.href = a.url + location.hash;
+      el.textContent = a.nazwa;
+      li.append(el);
+      return li;
+    };
+    if (wynik.tryb === 'przenies') {
+      // Prawie pewna literówka (np. /pilotarze): przenosimy po 1,5 s, żeby komunikat zdążył się pokazać i przeczytać.
+      tekst.textContent = `W adresie jest chyba literówka. Przenosimy Cię na stronę „${wynik.cel.nazwa}”.`;
+      lista.append(link(wynik.cel));
+      blok.hidden = false;
+      setTimeout(() => location.replace(wynik.cel.url + location.hash), 1500);
+    } else if (wynik.tryb === 'podpowiedz') {
+      tekst.textContent = wynik.propozycje.length > 1 ? 'Czy chodziło o jedną z tych stron?' : 'Czy chodziło o tę stronę?';
+      lista.append(...wynik.propozycje.map(link));
+      blok.hidden = false;
+    }
+  }
+</script>
+
 <style>
   .nie-ma { padding-block: clamp(56px, 10vw, 140px); }
   .nie-ma-wnetrze { display: grid; gap: 20px; max-width: 640px; }
   .kod { font-family: var(--fk-rodzina-mono); color: var(--fk-akcent); font-size: clamp(48px, 10vw, 96px); line-height: 1; margin: 0; }
+  .podpowiedz { display: grid; gap: 12px; padding: 20px; border: 1px solid var(--fk-akcent); border-radius: 16px; }
+  .podpowiedz p { margin: 0; }
   .nie-ma-linki { display: flex; flex-wrap: wrap; gap: 12px; padding: 0; margin: 0; list-style: none; }
-  .nie-ma-linki a { display: inline-flex; min-height: 44px; align-items: center; padding: 0 18px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: 999px; }
+  .nie-ma-linki :global(a) { display: inline-flex; min-height: 44px; align-items: center; padding: 0 18px; border: 1px solid var(--fk-obrys-kontrolka); border-radius: 999px; }
 </style>
