@@ -5,6 +5,7 @@ import Uklad from '../layouts/Uklad.astro';
 import { trescStrony } from '../lib/tresc';
 import S1Hero from '../components/automatyzacje/S1Hero.astro';
 import S2DlaKogo from '../components/automatyzacje/S2DlaKogo.astro';
+import DaneBadan from '../components/sekcje/DaneBadan.astro';
 import S3Zakres from '../components/automatyzacje/S3Zakres.astro';
 import S4Boty from '../components/automatyzacje/S4Boty.astro';
 import S5JakPracujemy from '../components/automatyzacje/S5JakPracujemy.astro';
@@ -20,6 +21,7 @@ const okruszki = [{ nazwa: 'Strona główna', url: '/' }, { nazwa: 'Automatyzacj
 <Uklad strona="automatyzacje" nazwaStrony="Automatyzacje i boty czatowe" okruszki={okruszki}>
   <S1Hero t={t.s1_hero} />
   <S2DlaKogo t={t.s2_dla_kogo} />
+  <DaneBadan t={t.s2b_badania} id="badania" />
   <S3Zakres t={t.s3_zakres} />
   <S4Boty t={t.s4_boty} />
   <S5JakPracujemy t={t.s5_jak_pracujemy} />

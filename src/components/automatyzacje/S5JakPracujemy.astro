@@ -26,7 +26,8 @@ const { t } = Astro.props;
 </section>
 
 <style>
-  .s5 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); }
+  /* overflow-x: clip: karty wjeżdżają z boku (ruch.ts); bez tego przy 1024–1280 px strona przewijała się w bok (test 28.11) */
+  .s5 { padding-block: clamp(48px, 5vw, 70px) clamp(40px, 4vw, 53px); overflow-x: clip; }
   .s5-wnetrze { display: grid; grid-template-columns: minmax(0, 440fr) minmax(0, 780fr); gap: 92px; align-items: start; }
   .naglowek { display: grid; gap: 12px; }
   .stos { display: grid; }

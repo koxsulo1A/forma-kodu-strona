@@ -56,6 +56,16 @@ const hero = (h1: number, lead: number, ctaDwa = true) => seg('Hero', {
 });
 const zamkniecie = () => seg('Zamknięcie', { naglowek: t('Nagłówek', 80, true), punkty: lista('Punkty', t('Punkt', 80), 0, 3), cta: t('Przycisk', 24, true), podpis: t('Podpis', 120) });
 const faqInfo = (label = 'FAQ') => seg(`${label}: pytania dodajesz w „Treści wspólne → FAQ” (zaznacz tę stronę)`, wspolne());
+// Dane z badań (Kacper 28.11): każda liczba ze źródłem, rokiem i linkiem. Korelacji nie opisujemy jako przyczyny.
+const badania = (label: string) => seg(label, {
+  naglowek: t('Nagłówek H2 (pytanie klienta)', 70, true), lead: a('Lead', 220),
+  liczby: lista('Liczby (każda ze źródłem)', fields.object({
+    wartosc: t('Liczba, np. „8 na 100”', 16, true), opis: a('Co oznacza', 140, true),
+    porownanie: t('Porównanie, np. „UE: 20 na 100”', 40),
+    zrodlo: t('Źródło i rok (wymagane), np. „Eurostat, 2025”', 60, true), url: t('Link do źródła (wymagany)', 300, true),
+  }), 2, 4, 'wartosc'),
+  wnioski: lista('Wnioski pod liczbami (bez obietnic wyników)', fields.object({ tekst: a('Tekst', 260, true), zrodlo: t('Źródło i rok', 60, true), url: t('Link do źródła', 300, true) }), 0, 3, 'zrodlo'),
+});
 const realizacjeWybor = (min: number, max: number) =>
   fields.multiRelationship({ label: `Wybrane realizacje (${min}–${max}) z kolekcji „Realizacje”`, collection: 'realizacje', validation: { length: { min, max } } });
 // Cennik pakietów z kosztami stałymi (27 S8, 28 S14: ten sam układ „małe bloki”).
@@ -94,6 +104,7 @@ export const strony = {
       kafle: lista('Kafle (kolejno: biały, zieleń, khaki, fiolet)', tytulOpis(50, 200), 4, 4, 'tytul'),
       pasek: fields.object({ tytul: t('Tytuł', 60, true), opis: a('Opis', 160) }, { label: 'Pasek pod mozaiką' }),
     }),
+    s2b_badania: badania('S2b Dane z badań: strony, wyszukiwarka i AI w firmach'),
     s3_opinie: seg('S3 Opinie (widżety z „Ustawienia: opinie”, po zgodzie na treści zewnętrzne; brak widżetów i profili = segment ukryty)', { naglowek: t('Nagłówek H2', 70, true) }),
     s4_oferta: seg('S4 Oferta (bento: 2 duże, pas z grupami, 2 duże)', {
       naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 160), akcja_tekst: a('Tekst przy przycisku', 120), cta: t('Przycisk', 24, true),
@@ -219,6 +230,7 @@ export const strony = {
       cta_1: t('Przycisk główny', 24, true), cta_2: t('Przycisk drugi (do „Jak pracujemy”)', 30),
     }),
     s2_dla_kogo: seg('S2 Dla kogo (sytuacje w dwóch rzędach po 3)', { naglowek: t('Nagłówek H2', 70, true), lead: a('Lead', 200), sytuacje: lista('Sytuacje', tytulOpis(40, 120), 3, 6, 'tytul') }),
+    s2b_badania: badania('S2b Dane z badań o AI w firmach (Eurostat, McKinsey, PwC, przykład z Polski)'),
     s3_zakres: seg('S3 Zakres (dwie połowy: jasna i ciemna)', {
       naglowek: t('Nagłówek H2', 60, true), lead: a('Lead', 160),
       zakresy: lista('Zakresy (kolejność: jasna, ciemna, jasna, ciemna)', fields.object({ nazwa: t('Nazwa (H3)', 40, true), opis: a('Opis', 220), status: wybor('Status („wkrótce” = przycisk „Powiadom mnie”)', ['dostępny', 'wkrótce']), cta: t('Przycisk (przy „dostępny”)', 24) }), 4, 4, 'nazwa'),

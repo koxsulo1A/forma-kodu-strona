@@ -63,6 +63,57 @@
       "opis": "Rezerwacje, bot czatowy, sklep: dołożysz je później bez stawiania strony od nowa."
     }
   },
+  "s2b_badania": {
+    "naglowek": "Czy Twoja firma nie zostaje w tyle?",
+    "lead": "Strona, wyszukiwarka i AI to dziś podstawa sprzedaży w internecie. Tak wygląda to w liczbach z oficjalnych badań.",
+    "liczby": [
+      {
+        "wartosc": "67 na 100",
+        "opis": "firm w Polsce (od 10 osób) ma stronę internetową.",
+        "porownanie": "Średnia UE: 79 na 100",
+        "zrodlo": "Eurostat, 2025",
+        "url": "https://ec.europa.eu/eurostat/databrowser/view/isoc_ciweb/default/table?lang=en"
+      },
+      {
+        "wartosc": "22,6%",
+        "opis": "kliknięć zbiera pierwszy wynik w Google, gdy nad nim nie ma odpowiedzi AI.",
+        "porownanie": "Z odpowiedzią AI: 3,6%",
+        "zrodlo": "First Page Sage, 2026",
+        "url": "https://firstpagesage.com/reports/google-click-through-rates-ctrs-by-ranking-position/"
+      },
+      {
+        "wartosc": "65%",
+        "opis": "badanych polskich internautów korzysta z narzędzi AI, także przy szukaniu ofert.",
+        "porownanie": "",
+        "zrodlo": "Gemius, E-commerce w Polsce 2026",
+        "url": "https://pbi.org.pl/patronaty/raport-e-commerce-w-polsce-2026-jest-juz-dostepny/"
+      },
+      {
+        "wartosc": "8 na 100",
+        "opis": "firm w Polsce używa AI.",
+        "porownanie": "Średnia UE: 20 na 100",
+        "zrodlo": "Eurostat, 2025",
+        "url": "https://ec.europa.eu/eurostat/web/products-eurostat-news/w/ddn-20251211-2"
+      }
+    ],
+    "wnioski": [
+      {
+        "tekst": "Gdy Google pokazuje odpowiedź AI, źródło cytowane w niej jako pierwsze dostaje 5,2% kliknięć, więcej niż pierwszy zwykły wynik. Dlatego robimy strony czytelne dla wyszukiwarki i dla asystentów AI (SEO i GEO).",
+        "zrodlo": "First Page Sage, 2026",
+        "url": "https://firstpagesage.com/reports/google-click-through-rates-ctrs-by-ranking-position/"
+      },
+      {
+        "tekst": "Branże, które najszybciej wdrażają AI, notują 3 razy szybszy wzrost przychodu na pracownika (27% wobec 9%). To zależność, a nie gwarancja wyniku, dlatego przed startem mierzymy, co da się poprawić.",
+        "zrodlo": "PwC, AI Jobs Barometer 2025",
+        "url": "https://www.pwc.com/gx/en/news-room/press-releases/2025/ai-linked-to-a-fourfold-increase-in-productivity-growth.html"
+      },
+      {
+        "tekst": "InPost obsługuje infolinię agentem AI, który sam przekierowuje paczki, zmienia termin doręczenia i otwiera skrytkę Paczkomatu w trakcie rozmowy.",
+        "zrodlo": "Wiadomości Handlowe, 2026",
+        "url": "https://www.wiadomoscihandlowe.pl/retailtech-i-nowe-technologie/big-data-i-sztuczna-inteligencja/ponad-miliard-przesylek-a-obsluge-przejmuje-ai-inpost-stworzyl-agenta-ktory-otwiera-paczkomat-2538513"
+      }
+    ]
+  },
   "s3_opinie": {
     "naglowek": "Nie wierz nam na słowo. Sprawdź u źródła."
   },
