@@ -7,7 +7,7 @@
   "og_obraz_alt": "Ile kosztuje strona internetowa dla firmy?",
   "noindex": false,
   "canonical": "",
-  "aktualizacja": "[data]",
+  "aktualizacja": "{{data_publikacji}}",
   "schema": [
     "Service",
     "FAQPage",

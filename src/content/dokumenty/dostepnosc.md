@@ -1,8 +1,8 @@
 ---
 tytul: "Dostępność"
 wersja: "1.0"
-obowiazuje_od: "[data]"
-data_przegladu: "[data]"
+obowiazuje_od: "{{data_publikacji}}"
+data_przegladu: "{{data_publikacji}}"
 zatwierdzone_przez_prawnika: false
 ---
 
@@ -16,9 +16,9 @@ To oświadczenie jest dobrowolne. Nie jest deklaracją dostępności w rozumieni
 ustawy z 4 kwietnia 2019 r., która dotyczy podmiotów publicznych.
 
 ## Stan
-- Data publikacji strony: [data].
-- Data ostatniej istotnej aktualizacji: [data].
-- Data sporządzenia oświadczenia: [data]. Ostatni przegląd: [data].
+- Data publikacji strony: {{data_publikacji|slownie}}.
+- Data ostatniej istotnej aktualizacji: {{data_publikacji|slownie}}.
+- Data sporządzenia oświadczenia: {{data_publikacji|slownie}}. Ostatni przegląd: {{data_publikacji|slownie}}.
 - Sposób oceny: [samoocena: testy klawiaturą, czytnik NVDA/VoiceOver, axe,
   powiększenie 200%, szerokość 320 px / audyt zewnętrzny: nazwa, data].
 

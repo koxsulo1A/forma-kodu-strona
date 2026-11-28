@@ -7,7 +7,7 @@ import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const ZASLEPKA = /\[[^\]]+\]/;
-const data = z.string().regex(/^\d{4}-\d{2}-\d{2}$|^\[data\]$/, 'Data w formacie RRRR-MM-DD');
+const data = z.string().regex(/^\d{4}-\d{2}-\d{2}$|^\[data\]$|^\{\{[a-z0-9_]+\}\}$/, 'Data w formacie RRRR-MM-DD');
 
 const firma = defineCollection({
   loader: file('src/content/ustawienia/firma.json', { parser: (t) => [{ id: 'firma', ...JSON.parse(t) }] }),

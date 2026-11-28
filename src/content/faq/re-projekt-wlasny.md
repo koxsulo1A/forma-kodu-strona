@@ -2,6 +2,6 @@
 pytanie: "Czym jest „projekt własny”?"
 strony: ["realizacje"]
 kolejnosc: 2
-aktualizacja: "[data]"
+aktualizacja: "{{data_publikacji}}"
 ---
 Projekt, który budujemy dla siebie; oznaczamy go tak przy każdej karcie.

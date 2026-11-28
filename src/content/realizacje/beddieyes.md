@@ -18,7 +18,7 @@ zakres:
   - tytul: Oferty i wykonane prace
     opis: Samodzielne dodawanie ofert i wykonanych prac.
 galeria: []
-aktualizacja: '[data]'
+aktualizacja: "{{data_publikacji}}"
 ---
 Strona dla jednoosobowej działalności: stylizacja rzęs i brwi. W planie rezerwacja wizyt połączona z kalendarzem w telefonie oraz samodzielne dodawanie ofert i wykonanych prac.
 

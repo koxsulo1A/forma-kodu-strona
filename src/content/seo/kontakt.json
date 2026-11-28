@@ -7,7 +7,7 @@
   "og_obraz_alt": "Formularz kontaktowy Forma Kodu",
   "noindex": false,
   "canonical": "",
-  "aktualizacja": "[data]",
+  "aktualizacja": "{{data_publikacji}}",
   "schema": [
     "WebPage",
     "BreadcrumbList"

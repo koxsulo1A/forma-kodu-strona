@@ -1,13 +1,13 @@
 ---
 tytul: "Polityka prywatności"
 wersja: "1.2"
-obowiazuje_od: "[data]"
-data_przegladu: "[data]"
+obowiazuje_od: "{{data_publikacji}}"
+data_przegladu: "{{data_publikacji}}"
 zatwierdzone_przez_prawnika: false
 ---
 
 
-Obowiązuje od: [data].
+Obowiązuje od: {{data_publikacji|slownie}}.
 
 ## 1. Kto jest administratorem
 Kacper Przychodzień Centrum usług (jednoosobowa działalność gospodarcza), ul. Prądzyńskiego 3, 50-434 Wrocław.

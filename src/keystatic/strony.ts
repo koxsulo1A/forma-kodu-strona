@@ -33,7 +33,7 @@ const wybor = (label: string, opcje: string[]) =>
 const zrodlo = () => fields.text({ label: 'Źródło kwoty (wymagane)', validation: { length: { min: 1 } } });
 // Ceny: tylko relacja do kolekcji „Ceny” (jedno źródło, Kacper 24.11). Puste = „wycena indywidualna”.
 const cenaRel = (label = 'Cena z cennika (puste = „wycena indywidualna”)') => fields.relationship({ label, collection: 'ceny' });
-const dataOdczytu = () => fields.text({ label: 'Data odczytu RRRR-MM-DD (wymagana)', validation: { pattern: { regex: /^\d{4}-\d{2}-\d{2}$|^\[data\]$/, message: 'RRRR-MM-DD' } } });
+const dataOdczytu = () => fields.text({ label: 'Data odczytu RRRR-MM-DD (wymagana)', validation: { pattern: { regex: /^\d{4}-\d{2}-\d{2}$|^\[data\]$|^\{\{[a-z0-9_]+\}\}$/, message: 'RRRR-MM-DD' } } });
 
 // Pola wspólne każdego segmentu (etykieta, H2, lead, CTA).
 const wspolne = (cta = false) => ({

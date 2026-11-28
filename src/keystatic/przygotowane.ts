@@ -5,7 +5,7 @@
 import { fields, collection, singleton } from '@keystatic/core';
 
 const data = (label: string) =>
-  fields.text({ label: `${label} (RRRR-MM-DD)`, validation: { pattern: { regex: /^\d{4}-\d{2}-\d{2}$|^\[data\]$|^$/, message: 'RRRR-MM-DD' } } });
+  fields.text({ label: `${label} (RRRR-MM-DD)`, validation: { pattern: { regex: /^\d{4}-\d{2}-\d{2}$|^\[data\]$|^\{\{[a-z0-9_]+\}\}$|^$/, message: 'RRRR-MM-DD' } } });
 const szkic = () => fields.checkbox({ label: 'Szkic (nie publikuj)', defaultValue: true });
 const liczbaZeZrodlem = () =>
   fields.array(

@@ -7,7 +7,7 @@
   "og_obraz_alt": "Darmowy pilotaż strony internetowej i SEO",
   "noindex": false,
   "canonical": "",
-  "aktualizacja": "[data]",
+  "aktualizacja": "{{data_publikacji}}",
   "schema": [
     "Service",
     "FAQPage",

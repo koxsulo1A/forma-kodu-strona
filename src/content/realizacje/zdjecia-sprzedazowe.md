@@ -18,6 +18,6 @@ zakres:
   - tytul: '[zakres do uzupełnienia]'
     opis: '[opis do uzupełnienia]'
 galeria: []
-aktualizacja: '[data]'
+aktualizacja: "{{data_publikacji}}"
 ---
 Automatyzacja z AI. Projekt własny, w przygotowaniu. [Opis projektu do uzupełnienia.]

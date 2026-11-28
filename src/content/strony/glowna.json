@@ -391,38 +391,38 @@
     "koszty_stale": [
       {
         "nazwa": "Domena",
-        "zakres": "100-200 zł",
+        "zakres": "{{koszt_domena_zakres}}",
         "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zrodlo": "{{koszt_domena_zrodlo}}",
+        "data": "{{koszt_domena_data}}"
       },
       {
         "nazwa": "Hosting",
-        "zakres": "300-500 zł",
+        "zakres": "{{koszt_hosting_zakres}}",
         "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zrodlo": "{{koszt_hosting_zrodlo}}",
+        "data": "{{koszt_hosting_data}}"
       },
       {
         "nazwa": "SSL",
-        "zakres": "0-150 zł",
+        "zakres": "{{koszt_ssl_zakres}}",
         "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zrodlo": "{{koszt_ssl_zrodlo}}",
+        "data": "{{koszt_ssl_data}}"
       },
       {
         "nazwa": "Licencje",
-        "zakres": "zmienne",
+        "zakres": "{{koszt_licencje_zakres}}",
         "okres": "rocznie",
-        "zrodlo": "[źródło do uzupełnienia]",
-        "data": "[data]"
+        "zrodlo": "{{koszt_licencje_zrodlo}}",
+        "data": "{{koszt_licencje_data}}"
       },
       {
         "nazwa": "Opieka i prowadzenie (opcjonalnie)",
-        "zakres": "175-1 090 zł",
+        "zakres": "{{koszt_opieka_zakres}}",
         "okres": "miesięcznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zrodlo": "{{koszt_opieka_zrodlo}}",
+        "data": "{{koszt_opieka_data}}"
       }
     ],
     "zrodla": ""
@@ -480,9 +480,9 @@
             "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
           },
           {
-            "narzedzie": "[do uzupełnienia]",
+            "narzedzie": "{{narzedzie_testow}}",
             "rola": "testy",
-            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
+            "ograniczenie": "{{narzedzie_testow_ograniczenie}}"
           },
           {
             "narzedzie": "@astrojs/sitemap",
@@ -512,9 +512,9 @@
             "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
           },
           {
-            "narzedzie": "[do uzupełnienia]",
+            "narzedzie": "{{narzedzie_testow}}",
             "rola": "testy",
-            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
+            "ograniczenie": "{{narzedzie_testow_ograniczenie}}"
           },
           {
             "narzedzie": "Keystatic",
@@ -544,9 +544,9 @@
             "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
           },
           {
-            "narzedzie": "[do uzupełnienia]",
+            "narzedzie": "{{narzedzie_testow}}",
             "rola": "testy",
-            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
+            "ograniczenie": "{{narzedzie_testow_ograniczenie}}"
           },
           {
             "narzedzie": "Keystatic",
