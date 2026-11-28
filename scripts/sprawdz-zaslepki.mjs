@@ -4,6 +4,7 @@
 // Kod wyjścia 1 = znaleziono zaślepki → produkcja się nie buduje. Na wersji testowej uruchamiaj z --tylko-raport.
 import { readdirSync, readFileSync, statSync, existsSync } from 'node:fs';
 import { join, extname } from 'node:path';
+import { zmienne } from '../src/lib/zmienne.mjs';
 
 const args = process.argv.slice(2);
 const tylkoRaport = args.includes('--tylko-raport');
@@ -37,6 +38,17 @@ function przejdz(p) {
   });
 }
 cele.forEach(przejdz);
+
+// Zmienne (src/lib/zmienne.mjs): pusta wartość użyta w treści to też zaślepka, nawet gdy komponent pokazuje ją jako „do uzupełnienia”.
+{
+  const uzyte = new Set();
+  (function znaczniki(p) {
+    if (!existsSync(p)) return;
+    if (statSync(p).isDirectory()) { for (const n of readdirSync(p)) if (!POMIN.has(n)) znaczniki(join(p, n)); return; }
+    if (/\.(json|md|mdx)$/.test(p)) for (const m of readFileSync(p, 'utf8').matchAll(/\{\{([a-z0-9_]+)(\|slownie)?\}\}/g)) uzyte.add(m[1]);
+  })('src/content');
+  for (const [klucz, z] of zmienne()) if (uzyte.has(klucz) && !z.wartosc) wyniki.push(`zmienna {{${klucz}}} (panel: Zmienne)  [${z.opis}]`);
+}
 
 if (wyniki.length) {
   console.error(`Zaślepki do uzupełnienia: ${wyniki.length}`);

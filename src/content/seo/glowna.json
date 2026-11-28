@@ -7,7 +7,7 @@
   "og_obraz_alt": "Strony internetowe, automatyzacje i SEO dla firm",
   "noindex": false,
   "canonical": "",
-  "aktualizacja": "[data]",
+  "aktualizacja": "{{data_publikacji}}",
   "schema": [
     "WebSite",
     "Organization",

@@ -328,36 +328,38 @@
     "pakiety": [
       {
         "etykieta": "Strona podstawowa",
-        "nazwa": "Landing Page podstawowy",
-        "opis": "Jedna strona na szablonie, który dobieramy do Twojej firmy.",
-        "cena": "strony-internetowe-landing",
+        "nazwa": "Strona podstawowa",
+        "opis": "Szablon dobrany do Twojej branży i problemów Twoich klientów. Sprawdzone układy, które stawiają Cię co najmniej na równi z konkurencją.",
+        "cena": "strony-internetowe-podstawowa",
         "podpis_ceny": "",
         "polecany": false,
         "zawiera": [
-          "oferta, kontakt i dojazd na jednej stronie",
-          "wersja na telefon",
-          "SEO techniczne i mapa strony",
-          "testy przed oddaniem"
+          "szablon dobrany do branży i potrzeb Twoich klientów",
+          "sprawdzone układy sekcji",
+          "optymalizacja kodu i wtyczek",
+          "podstawowe SEO: tytuły, opisy, mapa strony",
+          "czas realizacji: 1–2 tygodnie"
         ],
         "nie_zawiera": [
-          "panelu do samodzielnej zmiany treści",
-          "własnego projektu graficznego",
+          "projektu graficznego tylko dla Twojej firmy",
+          "sklepu i integracji z systemami firmy",
           "domeny, hostingu i licencji (niżej)"
         ],
         "cta": "Zapytaj o ten pakiet"
       },
       {
-        "etykieta": "Strona dedykowana",
-        "nazwa": "Wariant dedykowany",
-        "opis": "Układ i wygląd projektujemy od zera, z gotowych komponentów.",
+        "etykieta": "Polecany pakiet",
+        "nazwa": "Strona szyta na miarę",
+        "opis": "Szablon zaprojektowany specjalnie pod Twoją firmę i Twoich klientów. Wygląd i układ, który daje realną przewagę nad konkurencją.",
         "cena": "strony-internetowe-dedykowana",
         "podpis_ceny": "",
         "polecany": true,
         "zawiera": [
-          "projekt układu pod Twoich klientów",
-          "kilka podstron, np. usługi, cennik, kontakt",
-          "panel do zmiany treści bez programisty",
-          "SEO techniczne i testy"
+          "projekt graficzny tylko dla Twojej firmy",
+          "układ treści pod Twoich klientów",
+          "optymalizacja kodu, wtyczek i obrazów",
+          "rozszerzone SEO: dane firmy, nagłówki, linki",
+          "czas realizacji: 2–4 tygodnie"
         ],
         "nie_zawiera": [
           "sklepu i płatności online",
@@ -368,16 +370,18 @@
       },
       {
         "etykieta": "Najwyższy pakiet w ofercie",
-        "nazwa": "Prywatna strona stworzona od A do Z",
-        "opis": "Projekt UI i UX od zera, kod pisany pod szybkość i prywatność.",
-        "cena": null,
-        "podpis_ceny": "po rozmowie o zakresie; zakresy są zbyt różne, by podać jedną kwotę z rynku",
+        "nazwa": "Strona od A do Z",
+        "opis": "Całkowicie nowy motyw graficzny na WordPressie, napisany od zera, albo strona na Astro lub Next.js z wygodnym panelem treści.",
+        "cena": "strony-internetowe-od-a-do-z",
+        "podpis_ceny": "",
         "polecany": false,
         "zawiera": [
-          "wszystko z wariantu dedykowanego",
-          "projekt ekranów przed pierwszą linią kodu",
-          "pomiar wydajności przy każdej zmianie",
-          "zakres spisany na piśmie przed startem"
+          "nowy motyw WordPress od A do Z",
+          "albo Astro lub Next.js z panelem treści",
+          "projekt UI i UX całej strony",
+          "optymalizacja kodu i szybkości przy każdej zmianie",
+          "pełne SEO i GEO: dane strukturalne, widoczność w AI",
+          "czas realizacji: od 4 tygodni"
         ],
         "nie_zawiera": [
           "sklepu, aplikacji i automatyzacji (osobne pozycje)",
@@ -391,38 +395,28 @@
     "koszty_stale": [
       {
         "nazwa": "Domena",
-        "zakres": "100-200 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_domena_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Hosting",
-        "zakres": "300-500 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_hosting_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "SSL",
-        "zakres": "0-150 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_ssl_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Licencje",
-        "zakres": "zmienne",
-        "okres": "rocznie",
-        "zrodlo": "[źródło do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_licencje_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Opieka i prowadzenie (opcjonalnie)",
-        "zakres": "175-1 090 zł",
-        "okres": "miesięcznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_opieka_zakres}}",
+        "okres": "miesięcznie"
       }
     ],
     "zrodla": ""
@@ -462,101 +456,161 @@
   "s10_technologie": {
     "etykieta": "Technologie",
     "naglowek": "Co pracuje pod spodem każdej strony",
-    "podpis": "Każde z tych twierdzeń możesz sprawdzić: pokażemy testy, ich wyniki i to, czego nie obejmują.",
+    "podpis": "Przy każdej technologii piszemy też, czego nie robi, żebyś wiedział, za co płacisz.",
     "pakiety": [
       {
         "nazwa": "Strona podstawowa",
         "znacznik": "",
-        "opis": "Na podstawie szablonu, który dobieramy do Twojej firmy.",
+        "opis": "Sprawdzony układ dobrany do Twojej branży. Teksty i zdjęcia zmieniasz sam w prostym panelu, bez programisty.",
         "warstwy": [
           {
-            "narzedzie": "Cloudflare Workers",
-            "rola": "back end",
-            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+            "narzedzie": "Domena i SSL",
+            "rola": "adres i HTTPS",
+            "ograniczenie": "Domenę trzeba odnawiać co roku, inaczej strona przestaje działać pod swoim adresem."
           },
           {
-            "narzedzie": "Astro",
-            "rola": "front end",
-            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
+            "narzedzie": "Hosting z PHP 8.3+",
+            "rola": "hosting",
+            "ograniczenie": "WordPress potrzebuje serwera z PHP i bazą danych, więc hosting to osobna, stała opłata."
           },
           {
-            "narzedzie": "[do uzupełnienia]",
-            "rola": "testy",
-            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
+            "narzedzie": "WordPress",
+            "rola": "panel treści",
+            "ograniczenie": "Rdzeń trzeba regularnie aktualizować, inaczej strona z czasem staje się mniej bezpieczna."
           },
           {
-            "narzedzie": "@astrojs/sitemap",
-            "rola": "SEO techniczne",
-            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
+            "narzedzie": "Wtyczki WordPress",
+            "rola": "SEO, cache, kopie",
+            "ograniczenie": "Każda wtyczka to osobny kod do aktualizacji, a część funkcji jest płatna w wersjach Pro."
+          },
+          {
+            "narzedzie": "Motyw dobrany do branży",
+            "rola": "wygląd strony",
+            "ograniczenie": "Większe zmiany układu robi programista, bo panel zmienia treść, a nie budowę strony."
           }
-        ]
+        ],
+        "warianty": []
       },
       {
-        "nazwa": "Strona dedykowana",
+        "nazwa": "Strona szyta na miarę",
         "znacznik": "Polecany pakiet",
-        "opis": "Układ i wygląd projektujemy od zera z komponentów.",
+        "opis": "Projekt graficzny tylko dla Twojej firmy powstaje w Figmie, a potem staje się własnym motywem strony. Teksty i wpisy zmieniasz sam w panelu.",
         "warstwy": [
           {
-            "narzedzie": "Cloudflare Workers",
-            "rola": "back end",
-            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+            "narzedzie": "Domena i SSL",
+            "rola": "adres i HTTPS",
+            "ograniczenie": "Domenę trzeba odnawiać co roku, inaczej strona przestaje działać pod swoim adresem."
           },
           {
-            "narzedzie": "Astro",
-            "rola": "front end",
-            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
+            "narzedzie": "Hosting z PHP 8.3+",
+            "rola": "hosting",
+            "ograniczenie": "WordPress potrzebuje serwera z PHP i bazą danych, więc hosting to osobna, stała opłata."
           },
           {
-            "narzedzie": "@astrojs/sitemap",
-            "rola": "SEO techniczne",
-            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
-          },
-          {
-            "narzedzie": "[do uzupełnienia]",
-            "rola": "testy",
-            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
-          },
-          {
-            "narzedzie": "Keystatic",
+            "narzedzie": "WordPress",
             "rola": "panel treści",
-            "ograniczenie": "Zmiana treści pojawia się na stronie dopiero po ponownym zbudowaniu."
+            "ograniczenie": "Rdzeń trzeba regularnie aktualizować, inaczej strona z czasem staje się mniej bezpieczna."
+          },
+          {
+            "narzedzie": "Wtyczki WordPress",
+            "rola": "SEO, cache, kopie",
+            "ograniczenie": "Każda wtyczka to osobny kod do aktualizacji, a część funkcji jest płatna w wersjach Pro."
+          },
+          {
+            "narzedzie": "Figma",
+            "rola": "projekt graficzny",
+            "ograniczenie": "Projekt w Figmie to plan strony, a nie działająca strona: każdą zmianę przenosimy do motywu."
+          },
+          {
+            "narzedzie": "Własny motyw z Figmy",
+            "rola": "wygląd strony",
+            "ograniczenie": "Motyw powstaje tylko dla Twojej firmy, więc większe zmiany układu robi programista, a nie kreator."
           }
-        ]
+        ],
+        "warianty": []
       },
       {
-        "nazwa": "Strona prywatna",
+        "nazwa": "Strona od A do Z",
         "znacznik": "Najwyższy pakiet",
-        "opis": "Projekt UI i UX od zera, kod pisany pod szybkość i prywatność.",
-        "warstwy": [
+        "opis": "Dwie drogi do tej samej jakości: WordPress z motywem napisanym od zera albo strona w całości pisana w kodzie.",
+        "warstwy": [],
+        "warianty": [
           {
-            "narzedzie": "Cloudflare Workers",
-            "rola": "back end",
-            "ograniczenie": "Dziś serwuje gotowe pliki; logika po stronie serwera to osobny zakres."
+            "etykieta": "WordPress",
+            "opis": "Nowy motyw WordPress napisany od zera z projektu w Figmie. Treści zmieniasz w znanym panelu z blokami Gutenberga.",
+            "warstwy": [
+              {
+                "narzedzie": "Domena i SSL",
+                "rola": "adres i HTTPS",
+                "ograniczenie": "Domenę trzeba odnawiać co roku, inaczej strona przestaje działać pod swoim adresem."
+              },
+              {
+                "narzedzie": "Hosting PHP + Cloudflare",
+                "rola": "hosting i CDN",
+                "ograniczenie": "WordPress potrzebuje serwera z PHP i bazą danych, a Cloudflare przyspiesza go, ale go nie zastępuje."
+              },
+              {
+                "narzedzie": "Cloudflare Email lub Resend",
+                "rola": "e-maile z formularzy",
+                "ograniczenie": "Cloudflare za darmo wysyła tylko na zweryfikowane adresy, a Resend Pro to 20 USD/mies. za 50 000 e-maili."
+              },
+              {
+                "narzedzie": "Plausible Analytics",
+                "rola": "statystyki",
+                "ograniczenie": "Liczy odwiedziny bez cookies, ale ma mniej raportów niż Google Analytics i jest płatny po 30 dniach próby."
+              },
+              {
+                "narzedzie": "Wtyczki WordPress",
+                "rola": "SEO, cache, kopie",
+                "ograniczenie": "Tylko sprawdzone i niezbędne, bo każda wtyczka to osobny kod do aktualizacji."
+              },
+              {
+                "narzedzie": "WordPress + Gutenberg",
+                "rola": "panel treści",
+                "ograniczenie": "Rdzeń trzeba regularnie aktualizować, a nowy rodzaj bloku dodaje programista."
+              },
+              {
+                "narzedzie": "Motyw blokowy od zera",
+                "rola": "wygląd strony",
+                "ograniczenie": "Motyw jest tylko Twój, więc nie ma gotowego wsparcia autora: zmiany układu robi programista."
+              }
+            ]
           },
           {
-            "narzedzie": "Astro",
-            "rola": "front end",
-            "ograniczenie": "Treści zmieniane co minutę wymagają osobnej usługi."
-          },
-          {
-            "narzedzie": "@astrojs/sitemap",
-            "rola": "SEO techniczne",
-            "ograniczenie": "To warunek widoczności, a nie obietnica pozycji w wynikach."
-          },
-          {
-            "narzedzie": "[do uzupełnienia]",
-            "rola": "testy",
-            "ograniczenie": "[do uzupełnienia: brak danych o narzędziu do testów]"
-          },
-          {
-            "narzedzie": "Keystatic",
-            "rola": "panel treści",
-            "ograniczenie": "Zmiana treści pojawia się na stronie dopiero po ponownym zbudowaniu."
-          },
-          {
-            "narzedzie": "Lighthouse CI",
-            "rola": "wydajność",
-            "ograniczenie": "Mierzy w warunkach testowych, a nie na wizytach Twoich klientów."
+            "etykieta": "Kod od zera",
+            "opis": "Strona w całości pisana w kodzie: Next.js lub Astro. Treści zmieniasz w panelu Sanity, Storyblok albo Keystatic.",
+            "warstwy": [
+              {
+                "narzedzie": "Cloudflare",
+                "rola": "hosting i SSL",
+                "ograniczenie": "SSL jest w cenie, plan darmowy ma 100 000 zapytań dziennie, a domenę kupujesz osobno i odnawiasz co roku."
+              },
+              {
+                "narzedzie": "Cloudflare Email lub Resend",
+                "rola": "e-maile z formularzy",
+                "ograniczenie": "Cloudflare za darmo wysyła tylko na zweryfikowane adresy, a Resend Pro to 20 USD/mies. za 50 000 e-maili."
+              },
+              {
+                "narzedzie": "Plausible Analytics",
+                "rola": "statystyki",
+                "ograniczenie": "Liczy odwiedziny bez cookies, ale ma mniej raportów niż Google Analytics i jest płatny po 30 dniach próby."
+              },
+              {
+                "narzedzie": "Figma",
+                "rola": "projekt UI i UX",
+                "ograniczenie": "Projekt w Figmie to plan strony, a nie działająca strona: każdą zmianę przenosimy do kodu."
+              },
+              {
+                "narzedzie": "Sanity / Storyblok / Keystatic",
+                "rola": "panel treści",
+                "ograniczenie": "Keystatic jest darmowy, a rola redaktora kosztuje w Sanity 15 USD za osobę, w Storyblok od 99 USD/mies."
+              },
+              {
+                "narzedzie": "Next.js lub Astro",
+                "rola": "front end",
+                "ograniczenie": "To nie kreator: zmiana układu wymaga programisty, a framework regularnych aktualizacji."
+              }
+            ]
           }
         ]
       }
@@ -626,16 +680,20 @@
         "uslugi": [
           {
             "nazwa": "Strony internetowe",
-            "opis": "Landing jednej oferty, serwis firmowy z podstronami usług albo przebudowa obecnej strony.",
+            "opis": "Strona podstawowa, strona szyta na miarę albo strona od A do Z: WordPress z nowym motywem lub Astro i Next.js.",
             "ograniczenie": "strona nie zapewnia ruchu ani zapytań; domena, hosting i opieka to osobne pozycje.",
             "ceny": [
               {
-                "cena": "strony-internetowe-landing",
-                "za": "za landing"
+                "cena": "strony-internetowe-podstawowa",
+                "za": "za stronę podstawową"
               },
               {
                 "cena": "strony-internetowe-dedykowana",
-                "za": "za dedykowaną stronę firmową"
+                "za": "za stronę szytą na miarę"
+              },
+              {
+                "cena": "strony-internetowe-od-a-do-z",
+                "za": "za stronę od A do Z"
               }
             ],
             "status": "wycena po rozmowie"

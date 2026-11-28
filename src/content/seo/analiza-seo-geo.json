@@ -7,7 +7,7 @@
   "og_obraz_alt": "Czy Twoja firma pojawia się w odpowiedziach AI?",
   "noindex": false,
   "canonical": "",
-  "aktualizacja": "[data]",
+  "aktualizacja": "{{data_publikacji}}",
   "schema": [
     "Service",
     "FAQPage",

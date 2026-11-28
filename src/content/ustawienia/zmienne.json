@@ -1,0 +1,34 @@
+{
+  "zmienne": [
+    {
+      "klucz": "data_publikacji",
+      "opis": "data publikacji strony (RRRR-MM-DD)",
+      "wartosc": ""
+    },
+    {
+      "klucz": "koszt_domena_zakres",
+      "opis": "kwota: domena",
+      "wartosc": "100-200 zł"
+    },
+    {
+      "klucz": "koszt_hosting_zakres",
+      "opis": "kwota: hosting",
+      "wartosc": "300-500 zł"
+    },
+    {
+      "klucz": "koszt_ssl_zakres",
+      "opis": "kwota: ssl",
+      "wartosc": "0-150 zł"
+    },
+    {
+      "klucz": "koszt_licencje_zakres",
+      "opis": "kwota: licencje",
+      "wartosc": "zmienne"
+    },
+    {
+      "klucz": "koszt_opieka_zakres",
+      "opis": "kwota: opieka",
+      "wartosc": "175-1 090 zł"
+    }
+  ]
+}

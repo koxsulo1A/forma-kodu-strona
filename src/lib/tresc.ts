@@ -8,10 +8,13 @@
 //   const benefity = await benefityZRealizacji(t.s5_realizacje.realizacje, t.s6_benefity.maks ?? 6);
 import { createReader } from '@keystatic/core/reader';
 import keystaticConfig from '../../keystatic.config';
+import { wstawZmienneGleboko } from './zmienne.mjs';
 
 const czytnik = createReader(process.cwd(), keystaticConfig);
 
-export const trescStrony = <K extends keyof typeof czytnik.singletons>(id: K) => czytnik.singletons[id].read();
+// Znaczniki zmiennych {{klucz}} (src/lib/zmienne.mjs) podmieniamy od razu: komponenty dostają gotowe wartości albo zaślepkę „[opis]”.
+export const trescStrony = async <K extends keyof typeof czytnik.singletons>(id: K) =>
+  wstawZmienneGleboko(await czytnik.singletons[id].read()) as Awaited<ReturnType<(typeof czytnik.singletons)[K]['read']>>;
 
 // Pola „rt”: tylko **pogrubienie** i [link](/adres). Reszta jako zwykły tekst (bezpieczne: najpierw escapowanie HTML).
 export function rt(tekst: string | null | undefined): string {

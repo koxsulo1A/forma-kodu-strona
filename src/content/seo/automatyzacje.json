@@ -7,7 +7,7 @@
   "og_obraz_alt": "Jak zautomatyzować pracę i wdrożyć bota na czat?",
   "noindex": false,
   "canonical": "",
-  "aktualizacja": "[data]",
+  "aktualizacja": "{{data_publikacji}}",
   "schema": [
     "Service",
     "FAQPage",

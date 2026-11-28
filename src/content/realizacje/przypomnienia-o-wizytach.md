@@ -16,6 +16,6 @@ wyrozniona: false
 benefity: []
 zakres: []
 galeria: []
-aktualizacja: '[data]'
+aktualizacja: "{{data_publikacji}}"
 ---
 Przykład układu karty z makiety 31. To nie jest realizacja: karta nie ma podstrony. Usuń ten wpis, gdy pojawią się prawdziwe projekty w tej kategorii.

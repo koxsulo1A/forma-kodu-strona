@@ -1,8 +1,9 @@
 ---
 // Widoczna data aktualizacji (zasada stała 13). Ta sama data co dateModified w JSON-LD i lastmod w sitemap.
 import { getEntry } from 'astro:content';
+import { wstawZmienne } from '../../lib/zmienne.mjs';
 interface Props { strona: string; data?: string } // data: podstrona z kolekcji (np. realizacja 31b)
-const seo = { aktualizacja: Astro.props.data ?? (await getEntry('seo', Astro.props.strona))!.data.aktualizacja };
+const seo = { aktualizacja: wstawZmienne(Astro.props.data ?? (await getEntry('seo', Astro.props.strona))!.data.aktualizacja) };
 // Zaślepka „[data]” nie może wysypać budowania; sprawdz-zaslepki zablokuje ją przed publikacją.
 const ok = /^\d{4}-\d{2}-\d{2}$/.test(seo.aktualizacja);
 const ladna = ok ? new Intl.DateTimeFormat('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(seo.aktualizacja)) : seo.aktualizacja;

@@ -5,7 +5,7 @@
 Najważniejsze fakty:
 
 - Usługi: strony internetowe, automatyzacje i boty czatowe, analiza SEO/GEO (status: wkrótce, usługa w przygotowaniu), darmowe pilotaże.
-- Ceny: landing {{cena:strony-internetowe-landing}}, strona dedykowana {{cena:strony-internetowe-dedykowana}}, prosty sklep {{cena:sklepy-internetowe-prosty-sklep}}, automatyzacja jednego procesu {{cena:automatyzacje-jeden-proces}}, bot czatowy {{cena:automatyzacje-bot-czatowy}}. Aktualny cennik: https://formakodu.pl/strony-internetowe
+- Ceny: strona podstawowa {{cena:strony-internetowe-podstawowa}}, strona szyta na miarę {{cena:strony-internetowe-dedykowana}}, strona od A do Z {{cena:strony-internetowe-od-a-do-z}}, prosty sklep {{cena:sklepy-internetowe-prosty-sklep}}, automatyzacja jednego procesu {{cena:automatyzacje-jeden-proces}}, bot czatowy {{cena:automatyzacje-bot-czatowy}}. Aktualny cennik: https://formakodu.pl/strony-internetowe
 - Czas realizacji: strona podstawowa 1–2 tygodnie, strona dedykowana 2–4 tygodnie, strona od zera ponad 4 tygodnie.
 - Standard techniczny: strony statyczne (Astro), dostępność według WCAG 2.2 AA, Core Web Vitals w progach „dobrych” Google (LCP ≤ 2,5 s, INP ≤ 200 ms, CLS ≤ 0,1), analityka (Google Analytics 4) tylko po zgodzie odwiedzającego.
 - Obszar działania: Polska. Język: polski.

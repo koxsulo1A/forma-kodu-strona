@@ -39,11 +39,11 @@
   "dostepnosc": {
     "osoba_kontaktowa": "Kacper Przychodzień",
     "metoda_oceny": "[samoocena / audyt zewnętrzny]",
-    "czas_odpowiedzi_dni": "[liczba]"
+    "czas_odpowiedzi_dni": "24 godzin"
   },
   "przetwarzanie": {
     "hosting": "Cloudflare, Inc. (USA): strona, panel treści i formularze",
     "poczta_formularz": "Brevo SAS (Francja): lista „Powiadom mnie” i wysyłka; Cloudflare: odbiór formularzy",
-    "narzedzie_zgloszen": "[skrzynka / CRM]"
+    "narzedzie_zgloszen": "skrzynka e-mail iCloud+ i Brevo"
   }
 }

@@ -1,0 +1,10 @@
+{
+  "nazwa": "Strona od A do Z",
+  "kwota_od": 7390,
+  "waluta": "PLN",
+  "netto": true,
+  "okres": "jednorazowo",
+  "nasza_cena": true,
+  "zrodlo": "Decyzja Kacpra 28.11.2026 (cena własna; między wariantami B i C, ok. 10–20% poniżej cennika designsolutions.pl z 28.11.2026)",
+  "data_odczytu": "2026-11-28"
+}

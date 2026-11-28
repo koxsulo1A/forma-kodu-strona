@@ -116,32 +116,33 @@
     "pakiety": [
       {
         "nazwa": "Strona podstawowa",
-        "opis": "Strona na podstawie szablonu dobranego do Twojej firmy.",
+        "opis": "Szablon dobrany do Twojej branży i problemów Twoich klientów. Sprawdzone układy, które stawiają Cię co najmniej na równi z konkurencją.",
         "zawiera": [
-          "Szablon dobrany do branży i treści",
-          "Podstawowe SEO: tytuły, opisy, dane firmy",
-          "Informacja o danych osobowych",
-          "Według standardu WCAG 2.2"
+          "szablon dobrany do branży i potrzeb Twoich klientów",
+          "sprawdzone układy sekcji",
+          "optymalizacja kodu i wtyczek",
+          "podstawowe SEO: tytuły, opisy, mapa strony"
         ]
       },
       {
-        "nazwa": "Strona dedykowana",
-        "opis": "Układ i wygląd projektujemy od zera z komponentów.",
+        "nazwa": "Strona szyta na miarę",
+        "opis": "Szablon zaprojektowany specjalnie pod Twoją firmę i Twoich klientów. Wygląd i układ, który daje realną przewagę nad konkurencją.",
         "zawiera": [
-          "Wszystko ze strony podstawowej",
-          "Projekt pokazany przed kodowaniem",
-          "Sekcje pod Twoje treści",
-          "Lista gotowych elementów"
+          "projekt graficzny tylko dla Twojej firmy",
+          "układ treści pod Twoich klientów",
+          "optymalizacja kodu, wtyczek i obrazów",
+          "rozszerzone SEO: dane firmy, nagłówki, linki"
         ]
       },
       {
-        "nazwa": "Strona prywatna",
-        "opis": "Projekt UI i UX od zera, kod z myślą o lekkości i prywatności.",
+        "nazwa": "Strona od A do Z",
+        "opis": "Całkowicie nowy motyw graficzny na WordPressie, napisany od zera, albo strona na Astro lub Next.js z wygodnym panelem treści.",
         "zawiera": [
-          "Wszystko ze strony dedykowanej",
-          "Projekt UI i UX całej strony",
-          "Pomiar szybkości z datą",
-          "Lista zewnętrznych usług"
+          "nowy motyw WordPress od A do Z",
+          "albo Astro lub Next.js z panelem treści",
+          "projekt UI i UX całej strony",
+          "optymalizacja kodu i szybkości przy każdej zmianie",
+          "pełne SEO i GEO: dane strukturalne, widoczność w AI"
         ]
       }
     ]
@@ -152,31 +153,23 @@
     "pozycje": [
       {
         "nazwa": "Domena",
-        "zakres": "100-200 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_domena_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Hosting",
-        "zakres": "300-500 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_hosting_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Certyfikat SSL",
-        "zakres": "0-150 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_ssl_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Opieka",
-        "zakres": "175-1 090 zł",
-        "okres": "miesięcznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_opieka_zakres}}",
+        "okres": "miesięcznie"
       }
     ]
   },
@@ -525,36 +518,38 @@
     "pakiety": [
       {
         "etykieta": "Strona podstawowa",
-        "nazwa": "Landing Page podstawowy",
-        "opis": "Jedna strona na szablonie, który dobieramy do Twojej firmy.",
-        "cena": "strony-internetowe-landing",
+        "nazwa": "Strona podstawowa",
+        "opis": "Szablon dobrany do Twojej branży i problemów Twoich klientów. Sprawdzone układy, które stawiają Cię co najmniej na równi z konkurencją.",
+        "cena": "strony-internetowe-podstawowa",
         "podpis_ceny": "",
         "polecany": false,
         "zawiera": [
-          "oferta, kontakt i dojazd na jednej stronie",
-          "wersja na telefon",
-          "SEO techniczne i mapa strony",
-          "testy przed oddaniem"
+          "szablon dobrany do branży i potrzeb Twoich klientów",
+          "sprawdzone układy sekcji",
+          "optymalizacja kodu i wtyczek",
+          "podstawowe SEO: tytuły, opisy, mapa strony",
+          "czas realizacji: 1–2 tygodnie"
         ],
         "nie_zawiera": [
-          "panelu do samodzielnej zmiany treści",
-          "własnego projektu graficznego",
+          "projektu graficznego tylko dla Twojej firmy",
+          "sklepu i integracji z systemami firmy",
           "domeny, hostingu i licencji (niżej)"
         ],
         "cta": "Zapytaj o ten pakiet"
       },
       {
-        "etykieta": "Strona dedykowana",
-        "nazwa": "Wariant dedykowany",
-        "opis": "Układ i wygląd projektujemy od zera, z gotowych komponentów.",
+        "etykieta": "Polecany pakiet",
+        "nazwa": "Strona szyta na miarę",
+        "opis": "Szablon zaprojektowany specjalnie pod Twoją firmę i Twoich klientów. Wygląd i układ, który daje realną przewagę nad konkurencją.",
         "cena": "strony-internetowe-dedykowana",
         "podpis_ceny": "",
         "polecany": true,
         "zawiera": [
-          "projekt układu pod Twoich klientów",
-          "kilka podstron, np. usługi, cennik, kontakt",
-          "panel do zmiany treści bez programisty",
-          "SEO techniczne i testy"
+          "projekt graficzny tylko dla Twojej firmy",
+          "układ treści pod Twoich klientów",
+          "optymalizacja kodu, wtyczek i obrazów",
+          "rozszerzone SEO: dane firmy, nagłówki, linki",
+          "czas realizacji: 2–4 tygodnie"
         ],
         "nie_zawiera": [
           "sklepu i płatności online",
@@ -565,16 +560,18 @@
       },
       {
         "etykieta": "Najwyższy pakiet w ofercie",
-        "nazwa": "Prywatna strona stworzona od A do Z",
-        "opis": "Projekt UI i UX od zera, kod pisany pod szybkość i prywatność.",
-        "cena": null,
-        "podpis_ceny": "po rozmowie o zakresie; zakresy są zbyt różne, by podać jedną kwotę z rynku",
+        "nazwa": "Strona od A do Z",
+        "opis": "Całkowicie nowy motyw graficzny na WordPressie, napisany od zera, albo strona na Astro lub Next.js z wygodnym panelem treści.",
+        "cena": "strony-internetowe-od-a-do-z",
+        "podpis_ceny": "",
         "polecany": false,
         "zawiera": [
-          "wszystko z wariantu dedykowanego",
-          "projekt ekranów przed pierwszą linią kodu",
-          "pomiar wydajności przy każdej zmianie",
-          "zakres spisany na piśmie przed startem"
+          "nowy motyw WordPress od A do Z",
+          "albo Astro lub Next.js z panelem treści",
+          "projekt UI i UX całej strony",
+          "optymalizacja kodu i szybkości przy każdej zmianie",
+          "pełne SEO i GEO: dane strukturalne, widoczność w AI",
+          "czas realizacji: od 4 tygodni"
         ],
         "nie_zawiera": [
           "sklepu, aplikacji i automatyzacji (osobne pozycje)",
@@ -588,38 +585,28 @@
     "koszty_stale": [
       {
         "nazwa": "Domena",
-        "zakres": "100-200 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_domena_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Hosting",
-        "zakres": "300-500 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_hosting_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "SSL",
-        "zakres": "0-150 zł",
-        "okres": "rocznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_ssl_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Licencje",
-        "zakres": "zmienne",
-        "okres": "rocznie",
-        "zrodlo": "[źródło do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_licencje_zakres}}",
+        "okres": "rocznie"
       },
       {
         "nazwa": "Opieka i prowadzenie (opcjonalnie)",
-        "zakres": "175-1 090 zł",
-        "okres": "miesięcznie",
-        "zrodlo": "[źródło kwoty do uzupełnienia]",
-        "data": "[data]"
+        "zakres": "{{koszt_opieka_zakres}}",
+        "okres": "miesięcznie"
       }
     ],
     "zrodla": ""

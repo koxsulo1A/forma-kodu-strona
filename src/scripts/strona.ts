@@ -585,7 +585,7 @@ document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) =>
 });
 
 // ---------- 10b. Stos kart (S10): „+N warstwy” rozkłada stos w listę, „Zwiń warstwy” składa ----------
-// Kacper 25.11: rozwinięty jest najwyżej jeden stos naraz; otwarcie kolejnego zwija poprzedni.
+// Kacper 28.11 (zastępuje 25.11): rozwinięcie jednego stosu rozwija wszystkie, zwinięcie zwija wszystkie (porównanie pakietów obok siebie).
 {
   const stosy: ((wl: boolean) => void)[] = [];
   document.querySelectorAll<HTMLElement>('[data-stos]').forEach((stos) => {
@@ -608,9 +608,31 @@ document.querySelectorAll<HTMLElement>('[data-rozwin-grupa]').forEach((grupa) =>
     stosy.push(ustaw);
     b.addEventListener('click', () => {
       const wl = b.getAttribute('aria-expanded') !== 'true';
-      if (wl) stosy.forEach((f) => f !== ustaw && f(false));
-      ustaw(wl);
+      stosy.forEach((f) => f(wl));
     });
+  });
+}
+
+// ---------- 10c. Warianty pakietu w S10 (np. od A do Z: WordPress / Kod od zera) ----------
+// Bez JS widać oba warianty jeden pod drugim. Z JS: przełącznik, widoczny jeden wariant, licznik warstw z aktywnego.
+{
+  document.querySelectorAll<HTMLElement>('[data-pakiet-warianty]').forEach((pakiet) => {
+    const grupa = pakiet.querySelector<HTMLElement>('[data-warianty-przelacznik]');
+    const przyciski = [...pakiet.querySelectorAll<HTMLButtonElement>('[data-wariant-przycisk]')];
+    const warianty = [...pakiet.querySelectorAll<HTMLElement>('[data-wariant]')];
+    const liczba = pakiet.querySelector('[data-licznik-warstw]');
+    const slowo = pakiet.querySelector('[data-licznik-slowo]');
+    if (!grupa || przyciski.length < 2) return;
+    grupa.hidden = false;
+    pakiet.classList.add('z-przelacznikiem');
+    const pokaz = (i: number) => {
+      przyciski.forEach((b, j) => b.setAttribute('aria-pressed', String(i === j)));
+      warianty.forEach((w, j) => { w.hidden = i !== j; });
+      if (liczba) liczba.textContent = przyciski[i].dataset.liczba ?? '';
+      if (slowo) slowo.textContent = przyciski[i].dataset.slowo ?? '';
+    };
+    przyciski.forEach((b, i) => b.addEventListener('click', () => pokaz(i)));
+    pokaz(0);
   });
 }
 

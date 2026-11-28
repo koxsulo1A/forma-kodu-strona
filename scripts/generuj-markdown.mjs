@@ -6,6 +6,7 @@ import { readdirSync, readFileSync, writeFileSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import TurndownService from 'turndown';
 import { wstawCeny } from '../src/lib/ceny.mjs';
+import { wstawZmienne, zmienne } from '../src/lib/zmienne.mjs';
 
 const root = process.argv[2] || 'dist';
 const domena = (process.argv[3] || 'https://[domena]').replace(/\/$/, '');
@@ -14,13 +15,15 @@ td.remove(['script', 'style', 'noscript', 'svg', 'template', 'form', 'button', '
 td.addRule('ukryteDekoracje', { filter: (n) => n.getAttribute && n.getAttribute('aria-hidden') === 'true', replacement: () => '' });
 
 // 1) Ceny z cennika (src/lib/ceny.mjs): znaczniki {{cena:…}} / {{Cena:…}} / {{kwota:…}} → kwoty, we wszystkich plikach tekstowych.
+//    Zmienne (src/lib/zmienne.mjs): {{klucz}} / {{klucz|slownie}} → wartość z panelu „Zmienne” albo zaślepka „[opis]”.
+const mapaZmiennych = zmienne();
 (function ceny(p) {
   for (const n of readdirSync(p)) {
     const f = join(p, n);
     if (statSync(f).isDirectory()) { if (n !== '_astro') ceny(f); continue; }
     if (!/\.(html|txt|xml|json)$/.test(n)) continue;
     const t = readFileSync(f, 'utf8');
-    if (t.includes('{{')) writeFileSync(f, wstawCeny(t));
+    if (t.includes('{{')) writeFileSync(f, wstawZmienne(wstawCeny(t), mapaZmiennych));
   }
 })(root);
 
@@ -66,7 +69,7 @@ const zostale = [];
   for (const n of readdirSync(p)) {
     const f = join(p, n);
     if (statSync(f).isDirectory()) { if (n !== '_astro') szukaj(f); }
-    else if (/\.(html|md|txt|xml)$/.test(n) && /\{\{(cena|Cena|kwota):/.test(readFileSync(f, 'utf8'))) zostale.push(relative(root, f));
+    else if (/\.(html|md|txt|xml)$/.test(n) && /\{\{(cena|Cena|kwota):|\{\{[a-z0-9_]+(\|slownie)?\}\}/.test(readFileSync(f, 'utf8'))) zostale.push(relative(root, f));
   }
 })(root);
-if (zostale.length) { console.error(`Niepodmienione znaczniki cen w: ${zostale.join(', ')}`); process.exit(1); }
+if (zostale.length) { console.error(`Niepodmienione znaczniki cen lub zmiennych w: ${zostale.join(', ')}`); process.exit(1); }

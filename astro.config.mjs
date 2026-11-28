@@ -7,12 +7,14 @@ import keystatic from '@keystatic/astro';
 import cloudflare from '@astrojs/cloudflare';
 import node from '@astrojs/node';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { wstawZmienne } from './src/lib/zmienne.mjs';
 
 // lastmod w sitemap = pole „aktualizacja” z CMS (zasada stała 13), nie data budowania.
 const lastmod = Object.fromEntries(
   readdirSync('src/content/seo').map((f) => {
     const d = JSON.parse(readFileSync(`src/content/seo/${f}`, 'utf8'));
-    return [d.adres, /^\d{4}-\d{2}-\d{2}$/.test(d.aktualizacja) ? d.aktualizacja : undefined];
+    const a = wstawZmienne(d.aktualizacja ?? ''); // {{data_publikacji}} → data ze Zmiennych
+    return [d.adres, /^\d{4}-\d{2}-\d{2}$/.test(a) ? a : undefined];
   }),
 );
 // Dwa budowania z tego samego repozytorium:
@@ -25,7 +27,7 @@ const PANEL = process.env.PANEL === '1';
 const DEV = process.argv.includes('dev');
 // Podstrony realizacji 31b: lastmod z pola „aktualizacja” wpisu („przykład układu” nie ma podstrony).
 if (existsSync('src/content/realizacje')) for (const f of readdirSync('src/content/realizacje').filter((n) => n.endsWith('.md'))) {
-  const t = readFileSync(`src/content/realizacje/${f}`, 'utf8');
+  const t = wstawZmienne(readFileSync(`src/content/realizacje/${f}`, 'utf8'));
   const d = t.match(/^aktualizacja:\s*['"]?(\d{4}-\d{2}-\d{2})/m)?.[1];
   if (d && !/^typ:\s*['"]?przykład układu/m.test(t)) lastmod[`/realizacje/${f.replace(/\.md$/, '')}`] = d;
 }

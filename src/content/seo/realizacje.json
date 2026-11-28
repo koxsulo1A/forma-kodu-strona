@@ -7,7 +7,7 @@
   "og_obraz_alt": "Realizacje: strony i automatyzacje",
   "noindex": false,
   "canonical": "",
-  "aktualizacja": "[data]",
+  "aktualizacja": "{{data_publikacji}}",
   "schema": [
     "CollectionPage",
     "BreadcrumbList",

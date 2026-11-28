@@ -2,6 +2,6 @@
 pytanie: "Ile kosztuje chatbot dla firmy?"
 strony: ["automatyzacje"]
 kolejnosc: 3
-aktualizacja: "[data]"
+aktualizacja: "{{data_publikacji}}"
 ---
 Od {{cena:automatyzacje-bot-czatowy}}. Dochodzą koszty narzędzi i modeli AI, które podajemy przed startem.

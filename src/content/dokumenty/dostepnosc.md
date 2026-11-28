@@ -1,13 +1,13 @@
 ---
 tytul: "Dostępność"
 wersja: "1.0"
-obowiazuje_od: "[data]"
-data_przegladu: "[data]"
+obowiazuje_od: "{{data_publikacji}}"
+data_przegladu: "{{data_publikacji}}"
 zatwierdzone_przez_prawnika: false
 ---
 
 
-Kacper Przychodzień Centrum usług chce, żeby strona formakodu.pl była wygodna dla wszystkich,
+{{nazwa_prawna}} chce, żeby strona formakodu.pl była wygodna dla wszystkich,
 także dla osób korzystających z czytnika ekranu, samej klawiatury albo powiększenia.
 
 ## Standard
@@ -16,11 +16,10 @@ To oświadczenie jest dobrowolne. Nie jest deklaracją dostępności w rozumieni
 ustawy z 4 kwietnia 2019 r., która dotyczy podmiotów publicznych.
 
 ## Stan
-- Data publikacji strony: [data].
-- Data ostatniej istotnej aktualizacji: [data].
-- Data sporządzenia oświadczenia: [data]. Ostatni przegląd: [data].
-- Sposób oceny: [samoocena: testy klawiaturą, czytnik NVDA/VoiceOver, axe,
-  powiększenie 200%, szerokość 320 px / audyt zewnętrzny: nazwa, data].
+- Data publikacji strony: {{data_publikacji|slownie}}.
+- Data ostatniej istotnej aktualizacji: {{data_publikacji|slownie}}.
+- Data sporządzenia oświadczenia: {{data_publikacji|slownie}}. Ostatni przegląd: {{data_publikacji|slownie}}.
+- Sposób oceny: {{metoda_oceny}}.
 
 ## Co działa
 - Pełna obsługa klawiaturą i widoczny fokus.
@@ -38,5 +37,5 @@ ustawy z 4 kwietnia 2019 r., która dotyczy podmiotów publicznych.
 [lista albo: „Strona nie używa własnych skrótów klawiszowych.”]
 
 ## Zgłoś problem
-Napisz: kontakt@formakodu.pl. Odpowiadamy w ciągu [liczba] dni roboczych.
+Napisz: {{email}}. Odpowiadamy w ciągu {{czas_odpowiedzi}}.
 Podaj adres podstrony i opisz, co nie działa.

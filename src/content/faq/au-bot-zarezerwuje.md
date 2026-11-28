@@ -2,6 +2,6 @@
 pytanie: "Czy bot zarezerwuje wizytę?"
 strony: ["automatyzacje"]
 kolejnosc: 2
-aktualizacja: "[data]"
+aktualizacja: "{{data_publikacji}}"
 ---
 Nie rezerwuje terminów, dopóki nie jest połączony z kalendarzem.
